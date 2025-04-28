@@ -1,4 +1,4 @@
-name: Deploy Auth Service
+name: Test and Deploy Auth Service
 
 on:
   push:
@@ -13,9 +13,8 @@ on:
       - "services/auth/**"
 
 jobs:
-  test-and-deploy:
+  test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -31,8 +30,33 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Generate Types
+        run: pnpm --filter ./services/auth generate:types
+
       - name: Run tests
         run: pnpm --filter ./services/auth test
+
+  deploy:
+    if: github.event_name == 'push'
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install PNPM
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Generate Types
+        run: pnpm --filter ./services/auth generate:types
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
@@ -42,5 +66,4 @@ jobs:
           aws-region: us-east-2
 
       - name: Deploy Auth Service
-        if: github.event_name == 'push'
         run: cd services/auth && pnpm sls deploy
