@@ -1,9 +1,9 @@
 import express from 'express';
-import { authRouter } from './auth.controller';
 import path from 'path';
 import { middleware as OpenApiMiddleware } from 'express-openapi-validator';
+import authRouter from './auth.controller';
 
-export function createApp() {
+export default function createApp() {
   const app = express();
 
   app.use(express.json());
@@ -12,20 +12,25 @@ export function createApp() {
       apiSpec: 'openapi.yaml',
       validateRequests: true,
       validateResponses: true,
-    })
+    }),
   );
-  app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-    res.status(err.status || 500).json({
-      message: err.message,
-      errors: err.errors,
-    });
-  });
+  app.use(
+    (
+      err: { status?: number; message: string; errors?: unknown },
+      req: express.Request,
+      res: express.Response,
+    ) => {
+      res.status(err.status || 500).json({
+        message: err.message,
+        errors: err.errors,
+      });
+    },
+  );
 
   app.use('/auth', authRouter);
 
-
   app.get('/docs/openapi.yaml', (req, res) => {
-    res.sendFile(path.join(__dirname, '../openapi.yaml'))
+    res.sendFile(path.join(__dirname, '../openapi.yaml'));
   });
   app.get('/docs', (req, res) => {
     res.send(`

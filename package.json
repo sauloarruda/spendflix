@@ -1,22 +1,35 @@
 {
-    "name": "spendlix-monorepo",
-    "author": "Saulo Arruda",
-    "packageManager": "pnpm@10.9.0",
-    "license": "CC-BY-NC-4.0",
-    "workspaces": [
-        "apps/*",
-        "services/*"
-    ],
-    "scripts": {
-        "dev": "turbo run dev --parallel",
-        "build": "turbo run build",
-        "test": "turbo run test",
-        "deploy-auth": "turbo run deploy --filter=spendflix-services-auth"
-    },
-    "devDependencies": {
-        "danger": "^13.0.4",
-        "ts-node": "^10.9.2",
-        "turbo": "^2.5.2",
-        "typescript": "^5.8.3"
-    }
+  "name": "spendlix-monorepo",
+  "author": "Saulo Arruda",
+  "packageManager": "pnpm@10.9.0",
+  "license": "CC-BY-NC-4.0",
+  "workspaces": [
+    "apps/*",
+    "services/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "deploy-auth": "turbo run deploy --filter=spendflix-services-auth",
+    "lint": "eslint . --ext .ts --cache",
+    "lint:fix": "eslint . --ext .ts --cache --fix",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.31.0",
+    "@typescript-eslint/parser": "^8.31.0",
+    "danger": "^13.0.4",
+    "eslint": "^9.25.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.2.6",
+    "prettier": "^3.5.3",
+    "ts-node": "^10.9.2",
+    "turbo": "^2.5.2",
+    "typescript": "^5.8.3"
+  }
 }

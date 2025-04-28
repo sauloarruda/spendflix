@@ -5,12 +5,12 @@ on:
     branches:
       - main
     paths:
-      - "services/auth/**"
+      - 'services/auth/**'
   pull_request:
     branches:
       - main
     paths:
-      - "services/auth/**"
+      - 'services/auth/**'
 
 permissions:
   pull-requests: write
@@ -27,7 +27,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
 
       - name: Install PNPM
         run: npm install -g pnpm
@@ -41,7 +41,7 @@ jobs:
       - name: Run Danger
         run: npx danger ci --dangerfile=Dangerfile.ts
         env:
-          GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
+          DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
 
       - name: Configure AWS credentials
         if: github.event_name == 'push'

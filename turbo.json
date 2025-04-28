@@ -1,28 +1,19 @@
 {
-    "tasks": {
-        "build": {
-            "outputs": [
-                ".serverless/**",
-                ".next/**"
-            ],
-            "dependsOn": [
-                "^build"
-            ]
-        },
-        "dev": {
-            "cache": false
-        },
-        "test": {
-            "outputs": [],
-            "dependsOn": []
-        },
-        "deploy": {
-            "dependsOn": [
-                "build"
-            ]
-        }
+  "tasks": {
+    "build": {
+      "outputs": [".serverless/**", ".next/**"],
+      "dependsOn": ["^build"]
     },
-    "globalDependencies": [
-        "pnpm-lock.yaml"
-    ]
+    "dev": {
+      "cache": false
+    },
+    "test": {
+      "outputs": [],
+      "dependsOn": []
+    },
+    "deploy": {
+      "dependsOn": ["build"]
+    }
+  },
+  "globalDependencies": ["pnpm-lock.yaml"]
 }

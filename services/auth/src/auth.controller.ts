@@ -1,7 +1,8 @@
 import express from 'express';
-import { signup } from './signup.service';
+import signup from './signup.service';
 
-export const authRouter = express.Router();
+const authRouter = express.Router();
+export default authRouter;
 
 authRouter.post('/signup', async (req, res) => {
   const { name, email } = req.body;

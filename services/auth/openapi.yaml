@@ -13,15 +13,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SignupRequest"
+              $ref: '#/components/schemas/SignupRequest'
       responses:
-        "201":
+        '201':
           description: User created successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SignupResponse"
-        "400":
+                $ref: '#/components/schemas/SignupResponse'
+        '400':
           description: Invalid request
 
 components:
