@@ -23,8 +23,8 @@ export interface paths {
             requestBody: {
                 content: {
                     "application/json": {
-                        name?: string;
-                        email?: string;
+                        name: string;
+                        email: string;
                     };
                 };
             };
