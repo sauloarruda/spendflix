@@ -3,6 +3,7 @@
   "author": "Saulo Arruda",
   "packageManager": "pnpm@10.9.0",
   "license": "CC-BY-NC-4.0",
+  "version": "0.0.1",
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "next build",
