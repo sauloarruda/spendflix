@@ -9,11 +9,13 @@
         "deploy": "serverless deploy",
         "test": "jest --config jest.config.ts ",
         "test:watch": "jest --config jest.config.ts --watch --coverage",
-        "test:coverage": "jest --config jest.config.ts --coverage"
+        "test:coverage": "jest --config jest.config.ts --coverage",
+        "generate:types": "openapi-typescript ./openapi.yaml --output ./src/types/api.d.ts"
     },
     "dependencies": {
         "@aws-sdk/client-cognito-identity-provider": "^3.470.0",
         "express": "^4.18.2",
+        "express-openapi-validator": "^5.4.9",
         "serverless": "^4.14.1",
         "serverless-http": "^3.2.0"
     },

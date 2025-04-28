@@ -40,6 +40,25 @@
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "envFile": "${workspaceFolder}/services/auth/.env.dev"
+        },
+        {
+            "name": "[auth] Watch Tests",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "pnpm",
+            "runtimeArgs": [
+                "exec",
+                "jest",
+                "--runInBand",
+                "--no-cache",
+                "--detectOpenHandles",
+                "--watch",
+                "${file}"
+            ],
+            "cwd": "${workspaceFolder}/services/auth",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "envFile": "${workspaceFolder}/services/auth/.env.dev"
         }
     ]
 }

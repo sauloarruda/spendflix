@@ -6,9 +6,13 @@ describe('POST /auth/signup', () => {
     const app = createApp();
 
     it('should return 400 if name or email is missing', async () => {
-        const res = await request(app).post('/auth/signup').send({});
+        let res = await request(app).post('/auth/signup').send({});
         expect(res.status).toBe(400);
-        expect(res.body).toHaveProperty('message', 'Name and email are required.');
+        expect(res.body).toHaveProperty('message', "request/body must have required property 'name'");
+
+        res = await request(app).post('/auth/signup').send({ name: 'A' });
+        expect(res.status).toBe(400);
+        expect(res.body).toHaveProperty('message', "request/body must have required property 'email'");
     });
 
     it('should call Cognito API and return 201 on success', async () => {

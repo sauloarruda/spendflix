@@ -1,22 +1,34 @@
 import express from 'express';
 import { authRouter } from './auth.controller';
 import path from 'path';
+import { middleware as OpenApiMiddleware } from 'express-openapi-validator';
 
 export function createApp() {
-    const app = express();
+  const app = express();
 
-    app.use(express.json());
-    app.use('/auth', authRouter);
-
-
-    // Serve apenas a API spec (openapi.yaml)
-    app.get('/docs/openapi.yaml', (req, res) => {
-        res.sendFile(path.join(__dirname, '../openapi.yaml'));
+  app.use(express.json());
+  app.use(
+    OpenApiMiddleware({
+      apiSpec: 'openapi.yaml',
+      validateRequests: true,
+      validateResponses: true,
+    })
+  );
+  app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    res.status(err.status || 500).json({
+      message: err.message,
+      errors: err.errors,
     });
+  });
 
-    // Serve a interface Swagger UI usando assets da CDN
-    app.get('/docs', (req, res) => {
-        res.send(`
+  app.use('/auth', authRouter);
+
+
+  app.get('/docs/openapi.yaml', (req, res) => {
+    res.sendFile(path.join(__dirname, '../openapi.yaml'))
+  });
+  app.get('/docs', (req, res) => {
+    res.send(`
             <!DOCTYPE html>
             <html lang="en">
             <head>
@@ -45,7 +57,7 @@ export function createApp() {
             </body>
             </html>
         `);
-    });
+  });
 
-    return app;
+  return app;
 }
