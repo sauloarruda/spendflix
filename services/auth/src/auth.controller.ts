@@ -1,0 +1,19 @@
+import express from 'express';
+import { signup } from './signup.service';
+
+export const authRouter = express.Router();
+
+authRouter.post('/signup', async (req, res) => {
+  const { name, email } = req.body;
+
+  if (!name || !email)
+    return res.status(400).json({ message: 'Name and email are required.' });
+
+  try {
+    const response = await signup(name, email);
+    return res.status(201).json({ message: 'User created', userId: response.User?.Username });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Failed to create user', error });
+  }
+});
