@@ -24,6 +24,6 @@ jobs:
         run: pnpm install
 
       - name: Run Danger
-        run: pnpm danger ci --dangerfile=Dangerfile.ts
+        run: npx danger ci --dangerfile=Dangerfile.ts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
