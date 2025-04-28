@@ -9,7 +9,7 @@ applications:
             - pnpm install --frozen-lockfile
         build:
           commands:
-            - pnpm --filter apps/web run build
+            - pnpm run build
       artifacts:
         baseDirectory: .next
         files:
