@@ -1,8 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 
 const serverlessConfiguration: AWS = {
-  org: 'sauloarrudasandbox',
-  app: 'spendflix',
   service: 'auth',
   frameworkVersion: '4',
   plugins: ['serverless-offline'],
