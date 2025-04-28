@@ -46,6 +46,9 @@ const serverlessConfiguration: AWS = {
     },
   },
   package: { individually: true },
+  custom: {
+    'serverless-offline': { httpPort: 4000 },
+  },
 };
 
 module.exports = serverlessConfiguration;
