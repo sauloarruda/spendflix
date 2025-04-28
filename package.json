@@ -14,6 +14,9 @@
         "deploy-auth": "turbo run deploy --filter=spendflix-services-auth"
     },
     "devDependencies": {
-        "turbo": "^2.5.2"
+        "danger": "^13.0.4",
+        "ts-node": "^10.9.2",
+        "turbo": "^2.5.2",
+        "typescript": "^5.8.3"
     }
 }
