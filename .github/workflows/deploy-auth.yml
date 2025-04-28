@@ -13,7 +13,7 @@ on:
       - "services/auth/**"
 
 jobs:
-  test:
+  services_auth_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -36,9 +36,9 @@ jobs:
       - name: Run tests
         run: pnpm --filter ./services/auth test
 
-  deploy:
+  services_auth_deploy:
     if: github.event_name == 'push'
-    needs: test
+    needs: services_auth_test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
