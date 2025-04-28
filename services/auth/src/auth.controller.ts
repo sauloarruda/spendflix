@@ -12,7 +12,7 @@ authRouter.post('/signup', async (req, res) => {
     await signup(name, email);
     return res.status(201).end();
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({ message: 'Failed to create user', error });
   }
 });
@@ -22,7 +22,6 @@ authRouter.post('/confirm', async (req, res) => {
   try {
     const tokens = await confirm(email, code);
     await onboardingRepository.deleteTempPassword(email);
-    console.log(tokens);
     return res.status(200).json({
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
@@ -30,7 +29,7 @@ authRouter.post('/confirm', async (req, res) => {
       expiresIn: tokens.expiresIn,
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({ message: 'Failed to confirm user', error });
   }
 });

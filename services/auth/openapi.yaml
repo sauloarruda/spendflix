@@ -51,6 +51,7 @@ paths:
                   type: string
                 code:
                   type: string
+              required: [code, email]
       responses:
         '200':
           description: User confirmed successfully.
@@ -71,6 +72,7 @@ paths:
                   expiresIn:
                     type: integer
                     example: 3600
+                required: [accessToken, refreshToken, idToken, expiresIn]
         '400':
           description: Failed to confirm user.
           content:

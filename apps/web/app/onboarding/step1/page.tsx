@@ -82,8 +82,8 @@ export default function Page() {
       if (res.status === 200) {
         // you can grab tokens here:
         const body = (await res.json()) as ConfirmResponse;
-        console.log(body);
-        // e.g. localStorage.setItem('accessToken', body.accessToken)
+        localStorage.setItem('accessToken', body.accessToken!);
+        localStorage.setItem('refreshToken', body.refreshToken!);
         router.push('/onboarding/step2');
       } else {
         const body = await res.json();

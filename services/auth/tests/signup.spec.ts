@@ -60,3 +60,48 @@ describe('POST /auth/signup', () => {
     expect(mockedDoc).toHaveBeenCalled();
   });
 });
+
+describe('POST /auth/confirm', () => {
+  const app = createApp();
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should return 400 if email or code is missing', async () => {
+    let res = await request(app).post('/auth/confirm').send({});
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty('message', "request/body must have required property 'code'");
+
+    res = await request(app).post('/auth/confirm').send({ code: 'A' });
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty('message', "request/body must have required property 'email'");
+  });
+
+  it('should call Cognito and DynamoDB and return 200 on success', async () => {
+    const result = {
+      AccessToken: 'x',
+      RefreshToken: 'y',
+      IdToken: 'z',
+      ExpiresIn: 3600,
+    };
+    const mockedCognito = jest.fn().mockResolvedValue({
+      AuthenticationResult: result,
+    });
+    CognitoIdentityProviderClient.prototype.send = mockedCognito;
+    const mockedDynamoDb = jest.fn().mockResolvedValue({ Item: { temporaryPassword: 'secret' } });
+    DynamoDBDocumentClient.prototype.send = mockedDynamoDb;
+
+    const res = await request(app)
+      .post('/auth/confirm')
+      .send({ email: 'test@example.com', code: '123456' });
+
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty('accessToken', result.AccessToken);
+    expect(res.body).toHaveProperty('refreshToken', result.RefreshToken);
+    expect(res.body).toHaveProperty('idToken', result.IdToken);
+    expect(res.body).toHaveProperty('expiresIn', result.ExpiresIn);
+    expect(mockedCognito).toHaveBeenCalledTimes(2);
+    expect(mockedDynamoDb).toHaveBeenCalledTimes(3);
+  });
+});

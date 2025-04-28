@@ -22,7 +22,7 @@ export default function createApp() {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       _next: express.NextFunction,
     ) => {
-      console.error(err);
+      // console.error(err);
       res.status(err.status || 500).json({
         message: err.message,
         errors: err.errors,

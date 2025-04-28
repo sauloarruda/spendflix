@@ -48,7 +48,7 @@ async function saveStep1(name: string, email: string): Promise<Onboarding> {
 
 async function getTempPassword(email: string): Promise<string | undefined> {
   const res = await docClient.send(new GetCommand({ TableName: TABLE, Key: { email } }));
-  return res.Item?.password as string | undefined;
+  return res.Item?.temporaryPassword;
 }
 
 async function deleteTempPassword(email: string) {

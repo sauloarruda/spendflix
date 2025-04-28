@@ -85,8 +85,8 @@ export interface paths {
             requestBody: {
                 content: {
                     "application/json": {
-                        email?: string;
-                        code?: string;
+                        email: string;
+                        code: string;
                     };
                 };
             };
@@ -99,13 +99,13 @@ export interface paths {
                     content: {
                         "application/json": {
                             /** @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... */
-                            accessToken?: string;
+                            accessToken: string;
                             /** @example dXNlcjEyMzQ1Njc4OTA= */
-                            refreshToken?: string;
+                            refreshToken: string;
                             /** @example eyJraWQiOiJrZXkxMjM0NTY3ODkwIiwidHlwIjoiSldUIn0... */
-                            idToken?: string;
+                            idToken: string;
                             /** @example 3600 */
-                            expiresIn?: number;
+                            expiresIn: number;
                         };
                     };
                 };

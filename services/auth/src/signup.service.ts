@@ -40,9 +40,7 @@ export const signup = async (name: string, email: string) => {
 
 export const confirm = async (email: string, code: string): Promise<ConfirmResult> => {
   const password = await onboardingRepository.getTempPassword(email);
-  if (!password) {
-    throw new Error('No pending signup for this email');
-  }
+  if (!password) throw new Error('No pending signup for this email');
 
   await cognitoClient.send(
     new ConfirmSignUpCommand({
