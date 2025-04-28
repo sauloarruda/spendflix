@@ -34,6 +34,18 @@ const serverlessConfiguration: AWS = {
                         cors: true,
                     },
                 },
+                {
+                    http: {
+                        path: 'docs',
+                        method: 'get',
+                    },
+                },
+                {
+                    http: {
+                        path: 'docs/openapi.yaml',
+                        method: 'get',
+                    },
+                },
             ],
         },
     },
