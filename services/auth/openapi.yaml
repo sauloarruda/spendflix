@@ -1,46 +1,89 @@
 openapi: 3.1.0
 info:
-  title: Spendflix Auth API
-  description: API for authentication (signup)
-  version: 0.0.1
+  title: Spendflix Auth Service
+  version: 1.0.0
 
 paths:
   /auth/signup:
     post:
-      summary: User signup
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SignupRequest'
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+              required: [name, email]
       responses:
         '201':
-          description: User created successfully
+          description: User created successfully.
+        '400':
+          description: Request validation failed.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SignupResponse'
-        '400':
-          description: Invalid request
+                type: object
+                $ref: '#/components/schemas/RequestError'
+        '500':
+          description: Failed to create user.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RequestError'
 
+  /auth/confirm:
+    post:
+      summary: Confirma um usuário
+      description: Endpoint para confirmar um usuário com um código de verificação.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                code:
+                  type: string
+      responses:
+        '200':
+          description: User confirmed successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  refreshToken:
+                    type: string
+                    example: dXNlcjEyMzQ1Njc4OTA=
+                  idToken:
+                    type: string
+                    example: eyJraWQiOiJrZXkxMjM0NTY3ODkwIiwidHlwIjoiSldUIn0...
+                  expiresIn:
+                    type: integer
+                    example: 3600
+        '400':
+          description: Failed to confirm user.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RequestError'
 components:
   schemas:
-    SignupRequest:
-      type: object
-      required:
-        - name
-        - email
-      properties:
-        name:
-          type: string
-        email:
-          type: string
-
-    SignupResponse:
+    RequestError:
       type: object
       properties:
+        error:
+          type: string
         message:
-          type: string
-        userId:
           type: string

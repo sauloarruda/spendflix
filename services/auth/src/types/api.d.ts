@@ -13,7 +13,6 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** User signup */
         post: {
             parameters: {
                 query?: never;
@@ -23,25 +22,101 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["SignupRequest"];
+                    "application/json": {
+                        name?: string;
+                        email?: string;
+                    };
                 };
             };
             responses: {
-                /** @description User created successfully */
+                /** @description User created successfully. */
                 201: {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content: {
-                        "application/json": components["schemas"]["SignupResponse"];
-                    };
+                    content?: never;
                 };
-                /** @description Invalid request */
+                /** @description Request validation failed. */
                 400: {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "application/json": components["schemas"]["RequestError"];
+                    };
+                };
+                /** @description Failed to create user. */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["RequestError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Confirma um usuário
+         * @description Endpoint para confirmar um usuário com um código de verificação.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        email?: string;
+                        code?: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description User confirmed successfully. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... */
+                            accessToken?: string;
+                            /** @example dXNlcjEyMzQ1Njc4OTA= */
+                            refreshToken?: string;
+                            /** @example eyJraWQiOiJrZXkxMjM0NTY3ODkwIiwidHlwIjoiSldUIn0... */
+                            idToken?: string;
+                            /** @example 3600 */
+                            expiresIn?: number;
+                        };
+                    };
+                };
+                /** @description Failed to confirm user. */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["RequestError"];
+                    };
                 };
             };
         };
@@ -55,13 +130,9 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        SignupRequest: {
-            name: string;
-            email: string;
-        };
-        SignupResponse: {
+        RequestError: {
+            error?: string;
             message?: string;
-            userId?: string;
         };
     };
     responses: never;

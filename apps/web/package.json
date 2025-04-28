@@ -9,8 +9,7 @@
     "start": "next start -p 3000",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "generate:types": "openapi-typescript ../../services/auth/openapi.yaml --output ./types/api.d.ts",
-    "test": "jest"
+    "generate:types": "openapi-typescript ../../services/auth/openapi.yaml --output ./types/api.d.ts"
   },
   "dependencies": {
     "next": "^15.3.1",

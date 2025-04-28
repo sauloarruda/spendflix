@@ -24,27 +24,27 @@ const (
 
 func main() {
 	// 1) Verifica Docker
-	if _, err := exec.LookPath("docker"); err != nil {
-		log.Fatalf("Docker not found: %v", err)
-	}
+	// if _, err := exec.LookPath("docker"); err != nil {
+	// 	log.Fatalf("Docker not found: %v", err)
+	// }
 
 	// 2) Inicia container se não estiver rodando
-	if !isContainerRunning(containerName) {
-		fmt.Println("Startind DynamoDB Local in Docker...")
-		cmd := exec.Command("docker",
-			"run", "--rm", "-d",
-			"-p", "8000:8000",
-			"--name", containerName,
-			imageName,
-		)
-		if out, err := cmd.CombinedOutput(); err != nil {
-			log.Fatalf("Failture starting container: %v\nOutput: %s", err, string(out))
-		}
-		// dá um tempinho pro container subir
-		time.Sleep(3 * time.Second)
-	} else {
-		fmt.Println("Container DynamoDB Local is already running.")
-	}
+	// if !isContainerRunning(containerName) {
+	// 	fmt.Println("Startind DynamoDB Local in Docker...")
+	// 	cmd := exec.Command("docker",
+	// 		"run", "--rm", "-d",
+	// 		"-p", "8000:8000",
+	// 		"--name", containerName,
+	// 		imageName,
+	// 	)
+	// 	if out, err := cmd.CombinedOutput(); err != nil {
+	// 		log.Fatalf("Failture starting container: %v\nOutput: %s", err, string(out))
+	// 	}
+	// 	// dá um tempinho pro container subir
+	// 	time.Sleep(3 * time.Second)
+	// } else {
+	// 	fmt.Println("Container DynamoDB Local is already running.")
+	// }
 
 	// 3) Configura AWS SDK para apontar ao endpoint local
 	ctx := context.Background()
@@ -79,21 +79,21 @@ func main() {
 		fmt.Println("Table created. Waiting status ACTIVE...")
 		waitForTableActive(ctx, client, tableName)
 
-		// 5) Habilita TTL após a tabela estar ativa
-		fmt.Println("Habilitando TTL na tabela...")
-		_, err = client.UpdateTimeToLive(ctx, &dynamodb.UpdateTimeToLiveInput{
-			TableName: aws.String(tableName),
-			TimeToLiveSpecification: &types.TimeToLiveSpecification{
-				AttributeName: aws.String("ttl"),
-				Enabled:       aws.Bool(true),
-			},
-		})
-		if err != nil {
-			log.Fatalf("Erro enabling TTL: %v", err)
-		}
-		fmt.Println("TTL enabled.")
+		// // 5) Habilita TTL após a tabela estar ativa
+		// fmt.Println("Habilitando TTL na tabela...")
+		// _, err = client.UpdateTimeToLive(ctx, &dynamodb.UpdateTimeToLiveInput{
+		// 	TableName: aws.String(tableName),
+		// 	TimeToLiveSpecification: &types.TimeToLiveSpecification{
+		// 		AttributeName: aws.String("ttl"),
+		// 		Enabled:       aws.Bool(true),
+		// 	},
+		// })
+		// if err != nil {
+		// 	log.Fatalf("Erro enabling TTL: %v", err)
+		// }
+		// fmt.Println("TTL enabled.")
 	} else {
-		fmt.Printf("Tabela %q already exists.\n", tableName)
+		fmt.Printf("Table %q already exists.\n", tableName)
 	}
 
 	fmt.Println("DynamoDB Local config finished.")

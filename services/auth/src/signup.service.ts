@@ -1,23 +1,75 @@
 import {
   CognitoIdentityProviderClient,
-  AdminCreateUserCommand,
+  SignUpCommand,
+  ConfirmSignUpCommand,
+  InitiateAuthCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
+import onboardingRepository from './repository/onboarding';
 
 const cognitoClient = new CognitoIdentityProviderClient({});
 
-const signup = async (name: string, email: string) => {
-  const command = new AdminCreateUserCommand({
-    UserPoolId: process.env.COGNITO_USER_POOL_ID!,
-    Username: email,
-    UserAttributes: [
-      { Name: 'email', Value: email },
-      { Name: 'name', Value: name },
-      { Name: 'email_verified', Value: 'true' },
-    ],
-    DesiredDeliveryMediums: ['EMAIL'],
-  });
+export interface ConfirmResult {
+  accessToken: string;
+  refreshToken: string;
+  idToken: string;
+  expiresIn: number;
+}
 
-  return cognitoClient.send(command);
+export const signup = async (name: string, email: string) => {
+  const onboarding = await onboardingRepository.saveStep1(name, email);
+
+  try {
+    const res = await cognitoClient.send(
+      new SignUpCommand({
+        ClientId: process.env.COGNITO_CLIENT_ID!,
+        Username: email,
+        Password: onboarding.temporaryPassword,
+        UserAttributes: [
+          { Name: 'email', Value: email },
+          { Name: 'name', Value: name },
+          { Name: 'nickname', Value: name },
+        ],
+      }),
+    );
+    return res;
+  } catch (err) {
+    await onboardingRepository.deleteTempPassword(email);
+    throw err;
+  }
 };
 
-export default signup;
+export const confirm = async (email: string, code: string): Promise<ConfirmResult> => {
+  const password = await onboardingRepository.getTempPassword(email);
+  if (!password) {
+    throw new Error('No pending signup for this email');
+  }
+
+  await cognitoClient.send(
+    new ConfirmSignUpCommand({
+      ClientId: process.env.COGNITO_CLIENT_ID!,
+      Username: email,
+      ConfirmationCode: code,
+    }),
+  );
+
+  const authResp = await cognitoClient.send(
+    new InitiateAuthCommand({
+      AuthFlow: 'USER_PASSWORD_AUTH',
+      ClientId: process.env.COGNITO_CLIENT_ID!,
+      AuthParameters: {
+        USERNAME: email,
+        PASSWORD: password,
+      },
+    }),
+  );
+
+  const result = authResp.AuthenticationResult!;
+  await onboardingRepository.deleteTempPassword(email);
+
+  return {
+    accessToken: result.AccessToken!,
+    refreshToken: result.RefreshToken!,
+    idToken: result.IdToken!,
+    expiresIn: result.ExpiresIn!,
+  };
+};
