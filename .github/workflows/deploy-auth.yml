@@ -6,6 +6,11 @@ on:
       - main
     paths:
       - "services/auth/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "services/auth/**"
 
 jobs:
   test-and-deploy:
@@ -37,4 +42,5 @@ jobs:
           aws-region: us-east-2
 
       - name: Deploy Auth Service
+        if: github.event_name == 'push'
         run: cd services/auth && pnpm sls deploy
