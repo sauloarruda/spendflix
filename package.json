@@ -10,7 +10,8 @@
     "scripts": {
         "dev": "turbo run dev --parallel",
         "build": "turbo run build",
-        "test": "turbo run test"
+        "test": "turbo run test",
+        "deploy-auth": "turbo run deploy --filter=spendflix-services-auth"
     },
     "devDependencies": {
         "turbo": "^2.5.2"

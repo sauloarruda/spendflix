@@ -1,6 +1,8 @@
 import type { AWS } from '@serverless/typescript';
 
 const serverlessConfiguration: AWS = {
+    org: 'sauloarrudasandbox',
+    app: 'spendflix',
     service: 'auth',
     frameworkVersion: '4',
     plugins: ['serverless-offline'],
@@ -27,8 +29,9 @@ const serverlessConfiguration: AWS = {
             events: [
                 {
                     http: {
-                        path: '/auth/{proxy+}',
-                        method: '*',
+                        path: 'auth/{proxy+}',
+                        method: 'any',
+                        cors: true,
                     },
                 },
             ],

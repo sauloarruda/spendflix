@@ -21,6 +21,9 @@ importers:
         specifier: ^3.2.0
         version: 3.2.0
     devDependencies:
+      '@serverless/typescript':
+        specifier: ^4.11.1
+        version: 4.11.1
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
@@ -826,6 +829,9 @@ packages:
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
+
+  '@serverless/typescript@4.11.1':
+    resolution: {integrity: sha512-6DBvI3wJ0ATy/xy0SfVeETvUuzrxbtWdFKKiPKPcc4DvsZiNi9NgQH04QH+yU3q3RHO0qvA46B6iJTo8oPWsZQ==}
 
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
@@ -4086,6 +4092,8 @@ snapshots:
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
+
+  '@serverless/typescript@4.11.1': {}
 
   '@sinclair/typebox@0.27.8': {}
 
