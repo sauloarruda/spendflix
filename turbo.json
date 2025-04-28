@@ -1,24 +1,28 @@
 {
-    "pipeline": {
+    "tasks": {
         "build": {
+            "outputs": [
+                ".serverless/**",
+                ".next/**"
+            ],
             "dependsOn": [
                 "^build"
-            ],
-            "outputs": [
-                "dist/**",
-                ".next/**"
             ]
         },
         "dev": {
             "cache": false
         },
         "test": {
-            "outputs": []
+            "outputs": [],
+            "dependsOn": []
         },
         "deploy": {
             "dependsOn": [
                 "build"
             ]
         }
-    }
+    },
+    "globalDependencies": [
+        "pnpm-lock.yaml"
+    ]
 }

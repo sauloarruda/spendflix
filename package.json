@@ -8,7 +8,9 @@
         "services/*"
     ],
     "scripts": {
-        "dev": "turbo run dev --parallel"
+        "dev": "turbo run dev --parallel",
+        "build": "turbo run build",
+        "test": "turbo run test"
     },
     "devDependencies": {
         "turbo": "^2.5.2"
