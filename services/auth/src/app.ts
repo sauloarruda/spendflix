@@ -16,9 +16,10 @@ export default function createApp() {
   );
   app.use(
     (
-      err: { status?: number; message: string; errors?: unknown },
+      err: { status?: number; message: string; errors?: any },
       req: express.Request,
       res: express.Response,
+      _next: express.NextFunction,
     ) => {
       res.status(err.status || 500).json({
         message: err.message,

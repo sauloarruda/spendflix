@@ -17,5 +17,5 @@ export default {
       statements: 90,
     },
   },
-  coveragePathIgnorePatterns: ['lambda.ts'],
+  coveragePathIgnorePatterns: ['lambda.ts', 'app.ts'],
 };

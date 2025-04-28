@@ -3,4 +3,5 @@ import createApp from './app';
 
 const app = createApp();
 
-export default serverless(app);
+// eslint-disable-next-line import/prefer-default-export
+export const handler = serverless(app);
