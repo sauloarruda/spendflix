@@ -5,7 +5,7 @@
     "license": "CC-BY-NC-4.0",
     "scripts": {
         "dev": "serverless offline start --reloadHandler",
-        "build": "serverless package",
+        "build": "pnpm generate:types && serverless package",
         "deploy": "serverless deploy",
         "test": "jest --config jest.config.ts ",
         "test:watch": "jest --config jest.config.ts --watch --coverage",
