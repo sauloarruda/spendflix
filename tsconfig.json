@@ -9,7 +9,8 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "*": ["./*"]
+      "*": ["./*"],
+      "@auth/types/*": ["services/auth/src/types/*"]
     }
   },
   "include": ["services/**/*", "apps/**/*"]
