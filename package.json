@@ -1,0 +1,16 @@
+{
+    "name": "spendlix-monorepo",
+    "author": "Saulo Arruda",
+    "packageManager": "pnpm@10.9.0",
+    "license": "CC-BY-NC-4.0",
+    "workspaces": [
+        "apps/*",
+        "services/*"
+    ],
+    "scripts": {
+        "dev": "turbo run dev --parallel"
+    },
+    "devDependencies": {
+        "turbo": "^2.5.2"
+    }
+}
