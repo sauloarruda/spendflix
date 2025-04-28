@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import request from 'supertest';
 import { CognitoIdentityProviderClient } from '@aws-sdk/client-cognito-identity-provider';
 import createApp from '../src/app';
