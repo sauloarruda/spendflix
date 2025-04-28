@@ -1,0 +1,57 @@
+name: Spendflix CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'services/auth/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'services/auth/**'
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  build-test-danger-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install PNPM
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run Tests
+        run: pnpm --filter ./services/auth test
+
+      - name: Run Danger
+        run: npx danger ci --dangerfile=Dangerfile.ts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
+
+      - name: Configure AWS credentials
+        if: github.event_name == 'push'
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: Deploy Auth Service
+        if: github.event_name == 'push'
+        run: cd services/auth && pnpm sls deploy

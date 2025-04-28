@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
+
+# 1) Executa ESLint + Prettier
+pnpm lint:fix
+
+# 2) Gera os types do openapi (dentro do services/auth)
+cd services/auth && pnpm generate:types
+
+# Se você quiser também rodar lint-staged em staged files:
+# pnpm lint-staged

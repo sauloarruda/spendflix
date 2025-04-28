@@ -1,0 +1,9 @@
+.serverless
+.next
+.turbo
+coverage
+node_modules
+.env*
+
+.DS_Store
+.eslintcache

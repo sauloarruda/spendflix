@@ -1,0 +1,56 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "[auth] Serverless Offline",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["exec", "serverless", "offline", "--noTimeout", "--reloadHandler"],
+      "cwd": "${workspaceFolder}/services/auth",
+      "protocol": "inspector",
+      "port": 9229,
+      "envFile": "${workspaceFolder}/services/auth/.env.dev",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"],
+      "outputCapture": "std"
+    },
+    {
+      "name": "[auth] Current Test",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "exec",
+        "jest",
+        "--runInBand",
+        "--no-cache",
+        "--detectOpenHandles",
+        "${file}"
+      ],
+      "cwd": "${workspaceFolder}/services/auth",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "envFile": "${workspaceFolder}/services/auth/.env.dev"
+    },
+    {
+      "name": "[auth] Watch Tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "exec",
+        "jest",
+        "--runInBand",
+        "--no-cache",
+        "--detectOpenHandles",
+        "--watch",
+        "${file}"
+      ],
+      "cwd": "${workspaceFolder}/services/auth",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "envFile": "${workspaceFolder}/services/auth/.env.dev"
+    }
+  ]
+}
