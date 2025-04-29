@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -27,6 +27,8 @@ export default function Page() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [apiError, setApiError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
 
   const baseUrl = process.env.NEXT_PUBLIC_API_AUTH_URL;
 
@@ -36,6 +38,7 @@ export default function Page() {
     if (!email.trim()) e.email = 'Por favor, insira seu email.';
     else if (!/\S+@\S+\.\S+/.test(email)) e.email = 'Email inválido.';
     setErrors(e);
+    setIsFormValid(Object.keys(e).length === 0);
     return Object.keys(e).length === 0;
   }
 
@@ -43,8 +46,22 @@ export default function Page() {
     const e: Record<string, string> = {};
     if (!/^\d{6}$/.test(code)) e.code = 'Informe o código de 6 dígitos.';
     setErrors(e);
+    setIsFormValid(Object.keys(e).length === 0);
     return Object.keys(e).length === 0;
   }
+
+  const handleBlur = (field: string) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+  };
+
+  // Add useEffect for real-time validation
+  useEffect(() => {
+    if (step === 'signup') {
+      validateSignup();
+    } else {
+      validateCode();
+    }
+  }, [name, email, code, step]);
 
   async function handleSignup() {
     if (!validateSignup()) return;
@@ -101,21 +118,29 @@ export default function Page() {
       <div className="w-full max-w-md">
         {step === 'signup' ? (
           <>
-            <div className="text-sm text-gray-500 mb-4">Step 1 of 7</div>
-            <h2 className="text-xl font-semibold mb-4 text-center">Cadastro</h2>
+            <div className="text-sm text-gray-500 mb-4">Etapa 1 de 7</div>
+            <h2 className="text-xl font-semibold mb-6 text-center">Descubra, Organize, Realize</h2>
 
-            <div className="space-y-6">
+            <p className="text-gray-600 text-center mb-6">
+              Em menos de 20 minutos, você dará seu primeiro passo para descobrir para onde está
+              indo seu dinheiro todo mês.
+            </p>
+
+            <div className="flex flex-col gap-8 my-8">
               <div className="flex flex-col">
                 <span className="p-float-label">
                   <InputText
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className={`w-full ${errors.name ? 'p-invalid' : ''}`}
+                    onBlur={() => handleBlur('name')}
+                    className={`w-full ${touched.name && errors.name ? 'p-invalid' : ''}`}
                   />
                   <label htmlFor="name">Como podemos te chamar?</label>
                 </span>
-                {errors.name && <small className="text-red-500 mt-1">{errors.name}</small>}
+                {touched.name && errors.name && (
+                  <small className="text-red-500 mt-1">{errors.name}</small>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -125,21 +150,24 @@ export default function Page() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className={`w-full ${errors.email ? 'p-invalid' : ''}`}
+                    onBlur={() => handleBlur('email')}
+                    className={`w-full ${touched.email && errors.email ? 'p-invalid' : ''}`}
                   />
                   <label htmlFor="email">Seu melhor email</label>
                 </span>
-                {errors.email && <small className="text-red-500 mt-1">{errors.email}</small>}
+                {touched.email && errors.email && (
+                  <small className="text-red-500 mt-1">{errors.email}</small>
+                )}
               </div>
             </div>
 
-            {apiError && <div className="text-red-600 mt-4 text-center">{apiError}</div>}
+            {apiError && <div className="text-red-600 my-4 text-center">{apiError}</div>}
 
             <Button
-              className="w-full mt-6"
+              className="w-full mt-8"
               label={loading ? 'Enviando...' : 'Continuar'}
               onClick={handleSignup}
-              disabled={loading}
+              disabled={loading || !isFormValid}
             />
 
             <p className="text-xs text-gray-400 mt-4 text-center">
@@ -153,32 +181,35 @@ export default function Page() {
         ) : (
           <>
             <div className="text-sm text-gray-500 mb-4">Step 2 of 7</div>
-            <h2 className="text-xl font-semibold mb-4 text-center">Confirme seu Email</h2>
+            <h2 className="text-xl font-semibold mb-6 text-center">Confirme seu Email</h2>
 
             <p className="text-gray-600 text-center mb-6">
               Informe o código de 6 dígitos que enviamos para <strong>{email}</strong>.
             </p>
 
-            <div className="flex flex-col">
+            <div className="flex flex-col my-8">
               <span className="p-float-label">
                 <InputText
                   id="code"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
-                  className={`w-full ${errors.code ? 'p-invalid' : ''}`}
+                  onBlur={() => handleBlur('code')}
+                  className={`w-full ${touched.code && errors.code ? 'p-invalid' : ''}`}
                 />
                 <label htmlFor="code">Código de confirmação</label>
               </span>
-              {errors.code && <small className="text-red-500 mt-1">{errors.code}</small>}
+              {touched.code && errors.code && (
+                <small className="text-red-500 mt-1">{errors.code}</small>
+              )}
             </div>
 
-            {apiError && <div className="text-red-600 mt-4 text-center">{apiError}</div>}
+            {apiError && <div className="text-red-600 my-4 text-center">{apiError}</div>}
 
             <Button
-              className="w-full mt-6"
+              className="w-full mt-8"
               label={loading ? 'Confirmando...' : 'Confirmar Email'}
               onClick={handleConfirm}
-              disabled={loading}
+              disabled={loading || !isFormValid}
             />
 
             <p className="text-sm text-center mt-4">
