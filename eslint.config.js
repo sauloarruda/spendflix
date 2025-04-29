@@ -9,6 +9,7 @@ module.exports = [
   {
     ignores: [
       'eslint.config.js',
+      'apps/**/next.config.js',
       'Dangerfile.ts',
       '**/types/api.d.ts',
       'node_modules/**',
