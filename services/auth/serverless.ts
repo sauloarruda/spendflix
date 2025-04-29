@@ -55,7 +55,11 @@ const serverlessConfiguration: AWS = {
           http: {
             path: 'auth/{proxy+}',
             method: 'any',
-            cors: true,
+            cors: {
+              origins: ['http://localhost:3000', 'https://main.d10maglcknnjxq.amplifyapp.com'],
+              headers: ['Content-Type', 'Authorization'],
+              allowCredentials: true,
+            },
           },
         },
         {
