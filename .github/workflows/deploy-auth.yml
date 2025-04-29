@@ -53,7 +53,10 @@ jobs:
 
       - name: Deploy Auth Service
         if: github.event_name == 'push'
-        run: cd services/auth && pnpm sls deploy --stage=v1
+        run: |
+          cd services/auth
+          pnpm install
+          pnpm sls deploy --stage=v1
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
