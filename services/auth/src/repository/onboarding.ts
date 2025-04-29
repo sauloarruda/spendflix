@@ -1,7 +1,7 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, PutCommand, GetCommand } from '@aws-sdk/lib-dynamodb';
 
-const endpoint = 'http://localhost:8000';
+const endpoint = process.env.IS_OFFLINE ? 'http://localhost:8000' : undefined;
 
 const rawClient = new DynamoDBClient(
   endpoint

@@ -3,6 +3,8 @@ import {
   SignUpCommand,
   ConfirmSignUpCommand,
   InitiateAuthCommand,
+  UsernameExistsException,
+  ResendConfirmationCodeCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import onboardingRepository from './repository/onboarding';
 
@@ -33,8 +35,17 @@ export const signup = async (name: string, email: string) => {
     );
     return res;
   } catch (err) {
-    await onboardingRepository.deleteTempPassword(email);
-    throw err;
+    if (err instanceof UsernameExistsException) {
+      await cognitoClient.send(
+        new ResendConfirmationCodeCommand({
+          ClientId: process.env.COGNITO_CLIENT_ID!,
+          Username: email,
+        }),
+      );
+    } else {
+      await onboardingRepository.deleteTempPassword(email);
+      throw err;
+    }
   }
 };
 
