@@ -5,10 +5,36 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 AUTH_SERVICE_DIR="$PROJECT_ROOT/services/auth"
 
+# Colors and styles
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+BOLD='\033[1m'
+DIM='\033[2m'
+
+# Function to print styled messages
+print_step() {
+    echo -e "\n${BLUE}${BOLD}➜${NC} ${BOLD}$1${NC}"
+}
+
+print_success() {
+    echo -e "${GREEN}${BOLD}✓${NC} $1"
+}
+
+print_warning() {
+    echo -e "${YELLOW}${BOLD}⚠${NC} $1"
+}
+
+print_error() {
+    echo -e "${RED}${BOLD}✗${NC} $1"
+}
+
 # Function to cleanup cognito-local process
 cleanup() {
     if [ ! -z "$COGNITO_PID" ]; then
-        echo "Stopping cognito-local process..."
+        print_step "Stopping cognito-local process..."
         kill $COGNITO_PID 2>/dev/null || true
     fi
 }
@@ -46,28 +72,28 @@ write_env_variables() {
     
     # Replace the original file with the temp file
     mv "$temp_file" "$env_file"
-    echo "Environment variables updated in $env_file"
+    print_success "Environment variables updated in $env_file"
 }
 
 # Check if jq is installed
 if ! command -v jq &> /dev/null; then
-    echo "Error: jq is required but not installed. Please install it first."
+    print_error "jq is required but not installed. Please install it first."
     exit 1
 fi
 
 # Check if aws cli is installed
 if ! command -v aws &> /dev/null; then
-    echo "Error: AWS CLI is required but not installed. Please install it first."
+    print_error "AWS CLI is required but not installed. Please install it first."
     exit 1
 fi
 
 # Main script logic
 if [ "$1" == "--setup" ]; then
-    echo "Running Cognito setup..."
+    echo -e "\n${BLUE}${BOLD}🔐 Setting up Cognito${NC}\n"
     
     # Check if auth service directory exists
     if [ ! -d "$AUTH_SERVICE_DIR" ]; then
-        echo "Error: Auth service directory not found at $AUTH_SERVICE_DIR"
+        print_error "Auth service directory not found at $AUTH_SERVICE_DIR"
         exit 1
     fi
     
@@ -76,11 +102,12 @@ if [ "$1" == "--setup" ]; then
     
     # Check if cognito-local is installed
     if ! pnpm list cognito-local &> /dev/null; then
-        echo "Error: cognito-local is not installed in the auth service"
-        echo "Please run 'pnpm add cognito-local' in the auth service directory first"
+        print_error "cognito-local is not installed in the auth service"
+        echo -e "Please run '${BOLD}pnpm add cognito-local${NC}' in the auth service directory first"
         exit 1
     fi
     
+    print_step "Starting cognito-local..."
     pnpm cognito-local > /dev/null 2>&1 &
     COGNITO_PID=$!
     
@@ -88,33 +115,34 @@ if [ "$1" == "--setup" ]; then
     sleep 3
     
     # Create user pool
-    echo "Creating user pool..."
+    print_step "Creating user pool..."
     POOL_RESPONSE=$(aws --endpoint http://localhost:9229 cognito-idp create-user-pool --pool-name SpendflixLocal)
     COGNITO_POOL_ID=$(extract_json_value "$POOL_RESPONSE" ".UserPool.Id")
     
     if [ -z "$COGNITO_POOL_ID" ]; then
-        echo "Error: Failed to create user pool"
+        print_error "Failed to create user pool"
         exit 1
     fi
     
     # Create user pool client
-    echo "Creating user pool client..."
+    print_step "Creating user pool client..."
     CLIENT_RESPONSE=$(aws --endpoint http://localhost:9229 cognito-idp create-user-pool-client --user-pool-id "$COGNITO_POOL_ID" --client-name local)
     COGNITO_CLIENT_ID=$(extract_json_value "$CLIENT_RESPONSE" ".UserPoolClient.ClientId")
     
     if [ -z "$COGNITO_CLIENT_ID" ]; then
-        echo "Error: Failed to create user pool client"
+        print_error "Failed to create user pool client"
         exit 1
     fi
     
     # Write environment variables
     write_env_variables "$COGNITO_POOL_ID" "$COGNITO_CLIENT_ID"
     
-    echo "Cognito setup completed successfully"
-    echo "Pool ID: $COGNITO_POOL_ID"
-    echo "Client ID: $COGNITO_CLIENT_ID"
+    echo -e "\n${GREEN}${BOLD}✨ Cognito setup completed successfully!${NC}\n"
+    echo -e "${DIM}Pool ID:${NC} ${BOLD}$COGNITO_POOL_ID${NC}"
+    echo -e "${DIM}Client ID:${NC} ${BOLD}$COGNITO_CLIENT_ID${NC}"
 else
     # Regular execution mode
     cd "$AUTH_SERVICE_DIR"
+    print_step "Starting cognito-local..."
     CODE=123123 pnpm cognito-local
 fi 
