@@ -11,6 +11,8 @@
     "test": "jest --config jest.config.ts ",
     "test:watch": "jest --config jest.config.ts --watch --coverage",
     "test:coverage": "jest --config jest.config.ts --coverage",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "generate:types": "openapi-typescript ./openapi.yaml --output ./src/types/api.d.ts"
   },
   "dependencies": {

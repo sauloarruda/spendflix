@@ -7,11 +7,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "baseUrl": ".",
-    "paths": {
-      "*": ["./*"],
-      "@auth/types/*": ["services/auth/src/types/*"]
-    }
+    "baseUrl": "."
   },
   "include": ["services/**/*", "apps/**/*"]
 }

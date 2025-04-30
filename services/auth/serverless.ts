@@ -1,7 +1,7 @@
 import type { AWS } from '@serverless/typescript';
 
 const serverlessConfiguration: AWS = {
-  service: 'auth',
+  service: 'spendflix-auth',
   frameworkVersion: '4',
   plugins: ['serverless-offline'],
   custom: {
@@ -11,9 +11,28 @@ const serverlessConfiguration: AWS = {
     name: 'aws',
     runtime: 'nodejs20.x',
     region: 'us-east-2',
+    memorySize: 128,
+    architecture: 'x86_64',
+    timeout: 29,
+    httpApi: {
+      cors: {
+        allowedOrigins: ['https://main.d10maglcknnjxq.amplifyapp.com'],
+        allowedHeaders: [
+          'Content-Type',
+          'Authorization',
+          'X-Amz-Date',
+          'X-Api-Key',
+          'X-Amz-Security-Token',
+        ],
+        allowedMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowCredentials: true,
+        maxAge: 600,
+      },
+    },
     environment: {
       COGNITO_USER_POOL_ID: '${env:COGNITO_USER_POOL_ID}',
       COGNITO_CLIENT_ID: '${env:COGNITO_CLIENT_ID}',
+      BASE_APP_URL: '${env:BASE_APP_URL}',
     },
     iamRoleStatements: [
       {
@@ -25,6 +44,9 @@ const serverlessConfiguration: AWS = {
           'dynamodb:PutItem',
           'dynamodb:GetItem',
           'dynamodb:DeleteItem',
+          'dynamodb:DescribeTable',
+          'dynamodb:CreateTable',
+          'dynamodb:UpdateTable',
         ],
         Resource: '*',
       },
@@ -35,9 +57,19 @@ const serverlessConfiguration: AWS = {
       OnboardingTable: {
         Type: 'AWS::DynamoDB::Table',
         Properties: {
-          TableName: 'oboarding',
-          AttributeDefinitions: [{ AttributeName: 'email', AttributeType: 'S' }],
-          KeySchema: [{ AttributeName: 'email', KeyType: 'HASH' }],
+          TableName: 'onboarding',
+          AttributeDefinitions: [
+            {
+              AttributeName: 'email',
+              AttributeType: 'S',
+            },
+          ],
+          KeySchema: [
+            {
+              AttributeName: 'email',
+              KeyType: 'HASH',
+            },
+          ],
           BillingMode: 'PAY_PER_REQUEST',
           TimeToLiveSpecification: {
             AttributeName: 'ttl',
@@ -55,11 +87,7 @@ const serverlessConfiguration: AWS = {
           http: {
             path: 'auth/{proxy+}',
             method: 'any',
-            cors: {
-              origins: ['http://localhost:3000', 'https://main.d10maglcknnjxq.amplifyapp.com'],
-              headers: ['Content-Type', 'Authorization'],
-              allowCredentials: true,
-            },
+            cors: true,
           },
         },
         {
@@ -77,7 +105,19 @@ const serverlessConfiguration: AWS = {
       ],
     },
   },
-  package: { individually: true },
+  package: {
+    individually: true,
+    patterns: [
+      '!node_modules/**',
+      '!tests/**',
+      '!coverage/**',
+      '!.turbo/**',
+      '!.serverless/**',
+      '!**/*.test.ts',
+      '!**/*.spec.ts',
+      'openapi.yaml',
+    ],
+  },
 };
 
 module.exports = serverlessConfiguration;

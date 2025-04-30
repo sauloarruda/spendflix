@@ -6,13 +6,14 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "next dev -p 3000",
-    "build": "next build --debug --experimental-app-only",
+    "build": "next build",
     "start": "next start -p 3000",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "generate:types": "openapi-typescript ../../services/auth/openapi.yaml --output ./types/api.d.ts"
+    "generate:types": "openapi-typescript ../../services/auth/openapi.yaml --output ./lib/types/api.d.ts"
   },
   "dependencies": {
+    "eslint-config-next": "^15.3.1",
     "next": "^15.3.1",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.5",
@@ -24,6 +25,8 @@
     "@types/node": "^22.15.3",
     "@types/react": "^19.1.2",
     "autoprefixer": "^10.4.21",
+    "eslint-import-resolver-typescript": "^4.3.4",
+    "eslint-plugin-import-x": "^4.11.0",
     "openapi-typescript": "^7.6.1",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.4",
