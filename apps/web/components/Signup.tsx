@@ -51,7 +51,6 @@ export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
 
   return (
     <>
-      <div className="text-sm text-gray-500 mb-4">Etapa 1 de 7</div>
       <h2 className="text-xl font-semibold mb-6 text-center">Descubra, Organize, Realize</h2>
 
       <p className="text-gray-600 text-center mb-6">

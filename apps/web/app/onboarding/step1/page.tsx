@@ -31,21 +31,19 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-50">
-      <div className="w-full max-w-md">
-        {step === 'signup' && (
-          <Signup onSuccess={handleSignupSuccess} onLoginRedirect={handleLoginRedirect} />
-        )}
-        {step === 'confirm' && (
-          <Confirm
-            name={name}
-            email={email}
-            onSuccess={handleConfirmSuccess}
-            onResend={() => setStep('signup')}
-          />
-        )}
-        {step === 'login' && <Login onSuccess={() => router.push('/onboarding/step2')} />}
-      </div>
-    </div>
+    <>
+      {step === 'signup' && (
+        <Signup onSuccess={handleSignupSuccess} onLoginRedirect={handleLoginRedirect} />
+      )}
+      {step === 'confirm' && (
+        <Confirm
+          name={name}
+          email={email}
+          onSuccess={handleConfirmSuccess}
+          onResend={() => setStep('signup')}
+        />
+      )}
+      {step === 'login' && <Login onSuccess={() => router.push('/onboarding/step2')} />}
+    </>
   );
 }

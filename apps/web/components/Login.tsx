@@ -27,7 +27,6 @@ export default function Login({ onSuccess }: LoginProps) {
 
   return (
     <>
-      <div className="text-sm text-gray-500 mb-4">Step 3 of 7</div>
       <h2 className="text-xl font-semibold mb-6 text-center">Crie sua Senha</h2>
 
       <p className="text-gray-600 text-center mb-6">Escolha uma senha segura para sua conta.</p>
