@@ -7,13 +7,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"],
-      "@/auth/types/*": ["apps/web/lib/types/*"],
-      "@/dau/*": ["apps/web/lib/dau/*"],
-      "@/components/*": ["apps/web/components/*"]
-    }
+    "baseUrl": "."
   },
   "include": ["services/**/*", "apps/**/*"]
 }
