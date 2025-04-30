@@ -7,7 +7,7 @@
     "dev": "sls offline start --stage dev --reloadHandler",
     "build": "pnpm generate:types && serverless package",
     "build:watch": "pnpm tsc --watch",
-    "deploy": "serverless deploy",
+    "deploy": "serverless deploy --stage v1",
     "test": "jest --config jest.config.ts ",
     "test:watch": "jest --config jest.config.ts --watch --coverage",
     "test:coverage": "jest --config jest.config.ts --coverage",

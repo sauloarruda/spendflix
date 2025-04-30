@@ -16,13 +16,14 @@ const serverlessConfiguration: AWS = {
     timeout: 29,
     httpApi: {
       cors: {
-        allowedOrigins: ['https://main.d10maglcknnjxq.amplifyapp.com'],
+        allowedOrigins: ['${env:BASE_APP_URL}'],
         allowedHeaders: [
           'Content-Type',
           'Authorization',
           'X-Amz-Date',
           'X-Api-Key',
           'X-Amz-Security-Token',
+          'X-Amz-User-Agent',
         ],
         allowedMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowCredentials: true,
@@ -56,6 +57,8 @@ const serverlessConfiguration: AWS = {
     Resources: {
       OnboardingTable: {
         Type: 'AWS::DynamoDB::Table',
+        DeletionPolicy: 'Retain',
+        UpdateReplacePolicy: 'Retain',
         Properties: {
           TableName: 'onboarding',
           AttributeDefinitions: [
