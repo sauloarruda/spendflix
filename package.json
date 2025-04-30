@@ -11,7 +11,7 @@
     "dev": "turbo run dev --parallel",
     "build": "turbo run build",
     "test": "turbo run test",
-    "deploy-auth": "turbo run deploy --filter=spendflix-services-auth",
+    "deploy:auth": "turbo run deploy --filter=spendflix-services-auth",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "format": "prettier --write .",
