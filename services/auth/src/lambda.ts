@@ -35,7 +35,8 @@ export const handler = async (
   }
 
   // Add CORS headers
-  response.headers['Access-Control-Allow-Origin'] = 'https://main.d10maglcknnjxq.amplifyapp.com';
+  response.headers['Access-Control-Allow-Origin'] =
+    process.env.BASE_APP_URL || 'http://localhost:3000';
   response.headers['Access-Control-Allow-Credentials'] = 'true';
   response.headers['Access-Control-Allow-Headers'] =
     'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token';
