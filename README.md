@@ -17,7 +17,6 @@ This project also serves as a technical showcase for a modern, scalable architec
 - **Authentication**: AWS Cognito
 - **Message Queue**: AWS SQS
 - **API Gateway**: AWS API Gateway
-- **Infrastructure**: AWS CDK
 
 ## 📁 Project Structure
 
@@ -206,7 +205,7 @@ spendflix/
 3. Run the setup script:
 
    ```bash
-   pnpm setup
+   pnpm run setup
    ```
 
    This will:
