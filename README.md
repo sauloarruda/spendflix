@@ -17,7 +17,6 @@ This project also serves as a technical showcase for a modern, scalable architec
 - **Authentication**: AWS Cognito
 - **Message Queue**: AWS SQS
 - **API Gateway**: AWS API Gateway
-- **Infrastructure**: AWS CDK
 
 ## 📁 Project Structure
 
@@ -38,13 +37,157 @@ spendflix/
 
 ### Prerequisites
 
-- Node.js (20.19.1)
-- pnpm (10.9.0)
-- PostgreSQL (17.4)
-- AWS CLI (latest)
-- Serverless Framework (latest)
+#### macOS (using Homebrew)
 
-### Setup
+1. Install Homebrew (if not already installed):
+
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+
+2. Install nvm (Node Version Manager):
+
+   ```bash
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+   # Restart your terminal or run:
+   source ~/.zshrc
+   ```
+
+3. Install Node.js:
+
+   ```bash
+   nvm install 20.19.1
+   nvm use 20.19.1
+   ```
+
+4. Install pnpm:
+
+   ```bash
+   npm install -g pnpm@10.9.0
+   ```
+
+5. Install Serverless Framework:
+
+   ```bash
+   npm install -g serverless
+   ```
+
+6. Install AWS CLI:
+
+   ```bash
+   brew install awscli
+   ```
+
+7. Install jq:
+
+   ```bash
+   brew install jq
+   ```
+
+8. Configure AWS CLI:
+   ```bash
+   aws configure
+   # Use any values for local development
+   ```
+
+#### Windows (using PowerShell)
+
+1. Install nvm-windows:
+
+   - Download and install from: https://github.com/coreybutler/nvm-windows/releases
+   - Restart PowerShell
+
+2. Install Node.js:
+
+   ```powershell
+   nvm install 20.19.1
+   nvm use 20.19.1
+   ```
+
+3. Install pnpm:
+
+   ```powershell
+   npm install -g pnpm@10.9.0
+   ```
+
+4. Install Serverless Framework:
+
+   ```powershell
+   npm install -g serverless
+   ```
+
+5. Install AWS CLI:
+
+   - Download and install from: https://aws.amazon.com/cli/
+   - Restart PowerShell
+
+6. Install jq using Chocolatey:
+
+   ```powershell
+   # Install Chocolatey if not already installed
+   Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+   # Install jq
+   choco install jq
+   ```
+
+7. Configure AWS CLI:
+   ```powershell
+   aws configure
+   # Use any values for local development
+   ```
+
+#### Linux (Ubuntu/Debian)
+
+1. Install nvm:
+
+   ```bash
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+   # Restart your terminal or run:
+   source ~/.bashrc
+   ```
+
+2. Install Node.js:
+
+   ```bash
+   nvm install 20.19.1
+   nvm use 20.19.1
+   ```
+
+3. Install pnpm:
+
+   ```bash
+   npm install -g pnpm@10.9.0
+   ```
+
+4. Install Serverless Framework:
+
+   ```bash
+   npm install -g serverless
+   ```
+
+5. Install AWS CLI:
+
+   ```bash
+   curl "https://aws.amazon.com/cli/latest/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+   unzip awscliv2.zip
+   sudo ./aws/install
+   ```
+
+6. Install jq:
+
+   ```bash
+   sudo apt-get update
+   sudo apt-get install jq
+   ```
+
+7. Configure AWS CLI:
+   ```bash
+   aws configure
+   # Use any values for local development
+   ```
+
+### Installation
 
 1. Clone the repository:
 
@@ -59,32 +202,17 @@ spendflix/
    pnpm install
    ```
 
-3. Configure environment variables:
+3. Run the setup script:
 
    ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
+   pnpm run setup
    ```
 
-4. Set up AWS credentials:
+   This will:
 
-   ```bash
-   aws configure
-   ```
-
-5. Set up PostgreSQL:
-
-   ```bash
-   # Create database
-   createdb spendflix
-   # Run migrations
-   pnpm migrate
-   ```
-
-6. Start development servers:
-   ```bash
-   pnpm dev
-   ```
+   - Create `.env.local` files from `.env.example` in both web and auth services
+   - Set up Cognito for local development
+   - Configure all necessary environment variables
 
 ### Available Scripts
 
@@ -95,15 +223,46 @@ spendflix/
 - `pnpm lint:fix` - Fix ESLint issues
 - `pnpm format` - Format code with Prettier
 - `pnpm generate:types` - Generate TypeScript types
-- `pnpm migrate` - Run database migrations
+- `pnpm setup` - Run initial setup (environment files and Cognito)
+- `pnpm cognito:setup` - Set up Cognito user pool and client
+- `pnpm cognito:start` - Start Cognito local emulator
 
 ## 🔒 Authentication
 
-The authentication service (`services/auth`) handles user authentication and authorization using AWS Cognito. It's deployed separately using:
+The authentication service uses AWS Cognito for user management. For local development, we use `cognito-local` to emulate Cognito functionality.
 
-```bash
-pnpm deploy-auth
-```
+### Local Cognito Setup
+
+1. First-time setup (creates user pool and client):
+
+   ```bash
+   pnpm cognito:setup
+   ```
+
+   This will:
+
+   - Start cognito-local
+   - Create a user pool named "SpendflixLocal"
+   - Create a client named "local"
+   - Save the pool and client IDs in `services/auth/.env.local`
+
+   You can run this command anytime to reset your user pool to a fresh state.
+
+2. Starting the auth service:
+   ```bash
+   cd services/auth
+   pnpm dev
+   ```
+   This will:
+   - Start cognito-local in the background
+   - Start the serverless offline server
+   - Automatically clean up cognito-local when the server stops
+
+### Important Notes
+
+- You only need to run `cognito:setup` once, but you can run it anytime to reset your user pool to a fresh state
+- All cognito-local data is stored in `services/auth/.cognito`
+- The confirmation code for all users is always `123123`
 
 ## 📝 Code Quality
 

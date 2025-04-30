@@ -20,9 +20,7 @@ export default function OnboardingStep2() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-50">
-      <div className="text-sm text-gray-500 mb-4">Etapa 2 de 7</div>
-
+    <>
       <h2 className="text-xl font-semibold mb-6 text-center">O que te trouxe até aqui?</h2>
 
       <div className="grid grid-cols-2 gap-4 w-full max-w-md mb-12">
@@ -96,6 +94,6 @@ export default function OnboardingStep2() {
           onClick={handleContinue}
         />
       </div>
-    </div>
+    </>
   );
 }

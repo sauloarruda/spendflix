@@ -15,7 +15,10 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "format": "prettier --write .",
-    "generate:types": "turbo run generate:types"
+    "generate:types": "turbo run generate:types",
+    "cognito:setup": "./scripts/cognito.sh --setup",
+    "cognito:start": "./scripts/cognito.sh",
+    "setup": "./scripts/setup.sh"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",

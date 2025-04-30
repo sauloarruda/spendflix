@@ -5,12 +5,16 @@ const serverlessConfiguration: AWS = {
   frameworkVersion: '4',
   plugins: ['serverless-offline'],
   custom: {
-    'serverless-offline': { httpPort: 4000 },
+    'serverless-offline': {
+      httpPort: 4000,
+      lambdaPort: 4002,
+    },
   },
   provider: {
     name: 'aws',
     runtime: 'nodejs20.x',
     region: 'us-east-2',
+    stage: '${opt:stage, "local"}',
     memorySize: 128,
     architecture: 'x86_64',
     timeout: 29,
