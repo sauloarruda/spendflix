@@ -9,7 +9,9 @@ import {
 } from '@aws-sdk/client-cognito-identity-provider';
 import onboardingRepository from './repository/onboarding';
 
-const cognitoClient = new CognitoIdentityProviderClient({});
+const cognitoClient = new CognitoIdentityProviderClient({
+  endpoint: process.env.IS_OFFLINE ? 'http://localhost:9229' : undefined,
+});
 
 export interface ConfirmResult {
   accessToken: string;
@@ -92,6 +94,6 @@ export const confirm = async (email: string, code: string): Promise<ConfirmResul
     accessToken: result.AccessToken!,
     refreshToken: result.RefreshToken!,
     idToken: result.IdToken!,
-    expiresIn: result.ExpiresIn!,
+    expiresIn: result.ExpiresIn || 3600, // the cognito-local doesn't return the expiresIn
   };
 };

@@ -99,11 +99,93 @@ spendflix/
 
 ## 🔒 Authentication
 
-The authentication service (`services/auth`) handles user authentication and authorization using AWS Cognito. It's deployed separately using:
+The authentication service uses AWS Cognito for user management. For local development, we use `cognito-local` to emulate Cognito functionality.
+
+### Prerequisites
+
+Before using the Cognito scripts, you need to install:
+
+#### macOS (using Homebrew)
 
 ```bash
-pnpm deploy-auth
+# Install jq for JSON processing
+brew install jq
+
+# Install AWS CLI
+brew install awscli
+
+# Configure AWS CLI (use any values for local development)
+aws configure
 ```
+
+#### Windows (using PowerShell)
+
+```powershell
+# Install jq using Chocolatey
+choco install jq
+
+# Install AWS CLI using MSI installer
+# Download from: https://aws.amazon.com/cli/
+
+# Configure AWS CLI (use any values for local development)
+aws configure
+```
+
+#### Linux (Ubuntu/Debian)
+
+```bash
+# Install jq
+sudo apt-get update
+sudo apt-get install jq
+
+# Install AWS CLI
+curl "https://aws.amazon.com/cli/latest/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+# Configure AWS CLI (use any values for local development)
+aws configure
+```
+
+Note: For local development, you can use any values when configuring AWS CLI as we're using cognito-local. However, you need to have the AWS CLI installed and configured.
+
+### Local Cognito Setup
+
+1. First-time setup (creates user pool and client):
+
+   ```bash
+   pnpm cognito:setup
+   ```
+
+   This will:
+
+   - Start cognito-local
+   - Create a user pool named "SpendflixLocal"
+   - Create a client named "local"
+   - Save the pool and client IDs in `services/auth/.env.local`
+
+   You can run this command anytime to reset your user pool to a fresh state.
+
+2. Starting the auth service:
+   ```bash
+   cd services/auth
+   pnpm dev
+   ```
+   This will:
+   - Start cognito-local in the background
+   - Start the serverless offline server
+   - Automatically clean up cognito-local when the server stops
+
+### Available Cognito Scripts
+
+- `pnpm cognito:setup` - Initial setup of local Cognito (creates pool and client)
+- `pnpm cognito:start` - Just starts cognito-local without setup
+
+### Important Notes
+
+- You only need to run `cognito:setup` once, but you can run it anytime to reset your user pool to a fresh state
+- All cognito-local data is stored in `services/auth/.cognito`
+- The confirmation code for all users is always `123123`
 
 ## 📝 Code Quality
 
