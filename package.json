@@ -12,8 +12,8 @@
     "build": "turbo run build",
     "test": "turbo run test",
     "deploy-auth": "turbo run deploy --filter=spendflix-services-auth",
-    "lint": "eslint . --ext .ts --cache",
-    "lint:fix": "eslint . --ext .ts --cache --fix",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
     "format": "prettier --write .",
     "generate:types": "turbo run generate:types"
   },

@@ -1,9 +1,16 @@
 import express from 'express';
+import { CognitoIdentityProviderServiceException } from '@aws-sdk/client-cognito-identity-provider';
 import { signup, confirm } from './signup.service';
 import onboardingRepository from './repository/onboarding';
 
 const authRouter = express.Router();
 export default authRouter;
+
+const cognitoErrorToHttpStatus = (error: unknown) => {
+  if (error instanceof CognitoIdentityProviderServiceException)
+    return { status: 400, errorMessage: error.name };
+  return { status: 500, errorMessage: (error as Error).toString() };
+};
 
 authRouter.post('/signup', async (req, res) => {
   const { name, email } = req.body;
@@ -12,8 +19,11 @@ authRouter.post('/signup', async (req, res) => {
     await signup(name, email);
     return res.status(201).end();
   } catch (error) {
-    // console.error(error);
-    return res.status(500).json({ message: 'Failed to create user', error });
+    const { status, errorMessage } = cognitoErrorToHttpStatus(error);
+    return res.status(status).json({
+      message: 'Failed to create user',
+      error: errorMessage,
+    });
   }
 });
 
@@ -29,7 +39,10 @@ authRouter.post('/confirm', async (req, res) => {
       expiresIn: tokens.expiresIn,
     });
   } catch (error) {
-    // console.error(error);
-    return res.status(500).json({ message: 'Failed to confirm user', error });
+    const { status, errorMessage } = cognitoErrorToHttpStatus(error);
+    return res.status(status).json({
+      message: 'Failed to confirm user',
+      error: errorMessage,
+    });
   }
 });

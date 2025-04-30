@@ -1,23 +1,18 @@
-// eslint.config.js
 const { FlatCompat } = require('@eslint/eslintrc');
 const path = require('path');
 
 const compat = new FlatCompat({ baseDirectory: __dirname });
-const prettierConfig = require('./.prettierrc.json');
+const prettierConfig = require('../../.prettierrc.json');
 
 module.exports = [
   {
     ignores: [
       'eslint.config.js',
-      'apps/**/next.config.js',
-      'Dangerfile.ts',
+      'jest.config.ts',
+      'serverless.ts',
       '**/types/api.d.ts',
       'node_modules/**',
-      'services/**/serverless.ts',
-      'services/**/node_modules/**',
-      'services/**/.serverless/**',
-      'apps/**/node_modules/**',
-      'apps/**/.next/**',
+      '.serverless/**',
     ],
   },
 
@@ -27,7 +22,6 @@ module.exports = [
     'plugin:prettier/recommended',
   ),
 
-  // 3) Suas customizações
   {
     files: ['**/*.ts'],
     languageOptions: {
@@ -52,7 +46,15 @@ module.exports = [
     },
     settings: {
       'import/resolver': {
-        node: { extensions: ['.js', '.ts'] },
+        typescript: {},
+        node: {
+          paths: ['apps/web/lib', 'apps/web/components', 'apps/web/app', 'src'],
+          extensions: ['.js', '.ts', '.d.ts', '.tsx'],
+          alias: {
+            '@/components': './apps/web/components',
+            '@/lib': './apps/web/lib',
+          },
+        },
       },
     },
   },

@@ -5,6 +5,7 @@ import {
   InitiateAuthCommand,
   UsernameExistsException,
   ResendConfirmationCodeCommand,
+  AdminGetUserCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import onboardingRepository from './repository/onboarding';
 
@@ -36,16 +37,28 @@ export const signup = async (name: string, email: string) => {
     return res;
   } catch (err) {
     if (err instanceof UsernameExistsException) {
+      const user = await cognitoClient.send(
+        new AdminGetUserCommand({
+          Username: email,
+          UserPoolId: process.env.COGNITO_USER_POOL_ID!,
+        }),
+      );
+      if (user.Enabled) {
+        throw new UsernameExistsException({
+          message: 'User already confirmed',
+          $metadata: {},
+        });
+      }
       await cognitoClient.send(
         new ResendConfirmationCodeCommand({
           ClientId: process.env.COGNITO_CLIENT_ID!,
           Username: email,
         }),
       );
-    } else {
-      await onboardingRepository.deleteTempPassword(email);
-      throw err;
+      return { message: 'Confirmation code resent' };
     }
+    await onboardingRepository.deleteTempPassword(email);
+    throw err;
   }
 };
 

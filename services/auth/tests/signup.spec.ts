@@ -1,5 +1,3 @@
-// signup.spec.ts
-// eslint-disable-next-line import/no-extraneous-dependencies
 import request from 'supertest';
 import { CognitoIdentityProviderClient } from '@aws-sdk/client-cognito-identity-provider';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
