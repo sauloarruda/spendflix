@@ -7,6 +7,8 @@ applications:
           commands:
             - npm install -g pnpm
             - pnpm install --frozen-lockfile
+            - cd apps/web
+            - pnpm prisma generate
         build:
           commands:
             - pnpm run build
@@ -18,3 +20,4 @@ applications:
         paths:
           - apps/web/.next/cache/**/*
           - apps/web/node_modules/**/*
+          - node_modules/**/*
