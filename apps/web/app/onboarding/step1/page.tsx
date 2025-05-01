@@ -6,7 +6,7 @@ import { ConfirmResultTokens } from '@/lib/dau/auth';
 import Signup from '@/components/Signup';
 import Confirm from '@/components/Confirm';
 import Login from '@/components/Login';
-import { updateOnboardingStep, getOnboardingData } from '@/app/actions/onboarding';
+import { updateOnboardingStep, getOnboardingData } from '@/lib/dau/onboarding';
 
 export default function Page() {
   const router = useRouter();
@@ -21,7 +21,7 @@ export default function Page() {
         if (!data) {
           // Only set startedAt if no record exists
           await updateOnboardingStep(email, {
-            startedAt: new Date(),
+            startedAt: new Date().toISOString(),
             step: 1,
           });
         }
@@ -38,7 +38,7 @@ export default function Page() {
     const existingData = await getOnboardingData(responseEmail);
     if (!existingData) {
       await updateOnboardingStep(responseEmail, {
-        startedAt: new Date(),
+        startedAt: new Date().toISOString(),
         step: 1,
       });
     }

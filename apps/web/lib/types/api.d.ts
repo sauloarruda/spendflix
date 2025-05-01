@@ -71,10 +71,6 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /**
-         * Confirma um usuário
-         * @description Endpoint para confirmar um usuário com um código de verificação.
-         */
         post: {
             parameters: {
                 query?: never;
@@ -118,12 +114,122 @@ export interface paths {
                         "application/json": components["schemas"]["RequestError"];
                     };
                 };
+                /** @description Failed to update onboarding data. */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["RequestError"];
+                    };
+                };
             };
         };
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/onboarding/{email}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    email: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description User found for email. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OnboardingData"];
+                    };
+                };
+                /** @description Onboarding not found for email. */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Failed to get onboarding data. */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["RequestError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    email: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["OnboardingData"];
+                };
+            };
+            responses: {
+                /** @description Onboarding data updated successfully. */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid data to update onboarding data. */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["RequestError"];
+                    };
+                };
+                /** @description Onboarding not found for email. */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Failed to update onboarding data. */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["RequestError"];
+                    };
+                };
+            };
+        };
         trace?: never;
     };
 }
@@ -133,6 +239,20 @@ export interface components {
         RequestError: {
             error?: string;
             message?: string;
+        };
+        OnboardingData: {
+            /** Format: date-time */
+            startedAt: string;
+            step: number;
+            name?: string;
+            /** @enum {string} */
+            goal?: "dream" | "debt";
+            goalDescription?: string;
+            goalValue?: number;
+            banks?: string[];
+            waitlist?: boolean;
+            /** Format: date-time */
+            finishedAt?: string;
         };
     };
     responses: never;

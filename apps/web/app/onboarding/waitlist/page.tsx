@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { updateOnboardingStep, getOnboardingData } from '@/app/actions/onboarding';
+import { updateOnboardingStep, getOnboardingData } from '@/lib/dau/onboarding';
 
 export default function WaitlistPage() {
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function WaitlistPage() {
       await updateOnboardingStep(email, {
         ...existingData,
         waitlist: true,
-        finishedAt: new Date(),
+        finishedAt: new Date().toISOString(),
       });
     };
 

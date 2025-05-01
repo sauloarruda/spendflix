@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
-import { getOnboardingData, updateOnboardingStep, OnboardingData } from '@/app/actions/onboarding';
+import { getOnboardingData, updateOnboardingStep, OnboardingData } from '@/lib/dau/onboarding';
 
 type Step2FormData = {
   goal: 'dream' | 'debt' | '';

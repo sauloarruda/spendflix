@@ -7,7 +7,7 @@ import { MultiSelect } from 'primereact/multiselect';
 import { ConfirmDialog } from 'primereact/confirmdialog';
 import { confirmDialog } from 'primereact/confirmdialog';
 import Image from 'next/image';
-import { updateOnboardingStep } from '@/app/actions/onboarding';
+import { updateOnboardingStep } from '@/lib/dau/onboarding';
 
 const allBanks: { label: string; value: string }[] = [
   { label: 'Banco ABC Brasil (246)', value: '246' },
