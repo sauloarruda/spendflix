@@ -1,33 +1,92 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
+import { getOnboardingData, updateOnboardingStep, OnboardingData } from '@/app/actions/onboarding';
+
+type Step2FormData = {
+  goal: 'dream' | 'debt' | '';
+  goalDescription: string;
+  goalValue: number | null | undefined;
+};
 
 export default function OnboardingStep2() {
   const router = useRouter();
-  const [goal, setGoal] = useState('');
-  const [description, setDescription] = useState('');
-  const [amount, setAmount] = useState<number | null | undefined>(undefined);
+  const [name, setName] = useState<string>('');
+  const descriptionInputRef = useRef<HTMLInputElement>(null);
+  const [formData, setFormData] = useState<Step2FormData>({
+    goal: '',
+    goalDescription: '',
+    goalValue: undefined,
+  });
 
-  const handleContinue = () => {
-    if (!goal || !description.trim() || amount === undefined || amount === null || amount <= 0) {
+  useEffect(() => {
+    const email = localStorage.getItem('email');
+    if (email) {
+      getOnboardingData(email).then((data) => {
+        if (data?.name) {
+          setName(data.name);
+        } else {
+          router.push('/onboarding/step1');
+        }
+        if (data?.goal || data?.goalDescription || data?.goalValue) {
+          setFormData({
+            goal: data.goal || '',
+            goalDescription: data.goalDescription || '',
+            goalValue: data.goalValue || undefined,
+          });
+        }
+      });
+    }
+  }, []);
+
+  const handleGoalSelect = (goal: 'dream' | 'debt') => {
+    setFormData((prev) => ({ ...prev, goal }));
+    // Focus the description input after a short delay to ensure it's rendered
+    setTimeout(() => {
+      descriptionInputRef.current?.focus();
+    }, 0);
+  };
+
+  const handleContinue = async () => {
+    if (
+      !formData.goal ||
+      !formData.goalDescription.trim() ||
+      formData.goalValue === undefined ||
+      formData.goalValue === null ||
+      formData.goalValue <= 0
+    ) {
       return;
     }
+
+    const email = localStorage.getItem('email');
+    if (email) {
+      await updateOnboardingStep(email, {
+        goal: formData.goal as 'dream' | 'debt',
+        goalDescription: formData.goalDescription,
+        goalValue: formData.goalValue,
+        step: 2,
+      });
+    }
+
     router.push('/onboarding/step3');
   };
 
   return (
     <>
-      <h2 className="text-xl font-semibold mb-6 text-center">O que te trouxe até aqui?</h2>
+      <h2 className="text-xl font-semibold mb-6 text-center">
+        Olá {name}, muito prazer! <br />
+        Me conta, o que te trouxe até aqui?
+      </h2>
 
       <div className="grid grid-cols-2 gap-4 w-full max-w-md mb-12">
         <div
           className={`border rounded-lg p-4 text-center cursor-pointer transition
-          ${goal === 'dream' ? 'bg-primary/20 border-primary' : 'border-gray-300 bg-white'}`}
-          onClick={() => setGoal('dream')}
+          ${formData.goal === 'dream' ? 'bg-primary/20 border-primary' : 'border-gray-300 bg-white'}`}
+          onClick={() => handleGoalSelect('dream')}
         >
           <div className="text-2xl mb-2">🏖️</div>
           <div className="font-semibold mb-1">Quero realizar um sonho</div>
@@ -38,8 +97,8 @@ export default function OnboardingStep2() {
 
         <div
           className={`border rounded-lg p-4 text-center cursor-pointer transition
-          ${goal === 'debt' ? 'bg-primary/20 border-primary' : 'border-gray-300 bg-white'}`}
-          onClick={() => setGoal('debt')}
+          ${formData.goal === 'debt' ? 'bg-primary/20 border-primary' : 'border-gray-300 bg-white'}`}
+          onClick={() => handleGoalSelect('debt')}
         >
           <div className="text-2xl mb-2">💳</div>
           <div className="font-semibold mb-1">Quero sair das dívidas</div>
@@ -49,18 +108,21 @@ export default function OnboardingStep2() {
         </div>
       </div>
 
-      {goal && (
-        <div className="w-full max-w-md space-y-6 mb-6">
+      {formData.goal && (
+        <div className="w-full max-w-md space-y-8 mb-8">
           <div className="flex flex-col">
             <span className="p-float-label">
               <InputText
+                ref={descriptionInputRef}
                 id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={formData.goalDescription}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, goalDescription: e.target.value }))
+                }
                 className="w-full"
               />
               <label htmlFor="description">
-                {goal === 'dream' ? 'Qual é o seu sonho?' : 'Qual é a dívida?'}
+                {formData.goal === 'dream' ? 'Qual é o seu sonho?' : 'Qual é a dívida?'}
               </label>
             </span>
           </div>
@@ -69,14 +131,20 @@ export default function OnboardingStep2() {
             <span className="p-float-label">
               <InputNumber
                 id="amount"
-                value={amount}
-                onValueChange={(e) => setAmount(e.value)}
+                value={formData.goalValue}
+                onValueChange={(e) => {
+                  setFormData((prev) => ({ ...prev, goalValue: e.value }));
+                }}
+                onChange={(e) => {
+                  setFormData((prev) => ({ ...prev, goalValue: e.value }));
+                }}
                 mode="currency"
                 currency="BRL"
                 locale="pt-BR"
                 minFractionDigits={2}
                 maxFractionDigits={2}
                 className="w-full"
+                autoFocus
               />
               <label htmlFor="amount">Quanto você precisa?</label>
             </span>
@@ -89,7 +157,11 @@ export default function OnboardingStep2() {
           label="Continuar"
           className="w-full"
           disabled={
-            !goal || !description.trim() || amount === undefined || amount === null || amount <= 0
+            !formData.goal ||
+            !formData.goalDescription.trim() ||
+            formData.goalValue === undefined ||
+            formData.goalValue === null ||
+            formData.goalValue <= 0
           }
           onClick={handleContinue}
         />

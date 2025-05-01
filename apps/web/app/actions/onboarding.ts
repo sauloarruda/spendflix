@@ -12,6 +12,7 @@ export type OnboardingData = {
   goalDescription?: string;
   goalValue?: number;
   banks?: string[];
+  waitlist?: boolean;
   finishedAt?: Date;
 };
 
