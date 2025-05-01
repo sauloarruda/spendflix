@@ -1,8 +1,8 @@
 import express, { Router } from 'express';
 import { CognitoIdentityProviderServiceException } from '@aws-sdk/client-cognito-identity-provider';
-import { logger } from '../lib/logger';
-import { signup, confirm } from './signup.service';
-import onboardingRepository from './repository/onboarding';
+import { logger } from '../../lib/logger';
+import { signup, confirm } from '../service/signup.service';
+import onboardingRepository from '../repository/onboarding';
 
 const authLogger = logger.child({ module: 'auth' });
 

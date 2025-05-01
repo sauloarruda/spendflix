@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { middleware as OpenApiMiddleware } from 'express-openapi-validator';
-import authRouter from './auth.controller';
+import authRouter from './controller/auth.controller';
 
 export default function createApp() {
   const app = express();

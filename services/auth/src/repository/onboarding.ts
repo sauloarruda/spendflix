@@ -44,10 +44,12 @@ const generateCognitoPassword = (length = 12): string => {
 };
 
 async function saveStep1(name: string, email: string): Promise<Onboarding> {
+  authLogger.debug('Saving onboarding step 1');
   const temporaryPassword = generateCognitoPassword(32);
   const encryptedPassword = encrypt(temporaryPassword);
   const onboarding = { name, email, temporaryPassword: encryptedPassword };
   await docClient.send(new PutCommand({ TableName: TABLE, Item: onboarding }));
+  authLogger.debug('Onboarding step 1 saved successfully');
   return { ...onboarding, temporaryPassword }; // Return unencrypted password for immediate use
 }
 

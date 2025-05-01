@@ -60,7 +60,7 @@ class Logger {
     const childLogger = new Logger({
       service: this.logger.bindings().service as string,
       level: this.logger.level as LogLevel,
-      isOffline: process.env.IS_OFFLINE === 'true',
+      isOffline: process.env.IS_OFFLINE === 'true' || process.env.NODE_ENV === 'test',
     });
     childLogger.logger = this.logger.child(bindings);
     return childLogger;
@@ -75,5 +75,5 @@ export const createLogger = (options: LoggerOptions): Logger => {
 export const logger = createLogger({
   service: 'spendflix-auth',
   level: (process.env.LOG_LEVEL as LogLevel) || process.env.IS_OFFLINE ? 'debug' : 'info',
-  isOffline: process.env.IS_OFFLINE === 'true',
+  isOffline: process.env.IS_OFFLINE === 'true' || process.env.NODE_ENV === 'test',
 });
