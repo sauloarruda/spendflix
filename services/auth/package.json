@@ -8,7 +8,7 @@
     "build": "pnpm generate:types && serverless package",
     "build:watch": "pnpm tsc --watch",
     "deploy": "serverless deploy --stage v1",
-    "test": "jest --config jest.config.ts ",
+    "test": "LOG_LEVEL=fatal jest --config jest.config.ts ",
     "test:watch": "jest --config jest.config.ts --watch --coverage",
     "test:coverage": "jest --config jest.config.ts --coverage",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
