@@ -13,10 +13,12 @@
     "generate:types": "openapi-typescript ../../services/auth/openapi.yaml --output ./lib/types/api.d.ts"
   },
   "dependencies": {
+    "@prisma/client": "^6.7.0",
     "eslint-config-next": "^15.3.1",
     "next": "^15.3.1",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.5",
+    "prisma": "^6.7.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
