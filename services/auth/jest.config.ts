@@ -1,16 +1,15 @@
-import type { Config } from '@jest/types';
-
-const config: Config.InitialOptions = {
+export default {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  roots: ['<rootDir>/tests', '<rootDir>/lib'],
-  testMatch: ['**/*.spec.ts'],
   moduleFileExtensions: ['ts', 'js', 'json'],
-  collectCoverageFrom: ['src/**/*.ts', 'lib/**/*.ts', '!**/*.d.ts', '!**/*.spec.ts'],
-  coveragePathIgnorePatterns: ['lambda.ts', 'app.ts', 'lib/logger.ts'],
+  rootDir: '.',
+  testMatch: ['**/tests/**/*.spec.ts', '**/lib/**/*.spec.ts'],
+  testPathIgnorePatterns: ['.serverless'],
+  transform: {
+    '^.+\\.ts$': 'ts-jest',
+  },
+  collectCoverageFrom: ['src/**/*.ts', 'lib/**/*.ts'],
   coverageDirectory: 'coverage',
-  coverageReporters: ['text', 'lcov'],
-  verbose: true,
   coverageThreshold: {
     global: {
       branches: 50,
@@ -19,6 +18,5 @@ const config: Config.InitialOptions = {
       statements: 90,
     },
   },
+  coveragePathIgnorePatterns: ['lambda.ts', 'app.ts', 'lib/logger.ts'],
 };
-
-export default config;
