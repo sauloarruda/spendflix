@@ -22,7 +22,8 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": ".serverless/build",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "types": ["node", "jest"]
   },
   "include": ["src/**/*", "lib/**/*", "tests/**/*"],
   "exclude": ["node_modules", ".serverless", "coverage"]
