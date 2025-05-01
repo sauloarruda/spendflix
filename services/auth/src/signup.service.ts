@@ -8,6 +8,9 @@ import {
   AdminGetUserCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import onboardingRepository from './repository/onboarding';
+import { logger } from '../lib/logger';
+
+const authLogger = logger.child({ module: 'auth' });
 
 const cognitoClient = new CognitoIdentityProviderClient({
   endpoint: process.env.IS_OFFLINE ? 'http://localhost:9229' : undefined,
@@ -21,45 +24,78 @@ export interface ConfirmResult {
 }
 
 export const signup = async (name: string, email: string) => {
-  const onboarding = await onboardingRepository.saveStep1(name, email);
+  authLogger.info({ name, email }, 'Starting signup process');
 
   try {
-    const res = await cognitoClient.send(
-      new SignUpCommand({
-        ClientId: process.env.COGNITO_CLIENT_ID!,
-        Username: email,
-        Password: onboarding.temporaryPassword,
-        UserAttributes: [
-          { Name: 'email', Value: email },
-          { Name: 'name', Value: name },
-          { Name: 'nickname', Value: name },
-        ],
-      }),
-    );
-    return res;
-  } catch (err) {
-    if (err instanceof UsernameExistsException) {
-      const user = await cognitoClient.send(
-        new AdminGetUserCommand({
-          Username: email,
-          UserPoolId: process.env.COGNITO_USER_POOL_ID!,
-        }),
+    authLogger.info('Saving onboarding step 1');
+    const onboarding = await onboardingRepository.saveStep1(name, email);
+    authLogger.info('Onboarding step 1 saved successfully');
+
+    try {
+      authLogger.info(
+        {
+          clientId: process.env.COGNITO_CLIENT_ID,
+          username: email,
+          userAttributes: [
+            { Name: 'email', Value: email },
+            { Name: 'name', Value: name },
+            { Name: 'nickname', Value: name },
+          ],
+        },
+        'Attempting Cognito signup',
       );
-      if (user.Enabled) {
-        throw new UsernameExistsException({
-          message: 'User already confirmed',
-          $metadata: {},
-        });
-      }
-      await cognitoClient.send(
-        new ResendConfirmationCodeCommand({
+
+      const res = await cognitoClient.send(
+        new SignUpCommand({
           ClientId: process.env.COGNITO_CLIENT_ID!,
           Username: email,
+          Password: onboarding.temporaryPassword,
+          UserAttributes: [
+            { Name: 'email', Value: email },
+            { Name: 'name', Value: name },
+            { Name: 'nickname', Value: name },
+          ],
         }),
       );
-      return { message: 'Confirmation code resent' };
+      authLogger.info({ res }, 'Cognito signup successful');
+      return res;
+    } catch (err) {
+      authLogger.error({ err }, 'Error during Cognito signup');
+
+      if (err instanceof UsernameExistsException) {
+        authLogger.info('Username exists, checking user status');
+        const user = await cognitoClient.send(
+          new AdminGetUserCommand({
+            Username: email,
+            UserPoolId: process.env.COGNITO_USER_POOL_ID!,
+          }),
+        );
+        authLogger.info({ user }, 'User status');
+
+        if (user.Enabled) {
+          authLogger.info('User is already confirmed');
+          throw new UsernameExistsException({
+            message: 'User already confirmed',
+            $metadata: {},
+          });
+        }
+
+        authLogger.info('Resending confirmation code');
+        await cognitoClient.send(
+          new ResendConfirmationCodeCommand({
+            ClientId: process.env.COGNITO_CLIENT_ID!,
+            Username: email,
+          }),
+        );
+        return { message: 'Confirmation code resent' };
+      }
+
+      authLogger.info('Deleting temporary password due to error');
+      await onboardingRepository.deleteTempPassword(email);
+      throw err;
     }
-    await onboardingRepository.deleteTempPassword(email);
+  } catch (err) {
+    authLogger.error({ err }, 'Error in signup process');
     throw err;
   }
 };

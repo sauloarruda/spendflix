@@ -4,6 +4,7 @@ export default {
   moduleFileExtensions: ['ts', 'js', 'json'],
   rootDir: '.',
   testMatch: ['**/tests/**/*.spec.ts'],
+  testPathIgnorePatterns: ['.serverless'],
   transform: {
     '^.+\\.ts$': 'ts-jest',
   },

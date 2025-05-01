@@ -46,6 +46,7 @@ const serverlessConfiguration: AWS = {
           'cognito-idp:SignUp',
           'cognito-idp:ConfirmSignUp',
           'cognito-idp:InitiateAuth',
+          'cognito-idp:AdminGetUser',
           'dynamodb:PutItem',
           'dynamodb:GetItem',
           'dynamodb:DeleteItem',
