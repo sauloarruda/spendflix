@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Router } from 'express';
 import { CognitoIdentityProviderServiceException } from '@aws-sdk/client-cognito-identity-provider';
 import { logger } from '../lib/logger';
 import { signup, confirm } from './signup.service';
@@ -6,7 +6,7 @@ import onboardingRepository from './repository/onboarding';
 
 const authLogger = logger.child({ module: 'auth' });
 
-const authRouter = express.Router();
+const authRouter: Router = express.Router();
 export default authRouter;
 
 const cognitoErrorToHttpStatus = (error: unknown) => {
@@ -20,9 +20,13 @@ const cognitoErrorToHttpStatus = (error: unknown) => {
       },
       'Cognito service exception',
     );
-    return { status: 400, errorMessage: error.name };
+    const status = error.$metadata?.httpStatusCode || 400;
+    return { status, errorMessage: error.name };
   }
   authLogger.info({ error }, 'Non-Cognito error');
+  if (error && typeof error === 'object' && 'name' in error) {
+    return { status: 500, errorMessage: (error as Error).message };
+  }
   return { status: 500, errorMessage: (error as Error).toString() };
 };
 

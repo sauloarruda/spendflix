@@ -38,6 +38,7 @@ const serverlessConfiguration: AWS = {
       COGNITO_USER_POOL_ID: '${env:COGNITO_USER_POOL_ID}',
       COGNITO_CLIENT_ID: '${env:COGNITO_CLIENT_ID}',
       BASE_APP_URL: '${env:BASE_APP_URL}',
+      ENCRYPTION_SECRET: '${env:ENCRYPTION_SECRET}',
     },
     iamRoleStatements: [
       {

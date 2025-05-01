@@ -74,6 +74,6 @@ export const createLogger = (options: LoggerOptions): Logger => {
 // Default logger instance
 export const logger = createLogger({
   service: 'spendflix-auth',
-  level: (process.env.LOG_LEVEL as LogLevel) || 'info',
+  level: (process.env.LOG_LEVEL as LogLevel) || process.env.IS_OFFLINE ? 'debug' : 'info',
   isOffline: process.env.IS_OFFLINE === 'true',
 });

@@ -10,10 +10,11 @@
     "deploy": "serverless deploy --stage v1",
     "test": "LOG_LEVEL=fatal jest --config jest.config.ts ",
     "test:watch": "jest --config jest.config.ts --watch --coverage",
-    "test:coverage": "jest --config jest.config.ts --coverage",
+    "test:coverage": "LOG_LEVEL=fatal jest --config jest.config.ts --coverage && open coverage/lcov-report/index.html",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "generate:types": "openapi-typescript ./openapi.yaml --output ./src/types/api.d.ts"
+    "generate:types": "openapi-typescript ./openapi.yaml --output ./src/types/api.d.ts",
+    "cognito:start": "../../scripts/cognito.sh"
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.470.0",

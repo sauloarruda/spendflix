@@ -30,6 +30,13 @@ print_error() {
     echo -e "${RED}${BOLD}✗${NC} $1"
 }
 
+# Function to generate a secure random string
+generate_secure_string() {
+    # Generate 32 random bytes and convert to base64
+    # Then remove any non-alphanumeric characters and take first 32 chars
+    openssl rand -base64 32 | tr -dc 'a-zA-Z0-9' | head -c 32
+}
+
 # Function to copy .env.example to .env.local if it doesn't exist
 copy_env_file() {
     local dir="$1"
@@ -47,6 +54,17 @@ copy_env_file() {
         fi
         print_step "Creating $target_file from $example_file"
         cp "$example_file" "$target_file"
+        
+        # If this is the auth service, generate and set the encryption secret
+        if [[ "$dir" == *"services/auth"* ]]; then
+            print_step "Generating secure encryption key..."
+            local encryption_key=$(generate_secure_string)
+            # Use sed to replace the ENCRYPTION_SECRET line
+            sed -i.bak "s/ENCRYPTION_SECRET=.*/ENCRYPTION_SECRET=$encryption_key/" "$target_file"
+            rm "$target_file.bak" 2>/dev/null || true
+            print_success "Generated secure encryption key"
+        fi
+        
         print_success "Created $target_file"
     else
         print_error "$example_file not found"
