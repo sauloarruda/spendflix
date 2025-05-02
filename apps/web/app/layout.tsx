@@ -11,6 +11,9 @@ export default function RootLayout({
   return (
     <PrimeReactProvider>
       <html lang="pt-BR">
+        <head>
+          <title>Spendflix - Descubra, Organize, Realize</title>
+        </head>
         <body>{children}</body>
       </html>
     </PrimeReactProvider>
