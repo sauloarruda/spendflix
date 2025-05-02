@@ -8,11 +8,11 @@
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["exec", "serverless", "offline", "--noTimeout", "--reloadHandler"],
       "cwd": "${workspaceFolder}/services/auth",
-      "protocol": "inspector",
-      "port": 9229,
-      "envFile": "${workspaceFolder}/services/auth/.env.dev",
+      // "protocol": "inspector",
+      // "port": 9229,
+      // "envFile": "${workspaceFolder}/services/auth/.env",
       "console": "integratedTerminal",
-      "skipFiles": ["<node_internals>/**"],
+      // "skipFiles": ["<node_internals>/**"],
       "outputCapture": "std"
     },
     {
@@ -31,7 +31,7 @@
       "cwd": "${workspaceFolder}/services/auth",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "envFile": "${workspaceFolder}/services/auth/.env.dev"
+      "envFile": "${workspaceFolder}/services/auth/.env.test"
     },
     {
       "name": "[auth] Watch Tests",
@@ -50,7 +50,7 @@
       "cwd": "${workspaceFolder}/services/auth",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "envFile": "${workspaceFolder}/services/auth/.env.dev"
+      "envFile": "${workspaceFolder}/services/auth/.env.test"
     }
   ]
 }

@@ -1,18 +1,7 @@
+import getConfig from './config';
 import { encrypt, decrypt } from './encryption';
 
-// Mock process.env.NODE_ENV
-const originalNodeEnv = process.env.NODE_ENV;
-process.env.NODE_ENV = 'test';
-
 describe('Encryption Utility', () => {
-  beforeEach(() => {
-    process.env.ENCRYPTION_SECRET = 'test-secret-key-1234567890123456789012';
-  });
-
-  afterAll(() => {
-    process.env.NODE_ENV = originalNodeEnv;
-  });
-
   describe('encrypt', () => {
     it('should encrypt text successfully', () => {
       const text = 'test-password-123';
@@ -24,8 +13,10 @@ describe('Encryption Utility', () => {
     });
 
     it('should throw error when ENCRYPTION_SECRET is not set', () => {
-      delete process.env.ENCRYPTION_SECRET;
+      const secret = getConfig().ENCRYPTION_SECRET;
+      getConfig().ENCRYPTION_SECRET = undefined;
       expect(() => encrypt('test')).toThrow('ENCRYPTION_SECRET environment variable is required');
+      getConfig().ENCRYPTION_SECRET = secret;
     });
   });
 
@@ -45,11 +36,10 @@ describe('Encryption Utility', () => {
     it('should throw error when decrypting with wrong key', () => {
       const originalText = 'test-password-123';
       const encrypted = encrypt(originalText);
-
-      // Change the encryption key
-      process.env.ENCRYPTION_SECRET = 'different-secret-key-123456789012345';
-
+      const secret = getConfig().ENCRYPTION_SECRET;
+      getConfig().ENCRYPTION_SECRET = 'different-secret-key-123456789012345';
       expect(() => decrypt(encrypted)).toThrow();
+      getConfig().ENCRYPTION_SECRET = secret;
     });
   });
 

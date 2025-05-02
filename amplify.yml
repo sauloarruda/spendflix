@@ -18,3 +18,4 @@ applications:
         paths:
           - apps/web/.next/cache/**/*
           - apps/web/node_modules/**/*
+          - node_modules/**/*

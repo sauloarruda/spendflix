@@ -1,6 +1,8 @@
 import type { paths } from '../types/api';
 
 type SignupRequest = paths['/auth/signup']['post']['requestBody']['content']['application/json'];
+type SignupResponse =
+  paths['/auth/signup']['post']['responses']['201']['content']['application/json'];
 type SignupError = paths['/auth/signup']['post']['responses']['400']['content']['application/json'];
 
 type ConfirmRequest = paths['/auth/confirm']['post']['requestBody']['content']['application/json'];
@@ -9,7 +11,7 @@ export type ConfirmResultTokens =
 type ConfirmError =
   paths['/auth/confirm']['post']['responses']['400']['content']['application/json'];
 
-const API_AUTH_URL = process.env.NEXT_PUBLIC_API_AUTH_URL;
+const API_AUTH_URL = [process.env.NEXT_PUBLIC_API_AUTH_URL, 'auth'].join('/');
 
 const SignupErrorMessages = {
   UsernameExistsException:
@@ -22,6 +24,7 @@ const SignupErrorMessages = {
 
 export type SignupResult = {
   success: boolean;
+  onboardingUid?: string;
   error?: keyof typeof SignupErrorMessages | unknown;
   message?: string;
 };
@@ -55,7 +58,7 @@ async function signup(name: string, email: string): Promise<SignupResult> {
       body: JSON.stringify({ name, email } as SignupRequest),
     });
     if (res.status === 201) {
-      return { success: true };
+      return { success: true, onboardingUid: ((await res.json()) as SignupResponse).onboardingUid };
     }
     const body = (await res.json()) as SignupError;
     return {
@@ -70,12 +73,12 @@ async function signup(name: string, email: string): Promise<SignupResult> {
   }
 }
 
-async function confirm(email: string, code: string): Promise<ConfirmResult> {
+async function confirm(email: string, code: string, onboardingUid: string): Promise<ConfirmResult> {
   try {
     const res = await fetch(`${API_AUTH_URL}/confirm`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, code } as ConfirmRequest),
+      body: JSON.stringify({ email, code, onboardingUid } as ConfirmRequest),
     });
     if (res.status === 200) {
       const body = (await res.json()) as ConfirmResultTokens;

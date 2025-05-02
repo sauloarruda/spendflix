@@ -1,9 +1,10 @@
 import { UsernameExistsException } from '@aws-sdk/client-cognito-identity-provider';
-import onboardingRepository from '../repository/onboarding';
-import { logger } from '../../lib/logger';
+import userRepository from '../repository/user.repository';
 import cognito from './cognito';
+import onboardingRepository from '../repository/onboarding.repository';
+import getLogger from '../../lib/logger';
 
-const authLogger = logger.child({ module: 'auth' });
+const authLogger = getLogger().child({ module: 'signup' });
 
 export interface ConfirmResult {
   accessToken: string;
@@ -12,13 +13,13 @@ export interface ConfirmResult {
   expiresIn: number;
 }
 
-export const signup = async (name: string, email: string): Promise<void> => {
+async function signup(name: string, email: string): Promise<{ onboardingUid: string }> {
   authLogger.debug({ name, email }, 'Starting signup process');
 
   try {
-    const onboarding = await onboardingRepository.saveStep1(name, email);
+    const signupUser = await userRepository.startOnboarding(name, email);
     try {
-      await cognito.signUpCommand(email, name, onboarding);
+      await cognito.signUpCommand(signupUser);
     } catch (error) {
       if (error instanceof UsernameExistsException) {
         authLogger.info('Username exists, checking user status');
@@ -34,25 +35,26 @@ export const signup = async (name: string, email: string): Promise<void> => {
         } else if (user.UserStatus === 'UNCONFIRMED') {
           authLogger.info('User unconfirmed => Resending confirmation code');
           await cognito.resendConfirmation(email);
-          return;
+          return { onboardingUid: signupUser.onboardingUid };
         }
       }
 
       authLogger.debug('Deleting temporary password due to error');
-      await onboardingRepository.deleteTempPassword(email);
-      authLogger.error({ err: error }, 'Error during Cognito signup');
+      await userRepository.deleteTempPassword(email);
+      authLogger.error({ error }, 'Error during Cognito signup');
       throw error;
     }
-  } catch (err) {
-    authLogger.error({ err }, 'Error in signup process');
-    throw err;
+    return { onboardingUid: signupUser.onboardingUid };
+  } catch (error) {
+    authLogger.error({ error }, 'UnknownError in signup process');
+    throw error;
   }
-};
+}
 
-export const confirm = async (email: string, code: string): Promise<ConfirmResult> => {
+async function confirm(email: string, code: string, onboardingUid: string): Promise<ConfirmResult> {
   authLogger.info({ email }, 'Starting confirmation process');
   try {
-    const password = await onboardingRepository.getTempPassword(email);
+    const password = await userRepository.getTempPassword(email);
     if (!password) {
       authLogger.error({ email }, 'No pending signup found for email');
       throw new Error('No pending signup for this email');
@@ -62,8 +64,7 @@ export const confirm = async (email: string, code: string): Promise<ConfirmResul
     const authResp = await cognito.initiateAuth(email, password);
 
     const result = authResp.AuthenticationResult!;
-    authLogger.debug({ email }, 'Deleting temporary password');
-    await onboardingRepository.deleteTempPassword(email);
+    await onboardingRepository.update(onboardingUid, { step: 2 });
 
     authLogger.info({ email }, 'Confirmation process completed successfully');
     return {
@@ -76,4 +77,11 @@ export const confirm = async (email: string, code: string): Promise<ConfirmResul
     authLogger.error({ error }, 'Error in confirmation process');
     throw error;
   }
+}
+
+const signupService = {
+  signup,
+  confirm,
 };
+
+export default signupService;

@@ -7,7 +7,11 @@
     "skipLibCheck": true,
     "outDir": ".serverless/build",
     "moduleResolution": "node",
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "paths": {
+      "@prisma": ["./generated/prisma"],
+      "@lib": ["./lib"]
+    }
   },
   "include": ["src/**/*", "lib/**/*", "tests/**/*"],
   "exclude": ["node_modules", ".serverless", "coverage"]

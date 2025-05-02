@@ -13,6 +13,8 @@ module.exports = [
       '**/types/api.d.ts',
       'node_modules/**',
       '.serverless/**',
+      'generated/**',
+      'src/__generated__/**',
     ],
   },
 
@@ -39,20 +41,22 @@ module.exports = [
       'prettier/prettier': ['error', prettierConfig],
       'no-console': 'warn',
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-      'import/extensions': ['error', 'ignorePackages', { js: 'never', ts: 'never' }],
+      'import/extensions': 'off', // ['error', 'ignorePackages', { js: 'never', ts: 'never' }],
       'import/no-unresolved': 'off',
       'class-methods-use-this': 'off',
       'no-underscore-dangle': 'off',
+      'import/no-relative-packages': 'off',
+      'import/no-extraneous-dependencies': 'off',
+      'no-use-before-define': 'off',
     },
     settings: {
       'import/resolver': {
         typescript: {},
         node: {
-          paths: ['apps/web/lib', 'apps/web/components', 'apps/web/app', 'src'],
+          paths: ['lib', 'generated/prisma', 'src'],
           extensions: ['.js', '.ts', '.d.ts', '.tsx'],
           alias: {
-            '@/components': './apps/web/components',
-            '@/lib': './apps/web/lib',
+            '@/prisma': './generated/prisma',
           },
         },
       },

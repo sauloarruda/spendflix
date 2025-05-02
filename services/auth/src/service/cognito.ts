@@ -6,41 +6,29 @@ import {
   ResendConfirmationCodeCommand,
   SignUpCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { logger } from '../../lib/logger';
-import { Onboarding } from '../repository/onboarding';
+import getLogger from '../../lib/logger';
+import { SignupUser } from '../repository/user.repository';
+import { decrypt } from '../../lib/encryption';
+import getConfig from '../../lib/config';
 
-const authLogger = logger.child({ module: 'auth' });
+const authLogger = getLogger().child({ module: 'cognito' });
 
-const cognitoClient = new CognitoIdentityProviderClient({
-  endpoint: process.env.IS_OFFLINE ? 'http://localhost:9229' : undefined,
-});
+const cognitoClient = new CognitoIdentityProviderClient();
 
-async function signUpCommand(email: string, name: string, onboarding: Onboarding) {
-  authLogger.debug(
-    {
-      clientId: process.env.COGNITO_CLIENT_ID,
-      username: email,
-      userAttributes: [
-        { Name: 'email', Value: email },
-        { Name: 'name', Value: name },
-        { Name: 'nickname', Value: name },
-      ],
-    },
-    'Attempting Cognito signup',
-  );
+async function signUpCommand(user: SignupUser) {
+  const commandArgs = {
+    ClientId: getConfig().COGNITO_CLIENT_ID,
+    Username: user.email,
+    Password: decrypt(user.temporaryPassword),
+    UserAttributes: [
+      { Name: 'email', Value: user.email },
+      { Name: 'name', Value: user.name },
+      { Name: 'nickname', Value: user.name },
+    ],
+  };
+  authLogger.debug(commandArgs, 'Attempting Cognito signup');
 
-  const res = await cognitoClient.send(
-    new SignUpCommand({
-      ClientId: process.env.COGNITO_CLIENT_ID!,
-      Username: email,
-      Password: onboarding.temporaryPassword,
-      UserAttributes: [
-        { Name: 'email', Value: email },
-        { Name: 'name', Value: name },
-        { Name: 'nickname', Value: name },
-      ],
-    }),
-  );
+  const res = await cognitoClient.send(new SignUpCommand(commandArgs));
   authLogger.debug({ res }, 'Cognito signup successful');
   return res;
 }
@@ -49,7 +37,7 @@ async function getUserStatus(email: string) {
   return cognitoClient.send(
     new AdminGetUserCommand({
       Username: email,
-      UserPoolId: process.env.COGNITO_USER_POOL_ID!,
+      UserPoolId: getConfig().COGNITO_USER_POOL_ID,
     }),
   );
 }
@@ -58,7 +46,7 @@ async function resendConfirmation(email: string) {
   authLogger.debug({ email }, 'Resending confirmation code');
   cognitoClient.send(
     new ResendConfirmationCodeCommand({
-      ClientId: process.env.COGNITO_CLIENT_ID!,
+      ClientId: getConfig().COGNITO_CLIENT_ID,
       Username: email,
     }),
   );
@@ -70,7 +58,7 @@ async function initiateAuth(email: string, password: string) {
   const authResp = await cognitoClient.send(
     new InitiateAuthCommand({
       AuthFlow: 'USER_PASSWORD_AUTH',
-      ClientId: process.env.COGNITO_CLIENT_ID!,
+      ClientId: getConfig().COGNITO_CLIENT_ID,
       AuthParameters: {
         USERNAME: email,
         PASSWORD: password,
@@ -85,7 +73,7 @@ async function confirmSignUp(email: string, code: string) {
   authLogger.debug({ email }, 'Confirming signup with Cognito');
   await cognitoClient.send(
     new ConfirmSignUpCommand({
-      ClientId: process.env.COGNITO_CLIENT_ID!,
+      ClientId: getConfig().COGNITO_CLIENT_ID,
       Username: email,
       ConfirmationCode: code,
     }),

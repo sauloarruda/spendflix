@@ -38,7 +38,7 @@ export default function Confirm({ name, email, onSuccess }: ConfirmProps) {
     if (!validateCode()) return;
     setLoading(true);
     try {
-      const result = await confirm(email, code);
+      const result = await confirm(email, code, localStorage.getItem('onboardingUid')!);
       if (result.success) onSuccess(result.tokens!);
       else setApiError(result.message);
     } finally {

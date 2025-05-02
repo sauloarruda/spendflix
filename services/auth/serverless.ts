@@ -15,9 +15,9 @@ const serverlessConfiguration: AWS = {
     runtime: 'nodejs20.x',
     region: 'us-east-2',
     stage: '${opt:stage, "local"}',
-    memorySize: 128,
+    memorySize: 256,
     architecture: 'x86_64',
-    timeout: 29,
+    timeout: 10,
     httpApi: {
       cors: {
         allowedOrigins: ['${env:BASE_APP_URL}'],
@@ -39,6 +39,8 @@ const serverlessConfiguration: AWS = {
       COGNITO_CLIENT_ID: '${env:COGNITO_CLIENT_ID}',
       BASE_APP_URL: '${env:BASE_APP_URL}',
       ENCRYPTION_SECRET: '${env:ENCRYPTION_SECRET}',
+      DATABASE_URL: '${env:DATABASE_URL}',
+      LOG_LEVEL: '${env:LOG_LEVEL}',
     },
     iamRoleStatements: [
       {
@@ -48,45 +50,14 @@ const serverlessConfiguration: AWS = {
           'cognito-idp:ConfirmSignUp',
           'cognito-idp:InitiateAuth',
           'cognito-idp:AdminGetUser',
-          'dynamodb:PutItem',
-          'dynamodb:GetItem',
-          'dynamodb:DeleteItem',
-          'dynamodb:DescribeTable',
-          'dynamodb:CreateTable',
-          'dynamodb:UpdateTable',
+          'ec2:CreateNetworkInterface',
+          'ec2:DescribeNetworkInterfaces',
+          'ec2:DeleteNetworkInterface',
+          'rds-db:connect',
         ],
         Resource: '*',
       },
     ],
-  },
-  resources: {
-    Resources: {
-      OnboardingTable: {
-        Type: 'AWS::DynamoDB::Table',
-        DeletionPolicy: 'Retain',
-        UpdateReplacePolicy: 'Retain',
-        Properties: {
-          TableName: 'onboarding',
-          AttributeDefinitions: [
-            {
-              AttributeName: 'email',
-              AttributeType: 'S',
-            },
-          ],
-          KeySchema: [
-            {
-              AttributeName: 'email',
-              KeyType: 'HASH',
-            },
-          ],
-          BillingMode: 'PAY_PER_REQUEST',
-          TimeToLiveSpecification: {
-            AttributeName: 'ttl',
-            Enabled: true,
-          },
-        },
-      },
-    },
   },
   functions: {
     api: {
@@ -95,6 +66,13 @@ const serverlessConfiguration: AWS = {
         {
           http: {
             path: 'auth/{proxy+}',
+            method: 'any',
+            cors: true,
+          },
+        },
+        {
+          http: {
+            path: 'onboarding/{proxy+}',
             method: 'any',
             cors: true,
           },
@@ -125,6 +103,10 @@ const serverlessConfiguration: AWS = {
       '!**/*.test.ts',
       '!**/*.spec.ts',
       'openapi.yaml',
+      'node_modules/.prisma/**',
+      'node_modules/@prisma/client/**',
+      'node_modules/prisma/**',
+      'generated/**',
     ],
   },
 };

@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import { middleware as OpenApiMiddleware } from 'express-openapi-validator';
 import authRouter from './controller/auth.controller';
+import onboardingRouter from './controller/onboarding.controller';
 
 export default function createApp() {
   const app = express();
@@ -22,7 +23,6 @@ export default function createApp() {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       _next: express.NextFunction,
     ) => {
-      // console.error(err);
       res.status(err.status || 500).json({
         message: err.message,
         errors: err.errors,
@@ -31,6 +31,7 @@ export default function createApp() {
   );
 
   app.use('/auth', authRouter);
+  app.use('/onboarding', onboardingRouter);
 
   app.get('/docs/openapi.yaml', (req, res) => {
     res.sendFile(path.join(__dirname, '../openapi.yaml'));

@@ -21,6 +21,14 @@ paths:
       responses:
         '201':
           description: User created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  onboardingUid:
+                    type: string
+                required: [onboardingUid]
         '400':
           description: Request validation failed.
           content:
@@ -38,8 +46,6 @@ paths:
 
   /auth/confirm:
     post:
-      summary: Confirma um usuário
-      description: Endpoint para confirmar um usuário com um código de verificação.
       requestBody:
         required: true
         content:
@@ -51,7 +57,9 @@ paths:
                   type: string
                 code:
                   type: string
-              required: [code, email]
+                onboardingUid:
+                  type: string
+              required: [code, email, onboardingUid]
       responses:
         '200':
           description: User confirmed successfully.
@@ -80,6 +88,72 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/RequestError'
+        '500':
+          description: Failed to update onboarding data.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RequestError'
+
+  /onboarding/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User found for email.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/OnboardingData'
+        '404':
+          description: Onboarding not found for email.
+        '500':
+          description: Failed to get onboarding data.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RequestError'
+    put:
+      summary: Update onboarding data preserving previous existent information
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/OnboardingData'
+      responses:
+        '204':
+          description: Onboarding data updated successfully.
+        '400':
+          description: Invalid data to update onboarding data.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RequestError'
+        '500':
+          description: Failed to update onboarding data.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RequestError'
+
 components:
   schemas:
     RequestError:
@@ -89,3 +163,29 @@ components:
           type: string
         message:
           type: string
+    OnboardingData:
+      type: object
+      properties:
+        startedAt:
+          type: string
+          format: date-time
+        step:
+          type: integer
+        name:
+          type: string
+        goal:
+          type: string
+          enum: [dream, debt]
+        goalDescription:
+          type: string
+        goalValue:
+          type: number
+        banks:
+          type: array
+          items:
+            type: string
+        waitlist:
+          type: boolean
+        finishedAt:
+          type: string
+          format: date-time

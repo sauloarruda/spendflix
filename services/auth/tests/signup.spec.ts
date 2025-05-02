@@ -1,18 +1,22 @@
 import request from 'supertest';
+import { faker } from '@faker-js/faker';
 import {
   CognitoIdentityProviderClient,
   InternalErrorException,
   UsernameExistsException,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { Onboarding, User } from '../generated/prisma';
+import {
+  initialize,
+  defineUserFactory,
+  defineOnboardingFactory,
+} from '../src/__generated__/fabbrica';
 import createApp from '../src/app';
+import { paths } from '../src/types/api';
 import { encrypt } from '../lib/encryption';
+import getPrisma from '../src/repository/prisma';
 
-process.env.COGNITO_CLIENT_ID = 'test-client-id';
-process.env.COGNITO_USER_POOL_ID = 'test-user-pool-id';
-process.env.ENCRYPTION_SECRET = 'test-secret-key-1234567890123456789012';
-
-const cognitoUsernameExistsException = (userStatus: string) => {
+const mockCognitoUsernameExistsException = (userStatus: string) => {
   const mockedCognito = jest
     .fn()
     .mockRejectedValueOnce(
@@ -31,14 +35,13 @@ const cognitoUsernameExistsException = (userStatus: string) => {
   return mockedCognito;
 };
 
+initialize({ prisma: getPrisma() });
+
 describe('POST /auth/signup', () => {
   const app = createApp();
-  let mockedDynamoDb: jest.Mock;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockedDynamoDb = jest.fn().mockResolvedValue({});
-    DynamoDBDocumentClient.prototype.send = mockedDynamoDb;
   });
 
   it('should return 400 if name or email is missing', async () => {
@@ -51,25 +54,29 @@ describe('POST /auth/signup', () => {
     expect(res.body).toHaveProperty('message', "request/body must have required property 'email'");
   });
 
-  it('should call Cognito and DynamoDB and return 201 on success', async () => {
+  it('should call Cognito and return 201 on success', async () => {
     const mockedCognito = jest.fn().mockResolvedValue({ User: { Username: 'mocked-user-id' } });
     CognitoIdentityProviderClient.prototype.send = mockedCognito;
+
     const res = await request(app)
       .post('/auth/signup')
-      .send({ name: 'Test User', email: 'test@example.com' });
+      .send({ name: 'Test User', email: faker.internet.email() });
 
     expect(res.status).toBe(201);
+    expect(
+      (res.body as paths['/auth/signup']['post']['responses']['201']['content']['application/json'])
+        .onboardingUid,
+    ).not.toBeNull();
 
-    expect(mockedCognito).toHaveBeenCalled();
-    expect(mockedDynamoDb).toHaveBeenCalled();
+    expect(mockedCognito).toHaveBeenCalledTimes(1);
   });
 
   it('should return 400 when user is already confirmed', async () => {
-    const mockedCognito = cognitoUsernameExistsException('CONFIRMED');
+    const mockedCognito = mockCognitoUsernameExistsException('CONFIRMED');
 
     const res = await request(app)
       .post('/auth/signup')
-      .send({ name: 'Test User', email: 'test@example.com' });
+      .send({ name: faker.person.firstName(), email: faker.internet.email() });
 
     expect(res.status).toBe(400);
     expect(res.body).toHaveProperty('error', 'UsernameExistsException');
@@ -77,11 +84,11 @@ describe('POST /auth/signup', () => {
   });
 
   it('should resend confirmation code when user is unconfirmed', async () => {
-    const mockedCognito = cognitoUsernameExistsException('UNCONFIRMED');
+    const mockedCognito = mockCognitoUsernameExistsException('UNCONFIRMED');
 
     const res = await request(app)
       .post('/auth/signup')
-      .send({ name: 'Test User', email: 'test@example.com' });
+      .send({ name: faker.person.firstName(), email: faker.internet.email() });
 
     expect(res.status).toBe(201);
     expect(mockedCognito).toHaveBeenCalledTimes(3);
@@ -98,7 +105,7 @@ describe('POST /auth/signup', () => {
 
     const res = await request(app)
       .post('/auth/signup')
-      .send({ name: 'Test User', email: 'test@example.com' });
+      .send({ name: faker.person.firstName(), email: faker.internet.email() });
 
     expect(res.status).toBe(500);
     expect(res.body).toHaveProperty('error', 'InternalErrorException');
@@ -108,9 +115,36 @@ describe('POST /auth/signup', () => {
 
 describe('POST /auth/confirm', () => {
   const app = createApp();
+  let user: User;
+  let onboarding: Onboarding;
+  let tokens: {
+    ExpiresIn: number | undefined;
+    AccessToken: string;
+    RefreshToken: string;
+    IdToken: string;
+  };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks();
+
+    user = await defineUserFactory().create({
+      name: faker.person.firstName(),
+      email: faker.internet.email(),
+      temporaryPassword: encrypt(faker.internet.password()),
+    });
+    onboarding = await defineOnboardingFactory({
+      defaultData: {
+        user: {
+          connect: { id: user.id },
+        },
+      },
+    }).create();
+    tokens = {
+      AccessToken: 'x',
+      RefreshToken: 'y',
+      IdToken: 'z',
+      ExpiresIn: 3600,
+    };
   });
 
   it('should return 400 if email or code is missing', async () => {
@@ -123,94 +157,43 @@ describe('POST /auth/confirm', () => {
     expect(res.body).toHaveProperty('message', "request/body must have required property 'email'");
   });
 
-  it('should call Cognito and DynamoDB and return 200 on success', async () => {
-    const result = {
-      AccessToken: 'x',
-      RefreshToken: 'y',
-      IdToken: 'z',
-      ExpiresIn: 3600,
-    };
+  it('should call Cognito and return 200 on success', async () => {
     const mockedCognito = jest.fn().mockResolvedValue({
-      AuthenticationResult: result,
+      AuthenticationResult: tokens,
     });
     CognitoIdentityProviderClient.prototype.send = mockedCognito;
 
-    // Generate a valid encrypted password
-    const encryptedPassword = encrypt('test-password-123');
-    const mockedDynamoDb = jest
-      .fn()
-      .mockResolvedValueOnce({ Item: { temporaryPassword: encryptedPassword } }) // getTempPassword
-      .mockResolvedValueOnce({}) // deleteTempPassword
-      .mockResolvedValueOnce({}); // deleteTempPassword (fallback)
-    DynamoDBDocumentClient.prototype.send = mockedDynamoDb;
-
     const res = await request(app)
       .post('/auth/confirm')
-      .send({ email: 'test@example.com', code: '123456' });
+      .send({ email: user.email, code: '123456', onboardingUid: onboarding.id });
 
     expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty('accessToken', result.AccessToken);
-    expect(res.body).toHaveProperty('refreshToken', result.RefreshToken);
-    expect(res.body).toHaveProperty('idToken', result.IdToken);
-    expect(res.body).toHaveProperty('expiresIn', result.ExpiresIn);
+    expect(res.body).toHaveProperty('accessToken', tokens.AccessToken);
+    expect(res.body).toHaveProperty('refreshToken', tokens.RefreshToken);
+    expect(res.body).toHaveProperty('idToken', tokens.IdToken);
+    expect(res.body).toHaveProperty('expiresIn', tokens.ExpiresIn);
     expect(mockedCognito).toHaveBeenCalledTimes(2);
-    expect(mockedDynamoDb).toHaveBeenCalledTimes(3);
   });
 
-  it('should call Cognito and DynamoDB and return 200 on success (but without ExpiresIn)', async () => {
-    const result = {
-      AccessToken: 'x',
-      RefreshToken: 'y',
-      IdToken: 'z',
-      ExpiresIn: 3600,
-    };
+  it('should call Cognito return 200 on success (but without ExpiresIn)', async () => {
     const mockedCognito = jest.fn().mockResolvedValue({
-      AuthenticationResult: { ...result, ExpiresIn: undefined },
+      AuthenticationResult: { ...tokens, ExpiresIn: undefined },
     });
     CognitoIdentityProviderClient.prototype.send = mockedCognito;
 
-    // Generate a valid encrypted password
-    const encryptedPassword = encrypt('test-password-123');
-    const mockedDynamoDb = jest
-      .fn()
-      .mockResolvedValueOnce({ Item: { temporaryPassword: encryptedPassword } }) // getTempPassword
-      .mockResolvedValueOnce({}) // deleteTempPassword
-      .mockResolvedValueOnce({}); // deleteTempPassword (fallback)
-    DynamoDBDocumentClient.prototype.send = mockedDynamoDb;
-
     const res = await request(app)
       .post('/auth/confirm')
-      .send({ email: 'test@example.com', code: '123456' });
+      .send({ email: user.email, code: '123456', onboardingUid: onboarding.id });
 
     expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty('accessToken', result.AccessToken);
-    expect(res.body).toHaveProperty('refreshToken', result.RefreshToken);
-    expect(res.body).toHaveProperty('idToken', result.IdToken);
-    expect(res.body).toHaveProperty('expiresIn', result.ExpiresIn);
+    expect(res.body).toHaveProperty('accessToken', tokens.AccessToken);
+    expect(res.body).toHaveProperty('refreshToken', tokens.RefreshToken);
+    expect(res.body).toHaveProperty('idToken', tokens.IdToken);
+    expect(res.body).toHaveProperty('expiresIn', tokens.ExpiresIn);
     expect(mockedCognito).toHaveBeenCalledTimes(2);
-    expect(mockedDynamoDb).toHaveBeenCalledTimes(3);
-  });
-
-  it('should return 500 when DynamoDB throws an error', async () => {
-    const mockedDynamoDb = jest.fn().mockResolvedValueOnce({}); // getTempPassword
-    DynamoDBDocumentClient.prototype.send = mockedDynamoDb;
-
-    const res = await request(app)
-      .post('/auth/confirm')
-      .send({ email: 'test@example.com', code: '123456' });
-
-    expect(res.status).toBe(500);
-    expect(res.body).toHaveProperty('error', 'No pending signup for this email');
-    expect(mockedDynamoDb).toHaveBeenCalledTimes(1);
   });
 
   it('should return 500 when Cognito throws an error', async () => {
-    const encryptedPassword = encrypt('test-password-123');
-    const mockedDynamoDb = jest
-      .fn()
-      .mockResolvedValueOnce({ Item: { temporaryPassword: encryptedPassword } }); // getTempPassword
-    DynamoDBDocumentClient.prototype.send = mockedDynamoDb;
-
     const mockedCognito = jest.fn().mockRejectedValueOnce(
       new InternalErrorException({
         message: 'Unknown error',
@@ -221,11 +204,10 @@ describe('POST /auth/confirm', () => {
 
     const res = await request(app)
       .post('/auth/confirm')
-      .send({ email: 'test@example.com', code: '123456' });
+      .send({ email: user.email, code: '123456', onboardingUid: onboarding.id });
 
     expect(res.status).toBe(500);
     expect(res.body).toHaveProperty('error', 'InternalErrorException');
     expect(mockedCognito).toHaveBeenCalledTimes(1);
-    expect(mockedDynamoDb).toHaveBeenCalledTimes(1);
   });
 });
