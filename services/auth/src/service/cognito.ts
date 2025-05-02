@@ -13,9 +13,7 @@ import getConfig from '../../lib/config';
 
 const authLogger = getLogger().child({ module: 'cognito' });
 
-const cognitoClient = new CognitoIdentityProviderClient({
-  endpoint: getConfig().COGNITO_ENDPOINT,
-});
+const cognitoClient = new CognitoIdentityProviderClient();
 
 async function signUpCommand(user: SignupUser) {
   const commandArgs = {
