@@ -5,7 +5,7 @@ import {
   InternalErrorException,
   UsernameExistsException,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { Onboarding, User } from '@prisma';
+import { Onboarding, User } from '../generated/prisma';
 import {
   initialize,
   defineUserFactory,
