@@ -5,7 +5,7 @@
   "license": "CC-BY-NC-4.0",
   "scripts": {
     "dev": "../../scripts/cognito.sh & sls offline start --reloadHandler",
-    "build": "pnpm prisma generate && pnpm generate:types && serverless package",
+    "build": "pnpm prisma:generate && pnpm generate:types && serverless package",
     "build:watch": "pnpm tsc --watch",
     "deploy": "serverless deploy --stage v1",
     "test": "LOG_LEVEL=fatal jest --config jest.config.ts",
@@ -15,6 +15,7 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "generate:types": "openapi-typescript ./openapi.yaml --output ./src/types/api.d.ts",
     "cognito:start": "../../scripts/cognito.sh",
+    "prisma:generate": "pnpm prisma generate",
     "prisma:migrate": "pnpm prisma migrate deploy"
   },
   "dependencies": {

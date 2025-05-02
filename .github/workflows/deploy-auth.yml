@@ -42,12 +42,15 @@ jobs:
         run: npm install -g pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: |
+          pnpm install
+          cd services/auth
+          pnpm install
+          pnpm build
 
       - name: Run Tests
         run: |
           cd services/auth
-          pnpm build
           pnpm prisma:migrate
           pnpm test
         env:
