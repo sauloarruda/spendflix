@@ -13,7 +13,7 @@ This project also serves as a technical showcase for a modern, scalable architec
 - **Code Quality**: ESLint, Prettier, TypeScript
 - **CI/CD**: GitHub Actions
 - **Deployment**: AWS Amplify and Lambda
-- **Database**: PostgreSQL and AWS DynamoDB
+- **Database**: PostgreSQL
 - **Authentication**: AWS Cognito
 - **Message Queue**: AWS SQS
 - **API Gateway**: AWS API Gateway

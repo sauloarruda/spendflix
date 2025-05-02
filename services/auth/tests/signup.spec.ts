@@ -4,9 +4,7 @@ import {
   InternalErrorException,
   UsernameExistsException,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import createApp from '../src/app';
-import { encrypt } from '../lib/encryption';
 
 process.env.COGNITO_CLIENT_ID = 'test-client-id';
 process.env.COGNITO_USER_POOL_ID = 'test-user-pool-id';
@@ -143,7 +141,7 @@ describe.skip('POST /auth/confirm', () => {
     expect(mockedCognito).toHaveBeenCalledTimes(2);
   });
 
-  it('should call Cognito and DynamoDB and return 200 on success (but without ExpiresIn)', async () => {
+  it('should call Cognito return 200 on success (but without ExpiresIn)', async () => {
     const result = {
       AccessToken: 'x',
       RefreshToken: 'y',
@@ -155,15 +153,6 @@ describe.skip('POST /auth/confirm', () => {
     });
     CognitoIdentityProviderClient.prototype.send = mockedCognito;
 
-    // Generate a valid encrypted password
-    const encryptedPassword = encrypt('test-password-123');
-    const mockedDynamoDb = jest
-      .fn()
-      .mockResolvedValueOnce({ Item: { temporaryPassword: encryptedPassword } }) // getTempPassword
-      .mockResolvedValueOnce({}) // deleteTempPassword
-      .mockResolvedValueOnce({}); // deleteTempPassword (fallback)
-    DynamoDBDocumentClient.prototype.send = mockedDynamoDb;
-
     const res = await request(app)
       .post('/auth/confirm')
       .send({ email: 'test@example.com', code: '123456' });
@@ -174,29 +163,9 @@ describe.skip('POST /auth/confirm', () => {
     expect(res.body).toHaveProperty('idToken', result.IdToken);
     expect(res.body).toHaveProperty('expiresIn', result.ExpiresIn);
     expect(mockedCognito).toHaveBeenCalledTimes(2);
-    expect(mockedDynamoDb).toHaveBeenCalledTimes(3);
-  });
-
-  it('should return 500 when DynamoDB throws an error', async () => {
-    const mockedDynamoDb = jest.fn().mockResolvedValueOnce({}); // getTempPassword
-    DynamoDBDocumentClient.prototype.send = mockedDynamoDb;
-
-    const res = await request(app)
-      .post('/auth/confirm')
-      .send({ email: 'test@example.com', code: '123456' });
-
-    expect(res.status).toBe(500);
-    expect(res.body).toHaveProperty('error', 'No pending signup for this email');
-    expect(mockedDynamoDb).toHaveBeenCalledTimes(1);
   });
 
   it('should return 500 when Cognito throws an error', async () => {
-    const encryptedPassword = encrypt('test-password-123');
-    const mockedDynamoDb = jest
-      .fn()
-      .mockResolvedValueOnce({ Item: { temporaryPassword: encryptedPassword } }); // getTempPassword
-    DynamoDBDocumentClient.prototype.send = mockedDynamoDb;
-
     const mockedCognito = jest.fn().mockRejectedValueOnce(
       new InternalErrorException({
         message: 'Unknown error',
@@ -212,6 +181,5 @@ describe.skip('POST /auth/confirm', () => {
     expect(res.status).toBe(500);
     expect(res.body).toHaveProperty('error', 'InternalErrorException');
     expect(mockedCognito).toHaveBeenCalledTimes(1);
-    expect(mockedDynamoDb).toHaveBeenCalledTimes(1);
   });
 });

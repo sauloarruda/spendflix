@@ -49,45 +49,10 @@ const serverlessConfiguration: AWS = {
           'cognito-idp:ConfirmSignUp',
           'cognito-idp:InitiateAuth',
           'cognito-idp:AdminGetUser',
-          'dynamodb:PutItem',
-          'dynamodb:GetItem',
-          'dynamodb:DeleteItem',
-          'dynamodb:DescribeTable',
-          'dynamodb:CreateTable',
-          'dynamodb:UpdateTable',
         ],
         Resource: '*',
       },
     ],
-  },
-  resources: {
-    Resources: {
-      OnboardingTable: {
-        Type: 'AWS::DynamoDB::Table',
-        DeletionPolicy: 'Retain',
-        UpdateReplacePolicy: 'Retain',
-        Properties: {
-          TableName: 'onboarding',
-          AttributeDefinitions: [
-            {
-              AttributeName: 'email',
-              AttributeType: 'S',
-            },
-          ],
-          KeySchema: [
-            {
-              AttributeName: 'email',
-              KeyType: 'HASH',
-            },
-          ],
-          BillingMode: 'PAY_PER_REQUEST',
-          TimeToLiveSpecification: {
-            AttributeName: 'ttl',
-            Enabled: true,
-          },
-        },
-      },
-    },
   },
   functions: {
     api: {
