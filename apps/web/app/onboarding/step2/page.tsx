@@ -24,9 +24,9 @@ export default function OnboardingStep2() {
   });
 
   useEffect(() => {
-    const email = localStorage.getItem('email');
-    if (email) {
-      getOnboardingData(email).then((data) => {
+    const onboardingUid = localStorage.getItem('onboardingUid');
+    if (onboardingUid) {
+      getOnboardingData(onboardingUid).then((data) => {
         if (data?.name) {
           setName(data.name);
         } else {
@@ -40,7 +40,7 @@ export default function OnboardingStep2() {
           });
         }
       });
-    }
+    } else router.push('/onboarding/step1');
   }, []);
 
   const handleGoalSelect = (goal: 'dream' | 'debt') => {
@@ -62,13 +62,13 @@ export default function OnboardingStep2() {
       return;
     }
 
-    const email = localStorage.getItem('email');
-    if (email) {
-      await updateOnboardingStep(email, {
+    const onboardingUid = localStorage.getItem('onboardingUid');
+    if (onboardingUid) {
+      await updateOnboardingStep(onboardingUid, {
         goal: formData.goal as 'dream' | 'debt',
         goalDescription: formData.goalDescription,
         goalValue: formData.goalValue,
-        step: 2,
+        step: 3,
       });
     }
 

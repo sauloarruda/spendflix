@@ -125,12 +125,12 @@ export default function OnboardingStep3() {
     const onlyNubank = selectedBankCodes.length === 1 && hasNubank;
 
     // Save selected banks
-    const email = localStorage.getItem('email');
-    if (!email) {
+    const onboardingUid = localStorage.getItem('onboardingUid');
+    if (!onboardingUid) {
       return;
     }
 
-    await updateOnboardingStep(email, {
+    await updateOnboardingStep(onboardingUid, {
       banks: selectedBankCodes,
       step: 3,
     });
@@ -148,7 +148,7 @@ export default function OnboardingStep3() {
         acceptLabel: 'Sim, quero continuar',
         rejectLabel: 'Não, quero entrar na lista de espera',
         accept: async () => {
-          await updateOnboardingStep(email, {
+          await updateOnboardingStep(onboardingUid, {
             step: 4,
           });
           router.push('/onboarding/step4');

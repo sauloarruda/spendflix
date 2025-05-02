@@ -8,6 +8,48 @@ interface LoggerOptions {
   isOffline?: boolean;
 }
 
+// List of sensitive field names to censor
+const SENSITIVE_FIELDS = [
+  'password',
+  'token',
+  'accessToken',
+  'refreshToken',
+  'apiKey',
+  'secret',
+  'authorization',
+  'auth',
+  'credentials',
+  'key',
+];
+
+// Utility function to censor sensitive data
+const censorSensitiveData = (data: unknown): unknown => {
+  if (data === null || data === undefined) {
+    return data;
+  }
+
+  if (typeof data === 'string') {
+    return data;
+  }
+
+  if (Array.isArray(data)) {
+    return data.map((item) => censorSensitiveData(item));
+  }
+
+  if (typeof data === 'object') {
+    return Object.fromEntries(
+      Object.entries(data as Record<string, unknown>).map(([key, value]) => [
+        key,
+        SENSITIVE_FIELDS.some((field) => key.toLowerCase().includes(field.toLowerCase()))
+          ? '***'
+          : censorSensitiveData(value),
+      ]),
+    );
+  }
+
+  return data;
+};
+
 class Logger {
   private logger: pino.Logger;
 
@@ -32,28 +74,43 @@ class Logger {
     });
   }
 
+  private prepareLogData(
+    obj: unknown,
+    msg?: string,
+    ...args: unknown[]
+  ): [unknown, string | undefined, unknown[]] {
+    const censoredObj = censorSensitiveData(obj);
+    return [censoredObj, msg, args.map((arg) => censorSensitiveData(arg))];
+  }
+
   fatal(obj: unknown, msg?: string, ...args: unknown[]): void {
-    this.logger.fatal(obj, msg, ...args);
+    const [censoredObj, censoredMsg, censoredArgs] = this.prepareLogData(obj, msg, ...args);
+    this.logger.fatal(censoredObj, censoredMsg, ...censoredArgs);
   }
 
   error(obj: unknown, msg?: string, ...args: unknown[]): void {
-    this.logger.error(obj, msg, ...args);
+    const [censoredObj, censoredMsg, censoredArgs] = this.prepareLogData(obj, msg, ...args);
+    this.logger.error(censoredObj, censoredMsg, ...censoredArgs);
   }
 
   warn(obj: unknown, msg?: string, ...args: unknown[]): void {
-    this.logger.warn(obj, msg, ...args);
+    const [censoredObj, censoredMsg, censoredArgs] = this.prepareLogData(obj, msg, ...args);
+    this.logger.warn(censoredObj, censoredMsg, ...censoredArgs);
   }
 
   info(obj: unknown, msg?: string, ...args: unknown[]): void {
-    this.logger.info(obj, msg, ...args);
+    const [censoredObj, censoredMsg, censoredArgs] = this.prepareLogData(obj, msg, ...args);
+    this.logger.info(censoredObj, censoredMsg, ...censoredArgs);
   }
 
   debug(obj: unknown, msg?: string, ...args: unknown[]): void {
-    this.logger.debug(obj, msg, ...args);
+    const [censoredObj, censoredMsg, censoredArgs] = this.prepareLogData(obj, msg, ...args);
+    this.logger.debug(censoredObj, censoredMsg, ...censoredArgs);
   }
 
   trace(obj: unknown, msg?: string, ...args: unknown[]): void {
-    this.logger.trace(obj, msg, ...args);
+    const [censoredObj, censoredMsg, censoredArgs] = this.prepareLogData(obj, msg, ...args);
+    this.logger.trace(censoredObj, censoredMsg, ...censoredArgs);
   }
 
   child(bindings: Record<string, unknown>): Logger {
@@ -75,5 +132,5 @@ export const createLogger = (options: LoggerOptions): Logger => {
 export const logger = createLogger({
   service: 'spendflix-auth',
   level: (process.env.LOG_LEVEL as LogLevel) || process.env.IS_OFFLINE ? 'debug' : 'info',
-  isOffline: process.env.IS_OFFLINE === 'true' || process.env.NODE_ENV === 'test',
+  isOffline: process.env.IS_OFFLINE === 'true',
 });

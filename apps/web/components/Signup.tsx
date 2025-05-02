@@ -41,8 +41,11 @@ export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
     setLoading(true);
     try {
       const result = await signup(name, email);
-      if (result.success) onSuccess(name, email);
-      else if (result.error === SignupErrorMessages.UsernameExistsException) onLoginRedirect(email);
+      if (result.success) {
+        localStorage.setItem('onboardingUid', result.onboardingUid!);
+        onSuccess(name, email);
+      } else if (result.error === SignupErrorMessages.UsernameExistsException)
+        onLoginRedirect(email);
       else setApiError(result.message);
     } finally {
       setLoading(false);

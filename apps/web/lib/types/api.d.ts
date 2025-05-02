@@ -34,7 +34,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "application/json": {
+                            onboardingUid: string;
+                        };
+                    };
                 };
                 /** @description Request validation failed. */
                 400: {
@@ -83,6 +87,7 @@ export interface paths {
                     "application/json": {
                         email: string;
                         code: string;
+                        onboardingUid: string;
                     };
                 };
             };
@@ -131,7 +136,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/onboarding/{email}": {
+    "/onboarding/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -143,7 +148,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    email: string;
+                    id: string;
                 };
                 cookie?: never;
             };
@@ -176,17 +181,13 @@ export interface paths {
                 };
             };
         };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch: {
+        /** Update onboarding data preserving previous existent information */
+        put: {
             parameters: {
                 query?: never;
                 header?: never;
                 path: {
-                    email: string;
+                    id: string;
                 };
                 cookie?: never;
             };
@@ -212,13 +213,6 @@ export interface paths {
                         "application/json": components["schemas"]["RequestError"];
                     };
                 };
-                /** @description Onboarding not found for email. */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
                 /** @description Failed to update onboarding data. */
                 500: {
                     headers: {
@@ -230,6 +224,11 @@ export interface paths {
                 };
             };
         };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
 }
@@ -242,8 +241,8 @@ export interface components {
         };
         OnboardingData: {
             /** Format: date-time */
-            startedAt: string;
-            step: number;
+            startedAt?: string;
+            step?: number;
             name?: string;
             /** @enum {string} */
             goal?: "dream" | "debt";

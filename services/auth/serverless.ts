@@ -39,6 +39,7 @@ const serverlessConfiguration: AWS = {
       COGNITO_CLIENT_ID: '${env:COGNITO_CLIENT_ID}',
       BASE_APP_URL: '${env:BASE_APP_URL}',
       ENCRYPTION_SECRET: '${env:ENCRYPTION_SECRET}',
+      DATABASE_URL: '${env:DATABASE_URL}',
     },
     iamRoleStatements: [
       {
@@ -95,6 +96,13 @@ const serverlessConfiguration: AWS = {
         {
           http: {
             path: 'auth/{proxy+}',
+            method: 'any',
+            cors: true,
+          },
+        },
+        {
+          http: {
+            path: 'onboarding/{proxy+}',
             method: 'any',
             cors: true,
           },

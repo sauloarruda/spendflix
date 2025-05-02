@@ -7,40 +7,29 @@ import {
   SignUpCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { logger } from '../../lib/logger';
-import { Onboarding } from '../repository/onboarding';
+import { SignupUser } from '../repository/user.repository';
+import { decrypt } from '../../lib/encryption';
 
 const authLogger = logger.child({ module: 'auth' });
 
 const cognitoClient = new CognitoIdentityProviderClient({
-  endpoint: process.env.IS_OFFLINE ? 'http://localhost:9229' : undefined,
+  // endpoint: process.env.IS_OFFLINE ? 'http://localhost:9229' : undefined,
 });
 
-async function signUpCommand(email: string, name: string, onboarding: Onboarding) {
-  authLogger.debug(
-    {
-      clientId: process.env.COGNITO_CLIENT_ID,
-      username: email,
-      userAttributes: [
-        { Name: 'email', Value: email },
-        { Name: 'name', Value: name },
-        { Name: 'nickname', Value: name },
-      ],
-    },
-    'Attempting Cognito signup',
-  );
+async function signUpCommand(user: SignupUser) {
+  const commandArgs = {
+    ClientId: process.env.COGNITO_CLIENT_ID!,
+    Username: user.email,
+    Password: decrypt(user.temporaryPassword),
+    UserAttributes: [
+      { Name: 'email', Value: user.email },
+      { Name: 'name', Value: user.name },
+      { Name: 'nickname', Value: user.name },
+    ],
+  };
+  authLogger.debug(commandArgs, 'Attempting Cognito signup');
 
-  const res = await cognitoClient.send(
-    new SignUpCommand({
-      ClientId: process.env.COGNITO_CLIENT_ID!,
-      Username: email,
-      Password: onboarding.temporaryPassword,
-      UserAttributes: [
-        { Name: 'email', Value: email },
-        { Name: 'name', Value: name },
-        { Name: 'nickname', Value: name },
-      ],
-    }),
-  );
+  const res = await cognitoClient.send(new SignUpCommand(commandArgs));
   authLogger.debug({ res }, 'Cognito signup successful');
   return res;
 }

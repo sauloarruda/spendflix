@@ -14,41 +14,15 @@ export default function Page() {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
 
-  useEffect(() => {
-    const email = localStorage.getItem('email');
-    if (email) {
-      getOnboardingData(email).then(async (data) => {
-        if (!data) {
-          // Only set startedAt if no record exists
-          await updateOnboardingStep(email, {
-            startedAt: new Date().toISOString(),
-            step: 1,
-          });
-        }
-      });
-    }
-  }, []);
-
   const handleSignupSuccess = async (responseName: string, responseEmail: string) => {
     setName(responseName);
     setEmail(responseEmail);
     localStorage.setItem('email', responseEmail);
-
-    // Check if record exists before setting startedAt
-    const existingData = await getOnboardingData(responseEmail);
-    if (!existingData) {
-      await updateOnboardingStep(responseEmail, {
-        startedAt: new Date().toISOString(),
-        step: 1,
-      });
-    }
-
     setStep('confirm');
   };
 
   const handleLoginRedirect = (responseEmail: string) => {
     setEmail(responseEmail);
-    localStorage.setItem('email', responseEmail);
     setStep('login');
   };
 
@@ -56,13 +30,6 @@ export default function Page() {
     localStorage.setItem('accessToken', tokens.accessToken);
     localStorage.setItem('idToken', tokens.idToken);
     localStorage.setItem('refreshToken', tokens.refreshToken);
-
-    // Save the name in the database
-    await updateOnboardingStep(email, {
-      name,
-      step: 1,
-    });
-
     router.push('/onboarding/step2');
   };
 
@@ -79,7 +46,7 @@ export default function Page() {
           onResend={() => setStep('signup')}
         />
       )}
-      {step === 'login' && <Login onSuccess={() => router.push('/onboarding/step2')} />}
+      {/* {step === 'login' && <Login onSuccess={handleConfirmSuccess} />} */}
     </>
   );
 }

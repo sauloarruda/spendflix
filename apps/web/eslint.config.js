@@ -14,7 +14,6 @@ module.exports = [
       '**/types/api.d.ts',
       'node_modules/**',
       '.next/**',
-      'generated/**',
     ],
   },
 
