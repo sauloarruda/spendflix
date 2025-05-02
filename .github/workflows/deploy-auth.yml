@@ -46,7 +46,7 @@ jobs:
           pnpm install
           cd services/auth
           pnpm install
-          pnpm build
+          pnpm prisma:generate
 
       - name: Run Tests
         run: |
