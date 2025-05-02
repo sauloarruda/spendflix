@@ -1,7 +1,8 @@
 import crypto from 'crypto';
-import { logger } from './logger';
+import getLogger from './logger';
+import getConfig from './config';
 
-const authLogger = logger.child({ module: 'encryption' });
+const authLogger = getLogger().child({ module: 'encryption' });
 
 const ALGORITHM = 'aes-256-gcm';
 const IV_LENGTH = 12; // For GCM, this is 12 bytes
@@ -13,7 +14,7 @@ interface CryptoError extends Error {
 }
 
 function getSecretKey(): string {
-  const secret = process.env.ENCRYPTION_SECRET;
+  const secret = getConfig().ENCRYPTION_SECRET;
   if (!secret) {
     throw new Error('ENCRYPTION_SECRET environment variable is required');
   }

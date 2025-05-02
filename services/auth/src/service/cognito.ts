@@ -6,19 +6,20 @@ import {
   ResendConfirmationCodeCommand,
   SignUpCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { logger } from '../../lib/logger';
+import getLogger from '../../lib/logger';
 import { SignupUser } from '../repository/user.repository';
 import { decrypt } from '../../lib/encryption';
+import getConfig from '../../lib/config';
 
-const authLogger = logger.child({ module: 'auth' });
+const authLogger = getLogger().child({ module: 'cognito' });
 
 const cognitoClient = new CognitoIdentityProviderClient({
-  // endpoint: process.env.IS_OFFLINE ? 'http://localhost:9229' : undefined,
+  endpoint: getConfig().COGNITO_ENDPOINT,
 });
 
 async function signUpCommand(user: SignupUser) {
   const commandArgs = {
-    ClientId: process.env.COGNITO_CLIENT_ID!,
+    ClientId: getConfig().COGNITO_CLIENT_ID,
     Username: user.email,
     Password: decrypt(user.temporaryPassword),
     UserAttributes: [
@@ -38,7 +39,7 @@ async function getUserStatus(email: string) {
   return cognitoClient.send(
     new AdminGetUserCommand({
       Username: email,
-      UserPoolId: process.env.COGNITO_USER_POOL_ID!,
+      UserPoolId: getConfig().COGNITO_USER_POOL_ID,
     }),
   );
 }
@@ -47,7 +48,7 @@ async function resendConfirmation(email: string) {
   authLogger.debug({ email }, 'Resending confirmation code');
   cognitoClient.send(
     new ResendConfirmationCodeCommand({
-      ClientId: process.env.COGNITO_CLIENT_ID!,
+      ClientId: getConfig().COGNITO_CLIENT_ID,
       Username: email,
     }),
   );
@@ -59,7 +60,7 @@ async function initiateAuth(email: string, password: string) {
   const authResp = await cognitoClient.send(
     new InitiateAuthCommand({
       AuthFlow: 'USER_PASSWORD_AUTH',
-      ClientId: process.env.COGNITO_CLIENT_ID!,
+      ClientId: getConfig().COGNITO_CLIENT_ID,
       AuthParameters: {
         USERNAME: email,
         PASSWORD: password,
@@ -74,7 +75,7 @@ async function confirmSignUp(email: string, code: string) {
   authLogger.debug({ email }, 'Confirming signup with Cognito');
   await cognitoClient.send(
     new ConfirmSignUpCommand({
-      ClientId: process.env.COGNITO_CLIENT_ID!,
+      ClientId: getConfig().COGNITO_CLIENT_ID,
       Username: email,
       ConfirmationCode: code,
     }),

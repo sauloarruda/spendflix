@@ -30,8 +30,8 @@
       ],
       "cwd": "${workspaceFolder}/services/auth",
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
-      // "envFile": "${workspaceFolder}/services/auth/.env.test"
+      "internalConsoleOptions": "neverOpen",
+      "envFile": "${workspaceFolder}/services/auth/.env.test"
     },
     {
       "name": "[auth] Watch Tests",
@@ -49,8 +49,8 @@
       ],
       "cwd": "${workspaceFolder}/services/auth",
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
-      // "envFile": "${workspaceFolder}/services/auth/.env.test"
+      "internalConsoleOptions": "neverOpen",
+      "envFile": "${workspaceFolder}/services/auth/.env.test"
     }
   ]
 }

@@ -14,6 +14,7 @@ module.exports = [
       'node_modules/**',
       '.serverless/**',
       'generated/**',
+      'src/__generated__/**',
     ],
   },
 
@@ -45,6 +46,8 @@ module.exports = [
       'class-methods-use-this': 'off',
       'no-underscore-dangle': 'off',
       'import/no-relative-packages': 'off',
+      'import/no-extraneous-dependencies': 'off',
+      'no-use-before-define': 'off',
     },
     settings: {
       'import/resolver': {

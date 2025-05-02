@@ -1,5 +1,4 @@
 import { Onboarding, Prisma } from '../../generated/prisma';
-import { logger } from '../../lib/logger';
 import { components } from '../types/api';
 import getPrisma from './prisma';
 
@@ -24,7 +23,6 @@ async function update(id: string, data: Partial<OnboardingData>) {
     ...(existingOnboarding.data as Prisma.JsonObject),
     ...data,
   };
-  logger.debug({ data }, 'Updating onboarding');
 
   await getPrisma().onboarding.update({
     where: { id },

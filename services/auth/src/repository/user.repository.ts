@@ -1,10 +1,7 @@
 import { User } from '../../generated/prisma';
 import { encrypt, decrypt } from '../../lib/encryption';
-import { logger } from '../../lib/logger';
 import onboardingRepository from './onboarding.repository';
 import getPrisma from './prisma';
-
-const authLogger = logger.child({ module: 'onboarding' });
 
 export type SignupUser = {
   name: string;
@@ -44,7 +41,6 @@ async function startOnboarding(name: string, email: string): Promise<SignupUser>
   const onboarding = { name, startedAt: new Date().toISOString(), step: 1 };
   let user = await findByEmail(email);
   if (!user || !user.temporaryPassword) {
-    authLogger.debug('Saving temporary password');
     const temporaryPassword = generateTemporaryPassword(32);
     const encryptedPassword = encrypt(temporaryPassword);
     const data = {
@@ -55,9 +51,7 @@ async function startOnboarding(name: string, email: string): Promise<SignupUser>
     user = await (user
       ? getPrisma().user.update({ where: { id: user.id }, data })
       : getPrisma().user.create({ data }));
-    authLogger.debug('Temporary password saved successfully');
   }
-  authLogger.debug({ user }, 'SignupUser created');
 
   const lastOnboarding = await onboardingRepository.create(user?.id, onboarding);
 
@@ -70,16 +64,11 @@ async function startOnboarding(name: string, email: string): Promise<SignupUser>
 }
 
 async function getTempPassword(email: string): Promise<string | undefined> {
-  authLogger.info({ email }, 'Retrieving temporary password');
-
   const user = await findByEmail(email);
   if (!user || !user.temporaryPassword) {
-    authLogger.warn({ email }, 'No temporary password found');
     return undefined;
   }
   const decrypted = decrypt(user.temporaryPassword);
-  authLogger.info({ email }, 'Temporary password decrypted successfully');
-  console.log(decrypted);
   return decrypted;
 }
 

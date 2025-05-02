@@ -1,10 +1,10 @@
 import express, { Router } from 'express';
 
-import { logger } from '../../lib/logger';
 import { components } from '../types/api';
 import onboardingRepository from '../repository/onboarding.repository';
+import getLogger from '../../lib/logger';
 
-const onboardingLogger = logger.child({ module: 'onboarding' });
+const onboardingLogger = getLogger().child({ module: 'onboarding' });
 
 export type OnboardingData = components['schemas']['OnboardingData'];
 

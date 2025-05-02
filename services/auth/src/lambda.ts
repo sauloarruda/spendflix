@@ -1,5 +1,6 @@
 import serverless from 'serverless-http';
 import createApp from './app';
+import getConfig from '../lib/config';
 
 const app = createApp();
 
@@ -35,8 +36,7 @@ export const handler = async (
   }
 
   // Add CORS headers
-  response.headers['Access-Control-Allow-Origin'] =
-    process.env.BASE_APP_URL || 'http://localhost:3000';
+  response.headers['Access-Control-Allow-Origin'] = getConfig().BASE_APP_URL;
   response.headers['Access-Control-Allow-Credentials'] = 'true';
   response.headers['Access-Control-Allow-Headers'] =
     'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token';

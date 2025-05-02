@@ -1,4 +1,5 @@
 import pino from 'pino';
+import getConfig from './config';
 
 type LogLevel = 'fatal' | 'error' | 'warn' | 'info' | 'debug' | 'trace';
 
@@ -53,8 +54,14 @@ const censorSensitiveData = (data: unknown): unknown => {
 class Logger {
   private logger: pino.Logger;
 
+  private isOffline: boolean;
+
+  private level: LogLevel;
+
   constructor(options: LoggerOptions) {
     const { service, level = 'info', isOffline = false } = options;
+    this.isOffline = isOffline || false;
+    this.level = level;
 
     this.logger = pino({
       level,
@@ -69,7 +76,7 @@ class Logger {
         : undefined,
       base: {
         service,
-        environment: process.env.NODE_ENV || 'development',
+        environment: getConfig().NODE_ENV,
       },
     });
   }
@@ -116,21 +123,22 @@ class Logger {
   child(bindings: Record<string, unknown>): Logger {
     const childLogger = new Logger({
       service: this.logger.bindings().service as string,
-      level: this.logger.level as LogLevel,
-      isOffline: process.env.IS_OFFLINE === 'true' || process.env.NODE_ENV === 'test',
+      level: this.level,
+      isOffline: this.isOffline,
     });
     childLogger.logger = this.logger.child(bindings);
     return childLogger;
   }
 }
 
-export const createLogger = (options: LoggerOptions): Logger => {
-  return new Logger(options);
-};
+let logger: Logger;
 
-// Default logger instance
-export const logger = createLogger({
-  service: 'spendflix-auth',
-  level: (process.env.LOG_LEVEL as LogLevel) || process.env.IS_OFFLINE ? 'debug' : 'info',
-  isOffline: process.env.IS_OFFLINE === 'true',
-});
+export default function getLogger() {
+  if (!logger)
+    logger = new Logger({
+      service: 'spendflix-auth',
+      level: getConfig().LOG_LEVEL as LogLevel,
+      isOffline: getConfig().IS_OFFLINE === 'true',
+    });
+  return logger;
+}

@@ -9,6 +9,10 @@ generator client {
   output        = "../generated/prisma"
 }
 
+generator fabbrica {
+  provider = "prisma-fabbrica"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")

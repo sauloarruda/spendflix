@@ -1,10 +1,10 @@
 import { UsernameExistsException } from '@aws-sdk/client-cognito-identity-provider';
 import userRepository from '../repository/user.repository';
-import { logger } from '../../lib/logger';
 import cognito from './cognito';
 import onboardingRepository from '../repository/onboarding.repository';
+import getLogger from '../../lib/logger';
 
-const authLogger = logger.child({ module: 'auth' });
+const authLogger = getLogger().child({ module: 'signup' });
 
 export interface ConfirmResult {
   accessToken: string;
@@ -32,12 +32,11 @@ async function signup(name: string, email: string): Promise<{ onboardingUid: str
             message: 'User already confirmed',
             $metadata: { httpStatusCode: 400 },
           });
+        } else if (user.UserStatus === 'UNCONFIRMED') {
+          authLogger.info('User unconfirmed => Resending confirmation code');
+          await cognito.resendConfirmation(email);
+          return { onboardingUid: signupUser.onboardingUid };
         }
-        // else if (user.UserStatus === 'UNCONFIRMED') {
-        //   authLogger.info('User unconfirmed => Resending confirmation code');
-        //   await cognito.resendConfirmation(email);
-        //   return { onboardingUid: user.onboardingUid };
-        // }
       }
 
       authLogger.debug('Deleting temporary password due to error');

@@ -1,14 +1,20 @@
 import request from 'supertest';
+import { faker } from '@faker-js/faker';
 import {
   CognitoIdentityProviderClient,
   InternalErrorException,
   UsernameExistsException,
 } from '@aws-sdk/client-cognito-identity-provider';
+import { Onboarding, User } from '@prisma';
+import {
+  initialize,
+  defineUserFactory,
+  defineOnboardingFactory,
+} from '../src/__generated__/fabbrica';
 import createApp from '../src/app';
-
-process.env.COGNITO_CLIENT_ID = 'test-client-id';
-process.env.COGNITO_USER_POOL_ID = 'test-user-pool-id';
-process.env.ENCRYPTION_SECRET = 'test-secret-key-1234567890123456789012';
+import { paths } from '../src/types/api';
+import { encrypt } from '../lib/encryption';
+import getPrisma from '../src/repository/prisma';
 
 const mockCognitoUsernameExistsException = (userStatus: string) => {
   const mockedCognito = jest
@@ -28,6 +34,8 @@ const mockCognitoUsernameExistsException = (userStatus: string) => {
   CognitoIdentityProviderClient.prototype.send = mockedCognito;
   return mockedCognito;
 };
+
+initialize({ prisma: getPrisma() });
 
 describe('POST /auth/signup', () => {
   const app = createApp();
@@ -49,13 +57,18 @@ describe('POST /auth/signup', () => {
   it('should call Cognito and return 201 on success', async () => {
     const mockedCognito = jest.fn().mockResolvedValue({ User: { Username: 'mocked-user-id' } });
     CognitoIdentityProviderClient.prototype.send = mockedCognito;
+
     const res = await request(app)
       .post('/auth/signup')
-      .send({ name: 'Test User', email: 'test@example.com' });
+      .send({ name: 'Test User', email: faker.internet.email() });
 
     expect(res.status).toBe(201);
+    expect(
+      (res.body as paths['/auth/signup']['post']['responses']['201']['content']['application/json'])
+        .onboardingUid,
+    ).not.toBeNull();
 
-    expect(mockedCognito).toHaveBeenCalled();
+    expect(mockedCognito).toHaveBeenCalledTimes(1);
   });
 
   it('should return 400 when user is already confirmed', async () => {
@@ -63,19 +76,19 @@ describe('POST /auth/signup', () => {
 
     const res = await request(app)
       .post('/auth/signup')
-      .send({ name: 'Test User', email: 'test@example.com' });
+      .send({ name: faker.person.firstName(), email: faker.internet.email() });
 
     expect(res.status).toBe(400);
     expect(res.body).toHaveProperty('error', 'UsernameExistsException');
     expect(mockedCognito).toHaveBeenCalledTimes(2);
   });
 
-  it.skip('should resend confirmation code when user is unconfirmed', async () => {
+  it('should resend confirmation code when user is unconfirmed', async () => {
     const mockedCognito = mockCognitoUsernameExistsException('UNCONFIRMED');
 
     const res = await request(app)
       .post('/auth/signup')
-      .send({ name: 'Test User', email: 'test@example.com' });
+      .send({ name: faker.person.firstName(), email: faker.internet.email() });
 
     expect(res.status).toBe(201);
     expect(mockedCognito).toHaveBeenCalledTimes(3);
@@ -92,7 +105,7 @@ describe('POST /auth/signup', () => {
 
     const res = await request(app)
       .post('/auth/signup')
-      .send({ name: 'Test User', email: 'test@example.com' });
+      .send({ name: faker.person.firstName(), email: faker.internet.email() });
 
     expect(res.status).toBe(500);
     expect(res.body).toHaveProperty('error', 'InternalErrorException');
@@ -100,11 +113,38 @@ describe('POST /auth/signup', () => {
   });
 });
 
-describe.skip('POST /auth/confirm', () => {
+describe('POST /auth/confirm', () => {
   const app = createApp();
+  let user: User;
+  let onboarding: Onboarding;
+  let tokens: {
+    ExpiresIn: number | undefined;
+    AccessToken: string;
+    RefreshToken: string;
+    IdToken: string;
+  };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks();
+
+    user = await defineUserFactory().create({
+      name: faker.person.firstName(),
+      email: faker.internet.email(),
+      temporaryPassword: encrypt(faker.internet.password()),
+    });
+    onboarding = await defineOnboardingFactory({
+      defaultData: {
+        user: {
+          connect: { id: user.id },
+        },
+      },
+    }).create();
+    tokens = {
+      AccessToken: 'x',
+      RefreshToken: 'y',
+      IdToken: 'z',
+      ExpiresIn: 3600,
+    };
   });
 
   it('should return 400 if email or code is missing', async () => {
@@ -118,50 +158,38 @@ describe.skip('POST /auth/confirm', () => {
   });
 
   it('should call Cognito and return 200 on success', async () => {
-    const result = {
-      AccessToken: 'x',
-      RefreshToken: 'y',
-      IdToken: 'z',
-      ExpiresIn: 3600,
-    };
     const mockedCognito = jest.fn().mockResolvedValue({
-      AuthenticationResult: result,
+      AuthenticationResult: tokens,
     });
     CognitoIdentityProviderClient.prototype.send = mockedCognito;
 
     const res = await request(app)
       .post('/auth/confirm')
-      .send({ email: 'test@example.com', code: '123456', onboardingUid: 'x' });
+      .send({ email: user.email, code: '123456', onboardingUid: onboarding.id });
 
     expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty('accessToken', result.AccessToken);
-    expect(res.body).toHaveProperty('refreshToken', result.RefreshToken);
-    expect(res.body).toHaveProperty('idToken', result.IdToken);
-    expect(res.body).toHaveProperty('expiresIn', result.ExpiresIn);
+    expect(res.body).toHaveProperty('accessToken', tokens.AccessToken);
+    expect(res.body).toHaveProperty('refreshToken', tokens.RefreshToken);
+    expect(res.body).toHaveProperty('idToken', tokens.IdToken);
+    expect(res.body).toHaveProperty('expiresIn', tokens.ExpiresIn);
     expect(mockedCognito).toHaveBeenCalledTimes(2);
   });
 
   it('should call Cognito return 200 on success (but without ExpiresIn)', async () => {
-    const result = {
-      AccessToken: 'x',
-      RefreshToken: 'y',
-      IdToken: 'z',
-      ExpiresIn: 3600,
-    };
     const mockedCognito = jest.fn().mockResolvedValue({
-      AuthenticationResult: { ...result, ExpiresIn: undefined },
+      AuthenticationResult: { ...tokens, ExpiresIn: undefined },
     });
     CognitoIdentityProviderClient.prototype.send = mockedCognito;
 
     const res = await request(app)
       .post('/auth/confirm')
-      .send({ email: 'test@example.com', code: '123456' });
+      .send({ email: user.email, code: '123456', onboardingUid: onboarding.id });
 
     expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty('accessToken', result.AccessToken);
-    expect(res.body).toHaveProperty('refreshToken', result.RefreshToken);
-    expect(res.body).toHaveProperty('idToken', result.IdToken);
-    expect(res.body).toHaveProperty('expiresIn', result.ExpiresIn);
+    expect(res.body).toHaveProperty('accessToken', tokens.AccessToken);
+    expect(res.body).toHaveProperty('refreshToken', tokens.RefreshToken);
+    expect(res.body).toHaveProperty('idToken', tokens.IdToken);
+    expect(res.body).toHaveProperty('expiresIn', tokens.ExpiresIn);
     expect(mockedCognito).toHaveBeenCalledTimes(2);
   });
 
@@ -176,7 +204,7 @@ describe.skip('POST /auth/confirm', () => {
 
     const res = await request(app)
       .post('/auth/confirm')
-      .send({ email: 'test@example.com', code: '123456' });
+      .send({ email: user.email, code: '123456', onboardingUid: onboarding.id });
 
     expect(res.status).toBe(500);
     expect(res.body).toHaveProperty('error', 'InternalErrorException');
