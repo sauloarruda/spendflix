@@ -88,3 +88,5 @@ jobs:
           COGNITO_CLIENT_ID: ${{ secrets.COGNITO_CLIENT_ID }}
           ENCRYPTION_SECRET: ${{ secrets.ENCRYPTION_SECRET }}
           BASE_APP_URL: ${{ secrets.BASE_APP_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          LOG_LEVEL: debug
