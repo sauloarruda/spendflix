@@ -37,35 +37,95 @@ generate_secure_string() {
     openssl rand -base64 32 | tr -dc 'a-zA-Z0-9' | head -c 32
 }
 
-# Function to copy .env.example to .env.local if it doesn't exist
+# Function to copy .env.example to .env if it doesn't exist
 copy_env_file() {
     local dir="$1"
     local example_file="$dir/.env.example"
-    local target_file="$dir/.env.local"
+    local target_file="$dir/.env"
     
     if [ -f "$example_file" ]; then
+        # Handle regular .env file
         if [ -f "$target_file" ]; then
             read -p "$(echo -e "${YELLOW}${BOLD}⚠${NC} ${BOLD}$target_file${NC} already exists. Do you want to overwrite it? (y/N) ")" -n 1 -r
             echo
             if [[ ! $REPLY =~ ^[Yy]$ ]]; then
                 print_warning "Skipping $target_file"
-                return
+            else
+                print_step "Creating $target_file from $example_file"
+                cp "$example_file" "$target_file"
+                
+                # If this is the auth service, generate and set the encryption secret
+                if [[ "$dir" == *"services/auth"* ]]; then
+                    print_step "Generating secure encryption key..."
+                    local encryption_key=$(generate_secure_string)
+                    # Use sed to replace the ENCRYPTION_SECRET line
+                    sed -i.bak "s/ENCRYPTION_SECRET=.*/ENCRYPTION_SECRET=$encryption_key/" "$target_file"
+                    rm "$target_file.bak" 2>/dev/null || true
+                    print_success "Generated secure encryption key"
+                fi
+                
+                print_success "Created $target_file"
+            fi
+        else
+            print_step "Creating $target_file from $example_file"
+            cp "$example_file" "$target_file"
+            
+            # If this is the auth service, generate and set the encryption secret
+            if [[ "$dir" == *"services/auth"* ]]; then
+                print_step "Generating secure encryption key..."
+                local encryption_key=$(generate_secure_string)
+                # Use sed to replace the ENCRYPTION_SECRET line
+                sed -i.bak "s/ENCRYPTION_SECRET=.*/ENCRYPTION_SECRET=$encryption_key/" "$target_file"
+                rm "$target_file.bak" 2>/dev/null || true
+                print_success "Generated secure encryption key"
+            fi
+            
+            print_success "Created $target_file"
+        fi
+
+        # Handle .env.test file for auth service
+        if [[ "$dir" == *"services/auth"* ]]; then
+            local test_file="$dir/.env.test"
+            if [ -f "$test_file" ]; then
+                read -p "$(echo -e "${YELLOW}${BOLD}⚠${NC} ${BOLD}$test_file${NC} already exists. Do you want to overwrite it? (y/N) ")" -n 1 -r
+                echo
+                if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+                    print_warning "Skipping $test_file"
+                else
+                    print_step "Creating $test_file from $example_file"
+                    cp "$example_file" "$test_file"
+                    
+                    print_step "Generating secure encryption key for test environment..."
+                    local test_encryption_key=$(generate_secure_string)
+                    sed -i.bak "s/ENCRYPTION_SECRET=.*/ENCRYPTION_SECRET=$test_encryption_key/" "$test_file"
+                    rm "$test_file.bak" 2>/dev/null || true
+                    print_success "Generated secure encryption key for test environment"
+                    
+                    print_step "Modifying DATABASE_URL for test environment..."
+                    sed -i.bak "s/spendflix/spendflix_test/g" "$test_file"
+                    rm "$test_file.bak" 2>/dev/null || true
+                    print_success "Modified DATABASE_URL for test environment"
+                    
+                    print_success "Created $test_file"
+                fi
+            else
+                print_step "Creating $test_file from $example_file"
+                cp "$example_file" "$test_file"
+                
+                print_step "Generating secure encryption key for test environment..."
+                local test_encryption_key=$(generate_secure_string)
+                sed -i.bak "s/ENCRYPTION_SECRET=.*/ENCRYPTION_SECRET=$test_encryption_key/" "$test_file"
+                rm "$test_file.bak" 2>/dev/null || true
+                print_success "Generated secure encryption key for test environment"
+                
+                print_step "Modifying DATABASE_URL for test environment..."
+                sed -i.bak "s/spendflix/spendflix_test/g" "$test_file"
+                rm "$test_file.bak" 2>/dev/null || true
+                print_success "Modified DATABASE_URL for test environment"
+                
+                print_success "Created $test_file"
             fi
         fi
-        print_step "Creating $target_file from $example_file"
-        cp "$example_file" "$target_file"
-        
-        # If this is the auth service, generate and set the encryption secret
-        if [[ "$dir" == *"services/auth"* ]]; then
-            print_step "Generating secure encryption key..."
-            local encryption_key=$(generate_secure_string)
-            # Use sed to replace the ENCRYPTION_SECRET line
-            sed -i.bak "s/ENCRYPTION_SECRET=.*/ENCRYPTION_SECRET=$encryption_key/" "$target_file"
-            rm "$target_file.bak" 2>/dev/null || true
-            print_success "Generated secure encryption key"
-        fi
-        
-        print_success "Created $target_file"
     else
         print_error "$example_file not found"
     fi
