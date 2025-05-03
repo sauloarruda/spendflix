@@ -1,0 +1,17 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Semantic commit message regex pattern
+commit_msg_regex='^(feat|fix|docs|style|refactor|test|chore|ci|build|perf)(\([a-z0-9-]+\))?: .{1,100}$'
+
+# Get the commit message from the file
+commit_msg=$(cat "$1")
+
+# Check if the commit message matches the pattern
+if ! echo "$commit_msg" | grep -qE "$commit_msg_regex"; then
+    echo "Error: Commit message does not follow the semantic commit format."
+    echo "Format: <type>(<scope>): <description>"
+    echo "Types: feat, fix, docs, style, refactor, test, chore, ci, build, perf"
+    echo "Example: feat(auth): add login functionality"
+    exit 1
+fi 
