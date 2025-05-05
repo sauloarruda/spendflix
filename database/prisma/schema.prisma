@@ -1,0 +1,150 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../generated/prisma"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+generator fabbrica {
+  provider = "prisma-fabbrica"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Auth Service Models
+model User {
+  id                Int     @id @default(autoincrement())
+  name              String
+  email             String 
+  temporaryPassword String?
+  cognitoId         String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  onboardings       Onboarding[]
+  accounts          Account[]
+  transactions      Transaction[]
+  sources           Source[]
+
+  @@unique([email])
+  @@map("users")
+}
+
+model Onboarding {
+  id            String @id @default(uuid())
+  userId        Int
+  data          Json @default("{}")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User @relation(fields: [userId], references: [id])
+  
+  @@map("onboardings")
+}
+
+// Transactions Service Models
+enum SourceStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum SourceType {
+  NUBANK_ACCOUNT_CSV
+  NUBANK_CREDIT_CARD_CSV
+  // Future source types can be added here
+  // OPEN_FINANCE_API
+  // GOOGLE_SHEETS
+  // EXCEL_FILE
+}
+
+model Bank {
+  id     String    @id @default(uuid())
+  number String    @unique
+  name   String
+
+  accounts Account[]
+
+  @@index([number])
+  @@map("banks")
+}
+
+model Account {
+  id        String   @id @default(uuid())
+  name      String
+  bankId    String
+  userId    Int
+  color     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bank         Bank         @relation(fields: [bankId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+  transactions Transaction[]
+
+  @@index([userId])
+  @@index([bankId])
+  @@map("accounts")
+}
+
+model Category {
+  id               String     @id @default(uuid())
+  name             String
+  parentCategoryId String?
+  color            String
+
+  parent   Category?  @relation("CategoryHierarchy", fields: [parentCategoryId], references: [id])
+  children Category[] @relation("CategoryHierarchy")
+
+  transactions Transaction[]
+
+  @@index([parentCategoryId])
+  @@map("categories")
+}
+
+model Source {
+  id        String       @id @default(uuid())
+  userId    Int
+  type      SourceType
+  status    SourceStatus @default(PENDING)
+  name      String      // Generic name for the source
+  path      String      // Path or identifier for the source
+  metadata  Json?       // Additional source-specific metadata
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  error     String?
+
+  user         User         @relation(fields: [userId], references: [id])
+  transactions Transaction[]
+
+  @@index([userId])
+  @@index([status])
+  @@map("sources")
+}
+
+model Transaction {
+  id          String   @id @default(uuid())
+  sourceId    String
+  userId      Int
+  accountId   String
+  categoryId  String?
+  date        DateTime
+  description String
+  amount      Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  source    Source    @relation(fields: [sourceId], references: [id])
+  account   Account   @relation(fields: [accountId], references: [id])
+  category  Category? @relation(fields: [categoryId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([accountId])
+  @@index([date])
+  @@index([categoryId])
+  @@map("transactions")
+} 

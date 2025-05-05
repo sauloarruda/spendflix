@@ -15,8 +15,8 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "generate:types": "openapi-typescript ./openapi.yaml --output ./src/types/api.d.ts",
     "cognito:start": "../../scripts/cognito.sh",
-    "prisma:generate": "pnpm prisma generate",
-    "prisma:migrate": "pnpm prisma migrate deploy"
+    "prisma:generate": "cd ../../database && pnpm prisma generate && cd ../services/auth",
+    "prisma:migrate": "cd ../../database && pnpm prisma migrate deploy && cd ../services/auth"
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.470.0",
