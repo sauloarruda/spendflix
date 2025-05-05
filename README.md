@@ -31,7 +31,7 @@ The project follows a detailed Software Requirements Specification (SRS) documen
 - Scalability: Support for 1,000+ concurrent users
 - Code Quality: 90%+ test coverage, TypeScript, strict linting
 
-For the complete SRS document, see [SRS.md](./SRS.md).
+For the complete SRS document, see [SRS.md](./docs/SRS.md).
 
 ## 🚀 Tech Stack
 
