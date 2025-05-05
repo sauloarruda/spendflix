@@ -163,6 +163,15 @@ export interface paths {
                         "application/json": components["schemas"]["OnboardingData"];
                     };
                 };
+                /** @description Unauthorized - Invalid or missing token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["RequestError"];
+                    };
+                };
                 /** @description Onboarding not found for email. */
                 404: {
                     headers: {
@@ -206,6 +215,15 @@ export interface paths {
                 };
                 /** @description Invalid data to update onboarding data. */
                 400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["RequestError"];
+                    };
+                };
+                /** @description Unauthorized - Invalid or missing token. */
+                401: {
                     headers: {
                         [name: string]: unknown;
                     };

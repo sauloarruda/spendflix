@@ -3,6 +3,49 @@ info:
   title: Spendflix Auth Service
   version: 1.0.0
 
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token from Cognito
+
+  schemas:
+    RequestError:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    OnboardingData:
+      type: object
+      properties:
+        startedAt:
+          type: string
+          format: date-time
+        step:
+          type: integer
+        name:
+          type: string
+        goal:
+          type: string
+          enum: [dream, debt]
+        goalDescription:
+          type: string
+        goalValue:
+          type: number
+        banks:
+          type: array
+          items:
+            type: string
+        waitlist:
+          type: boolean
+        finishedAt:
+          type: string
+          format: date-time
+
 paths:
   /auth/signup:
     post:
@@ -98,6 +141,8 @@ paths:
 
   /onboarding/{id}:
     get:
+      security:
+        - BearerAuth: []
       parameters:
         - name: id
           in: path
@@ -112,6 +157,13 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/OnboardingData'
+        '401':
+          description: Unauthorized - Invalid or missing token.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RequestError'
         '404':
           description: Onboarding not found for email.
         '500':
@@ -122,6 +174,8 @@ paths:
                 type: object
                 $ref: '#/components/schemas/RequestError'
     put:
+      security:
+        - BearerAuth: []
       summary: Update onboarding data preserving previous existent information
       parameters:
         - name: id
@@ -139,6 +193,13 @@ paths:
       responses:
         '204':
           description: Onboarding data updated successfully.
+        '401':
+          description: Unauthorized - Invalid or missing token.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/RequestError'
         '400':
           description: Invalid data to update onboarding data.
           content:
@@ -153,39 +214,3 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/RequestError'
-
-components:
-  schemas:
-    RequestError:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
-    OnboardingData:
-      type: object
-      properties:
-        startedAt:
-          type: string
-          format: date-time
-        step:
-          type: integer
-        name:
-          type: string
-        goal:
-          type: string
-          enum: [dream, debt]
-        goalDescription:
-          type: string
-        goalValue:
-          type: number
-        banks:
-          type: array
-          items:
-            type: string
-        waitlist:
-          type: boolean
-        finishedAt:
-          type: string
-          format: date-time

@@ -3,6 +3,7 @@ import express, { Router } from 'express';
 import { components } from '../types/api';
 import onboardingRepository from '../repository/onboarding.repository';
 import getLogger from '../../lib/logger';
+import validateToken from '../middleware/auth.middleware';
 
 const onboardingLogger = getLogger().child({ module: 'onboarding' });
 
@@ -10,6 +11,9 @@ export type OnboardingData = components['schemas']['OnboardingData'];
 
 const onboardingRouter: Router = express.Router();
 export default onboardingRouter;
+
+// Apply auth middleware to all onboarding routes
+onboardingRouter.use(validateToken);
 
 onboardingRouter.get('/:id', async (req, res) => {
   const { id } = req.params;
