@@ -4,6 +4,35 @@ Spendflix is a personal finance companion designed to help people take control o
 
 This project also serves as a technical showcase for a modern, scalable architecture using a monorepo structure and microservices. It includes a web application built with React and Next.js (App Router), user authentication via AWS Cognito, serverless backend with AWS Lambda and API Gateway, and data persistence using PostgreSQL. The infrastructure is deployed with AWS Amplify, and development workflows are optimized with Cursor AI. The architecture is designed with maintainability and scalability in mind, following best practices like domain-driven design (DDD), background processing with queues (e.g., SQS), and modular service boundaries to support future growth.
 
+## 📋 Software Requirements Specification (SRS)
+
+The project follows a detailed Software Requirements Specification (SRS) document that outlines the functional and non-functional requirements. Key aspects include:
+
+### Core Pillars
+
+- **Discover**: Centralize all expenses and income in a single, searchable database
+- **Organize**: Categorize transactions and establish a monthly budget
+- **Achieve**: Set financial goals, track progress, and take actionable steps
+
+### Key Features
+
+- Transaction management with Nubank CSV import support
+- Automatic transaction categorization (70%+ accuracy)
+- Monthly budget tracking and management
+- Financial goal setting and progress tracking
+- Visual dashboards and financial insights
+- Secure user authentication with MFA support
+
+### Technical Requirements
+
+- Performance: Import 2,000 transactions in under 10 seconds
+- Availability: 99.9% monthly uptime
+- Security: AWS Cognito authentication, HTTPS communication
+- Scalability: Support for 1,000+ concurrent users
+- Code Quality: 90%+ test coverage, TypeScript, strict linting
+
+For the complete SRS document, see [SRS.md](./SRS.md).
+
 ## 🚀 Tech Stack
 
 - **Frontend**: Next.js (in `apps/web`)
