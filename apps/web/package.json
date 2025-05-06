@@ -13,6 +13,8 @@
     "generate:types": "openapi-typescript ../../services/auth/openapi.yaml --output ./lib/types/api.d.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.803.0",
+    "@aws-sdk/s3-request-presigner": "^3.803.0",
     "eslint-config-next": "^15.3.1",
     "next": "^15.3.1",
     "primeicons": "^7.0.0",

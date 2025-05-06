@@ -110,9 +110,6 @@ model Source {
   userId    Int
   type      SourceType
   status    SourceStatus @default(PENDING)
-  name      String      // Generic name for the source
-  path      String      // Path or identifier for the source
-  metadata  Json?       // Additional source-specific metadata
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   error     String?
