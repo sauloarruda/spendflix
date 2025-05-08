@@ -36,7 +36,7 @@ describe('Signup', () => {
 
     const res = await signupService.signup(faker.person.firstName(), faker.internet.email());
 
-    expect(res.onboardingUid).not.toBeNull();
+    expect(res.id).not.toBeNull();
     expect(mockedCognito).toHaveBeenCalledTimes(1);
   });
 
