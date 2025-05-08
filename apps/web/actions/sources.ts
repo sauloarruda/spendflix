@@ -1,7 +1,7 @@
 'use server';
 
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { PrismaClient, SourceStatus, SourceType } from '../generated/prisma';
+import { PrismaClient, SourceStatus, SourceType } from '@/prisma';
 
 const Bucket = process.env.AMPLIFY_BUCKET;
 const region = process.env.AWS_REGION;
