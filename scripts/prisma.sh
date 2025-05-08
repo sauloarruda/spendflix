@@ -55,8 +55,8 @@ fi
 
 # Copy generated files
 print_step "Copying generated files to web app..."
-mkdir -p "$WEB_GENERATED_DIR"
-cp -r "$PROJECT_ROOT/database/generated/prisma/"* "$WEB_GENERATED_DIR/"
+mkdir -p "$WEB_GENERATED_DIR/prisma"
+cp -r "$PROJECT_ROOT/database/generated/prisma/"* "$WEB_GENERATED_DIR/prisma/"
 
 if [ $? -eq 0 ]; then
     print_success "Generated files copied successfully"
