@@ -11,16 +11,19 @@ applications:
         build:
           commands:
             - pnpm run build
-            - ./scripts/prisma.sh
+            - pnpm prisma:generate
       artifacts:
         baseDirectory: .next
         files:
           - '**/*'
-          - '../database/generated/**/*'
       cache:
         paths:
           - apps/web/.next/cache/**/*
           - apps/web/node_modules/**/*
+          - apps/web/generated/**/*
           - node_modules/**/*
           - database/generated/**/*
           - database/src/**/*
+          - .pnpm-store/**/*
+          - .next/cache/**/*
+          - .next/static/**/*
