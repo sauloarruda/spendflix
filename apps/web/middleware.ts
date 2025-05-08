@@ -47,7 +47,7 @@ export async function middleware(request: NextRequest) {
   if (request.method !== 'POST') return NextResponse.next();
   console.log('middleware', request.nextUrl.pathname, request.method);
   const path = request.nextUrl.pathname;
-  if (path === '/onboarding/step1') NextResponse.next();
+  if (path === '/onboarding/step1') return NextResponse.next();
 
   const cookie = (await cookies()).get('session')?.value;
   if (!cookie) {
