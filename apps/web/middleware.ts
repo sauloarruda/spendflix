@@ -1,27 +1,40 @@
 // import getLogger from '@/common/logger';
 import { JwtVerifier } from 'aws-jwt-verify';
 import { validateCognitoJwtFields } from 'aws-jwt-verify/cognito-verifier';
+import { Jwk } from 'aws-jwt-verify/jwk';
+import { JwtHeader, JwtPayload } from 'aws-jwt-verify/jwt-model';
+import { JwtVerifierSingleIssuer } from 'aws-jwt-verify/jwt-verifier';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
 
 // const logger = getLogger().child({ module: 'middleware' });
 
-console.log(process.env, 'Environment variables');
-
-const verifier = JwtVerifier.create({
-  issuer: `${process.env.COGNITO_ENDPOINT}/${process.env.COGNITO_USER_POOL_ID}`,
-  audience: null,
-  customJwtCheck: ({ payload }) =>
-    validateCognitoJwtFields(payload, {
-      tokenUse: 'access',
-      clientId: process.env.COGNITO_CLIENT_ID,
-    }),
-});
+type JwtVerifierType = JwtVerifierSingleIssuer<{
+  issuer: string;
+  audience: null;
+  customJwtCheck: ({ payload }: { header: JwtHeader; payload: JwtPayload; jwk: Jwk }) => void;
+}>;
+console.log(process.env, 'getVerifier: Environment variables');
+let verifier: JwtVerifierType;
+function getVerifier(): JwtVerifierType {
+  if (!verifier) {
+    verifier = JwtVerifier.create({
+      issuer: `${process.env.COGNITO_ENDPOINT}/${process.env.COGNITO_USER_POOL_ID}`,
+      audience: null,
+      customJwtCheck: ({ payload }) =>
+        validateCognitoJwtFields(payload, {
+          tokenUse: 'access',
+          clientId: process.env.COGNITO_CLIENT_ID,
+        }),
+    });
+  }
+  return verifier;
+}
 
 async function checkToken(token: string) {
   try {
-    const payload = await verifier.verify(token);
+    const payload = await getVerifier().verify(token);
     console.log({ payload }, 'Decoded JWT');
   } catch (error) {
     console.error({ error }, 'Error verifying token:');
