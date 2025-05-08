@@ -35,6 +35,10 @@ echo -e "\n${BLUE}${BOLD}🚀 Starting Prisma Generation${NC}\n"
 # Generate Prisma client
 print_step "Generating Prisma client..."
 cd "$PROJECT_ROOT/database"
+
+# Force RHEL engine generation
+export PRISMA_CLI_QUERY_ENGINE_TYPE=binary
+export PRISMA_CLI_QUERY_ENGINE_RUNTIME=rhel-openssl-1.0.x
 pnpm prisma generate
 
 if [ $? -eq 0 ]; then

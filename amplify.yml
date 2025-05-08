@@ -6,24 +6,21 @@ applications:
         preBuild:
           commands:
             - npm install -g pnpm
-            - pnpm install --frozen-lockfile
+            - pnpm install --frozen-lockfile --prefer-offline
             - pnpm prisma:generate
         build:
           commands:
             - pnpm run build
-            - pnpm prisma:generate
       artifacts:
         baseDirectory: .next
         files:
           - '**/*'
       cache:
         paths:
-          - apps/web/.next/cache/**/*
-          - apps/web/node_modules/**/*
-          - apps/web/generated/**/*
           - node_modules/**/*
-          - database/generated/**/*
-          - database/src/**/*
           - .pnpm-store/**/*
           - .next/cache/**/*
           - .next/static/**/*
+          - database/generated/**/*
+          - database/src/**/*
+          - apps/web/generated/**/*
