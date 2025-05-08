@@ -15,7 +15,6 @@ type JwtVerifierType = JwtVerifierSingleIssuer<{
   audience: null;
   customJwtCheck: ({ payload }: { header: JwtHeader; payload: JwtPayload; jwk: Jwk }) => void;
 }>;
-console.log(process.env, 'getVerifier: Environment variables');
 let verifier: JwtVerifierType;
 function getVerifier(): JwtVerifierType {
   if (!verifier) {
