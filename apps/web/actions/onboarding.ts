@@ -1,5 +1,5 @@
 'use server';
-import { Onboarding } from 'generated/prisma';
+import { Onboarding } from '@/prisma';
 import getLogger from '@/common/logger';
 import { onboardingService, OnboardingData } from '@/modules/users';
 const logger = getLogger().child({ module: 'onboarding' });

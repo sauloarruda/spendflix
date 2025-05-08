@@ -1,6 +1,6 @@
 'use server';
 import { signupService } from '@/modules/users';
-import { User } from 'generated/prisma';
+import { User } from '@/prisma';
 import { cookies } from 'next/headers';
 
 async function signup(name: string, email: string): Promise<User> {
