@@ -7,9 +7,9 @@ applications:
           commands:
             - npm install -g pnpm
             - pnpm install --frozen-lockfile
+            - pnpm prisma:generate
         build:
           commands:
-            - pnpm prisma:generate
             - pnpm run build
       artifacts:
         baseDirectory: .next
