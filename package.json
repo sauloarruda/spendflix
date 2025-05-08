@@ -19,7 +19,7 @@
     "cognito:setup": "./scripts/cognito.sh --setup",
     "cognito:start": "./scripts/cognito.sh",
     "setup": "./scripts/setup.sh",
-    "prisma:generate": "cd database && pnpm prisma generate && cd ..",
+    "prisma:generate": "./scripts/prisma.sh",
     "prisma:migrate": "cd database && pnpm prisma migrate deploy && cd .."
   },
   "dependencies": {

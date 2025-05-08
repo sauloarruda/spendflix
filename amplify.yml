@@ -15,8 +15,6 @@ applications:
         baseDirectory: .next
         files:
           - '**/*'
-          - '../../database/generated/**/*'
-          - '../../modules/**/*'
       cache:
         paths:
           - apps/web/.next/cache/**/*
@@ -24,3 +22,4 @@ applications:
           - node_modules/**/*
           - database/generated/**/*
           - database/src/**/*
+          - apps/web/generated/**/*

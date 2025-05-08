@@ -25,7 +25,7 @@
       "@/actions/*": ["./actions/*"],
       "@/modules/users": ["../../modules/users/index.ts"],
       "@/common/*": ["../../modules/common/*"],
-      "@/prisma": ["../../database/generated/prisma"]
+      "@/prisma": ["./generated"]
     },
     "baseUrl": "."
   },
