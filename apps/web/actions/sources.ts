@@ -1,8 +1,6 @@
 'use server';
 
-import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { NextRequest, NextResponse } from 'next/server';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { PrismaClient, SourceStatus, SourceType } from '../generated/prisma';
 
 const Bucket = process.env.AMPLIFY_BUCKET;
@@ -42,7 +40,7 @@ async function putSourceFile(file: File) {
   try {
     const source = await new PrismaClient().source.create({
       data: {
-        userId: 1,
+        accountId: '1',
         type: SourceType.NUBANK_ACCOUNT_CSV,
         status: SourceStatus.PENDING,
       },

@@ -1,11 +1,19 @@
-'use client';
-
 import React, { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import Link from 'next/link';
-import { signup, SignupErrorMessages } from '@/lib/dau/auth';
+import { signup } from '@/actions/auth';
 import ApiError from '@/components/ApiError';
+import { updateOnboardingAction } from '@/actions/onboarding';
+
+const SignupErrorMessages = {
+  UsernameExistsException:
+    'Já existe um usuário com o email informado. TODO: Redirecionando para login.',
+  NotAuthorizedException: 'Já existe um usuário com o email informado.',
+  CodeDeliveryFailureException:
+    'Erro ao enviar o código de confirmação. Verifique se o email digitado está correto.',
+  TooManyRequestsException: 'Muitas tentativas, tente novamente mais tarde.',
+};
 
 interface SignupProps {
   onSuccess: (name: string, email: string) => void;
@@ -40,13 +48,13 @@ export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
     if (!validateSignup()) return;
     setLoading(true);
     try {
-      const result = await signup(name, email);
-      if (result.success) {
-        localStorage.setItem('onboardingUid', result.onboardingUid!);
-        onSuccess(name, email);
-      } else if (result.error === SignupErrorMessages.UsernameExistsException)
-        onLoginRedirect(email);
-      else setApiError(result.message);
+      await signup(name, email);
+      updateOnboardingAction(localStorage.getItem('onboardingUid')!, { step: 1 });
+      onSuccess(name, email);
+    } catch (err) {
+      const error = err as Error;
+      if (error.message === SignupErrorMessages.UsernameExistsException) onLoginRedirect(email);
+      else setApiError(error.message);
     } finally {
       setLoading(false);
     }

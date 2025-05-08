@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
-import { getOnboardingData, updateOnboardingStep, OnboardingData } from '@/lib/dau/onboarding';
+import { getOnboardingAction, updateOnboardingAction } from '@/actions/onboarding';
 
 type Step2FormData = {
   goal: 'dream' | 'debt' | '';
@@ -23,25 +23,26 @@ export default function OnboardingStep2() {
     goalValue: undefined,
   });
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    const onboardingUid = localStorage.getItem('onboardingUid');
-    if (onboardingUid) {
-      getOnboardingData(onboardingUid).then((data) => {
-        if (data?.name) {
-          setName(data.name);
-        } else {
-          router.push('/onboarding/step1');
-        }
-        if (data?.goal || data?.goalDescription || data?.goalValue) {
-          setFormData({
-            goal: data.goal || '',
-            goalDescription: data.goalDescription || '',
-            goalValue: data.goalValue || undefined,
-          });
-        }
+    const uid = localStorage.getItem('onboardingUid');
+    if (!uid) return router.push('/onboarding/step1');
+
+    const name = localStorage.getItem('name');
+    setName(name || '');
+
+    const getOnboarding = async () => {
+      const onboarding = await getOnboardingAction(uid);
+      setFormData({
+        goal: onboarding.goal as 'dream' | 'debt',
+        goalDescription: onboarding.goalDescription || '',
+        goalValue: onboarding.goalValue || undefined,
       });
-    } else router.push('/onboarding/step1');
-  }, []);
+    };
+    getOnboarding();
+    setIsLoading(false);
+  }, [router]);
 
   const handleGoalSelect = (goal: 'dream' | 'debt') => {
     setFormData((prev) => ({ ...prev, goal }));
@@ -62,18 +63,29 @@ export default function OnboardingStep2() {
       return;
     }
 
-    const onboardingUid = localStorage.getItem('onboardingUid');
-    if (onboardingUid) {
-      await updateOnboardingStep(onboardingUid, {
-        goal: formData.goal as 'dream' | 'debt',
-        goalDescription: formData.goalDescription,
-        goalValue: formData.goalValue,
-        step: 3,
-      });
+    if (typeof window !== 'undefined') {
+      const onboardingUid = localStorage.getItem('onboardingUid');
+      if (onboardingUid) {
+        await updateOnboardingAction(onboardingUid, {
+          goal: formData.goal as 'dream' | 'debt',
+          goalDescription: formData.goalDescription,
+          goalValue: formData.goalValue,
+          step: 3,
+        });
+      }
     }
 
     router.push('/onboarding/step3');
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <strong className="mb-4">Preparando pra continuar...</strong>
+        <div className="w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <>

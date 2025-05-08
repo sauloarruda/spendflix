@@ -1,8 +1,16 @@
-import { Onboarding, Prisma } from '../../generated/prisma';
-import { components } from '../types/api';
-import getPrisma from './prisma';
+import { Onboarding, Prisma } from '@/prisma';
+import getPrisma from '../common/prisma';
 
-type OnboardingData = components['schemas']['OnboardingData'];
+export type OnboardingData = {
+  step?: number;
+  name?: string;
+  goal?: 'dream' | 'debt';
+  goalDescription?: string;
+  goalValue?: number;
+  banks?: string[];
+  waitlist?: boolean;
+  finishedAt?: string;
+};
 
 async function find(id: string): Promise<Onboarding> {
   return getPrisma().onboarding.findFirstOrThrow({
@@ -10,9 +18,9 @@ async function find(id: string): Promise<Onboarding> {
   });
 }
 
-async function create(userId: number, data: OnboardingData): Promise<Onboarding> {
+async function create(): Promise<Onboarding> {
   return getPrisma().onboarding.create({
-    data: { data, userId },
+    data: { data: { step: 0 } as OnboardingData },
   });
 }
 

@@ -2,22 +2,51 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ConfirmResultTokens } from '@/lib/dau/auth';
 import Signup from '@/components/Signup';
 import Confirm from '@/components/Confirm';
-import Login from '@/components/Login';
-import { updateOnboardingStep, getOnboardingData } from '@/lib/dau/onboarding';
+import { UserTokens } from '@/modules/users';
+import { startOnboardingAction } from '@/actions/onboarding';
 
 export default function Page() {
   const router = useRouter();
   const [step, setStep] = useState<'signup' | 'confirm' | 'login'>('signup');
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const startOnboarding = async () => {
+      console.log('Starting onboarding...');
+      if (!localStorage.getItem('onboardingUid')) {
+        try {
+          const onboarding = await startOnboardingAction();
+          localStorage.setItem('onboardingUid', onboarding.id);
+        } catch (error) {
+          console.error('Error starting onboarding', error);
+        }
+      }
+      console.log('Onboarding completed, setting loading to false');
+      setIsLoading(false);
+    };
+    startOnboarding();
+  }, []);
+
+  console.log('Current loading state:', isLoading);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <strong className="mb-4">Preparando pra começar...</strong>
+        <div className="w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   const handleSignupSuccess = async (responseName: string, responseEmail: string) => {
     setName(responseName);
     setEmail(responseEmail);
     localStorage.setItem('email', responseEmail);
+    localStorage.setItem('name', responseName);
     setStep('confirm');
   };
 
@@ -26,10 +55,7 @@ export default function Page() {
     setStep('login');
   };
 
-  const handleConfirmSuccess = async (tokens: ConfirmResultTokens) => {
-    localStorage.setItem('accessToken', tokens.accessToken);
-    localStorage.setItem('idToken', tokens.idToken);
-    localStorage.setItem('refreshToken', tokens.refreshToken);
+  const handleConfirmSuccess = async () => {
     router.push('/onboarding/step2');
   };
 
@@ -38,14 +64,7 @@ export default function Page() {
       {step === 'signup' && (
         <Signup onSuccess={handleSignupSuccess} onLoginRedirect={handleLoginRedirect} />
       )}
-      {step === 'confirm' && (
-        <Confirm
-          name={name}
-          email={email}
-          onSuccess={handleConfirmSuccess}
-          onResend={() => setStep('signup')}
-        />
-      )}
+      {step === 'confirm' && <Confirm name={name} email={email} onSuccess={handleConfirmSuccess} />}
       {/* {step === 'login' && <Login onSuccess={handleConfirmSuccess} />} */}
     </>
   );

@@ -19,10 +19,6 @@
     },
     "deploy": {
       "dependsOn": ["build"]
-    },
-    "generate:types": {
-      "dependsOn": ["build"],
-      "outputs": ["apps/web/types/api.d.ts", "services/auth/types/api.d.ts"]
     }
   },
   "globalDependencies": ["pnpm-lock.yaml"]

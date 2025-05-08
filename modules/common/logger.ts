@@ -1,12 +1,13 @@
 import pino from 'pino';
-import getConfig from './config';
+import getConfig from '@/common/config';
 
 type LogLevel = 'fatal' | 'error' | 'warn' | 'info' | 'debug' | 'trace';
 
 interface LoggerOptions {
-  service: string;
+  service?: string;
   level?: LogLevel;
   isOffline?: boolean;
+  module?: string;
 }
 
 // List of sensitive field names to censor
@@ -52,6 +53,8 @@ const censorSensitiveData = (data: unknown): unknown => {
 };
 
 class Logger {
+  public bindings: LoggerOptions;
+
   private logger: pino.Logger;
 
   private isOffline: boolean;
@@ -59,6 +62,7 @@ class Logger {
   private level: LogLevel;
 
   constructor(options: LoggerOptions) {
+    this.bindings = options;
     const { service, level = 'info', isOffline = false } = options;
     this.isOffline = isOffline || false;
     this.level = level;
@@ -70,7 +74,9 @@ class Logger {
             target: 'pino-pretty',
             options: {
               colorize: true,
-              translateTime: 'SYS:standard',
+              // translateTime: 'SYS:standard',
+              levelFirst: true,
+              ignore: 'time,hostname,pid',
             },
           }
         : undefined,
@@ -120,13 +126,13 @@ class Logger {
     this.logger.trace(censoredObj, censoredMsg, ...censoredArgs);
   }
 
-  child(bindings: Record<string, unknown>): Logger {
+  child(options: LoggerOptions): Logger {
     const childLogger = new Logger({
-      service: this.logger.bindings().service as string,
+      service: this.bindings.service as string,
       level: this.level,
       isOffline: this.isOffline,
     });
-    childLogger.logger = this.logger.child(bindings);
+    childLogger.logger = this.logger.child(options);
     return childLogger;
   }
 }

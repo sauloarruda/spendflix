@@ -1,6 +1,6 @@
 import crypto from 'crypto';
-import getLogger from './logger';
-import getConfig from './config';
+import getConfig from '@/common/config';
+import getLogger from '@/common/logger';
 
 const authLogger = getLogger().child({ module: 'encryption' });
 

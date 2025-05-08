@@ -3,7 +3,7 @@
 # Get the absolute path of the script's directory
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-AUTH_SERVICE_DIR="$PROJECT_ROOT/services/auth"
+CONFIG_DIR="$PROJECT_ROOT/config"
 
 # Colors and styles
 GREEN='\033[0;32m'
@@ -49,18 +49,18 @@ extract_json_value() {
     echo "$json" | jq -r "$path"
 }
 
-# Function to write environment variables to .env.local
+# Function to write environment variables to .env
 write_env_variables() {
     local pool_id="$1"
     local client_id="$2"
-    local env_file="$AUTH_SERVICE_DIR/.env.local"
+    local env_file="$CONFIG_DIR/.env"
     local temp_file="$env_file.tmp"
     
     # Create temp file with new values
     echo "COGNITO_USER_POOL_ID=$pool_id" > "$temp_file"
     echo "COGNITO_CLIENT_ID=$client_id" >> "$temp_file"
     
-    # If .env.local exists, preserve other variables
+    # If .env exists, preserve other variables
     if [ -f "$env_file" ]; then
         # Read existing file and preserve other variables
         while IFS= read -r line; do
@@ -91,14 +91,14 @@ fi
 if [ "$1" == "--setup" ]; then
     echo -e "\n${BLUE}${BOLD}🔐 Setting up Cognito${NC}\n"
     
-    # Check if auth service directory exists
-    if [ ! -d "$AUTH_SERVICE_DIR" ]; then
-        print_error "Auth service directory not found at $AUTH_SERVICE_DIR"
+    # Check if config service directory exists
+    if [ ! -d "$CONFIG_DIR" ]; then
+        print_error "Config directory not found at $CONFIG_DIR"
         exit 1
     fi
     
     # Start cognito-local
-    cd "$AUTH_SERVICE_DIR"
+    cd "$CONFIG_DIR"
     
     # Check if cognito-local is installed
     if ! pnpm list cognito-local &> /dev/null; then
@@ -142,7 +142,7 @@ if [ "$1" == "--setup" ]; then
     echo -e "${DIM}Client ID:${NC} ${BOLD}$COGNITO_CLIENT_ID${NC}"
 else
     # Regular execution mode
-    cd "$AUTH_SERVICE_DIR"
+    cd "$CONFIG_DIR"
     print_step "Starting cognito-local..."
     CODE=123123 pnpm cognito-local
 fi 

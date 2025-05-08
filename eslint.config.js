@@ -2,7 +2,7 @@ const { FlatCompat } = require('@eslint/eslintrc');
 const path = require('path');
 
 const compat = new FlatCompat({ baseDirectory: __dirname });
-const prettierConfig = require('../../.prettierrc.json');
+const prettierConfig = require('./.prettierrc.json');
 
 module.exports = [
   {
@@ -56,7 +56,9 @@ module.exports = [
           paths: ['lib', 'generated/prisma', 'src'],
           extensions: ['.js', '.ts', '.d.ts', '.tsx'],
           alias: {
-            '@/prisma': './generated/prisma',
+            '@/prisma': './database/generated/prisma',
+            '@/fabbrica': 'database/src/__generated__/fabbrica',
+            // '@/common': './modules/common',
           },
         },
       },

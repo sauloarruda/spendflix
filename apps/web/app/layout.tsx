@@ -14,7 +14,7 @@ export default function RootLayout({
         <head>
           <title>Spendflix - Descubra, Organize, Realize</title>
         </head>
-        <body>{children}</body>
+        <body suppressHydrationWarning>{children}</body>
       </html>
     </PrimeReactProvider>
   );

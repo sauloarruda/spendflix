@@ -1,16 +1,33 @@
-'use client';
-
 import React, { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import { confirm, ConfirmResultTokens, signup } from '@/lib/dau/auth';
+import { confirm, signup } from '@/actions/auth';
 import ApiError from '@/components/ApiError';
+import { UserTokens } from '@/modules/users';
+import { updateOnboardingAction } from '@/actions/onboarding';
 
 interface ConfirmProps {
   name: string;
   email: string;
-  onSuccess: (tokens: ConfirmResultTokens) => void;
-  onResend: () => void;
+  onSuccess: () => void;
+}
+
+const ConfirmErrorMessages = {
+  ExpiredCodeException:
+    'O código de confirmação digitado está expirado. Verifique seu email novamente ou solicite um novo código.',
+  UserNotFoundException: 'O email cadastrado não foi encontrado.',
+  NotAuthorizedException:
+    'Já existe um usuário com o email informado. TODO: Redirecionando para login.',
+  CodeMismatchException:
+    'O código de confirmação é inválido. Verifique seu email novamente ou solicite um novo código.',
+};
+
+function translateError(err: unknown): string {
+  const error = err as Error;
+  return (
+    ConfirmErrorMessages[error.name as keyof typeof ConfirmErrorMessages] ??
+    'Ocorreu um erro ao confirmar o email.'
+  );
 }
 
 export default function Confirm({ name, email, onSuccess }: ConfirmProps) {
@@ -38,9 +55,11 @@ export default function Confirm({ name, email, onSuccess }: ConfirmProps) {
     if (!validateCode()) return;
     setLoading(true);
     try {
-      const result = await confirm(email, code, localStorage.getItem('onboardingUid')!);
-      if (result.success) onSuccess(result.tokens!);
-      else setApiError(result.message);
+      const result = await confirm(email, code);
+      updateOnboardingAction(localStorage.getItem('onboardingUid')!, { step: 2 });
+      onSuccess();
+    } catch (error) {
+      setApiError(translateError(error));
     } finally {
       setLoading(false);
     }
@@ -50,7 +69,8 @@ export default function Confirm({ name, email, onSuccess }: ConfirmProps) {
     setLoading(true);
     try {
       const result = await signup(name, email);
-      if (!result.success) setApiError(result.message);
+    } catch (error) {
+      setApiError(translateError(error));
     } finally {
       setLoading(false);
     }

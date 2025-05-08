@@ -2,29 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { updateOnboardingStep, getOnboardingData } from '@/lib/dau/onboarding';
+import { getOnboardingAction, updateOnboardingAction } from '@/actions/onboarding';
 
 export default function WaitlistPage() {
   const router = useRouter();
   const [name, setName] = useState<string>('');
 
   useEffect(() => {
-    const email = localStorage.getItem('email');
-    if (!email) {
-      router.push('/onboarding/step1');
-      return;
-    }
-
+    if (localStorage.getItem('onboardingUid') === null) return router.push('/onboarding/step1');
     const updateWaitlistStatus = async () => {
-      const existingData = await getOnboardingData(email);
-      if (!existingData) {
-        router.push('/onboarding/step1');
-        return;
-      }
-
-      setName(existingData.name || '');
-      await updateOnboardingStep(email, {
-        ...existingData,
+      await updateOnboardingAction(localStorage.getItem('onboardingUid')!, {
         waitlist: true,
         finishedAt: new Date().toISOString(),
       });

@@ -6,22 +6,24 @@ import {
   ResendConfirmationCodeCommand,
   SignUpCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
-import getLogger from '../../lib/logger';
-import { SignupUser } from '../repository/user.repository';
-import { decrypt } from '../../lib/encryption';
-import getConfig from '../../lib/config';
+import getLogger from '@/common/logger';
+import { decrypt } from '@/common/encryption';
+import getConfig from '@/common/config';
+import { User } from '@/prisma';
 
 const authLogger = getLogger().child({ module: 'cognito' });
 
+authLogger.info({ endpoint: getConfig().COGNITO_ENDPOINT }, 'Endpoint');
 const cognitoClient = new CognitoIdentityProviderClient({
   endpoint: getConfig().COGNITO_ENDPOINT,
 });
 
-async function signUpCommand(user: SignupUser) {
+async function signUpCommand(user: User) {
+  authLogger.info({ endpoint: cognitoClient.config.endpoint }, 'Client');
   const commandArgs = {
     ClientId: getConfig().COGNITO_CLIENT_ID,
     Username: user.email,
-    Password: decrypt(user.temporaryPassword),
+    Password: decrypt(user.temporaryPassword ?? ''),
     UserAttributes: [
       { Name: 'email', Value: user.email },
       { Name: 'name', Value: user.name },

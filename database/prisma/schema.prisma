@@ -25,8 +25,6 @@ model User {
 
   onboardings       Onboarding[]
   accounts          Account[]
-  transactions      Transaction[]
-  sources           Source[]
 
   @@unique([email])
   @@map("users")
@@ -34,17 +32,16 @@ model User {
 
 model Onboarding {
   id            String @id @default(uuid())
-  userId        Int
+  userId        Int?
   data          Json @default("{}")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  user          User @relation(fields: [userId], references: [id])
+  user          User? @relation(fields: [userId], references: [id])
   
   @@map("onboardings")
 }
 
-// Transactions Service Models
 enum SourceStatus {
   PENDING
   PROCESSING
@@ -55,15 +52,10 @@ enum SourceStatus {
 enum SourceType {
   NUBANK_ACCOUNT_CSV
   NUBANK_CREDIT_CARD_CSV
-  // Future source types can be added here
-  // OPEN_FINANCE_API
-  // GOOGLE_SHEETS
-  // EXCEL_FILE
 }
 
 model Bank {
-  id     String    @id @default(uuid())
-  number String    @unique
+  number String    @id
   name   String
 
   accounts Account[]
@@ -74,19 +66,20 @@ model Bank {
 
 model Account {
   id        String   @id @default(uuid())
-  name      String
-  bankId    String
+  bankNumber    String
   userId    Int
+  name      String
   color     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  bank         Bank         @relation(fields: [bankId], references: [id])
+  bank         Bank         @relation(fields: [bankNumber], references: [number])
   user         User         @relation(fields: [userId], references: [id])
   transactions Transaction[]
+  sources      Source[]
 
   @@index([userId])
-  @@index([bankId])
+  @@index([bankNumber])
   @@map("accounts")
 }
 
@@ -107,41 +100,36 @@ model Category {
 
 model Source {
   id        String       @id @default(uuid())
-  userId    Int
+  accountId String
   type      SourceType
   status    SourceStatus @default(PENDING)
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   error     String?
 
-  user         User         @relation(fields: [userId], references: [id])
+  account      Account      @relation(fields: [accountId], references: [id])
   transactions Transaction[]
 
-  @@index([userId])
-  @@index([status])
+  @@index([accountId])
   @@map("sources")
 }
 
 model Transaction {
   id          String   @id @default(uuid())
   sourceId    String
-  userId      Int
   accountId   String
   categoryId  String?
   date        DateTime
   description String
-  amount      Float
+  amount      Decimal
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   source    Source    @relation(fields: [sourceId], references: [id])
   account   Account   @relation(fields: [accountId], references: [id])
   category  Category? @relation(fields: [categoryId], references: [id])
-  user      User      @relation(fields: [userId], references: [id])
 
-  @@index([userId])
   @@index([accountId])
-  @@index([date])
   @@index([categoryId])
   @@map("transactions")
 } 

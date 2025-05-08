@@ -1,5 +1,5 @@
-import getConfig from './config';
-import { encrypt, decrypt } from './encryption';
+import { encrypt, decrypt } from '@/common/encryption';
+import getConfig from '@/common/config';
 
 describe('Encryption Utility', () => {
   describe('encrypt', () => {

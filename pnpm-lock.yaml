@@ -7,19 +7,62 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@aws-sdk/client-cognito-identity-provider':
+        specifier: ^3.470.0
+        version: 3.797.0
+      '@prisma/client':
+        specifier: 6.7.0
+        version: 6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3)
+      aws-jwt-verify:
+        specifier: ^5.1.0
+        version: 5.1.0
+      dotenv:
+        specifier: ^16.5.0
+        version: 16.5.0
+      pino:
+        specifier: ^9.6.0
+        version: 9.6.0
+      pino-pretty:
+        specifier: ^13.0.0
+        version: 13.0.0
+      prisma:
+        specifier: ^6.7.0
+        version: 6.7.0(typescript@5.8.3)
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.3.1
         version: 3.3.1
+      '@faker-js/faker':
+        specifier: ^9.7.0
+        version: 9.7.0
+      '@quramy/prisma-fabbrica':
+        specifier: ^2.2.3
+        version: 2.2.3(@prisma/client@6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3))(typescript@5.8.3)
+      '@types/jest':
+        specifier: ^29.5.2
+        version: 29.5.14
+      '@types/node':
+        specifier: ^22.15.2
+        version: 22.15.3
+      '@types/yamljs':
+        specifier: ^0.2.34
+        version: 0.2.34
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.31.0
         version: 8.31.0(@typescript-eslint/parser@8.31.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)
       '@typescript-eslint/parser':
         specifier: ^8.31.0
         version: 8.31.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)
+      cognito-local:
+        specifier: ^5.0.0
+        version: 5.0.0
       danger:
         specifier: ^13.0.4
         version: 13.0.4
+      esbuild:
+        specifier: ^0.25.3
+        version: 0.25.3
       eslint:
         specifier: ^9.25.1
         version: 9.25.1(jiti@2.4.2)
@@ -41,12 +84,18 @@ importers:
       husky:
         specifier: ^9.1.7
         version: 9.1.7
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@22.15.3)(ts-node@10.9.2(@types/node@22.15.3)(typescript@5.8.3))
       lint-staged:
         specifier: ^15.5.1
         version: 15.5.1
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
+      ts-jest:
+        specifier: ^29.1.1
+        version: 29.3.2(@babel/core@7.26.10)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.10))(esbuild@0.25.3)(jest@29.7.0(@types/node@22.15.3)(ts-node@10.9.2(@types/node@22.15.3)(typescript@5.8.3)))(typescript@5.8.3)
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.15.3)(typescript@5.8.3)
@@ -59,24 +108,42 @@ importers:
 
   apps/web:
     dependencies:
+      '@aws-sdk/client-cognito-identity-provider':
+        specifier: ^3.470.0
+        version: 3.797.0
       '@aws-sdk/client-s3':
         specifier: ^3.803.0
         version: 3.803.0
       '@aws-sdk/s3-request-presigner':
         specifier: ^3.803.0
         version: 3.803.0
+      '@prisma/client':
+        specifier: 6.7.0
+        version: 6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3)
+      dotenv:
+        specifier: ^16.5.0
+        version: 16.5.0
       eslint-config-next:
         specifier: ^15.3.1
         version: 15.3.1(eslint-plugin-import-x@4.11.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)
       next:
         specifier: ^15.3.1
-        version: 15.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 15.3.1(@babel/core@7.26.10)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      pino:
+        specifier: ^9.6.0
+        version: 9.6.0
+      pino-pretty:
+        specifier: ^13.0.0
+        version: 13.0.0
       primeicons:
         specifier: ^7.0.0
         version: 7.0.0
       primereact:
         specifier: ^10.9.5
         version: 10.9.5(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      prisma:
+        specifier: ^6.7.0
+        version: 6.7.0(typescript@5.8.3)
       react:
         specifier: ^19.1.0
         version: 19.1.0
@@ -113,94 +180,6 @@ importers:
         version: 4.1.4
       typescript:
         specifier: ^5.8.3
-        version: 5.8.3
-
-  services/auth:
-    dependencies:
-      '@aws-sdk/client-cognito-identity-provider':
-        specifier: ^3.470.0
-        version: 3.797.0
-      '@prisma/client':
-        specifier: 6.7.0
-        version: 6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3)
-      dotenv:
-        specifier: ^16.5.0
-        version: 16.5.0
-      express:
-        specifier: ^4.18.2
-        version: 4.21.2
-      express-openapi-validator:
-        specifier: ^5.4.9
-        version: 5.4.9(express@4.21.2)
-      pino:
-        specifier: ^9.6.0
-        version: 9.6.0
-      pino-pretty:
-        specifier: ^13.0.0
-        version: 13.0.0
-      prisma:
-        specifier: ^6.7.0
-        version: 6.7.0(typescript@5.8.3)
-      serverless:
-        specifier: ^4.14.1
-        version: 4.14.1
-      serverless-http:
-        specifier: ^3.2.0
-        version: 3.2.0
-    devDependencies:
-      '@faker-js/faker':
-        specifier: ^9.7.0
-        version: 9.7.0
-      '@quramy/prisma-fabbrica':
-        specifier: ^2.2.3
-        version: 2.2.3(@prisma/client@6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3))(typescript@5.8.3)
-      '@serverless/typescript':
-        specifier: ^4.11.1
-        version: 4.11.1
-      '@types/express':
-        specifier: ^4.17.21
-        version: 4.17.21
-      '@types/jest':
-        specifier: ^29.5.2
-        version: 29.5.14
-      '@types/node':
-        specifier: ^22.15.2
-        version: 22.15.3
-      '@types/supertest':
-        specifier: ^6.0.3
-        version: 6.0.3
-      '@types/yamljs':
-        specifier: ^0.2.34
-        version: 0.2.34
-      cognito-local:
-        specifier: ^5.0.0
-        version: 5.0.0
-      esbuild:
-        specifier: ^0.25.3
-        version: 0.25.3
-      jest:
-        specifier: ^29.7.0
-        version: 29.7.0(@types/node@22.15.3)(ts-node@10.9.2(@types/node@22.15.3)(typescript@5.8.3))
-      openapi-typescript:
-        specifier: ^7.6.1
-        version: 7.6.1(typescript@5.8.3)
-      serverless-esbuild:
-        specifier: ^1.55.0
-        version: 1.55.0(esbuild@0.25.3)
-      serverless-offline:
-        specifier: ^14.4.0
-        version: 14.4.0(serverless@4.14.1)
-      supertest:
-        specifier: ^7.1.0
-        version: 7.1.0
-      ts-jest:
-        specifier: ^29.1.1
-        version: 29.3.2(@babel/core@7.26.10)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.10))(esbuild@0.25.3)(jest@29.7.0(@types/node@22.15.3)(ts-node@10.9.2(@types/node@22.15.3)(typescript@5.8.3)))(typescript@5.8.3)
-      ts-node:
-        specifier: ^10.9.2
-        version: 10.9.2(@types/node@22.15.3)(typescript@5.8.3)
-      typescript:
-        specifier: ^5.2.2
         version: 5.8.3
 
   services/transactions:
@@ -1681,10 +1660,6 @@ packages:
     resolution: {integrity: sha512-8smPlwhga22pwl23fM5ew4T9vfLUCeFXlcqNOCD5M5h8VmNPNUE9j6bQSuRXpDSV11L/E/SwEBQuW8hr6+nS1A==}
     engines: {node: '>=18.0.0'}
 
-  '@smithy/core@3.2.0':
-    resolution: {integrity: sha512-k17bgQhVZ7YmUvA8at4af1TDpl0NDMBuBKJl8Yg0nrefwmValU+CnA5l/AriVdQNthU/33H3nK71HrLgqOPr1Q==}
-    engines: {node: '>=18.0.0'}
-
   '@smithy/core@3.3.0':
     resolution: {integrity: sha512-r6gvs5OfRq/w+9unPm7B3po4rmWaGh0CIL/OwHntGGux7+RhOOZLGuurbeMgWV6W55ZuyMTypJLeH0vn/ZRaWQ==}
     engines: {node: '>=18.0.0'}
@@ -1749,16 +1724,8 @@ packages:
     resolution: {integrity: sha512-hAfEXm1zU+ELvucxqQ7I8SszwQ4znWMbNv6PLMndN83JJN41EPuS93AIyh2N+gJ6x8QFhzSO6b7q2e6oClDI8A==}
     engines: {node: '>=18.0.0'}
 
-  '@smithy/middleware-endpoint@4.1.0':
-    resolution: {integrity: sha512-xhLimgNCbCzsUppRTGXWkZywksuTThxaIB0HwbpsVLY5sceac4e1TZ/WKYqufQLaUy+gUSJGNdwD2jo3cXL0iA==}
-    engines: {node: '>=18.0.0'}
-
   '@smithy/middleware-endpoint@4.1.1':
     resolution: {integrity: sha512-z5RmcHxjvScL+LwEDU2mTNCOhgUs4lu5PGdF1K36IPRmUHhNFxNxgenSB7smyDiYD4vdKQ7CAZtG5cUErqib9w==}
-    engines: {node: '>=18.0.0'}
-
-  '@smithy/middleware-retry@4.1.0':
-    resolution: {integrity: sha512-2zAagd1s6hAaI/ap6SXi5T3dDwBOczOMCSkkYzktqN1+tzbk1GAsHNAdo/1uzxz3Ky02jvZQwbi/vmDA6z4Oyg==}
     engines: {node: '>=18.0.0'}
 
   '@smithy/middleware-retry@4.1.2':
@@ -1813,10 +1780,6 @@ packages:
     resolution: {integrity: sha512-4t5WX60sL3zGJF/CtZsUQTs3UrZEDO2P7pEaElrekbLqkWPYkgqNW1oeiNYC6xXifBnT9dVBOnNQRvOE9riU9w==}
     engines: {node: '>=18.0.0'}
 
-  '@smithy/smithy-client@4.2.0':
-    resolution: {integrity: sha512-Qs65/w30pWV7LSFAez9DKy0Koaoh3iHhpcpCCJ4waj/iqwsuSzJna2+vYwq46yBaqO5ZbP9TjUsATUNxrKeBdw==}
-    engines: {node: '>=18.0.0'}
-
   '@smithy/smithy-client@4.2.1':
     resolution: {integrity: sha512-fbniZef60QdsBc4ZY0iyI8xbFHIiC/QRtPi66iE4ufjiE/aaz7AfUXzcWMkpO8r+QhLeNRIfmPchIG+3/QDZ6g==}
     engines: {node: '>=18.0.0'}
@@ -1853,16 +1816,8 @@ packages:
     resolution: {integrity: sha512-L1RBVzLyfE8OXH+1hsJ8p+acNUSirQnWQ6/EgpchV88G6zGBTDPdXiiExei6Z1wR2RxYvxY/XLw6AMNCCt8H3w==}
     engines: {node: '>=18.0.0'}
 
-  '@smithy/util-defaults-mode-browser@4.0.8':
-    resolution: {integrity: sha512-ZTypzBra+lI/LfTYZeop9UjoJhhGRTg3pxrNpfSTQLd3AJ37r2z4AXTKpq1rFXiiUIJsYyFgNJdjWRGP/cbBaQ==}
-    engines: {node: '>=18.0.0'}
-
   '@smithy/util-defaults-mode-browser@4.0.9':
     resolution: {integrity: sha512-B8j0XsElvyhv6+5hlFf6vFV/uCSyLKcInpeXOGnOImX2mGXshE01RvPoGipTlRpIk53e6UfYj7WdDdgbVfXDZw==}
-    engines: {node: '>=18.0.0'}
-
-  '@smithy/util-defaults-mode-node@4.0.8':
-    resolution: {integrity: sha512-Rgk0Jc/UDfRTzVthye/k2dDsz5Xxs9LZaKCNPgJTRyoyBoeiNCnHsYGOyu1PKN+sDyPnJzMOz22JbwxzBp9NNA==}
     engines: {node: '>=18.0.0'}
 
   '@smithy/util-defaults-mode-node@4.0.9':
@@ -2479,6 +2434,10 @@ packages:
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
+
+  aws-jwt-verify@5.1.0:
+    resolution: {integrity: sha512-98ioOBMyrLU5jW5rPvkJo20XlNB2rAX3tZR3BM6AamfBkOoSRLV1EyGkbgHQzgFOWyQ7yV8+tce6M24rOpMkgw==}
+    engines: {node: '>=18.0.0'}
 
   aws-sdk@2.1692.0:
     resolution: {integrity: sha512-x511uiJ/57FIsbgUe5csJ13k3uzu25uWQE+XqfBis/sB0SFoiElJWXRkgEAUh0U6n40eT3ay5Ue4oPkRMu1LYw==}
@@ -5975,29 +5934,29 @@ snapshots:
       '@aws-sdk/util-user-agent-browser': 3.775.0
       '@aws-sdk/util-user-agent-node': 3.796.0
       '@smithy/config-resolver': 4.1.0
-      '@smithy/core': 3.2.0
+      '@smithy/core': 3.3.0
       '@smithy/fetch-http-handler': 5.0.2
       '@smithy/hash-node': 4.0.2
       '@smithy/invalid-dependency': 4.0.2
       '@smithy/middleware-content-length': 4.0.2
-      '@smithy/middleware-endpoint': 4.1.0
-      '@smithy/middleware-retry': 4.1.0
+      '@smithy/middleware-endpoint': 4.1.1
+      '@smithy/middleware-retry': 4.1.2
       '@smithy/middleware-serde': 4.0.3
       '@smithy/middleware-stack': 4.0.2
       '@smithy/node-config-provider': 4.0.2
       '@smithy/node-http-handler': 4.0.4
       '@smithy/protocol-http': 5.1.0
-      '@smithy/smithy-client': 4.2.0
+      '@smithy/smithy-client': 4.2.1
       '@smithy/types': 4.2.0
       '@smithy/url-parser': 4.0.2
       '@smithy/util-base64': 4.0.0
       '@smithy/util-body-length-browser': 4.0.0
       '@smithy/util-body-length-node': 4.0.0
-      '@smithy/util-defaults-mode-browser': 4.0.8
-      '@smithy/util-defaults-mode-node': 4.0.8
+      '@smithy/util-defaults-mode-browser': 4.0.9
+      '@smithy/util-defaults-mode-node': 4.0.9
       '@smithy/util-endpoints': 3.0.2
       '@smithy/util-middleware': 4.0.2
-      '@smithy/util-retry': 4.0.2
+      '@smithy/util-retry': 4.0.3
       '@smithy/util-utf8': 4.0.0
       tslib: 2.8.1
     transitivePeerDependencies:
@@ -8097,17 +8056,6 @@ snapshots:
       '@smithy/util-middleware': 4.0.2
       tslib: 2.8.1
 
-  '@smithy/core@3.2.0':
-    dependencies:
-      '@smithy/middleware-serde': 4.0.3
-      '@smithy/protocol-http': 5.1.0
-      '@smithy/types': 4.2.0
-      '@smithy/util-body-length-browser': 4.0.0
-      '@smithy/util-middleware': 4.0.2
-      '@smithy/util-stream': 4.2.0
-      '@smithy/util-utf8': 4.0.0
-      tslib: 2.8.1
-
   '@smithy/core@3.3.0':
     dependencies:
       '@smithy/middleware-serde': 4.0.3
@@ -8210,17 +8158,6 @@ snapshots:
       '@smithy/types': 4.2.0
       tslib: 2.8.1
 
-  '@smithy/middleware-endpoint@4.1.0':
-    dependencies:
-      '@smithy/core': 3.3.0
-      '@smithy/middleware-serde': 4.0.3
-      '@smithy/node-config-provider': 4.0.2
-      '@smithy/shared-ini-file-loader': 4.0.2
-      '@smithy/types': 4.2.0
-      '@smithy/url-parser': 4.0.2
-      '@smithy/util-middleware': 4.0.2
-      tslib: 2.8.1
-
   '@smithy/middleware-endpoint@4.1.1':
     dependencies:
       '@smithy/core': 3.3.0
@@ -8231,18 +8168,6 @@ snapshots:
       '@smithy/url-parser': 4.0.2
       '@smithy/util-middleware': 4.0.2
       tslib: 2.8.1
-
-  '@smithy/middleware-retry@4.1.0':
-    dependencies:
-      '@smithy/node-config-provider': 4.0.2
-      '@smithy/protocol-http': 5.1.0
-      '@smithy/service-error-classification': 4.0.2
-      '@smithy/smithy-client': 4.2.1
-      '@smithy/types': 4.2.0
-      '@smithy/util-middleware': 4.0.2
-      '@smithy/util-retry': 4.0.3
-      tslib: 2.8.1
-      uuid: 9.0.1
 
   '@smithy/middleware-retry@4.1.2':
     dependencies:
@@ -8326,16 +8251,6 @@ snapshots:
       '@smithy/util-utf8': 4.0.0
       tslib: 2.8.1
 
-  '@smithy/smithy-client@4.2.0':
-    dependencies:
-      '@smithy/core': 3.3.0
-      '@smithy/middleware-endpoint': 4.1.1
-      '@smithy/middleware-stack': 4.0.2
-      '@smithy/protocol-http': 5.1.0
-      '@smithy/types': 4.2.0
-      '@smithy/util-stream': 4.2.0
-      tslib: 2.8.1
-
   '@smithy/smithy-client@4.2.1':
     dependencies:
       '@smithy/core': 3.3.0
@@ -8384,30 +8299,12 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@smithy/util-defaults-mode-browser@4.0.8':
-    dependencies:
-      '@smithy/property-provider': 4.0.2
-      '@smithy/smithy-client': 4.2.1
-      '@smithy/types': 4.2.0
-      bowser: 2.11.0
-      tslib: 2.8.1
-
   '@smithy/util-defaults-mode-browser@4.0.9':
     dependencies:
       '@smithy/property-provider': 4.0.2
       '@smithy/smithy-client': 4.2.1
       '@smithy/types': 4.2.0
       bowser: 2.11.0
-      tslib: 2.8.1
-
-  '@smithy/util-defaults-mode-node@4.0.8':
-    dependencies:
-      '@smithy/config-resolver': 4.1.0
-      '@smithy/credential-provider-imds': 4.0.2
-      '@smithy/node-config-provider': 4.0.2
-      '@smithy/property-provider': 4.0.2
-      '@smithy/smithy-client': 4.2.1
-      '@smithy/types': 4.2.0
       tslib: 2.8.1
 
   '@smithy/util-defaults-mode-node@4.0.9':
@@ -9084,6 +8981,8 @@ snapshots:
   available-typed-arrays@1.0.7:
     dependencies:
       possible-typed-array-names: 1.1.0
+
+  aws-jwt-verify@5.1.0: {}
 
   aws-sdk@2.1692.0:
     dependencies:
@@ -9933,14 +9832,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.31.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.25.1(jiti@2.4.2)):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.31.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.3.4)(eslint@9.25.1(jiti@2.4.2)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.31.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)
       eslint: 9.25.1(jiti@2.4.2)
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import-x@4.11.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint-plugin-import@2.31.0)(eslint@9.25.1(jiti@2.4.2))
+      eslint-import-resolver-typescript: 4.3.4(eslint-plugin-import-x@4.11.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint-plugin-import@2.31.0)(eslint@9.25.1(jiti@2.4.2))
     transitivePeerDependencies:
       - supports-color
 
@@ -9979,7 +9878,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.25.1(jiti@2.4.2)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.31.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.25.1(jiti@2.4.2))
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.31.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.3.4)(eslint@9.25.1(jiti@2.4.2))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -10008,7 +9907,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.25.1(jiti@2.4.2)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.31.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.25.1(jiti@2.4.2))
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.31.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.3.4)(eslint@9.25.1(jiti@2.4.2))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -11547,7 +11446,7 @@ snapshots:
 
   negotiator@0.6.3: {}
 
-  next@15.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  next@15.3.1(@babel/core@7.26.10)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
       '@next/env': 15.3.1
       '@swc/counter': 0.1.3
@@ -11557,7 +11456,7 @@ snapshots:
       postcss: 8.4.31
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
-      styled-jsx: 5.1.6(react@19.1.0)
+      styled-jsx: 5.1.6(@babel/core@7.26.10)(react@19.1.0)
     optionalDependencies:
       '@next/swc-darwin-arm64': 15.3.1
       '@next/swc-darwin-x64': 15.3.1
@@ -12535,10 +12434,12 @@ snapshots:
 
   strnum@1.1.2: {}
 
-  styled-jsx@5.1.6(react@19.1.0):
+  styled-jsx@5.1.6(@babel/core@7.26.10)(react@19.1.0):
     dependencies:
       client-only: 0.0.1
       react: 19.1.0
+    optionalDependencies:
+      '@babel/core': 7.26.10
 
   superagent@9.0.2:
     dependencies:

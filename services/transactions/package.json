@@ -13,7 +13,6 @@
     "test:coverage": "LOG_LEVEL=fatal jest --config jest.config.ts --coverage && open coverage/lcov-report/index.html",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "generate:types": "openapi-typescript ../auth/openapi.yaml --output ./src/types/api.d.ts",
     "prisma:generate": "cd ../../database && pnpm prisma generate && cd ../services/transactions",
     "prisma:migrate": "cd ../../database && pnpm prisma migrate deploy && cd ../services/transactions"
   },

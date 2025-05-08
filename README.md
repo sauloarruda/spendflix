@@ -251,7 +251,6 @@ spendflix/
 - `pnpm lint` - Run ESLint across all packages
 - `pnpm lint:fix` - Fix ESLint issues
 - `pnpm format` - Format code with Prettier
-- `pnpm generate:types` - Generate TypeScript types
 - `pnpm setup` - Run initial setup (environment files and Cognito)
 - `pnpm cognito:setup` - Set up Cognito user pool and client
 - `pnpm cognito:start` - Start Cognito local emulator

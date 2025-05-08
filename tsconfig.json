@@ -7,7 +7,12 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@/common/*": ["modules/common/*"],
+      "@/prisma": ["database/generated/prisma"],
+      "@/fabbrica": ["database/src/__generated__/fabbrica"]
+    }
   },
-  "include": ["services/**/*", "apps/**/*"]
+  "include": ["modules/**/*", "services/**/*", "apps/**/*", "eslint.config.js", "jest.config.ts"]
 }

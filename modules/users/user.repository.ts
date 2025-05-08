@@ -1,14 +1,6 @@
-import { User } from '../../generated/prisma';
-import { encrypt, decrypt } from '../../lib/encryption';
-import onboardingRepository from './onboarding.repository';
-import getPrisma from './prisma';
-
-export type SignupUser = {
-  name: string;
-  email: string;
-  temporaryPassword: string;
-  onboardingUid: string;
-};
+import { encrypt, decrypt } from '@/common/encryption';
+import { User } from '@/prisma';
+import getPrisma from '../common/prisma';
 
 const generateTemporaryPassword = (length = 12): string => {
   const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -37,8 +29,7 @@ async function findByEmail(email: string): Promise<User | undefined> {
   return res[0];
 }
 
-async function startOnboarding(name: string, email: string): Promise<SignupUser> {
-  const onboarding = { name, startedAt: new Date().toISOString(), step: 1 };
+async function startOnboarding(name: string, email: string): Promise<User> {
   let user = await findByEmail(email);
   if (!user || !user.temporaryPassword) {
     const temporaryPassword = generateTemporaryPassword(32);
@@ -52,15 +43,7 @@ async function startOnboarding(name: string, email: string): Promise<SignupUser>
       ? getPrisma().user.update({ where: { id: user.id }, data })
       : getPrisma().user.create({ data }));
   }
-
-  const lastOnboarding = await onboardingRepository.create(user?.id, onboarding);
-
-  return {
-    name: user.name,
-    email: user.email,
-    temporaryPassword: user.temporaryPassword!,
-    onboardingUid: lastOnboarding.id,
-  };
+  return user;
 }
 
 async function getTempPassword(email: string): Promise<string | undefined> {

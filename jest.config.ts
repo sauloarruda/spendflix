@@ -3,12 +3,12 @@ export default {
   testEnvironment: 'node',
   moduleFileExtensions: ['ts', 'js', 'json'],
   rootDir: '.',
-  testMatch: ['**/tests/**/*.spec.ts', '**/lib/**/*.spec.ts'],
+  testMatch: ['**/*.spec.ts'],
   testPathIgnorePatterns: ['.serverless'],
   transform: {
     '^.+\\.ts$': 'ts-jest',
   },
-  collectCoverageFrom: ['src/**/*.ts', 'lib/**/*.ts'],
+  collectCoverageFrom: ['modules/**/*.ts'],
   coverageDirectory: 'coverage',
   coverageThreshold: {
     global: {
@@ -18,5 +18,10 @@ export default {
       statements: 90,
     },
   },
-  coveragePathIgnorePatterns: ['lambda.ts', 'app.ts', 'lib/logger.ts'],
+  coveragePathIgnorePatterns: ['lambda.ts', 'app.ts', 'common/logger.ts', 'common/config.ts'],
+  moduleNameMapper: {
+    '^@/common/(.*)$': '<rootDir>/modules/common/$1',
+    '^@/prisma$': '<rootDir>/database/generated/prisma',
+    '^@/fabbrica$': '<rootDir>/database/src/__generated__/fabbrica',
+  },
 };
