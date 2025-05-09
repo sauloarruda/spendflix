@@ -1,10 +1,12 @@
 import { config as loadEnv } from 'dotenv';
 import { resolve } from 'path';
 
-const envFile = process.env.NODE_ENV === 'test' ? '.env.test' : '.env';
-const envPath = resolve(__dirname, '../../config', envFile);
-
-loadEnv({ path: envPath });
+// Only load .env file in development or test environments
+if (process.env.NODE_ENV !== 'production') {
+  const envFile = process.env.NODE_ENV === 'test' ? '.env.test' : '.env';
+  const envPath = resolve(__dirname, '../../config', envFile);
+  loadEnv({ path: envPath });
+}
 
 const config = {
   NODE_ENV: process.env.NODE_ENV || 'development',
