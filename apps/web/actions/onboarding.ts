@@ -1,7 +1,10 @@
 'use server';
-import { Onboarding } from '@/prisma';
+
 import getLogger from '@/common/logger';
 import { onboardingService, OnboardingData } from '@/modules/users';
+
+import { Onboarding } from '@/prisma';
+
 const logger = getLogger().child({ module: 'onboarding' });
 
 async function updateOnboardingAction(onboardingUid: string, data: Partial<OnboardingData>) {

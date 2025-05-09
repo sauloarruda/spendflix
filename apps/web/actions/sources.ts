@@ -1,6 +1,7 @@
 'use server';
 
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+
 import { PrismaClient, SourceStatus, SourceType } from '@/prisma';
 
 const Bucket = process.env.AMPLIFY_BUCKET;
@@ -23,7 +24,7 @@ if (!region.match(/^[a-z]{2}-[a-z]+-\d+$/)) {
 
 console.log('S3 Configuration:', {
   bucket: Bucket,
-  region: region,
+  region,
   hasAccessKey: !!process.env.AWS_ACCESS_KEY_ID,
   hasSecretKey: !!process.env.AWS_SECRET_ACCESS_KEY,
 });
@@ -71,7 +72,7 @@ async function putSourceFile(file: File) {
       error: error instanceof Error ? error.message : 'Unknown error',
       stack: error instanceof Error ? error.stack : undefined,
       bucket: Bucket,
-      region: region,
+      region,
     });
 
     // Provide more user-friendly error messages

@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
 import Link from 'next/link';
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
+import React, { useState } from 'react';
 
 interface LoginProps {
   onSuccess: () => void;

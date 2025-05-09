@@ -1,8 +1,10 @@
 'use client';
-import SourceFile from '@/components/SourceFile';
+
 import Link from 'next/link';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Button } from 'primereact/button';
+
+import SourceFile from '@/components/SourceFile';
 
 export default function OnboardingStep4() {
   function handleContinue() {}
@@ -31,7 +33,7 @@ export default function OnboardingStep4() {
             }
           >
             {/* {uploadsConta.map((upload, index) => (
-                  
+
                 ))} */}
             <SourceFile />
           </AccordionTab>

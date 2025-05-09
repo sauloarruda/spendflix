@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Signup from '@/components/Signup';
-import Confirm from '@/components/Confirm';
 import { UserTokens } from '@/modules/users';
+import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+
 import { startOnboardingAction } from '@/actions/onboarding';
+import Confirm from '@/components/Confirm';
+import Signup from '@/components/Signup';
 
 export default function Page() {
   const router = useRouter();

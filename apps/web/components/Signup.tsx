@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
 import Link from 'next/link';
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
+import React, { useState } from 'react';
+
 import { signup } from '@/actions/auth';
-import ApiError from '@/components/ApiError';
 import { updateOnboardingAction } from '@/actions/onboarding';
+import ApiError from '@/components/ApiError';
 
 const SignupErrorMessages = {
   UsernameExistsException:

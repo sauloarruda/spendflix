@@ -38,10 +38,61 @@ module.exports = [
       prettier: require('eslint-plugin-prettier'),
     },
     rules: {
+      // Clean Code Principles - Function Rules
+      'max-lines-per-function': ['error', { max: 20 }], // Functions should be small
+      'max-params': ['error', { max: 3 }], // Functions should have few parameters
+      complexity: ['error', { max: 10 }], // Functions should not be complex
+      'max-nested-callbacks': ['error', { max: 2 }], // Avoid deep nesting
+      'max-depth': ['error', { max: 3 }], // Avoid deep nesting
+
+      // Clean Code Principles - Naming
+      camelcase: ['error', { properties: 'never' }], // Use meaningful names
+      '@typescript-eslint/naming-convention': [
+        'error',
+        {
+          selector: 'interface',
+          format: ['PascalCase'],
+          prefix: ['I'],
+        },
+        {
+          selector: 'typeAlias',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'enum',
+          format: ['PascalCase'],
+        },
+      ],
+
+      // Clean Code Principles - Code Organization
+      'max-lines': ['error', { max: 300 }], // Files should be small
+      'max-lines-per-file': ['error', { max: 300 }], // Files should be small
+      'no-duplicate-imports': 'error', // Avoid code duplication
+      'import/order': [
+        'error',
+        {
+          // Organize imports
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+          'newlines-between': 'always',
+          alphabetize: { order: 'asc' },
+        },
+      ],
+
+      // Clean Code Principles - Error Handling
+      'no-throw-literal': 'error', // Throw Error objects
+      'no-return-await': 'error', // Don't return await
+
+      // Clean Code Principles - Maintainability
+      'no-magic-numbers': ['error', { ignore: [-1, 0, 1, 2] }], // Avoid magic numbers
+      'no-var': 'error', // Use const and let
+      'prefer-const': 'error', // Use const when possible
+      'no-let': 'error', // Prefer const over let
+
+      // Existing rules
       'prettier/prettier': ['error', prettierConfig],
       'no-console': 'warn',
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-      'import/extensions': 'off', // ['error', 'ignorePackages', { js: 'never', ts: 'never' }],
+      'import/extensions': 'off',
       'import/no-unresolved': 'off',
       'class-methods-use-this': 'off',
       'no-underscore-dangle': 'off',
@@ -58,7 +109,6 @@ module.exports = [
           alias: {
             '@/prisma': './database/generated/prisma',
             '@/fabbrica': 'database/src/__generated__/fabbrica',
-            // '@/common': './modules/common',
           },
         },
       },

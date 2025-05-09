@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { MultiSelect } from 'primereact/multiselect';
-import { ConfirmDialog } from 'primereact/confirmdialog';
-import { confirmDialog } from 'primereact/confirmdialog';
-import Image from 'next/image';
+import { useState } from 'react';
+
 import { updateOnboardingAction } from '@/actions/onboarding';
 
 const allBanks: { label: string; value: string }[] = [

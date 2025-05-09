@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
-import { confirm, signup } from '@/actions/auth';
-import ApiError from '@/components/ApiError';
 import { UserTokens } from '@/modules/users';
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
+import React, { useState } from 'react';
+
+import { confirm, signup } from '@/actions/auth';
 import { updateOnboardingAction } from '@/actions/onboarding';
+import ApiError from '@/components/ApiError';
 
 interface ConfirmProps {
   name: string;
