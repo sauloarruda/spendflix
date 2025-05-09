@@ -19,7 +19,7 @@
     "cognito:setup": "./scripts/cognito.sh --setup",
     "cognito:start": "./scripts/cognito.sh",
     "setup": "./scripts/setup.sh",
-    "prisma:generate": "./scripts/prisma.sh",
+    "prisma:generate": "cd database && PRISMA_CLI_QUERY_ENGINE_TYPE=binary PRISMA_CLI_QUERY_ENGINE_RUNTIME=rhel-openssl-3.0.x pnpm prisma generate && cd ..",
     "prisma:migrate": "cd database && pnpm prisma migrate deploy && cd .."
   },
   "dependencies": {

@@ -1,5 +1,5 @@
 {
-  "buildCommand": "chmod +x ./scripts/prisma.sh && ./scripts/prisma.sh && pnpm build",
+  "buildCommand": "pnpm prisma:generate && pnpm build",
   "installCommand": "pnpm install",
   "framework": "nextjs"
 }
