@@ -15,7 +15,9 @@ const config = {
 
   COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID!,
   COGNITO_CLIENT_ID: process.env.COGNITO_CLIENT_ID!,
-  COGNITO_ENDPOINT: process.env.COGNITO_ENDPOINT ? 'http://localhost:9229' : undefined,
+  COGNITO_ENDPOINT: !process.env.COGNITO_ENDPOINT
+    ? 'http://localhost:9229'
+    : process.env.COGNITO_ENDPOINT,
 
   BASE_APP_URL: process.env.BASE_APP_URL || 'http://localhost:3000',
   ENCRYPTION_SECRET: process.env.ENCRYPTION_SECRET,
