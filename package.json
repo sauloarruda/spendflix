@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "dev": "turbo run dev --parallel",
-    "build": "turbo run build",
+    "build": "pnpm prisma:generate && turbo run build",
     "test": "LOG_LEVEL=fatal jest --config jest.config.ts",
     "test:coverage": "LOG_LEVEL=fatal jest --config jest.config.ts --coverage",
     "deploy:auth": "turbo run deploy --filter=spendflix-services-auth",

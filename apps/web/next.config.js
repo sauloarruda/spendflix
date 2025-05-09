@@ -12,6 +12,10 @@ const nextConfig = {
     COGNITO_CLIENT_ID: process.env.COGNITO_CLIENT_ID,
     LOG_LEVEL: process.env.LOG_LEVEL,
   },
+  output: 'standalone',
+  experimental: {
+    outputFileTracingRoot: process.env.VERCEL ? undefined : process.cwd(),
+  },
 };
 
 module.exports = nextConfig;
