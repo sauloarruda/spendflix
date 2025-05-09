@@ -51,7 +51,7 @@ fi
 # Create or clean web generated directory
 print_step "Preparing web generated directory..."
 WEB_GENERATED_DIR="$PROJECT_ROOT/apps/web/generated"
-NEXT_SERVER_DIR="$PROJECT_ROOT/apps/web/.next/server"
+NEXT_SERVER_DIR="$PROJECT_ROOT/apps/web/.next"
 
 if [ -d "$WEB_GENERATED_DIR" ]; then
     print_warning "Cleaning existing generated directory..."
