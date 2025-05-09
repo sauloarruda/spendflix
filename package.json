@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "dev": "turbo run dev --parallel",
-    "build": "pnpm prisma:generate && turbo run build",
+    "build": "turbo run build",
     "test": "LOG_LEVEL=fatal jest --config jest.config.ts",
     "test:coverage": "LOG_LEVEL=fatal jest --config jest.config.ts --coverage",
     "deploy:auth": "turbo run deploy --filter=spendflix-services-auth",
@@ -19,7 +19,7 @@
     "cognito:setup": "./scripts/cognito.sh --setup",
     "cognito:start": "./scripts/cognito.sh",
     "setup": "./scripts/setup.sh",
-    "prisma:generate": "cd database && PRISMA_CLI_QUERY_ENGINE_TYPE=binary PRISMA_CLI_QUERY_ENGINE_RUNTIME=rhel-openssl-3.0.x pnpm prisma generate --schema=./prisma/schema.prisma && cd .. && mkdir -p apps/web/generated/prisma && cp -r database/generated/prisma/* apps/web/generated/prisma/",
+    "prisma:generate": "./scripts/prisma.sh",
     "prisma:migrate": "cd database && pnpm prisma migrate deploy && cd .."
   },
   "dependencies": {
