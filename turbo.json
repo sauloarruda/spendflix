@@ -1,8 +1,11 @@
 {
   "tasks": {
+    "prisma:generate": {
+      "outputs": ["database/generated/prisma/**"]
+    },
     "build": {
       "outputs": [".serverless/**", ".next/**"],
-      "dependsOn": ["^build"]
+      "dependsOn": ["prisma:generate", "^build"]
     },
     "dev": {
       "cache": false
