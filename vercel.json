@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm build --filter=spendlix-apps-web",
+  "buildCommand": "pnpm build",
   "installCommand": "pnpm install --frozen-lockfile --prefer-offline",
   "framework": "nextjs"
 }
