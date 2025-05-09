@@ -1,4 +1,5 @@
 // import getLogger from '@/common/logger';
+import getLogger from '@/common/logger';
 import { JwtVerifier } from 'aws-jwt-verify';
 import { validateCognitoJwtFields } from 'aws-jwt-verify/cognito-verifier';
 import { Jwk } from 'aws-jwt-verify/jwk';
@@ -7,13 +8,14 @@ import { JwtVerifierSingleIssuer } from 'aws-jwt-verify/jwt-verifier';
 import { cookies } from 'next/headers';
 import { NextResponse, NextRequest } from 'next/server';
 
-// const logger = getLogger().child({ module: 'middleware' });
+const logger = getLogger().child({ module: 'middleware' });
 
 type JwtVerifierType = JwtVerifierSingleIssuer<{
   issuer: string;
   audience: null;
   customJwtCheck: ({ payload }: { header: JwtHeader; payload: JwtPayload; jwk: Jwk }) => void;
 }>;
+// eslint-disable-next-line no-restricted-syntax
 let verifier: JwtVerifierType;
 function getVerifier(): JwtVerifierType {
   if (!verifier) {
@@ -33,9 +35,9 @@ function getVerifier(): JwtVerifierType {
 async function checkToken(token: string) {
   try {
     const payload = await getVerifier().verify(token);
-    console.log({ payload }, 'Decoded JWT');
+    logger.debug({ payload }, 'Decoded JWT');
   } catch (error) {
-    console.error({ error }, 'Error verifying token:');
+    logger.error({ error }, 'Error verifying token:');
     throw error;
   }
 }
@@ -43,19 +45,22 @@ async function checkToken(token: string) {
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   if (request.method !== 'POST') return NextResponse.next();
-  console.log('middleware', request.nextUrl.pathname, request.method);
+  logger.info(
+    { pathname: request.nextUrl.pathname, method: request.method },
+    'Running middleware...',
+  );
   const path = request.nextUrl.pathname;
   if (path === '/onboarding/step1') return NextResponse.next();
 
   const cookie = (await cookies()).get('session')?.value;
   if (!cookie) {
-    console.log('No cookie found');
+    logger.debug('No cookie found');
     return Response.json({ success: false, message: 'session cookie not found' }, { status: 401 });
   }
   try {
-    const res = await checkToken(cookie);
+    await checkToken(cookie);
   } catch (error) {
-    console.log({ error }, 'Invalid session');
+    logger.debug({ error }, 'Invalid session');
     return Response.json({ success: false, message: 'invalid session' }, { status: 401 });
   }
   return NextResponse.next();

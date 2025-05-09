@@ -3,14 +3,18 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { getOnboardingAction, updateOnboardingAction } from '@/actions/onboarding';
+import { updateOnboardingAction } from '@/actions/onboarding';
 
 export default function WaitlistPage() {
   const router = useRouter();
   const [name, setName] = useState<string>('');
 
   useEffect(() => {
-    if (localStorage.getItem('onboardingUid') === null) return router.push('/onboarding/step1');
+    if (localStorage.getItem('onboardingUid') === null) {
+      router.push('/onboarding/step1');
+      return;
+    }
+    setName(localStorage.getItem('name') || '');
     const updateWaitlistStatus = async () => {
       await updateOnboardingAction(localStorage.getItem('onboardingUid')!, {
         waitlist: true,

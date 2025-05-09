@@ -86,7 +86,6 @@ module.exports = [
       'no-magic-numbers': ['error', { ignore: [-1, 0, 1, 2] }], // Avoid magic numbers
       'no-var': 'error', // Use const and let
       'prefer-const': 'error', // Use const when possible
-      'no-let': 'error', // Prefer const over let
 
       // Existing rules
       'prettier/prettier': ['error', prettierConfig],

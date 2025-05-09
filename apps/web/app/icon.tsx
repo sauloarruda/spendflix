@@ -39,6 +39,7 @@ export default async function Icon() {
       >
         <img
           src={iconBase64}
+          alt="Spendflix Icon"
           style={{
             width: '100%',
             height: '100%',

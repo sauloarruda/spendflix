@@ -14,6 +14,7 @@ type Step2FormData = {
   goalValue: number | null | undefined;
 };
 
+// eslint-disable-next-line max-lines-per-function
 export default function OnboardingStep2() {
   const router = useRouter();
   const [name, setName] = useState<string>('');
@@ -28,10 +29,12 @@ export default function OnboardingStep2() {
 
   useEffect(() => {
     const uid = localStorage.getItem('onboardingUid');
-    if (!uid) return router.push('/onboarding/step1');
+    if (!uid) {
+      router.push('/onboarding/step1');
+      return;
+    }
 
-    const name = localStorage.getItem('name');
-    setName(name || '');
+    setName(localStorage.getItem('name') || '');
 
     const getOnboarding = async () => {
       const onboarding = await getOnboardingAction(uid);

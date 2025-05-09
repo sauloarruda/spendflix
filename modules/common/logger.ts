@@ -142,7 +142,6 @@ let logger: Logger;
 export default function getLogger() {
   if (!logger)
     logger = new Logger({
-      service: 'spendflix-auth',
       level: getConfig().LOG_LEVEL as LogLevel,
       isOffline: getConfig().IS_OFFLINE === 'true',
     });

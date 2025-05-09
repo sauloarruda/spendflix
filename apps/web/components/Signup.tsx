@@ -21,6 +21,7 @@ interface SignupProps {
   onLoginRedirect: (email: string) => void;
 }
 
+// eslint-disable-next-line max-lines-per-function
 export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');

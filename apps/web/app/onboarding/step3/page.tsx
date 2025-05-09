@@ -99,6 +99,7 @@ const mainBanks: { name: string; logo: string; code: string }[] = [
   { name: 'C6 Bank', logo: '/logos/c6.png', code: '336' },
 ];
 
+// eslint-disable-next-line max-lines-per-function
 export default function OnboardingStep3() {
   const router = useRouter();
   const [selectedMainBanks, setSelectedMainBanks] = useState<string[]>([]);

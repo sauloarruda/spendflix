@@ -6,7 +6,7 @@ import { cookies } from 'next/headers';
 import { User } from '@/prisma';
 
 async function signup(name: string, email: string): Promise<User> {
-  return await signupService.signup(name, email);
+  return signupService.signup(name, email);
 }
 
 async function confirm(email: string, code: string): Promise<void> {

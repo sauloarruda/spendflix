@@ -41,16 +41,7 @@ export default function OnboardingStep4() {
       </div>
 
       <div className="w-full max-w-md">
-        <Button
-          label="Continuar"
-          className="w-full"
-          disabled={
-            true
-            // [...uploadsConta, ...uploadsCartao].filter((upload) => upload.success === true).length <
-            // 3
-          }
-          onClick={handleContinue}
-        />
+        <Button label="Continuar" className="w-full" disabled={true} onClick={handleContinue} />
       </div>
     </>
   );

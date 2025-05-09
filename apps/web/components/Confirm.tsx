@@ -1,4 +1,3 @@
-import { UserTokens } from '@/modules/users';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import React, { useState } from 'react';
@@ -56,7 +55,7 @@ export default function Confirm({ name, email, onSuccess }: ConfirmProps) {
     if (!validateCode()) return;
     setLoading(true);
     try {
-      const result = await confirm(email, code);
+      await confirm(email, code);
       updateOnboardingAction(localStorage.getItem('onboardingUid')!, { step: 2 });
       onSuccess();
     } catch (error) {
@@ -69,7 +68,7 @@ export default function Confirm({ name, email, onSuccess }: ConfirmProps) {
   async function handleResend() {
     setLoading(true);
     try {
-      const result = await signup(name, email);
+      await signup(name, email);
     } catch (error) {
       setApiError(translateError(error));
     } finally {

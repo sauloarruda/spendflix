@@ -1,6 +1,6 @@
 'use client';
 
-import { UserTokens } from '@/modules/users';
+import getLogger from '@/common/logger';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
@@ -8,40 +8,36 @@ import { startOnboardingAction } from '@/actions/onboarding';
 import Confirm from '@/components/Confirm';
 import Signup from '@/components/Signup';
 
+const logger = getLogger().child({ module: 'onboarding/step1' });
+
 export default function Page() {
   const router = useRouter();
   const [step, setStep] = useState<'signup' | 'confirm' | 'login'>('signup');
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
+  logger.debug('Loading step 1...');
 
-  useEffect(() => {
+  function checkIfOnboardingIsStarted() {
     const startOnboarding = async () => {
-      console.log('Starting onboarding...');
       if (!localStorage.getItem('onboardingUid')) {
         try {
           const onboarding = await startOnboardingAction();
           localStorage.setItem('onboardingUid', onboarding.id);
         } catch (error) {
-          console.error('Error starting onboarding', error);
+          logger.error({ error }, 'Error starting onboarding');
         }
+      } else {
+        logger.debug({ onboardingUid: localStorage.getItem('onboardingUid') }, 'Resume onboarding');
       }
-      console.log('Onboarding completed, setting loading to false');
-      setIsLoading(false);
     };
-    startOnboarding();
-  }, []);
-
-  console.log('Current loading state:', isLoading);
-
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center">
-        <strong className="mb-4">Preparando pra começar...</strong>
-        <div className="w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
+    return startOnboarding();
   }
+
+  useEffect(() => {
+    checkIfOnboardingIsStarted();
+    setIsLoading(false);
+  }, []);
 
   const handleSignupSuccess = async (responseName: string, responseEmail: string) => {
     setName(responseName);
@@ -59,6 +55,15 @@ export default function Page() {
   const handleConfirmSuccess = async () => {
     router.push('/onboarding/step2');
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <strong className="mb-4">Preparando pra começar...</strong>
+        <div className="w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <>

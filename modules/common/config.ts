@@ -2,7 +2,7 @@ import { config as loadEnv } from 'dotenv';
 import { resolve } from 'path';
 
 // Only load .env file in development or test environments
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && process.env.__NEXT_PROCESSED_ENV !== 'true') {
   const envFile = process.env.NODE_ENV === 'test' ? '.env.test' : '.env';
   const envPath = resolve(__dirname, '../../config', envFile);
   loadEnv({ path: envPath });
@@ -11,7 +11,7 @@ if (process.env.NODE_ENV !== 'production') {
 const config = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   IS_OFFLINE: process.env.IS_OFFLINE || 'false',
-  LOG_LEVEL: process.env.LOG_LEVEL || 'info',
+  LOG_LEVEL: process.env.LOG_LEVEL || 'debug',
 
   COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID!,
   COGNITO_CLIENT_ID: process.env.COGNITO_CLIENT_ID!,

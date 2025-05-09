@@ -1,8 +1,11 @@
 'use server';
 
+import getLogger from '@/common/logger';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
 import { PrismaClient, SourceStatus, SourceType } from '@/prisma';
+
+const logger = getLogger().child({ module: 'sources' });
 
 const Bucket = process.env.AMPLIFY_BUCKET;
 const region = process.env.AWS_REGION;
@@ -22,12 +25,15 @@ if (!region.match(/^[a-z]{2}-[a-z]+-\d+$/)) {
   );
 }
 
-console.log('S3 Configuration:', {
-  bucket: Bucket,
-  region,
-  hasAccessKey: !!process.env.AWS_ACCESS_KEY_ID,
-  hasSecretKey: !!process.env.AWS_SECRET_ACCESS_KEY,
-});
+logger.debug(
+  {
+    bucket: Bucket,
+    region,
+    hasAccessKey: !!process.env.AWS_ACCESS_KEY_ID,
+    hasSecretKey: !!process.env.AWS_SECRET_ACCESS_KEY,
+  },
+  'S3 Configuration:',
+);
 
 const s3 = new S3Client({
   region,
@@ -46,14 +52,17 @@ async function putSourceFile(file: File) {
         status: SourceStatus.PENDING,
       },
     });
-    console.log('Created Source in database', source.id);
+    logger.debug({ source }, 'Created Source in database');
 
-    console.log('Starting file upload:', {
-      fileName: file.name,
-      fileSize: file.size,
-      fileType: file.type,
-      bucket: Bucket,
-    });
+    logger.debug(
+      {
+        fileName: file.name,
+        fileSize: file.size,
+        fileType: file.type,
+        bucket: Bucket,
+      },
+      'Starting file upload:',
+    );
 
     const Body = (await file.arrayBuffer()) as unknown as Buffer;
     const command = new PutObjectCommand({
@@ -64,30 +73,34 @@ async function putSourceFile(file: File) {
     });
 
     await s3.send(command);
-    console.log('File uploaded successfully');
+    logger.debug('File uploaded successfully');
 
     return { success: true, message: 'Arquivo enviado com sucesso. Processando transações...' };
   } catch (error) {
-    console.error('Error uploading file:', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined,
-      bucket: Bucket,
-      region,
-    });
+    logger.error(
+      {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        bucket: Bucket,
+        region,
+      },
+      'Error uploading file:',
+    );
 
-    // Provide more user-friendly error messages
-    let errorMessage = 'Erro ao enviar arquivo.';
-    if (error instanceof Error) {
-      if (error.message.includes('ENOTFOUND')) {
-        errorMessage = `Bucket not found. Please check if the bucket '${Bucket}' exists in region '${region}'`;
-      } else if (error.message.includes('AccessDenied')) {
-        errorMessage = 'Access denied. Please check your AWS credentials';
-      } else if (error.message.includes('InvalidAccessKeyId')) {
-        errorMessage = 'Invalid AWS access key';
-      } else if (error.message.includes('SignatureDoesNotMatch')) {
-        errorMessage = 'Invalid AWS secret key';
-      }
-    }
+    const errorMessages = {
+      ENOTFOUND: `Bucket not found. Please check if the bucket '${Bucket}' exists in region '${region}'`,
+      AccessDenied: 'Access denied. Please check your AWS credentials',
+      InvalidAccessKeyId: 'Invalid AWS access key',
+      SignatureDoesNotMatch: 'Invalid AWS secret key',
+    };
+
+    const getErrorMessage = (err: Error) => {
+      const matchedError = Object.entries(errorMessages).find(([key]) => err.message.includes(key));
+      return matchedError ? matchedError[1] : 'Erro ao enviar arquivo.';
+    };
+
+    const errorMessage =
+      error instanceof Error ? getErrorMessage(error) : 'Erro ao enviar arquivo.';
 
     return {
       success: false,
