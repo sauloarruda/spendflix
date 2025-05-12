@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
 import React, { useState } from 'react';
 
 import { signup } from '@/actions/auth';
 import { updateOnboardingAction } from '@/actions/onboarding';
 import ApiError from '@/components/ApiError';
 import RequiredField from '@/components/RequiredField';
+
+import EmailField from '@/components/EmailField';
 
 const SignupErrorMessages = {
   UsernameExistsException:
@@ -25,29 +26,22 @@ interface SignupProps {
 export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
-  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [apiError, setApiError] = useState<string>();
 
-  function validateSignup() {
-    const e: Record<string, string> = {};
-    if (!name.trim()) e.name = 'Por favor, nos diga como podemos te chamar.';
-    if (!email.trim()) e.email = 'Por favor, insira seu email.';
-    else if (!/\S+@\S+\.\S+/.test(email)) e.email = 'Email inválido.';
-    setErrors(e);
-    setIsFormValid(Object.keys(e).length === 0);
-    return Object.keys(e).length === 0;
-  }
+  const handleNameChange = (value: string) => {
+    setName(value);
+    const isNameValid = value.trim().length > 0;
+    setIsFormValid(isFormValid && isNameValid);
+  };
 
-  const handleBlur = (field: string) => {
-    setTouched((prev) => ({ ...prev, [field]: true }));
-    validateSignup();
+  const handleEmailChange = (newEmail: string, isEmailValid: boolean) => {
+    setEmail(newEmail);
+    setIsFormValid(isFormValid && isEmailValid);
   };
 
   async function handleSignup() {
-    if (!validateSignup()) return;
     setLoading(true);
     try {
       await signup(name, email);
@@ -76,37 +70,16 @@ export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
           id="name"
           label="Como podemos te chamar?"
           value={name}
-          onChange={(value) => {
-            setName(value);
-            validateSignup();
-          }}
+          onChange={handleNameChange}
           message="Por favor, nos diga como podemos te chamar."
         />
 
-        <div className="flex flex-col">
-          <span className="p-float-label">
-            <InputText
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                validateSignup();
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && isFormValid) {
-                  handleSignup();
-                }
-              }}
-              onBlur={() => handleBlur('email')}
-              className={`w-full ${touched.email && errors.email ? 'p-invalid' : ''}`}
-            />
-            <label htmlFor="email">Seu melhor email</label>
-          </span>
-          {touched.email && errors.email && (
-            <small className="text-red-500 mt-1">{errors.email}</small>
-          )}
-        </div>
+        <EmailField
+          id="email"
+          label="Seu melhor email"
+          value={email}
+          onChange={handleEmailChange}
+        />
       </div>
 
       <ApiError error={apiError} />

@@ -6,8 +6,8 @@ interface RequiredFieldProps {
   label: string;
   value: string;
   onChange: (value: string) => void;
-  message: string;
-  className?: string;
+  message?: string;
+  customValidation?: (value: string) => { isValid: boolean; message?: string };
 }
 
 export default function RequiredField({
@@ -16,32 +16,58 @@ export default function RequiredField({
   value,
   onChange,
   message,
-  className = '',
+  customValidation,
 }: RequiredFieldProps) {
-  const [touched, setTouched] = useState(false);
-  const hasError = touched && !value.trim();
+  const [error, setError] = useState<string>('');
+  const [touched, setTouched] = useState<boolean>(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
+  const validate = (inputValue: string) => {
+    if (customValidation) {
+      const result = customValidation(inputValue);
+      setError(result.message || '');
+      return result.isValid;
+    }
+
+    if (!inputValue.trim()) {
+      setError(message || 'Este campo é obrigatório.');
+      return false;
+    }
+    setError('');
+    return true;
+  };
+
+  const handleChange = (newValue: string) => {
+    validate(newValue);
+    onChange(newValue);
   };
 
   const handleBlur = () => {
     setTouched(true);
+    validate(value);
   };
+
+  const showValidationIcon = touched && value.trim().length > 0;
+  const isValid = !error && value.trim().length > 0;
 
   return (
     <div className="flex flex-col">
-      <span className="p-float-label">
+      <span className="p-float-label relative">
         <InputText
           id={id}
           value={value}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e.target.value)}
           onBlur={handleBlur}
-          className={`w-full ${hasError ? 'p-invalid' : ''} ${className}`}
+          className={`w-full ${touched && error ? 'p-invalid' : ''}`}
         />
         <label htmlFor={id}>{label}</label>
+        {showValidationIcon && (
+          <i
+            className={`absolute right-3 top-1/2 -translate-y-1/2 pi ${isValid ? 'pi-check text-green-500' : 'pi-times text-red-500'}`}
+            style={{ fontSize: 18 }}
+          />
+        )}
       </span>
-      {hasError && <small className="text-red-500 mt-1">{message}</small>}
+      {touched && error && <small className="text-red-500 mt-1">{error}</small>}
     </div>
   );
 }
