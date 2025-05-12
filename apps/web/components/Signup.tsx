@@ -1,17 +1,14 @@
 import Link from 'next/link';
 import { Button } from 'primereact/button';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { signup } from '@/actions/auth';
 import { updateOnboardingAction } from '@/actions/onboarding';
 import ApiError from '@/components/ApiError';
+import EmailField from '@/components/EmailField';
 import RequiredField from '@/components/RequiredField';
 
-import EmailField from '@/components/EmailField';
-
 const SignupErrorMessages = {
-  UsernameExistsException:
-    'Já existe um usuário com o email informado. TODO: Redirecionando para login.',
   NotAuthorizedException: 'Já existe um usuário com o email informado.',
   CodeDeliveryFailureException:
     'Erro ao enviar o código de confirmação. Verifique se o email digitado está correto.',
@@ -52,7 +49,12 @@ export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
     } catch (err) {
       const error = err as Error;
       if (error.name === 'UsernameExistsException') onLoginRedirect(email);
-      else setApiError(error.message);
+      else {
+        setApiError(
+          SignupErrorMessages[error.name as keyof typeof SignupErrorMessages] ||
+            'Erro desconhecido',
+        );
+      }
     } finally {
       setLoading(false);
     }
@@ -94,7 +96,7 @@ export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
       />
 
       <p className="text-xs text-gray-400 mt-4 text-center">
-        Seu email é usado para envio do código. Leia nossa{' '}
+        Seu email é usado para envio de um código de confirmação. Leia nossa{' '}
         <Link href="/privacy" className="text-primary underline">
           Política de Privacidade
         </Link>
