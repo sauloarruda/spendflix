@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Button } from 'primereact/button';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { signup } from '@/actions/auth';
 import { updateOnboardingAction } from '@/actions/onboarding';
@@ -27,18 +27,20 @@ export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [apiError, setApiError] = useState<string>();
+  const [isNameValid, setIsNameValid] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(false);
 
-  const handleNameChange = (value: string) => {
+  const isFormValid = isNameValid && isEmailValid;
+
+  const handleNameChange = (value: string, isValid: boolean) => {
     setName(value);
-    const isNameValid = value.trim().length > 0;
-    setIsFormValid(isFormValid && isNameValid);
+    setIsNameValid(isValid);
   };
 
-  const handleEmailChange = (newEmail: string, isEmailValid: boolean) => {
+  const handleEmailChange = (newEmail: string, isValid: boolean) => {
     setEmail(newEmail);
-    setIsFormValid(isFormValid && isEmailValid);
+    setIsEmailValid(isValid);
   };
 
   async function handleSignup() {
@@ -49,7 +51,7 @@ export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
       onSuccess(name, email);
     } catch (err) {
       const error = err as Error;
-      if (error.message === SignupErrorMessages.UsernameExistsException) onLoginRedirect(email);
+      if (error.name === 'UsernameExistsException') onLoginRedirect(email);
       else setApiError(error.message);
     } finally {
       setLoading(false);

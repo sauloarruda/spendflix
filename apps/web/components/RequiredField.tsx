@@ -5,7 +5,7 @@ interface RequiredFieldProps {
   id: string;
   label: string;
   value: string;
-  onChange: (value: string) => void;
+  onChange: (value: string, isValid: boolean) => void;
   message?: string;
   customValidation?: (value: string) => { isValid: boolean; message?: string };
 }
@@ -37,13 +37,12 @@ export default function RequiredField({
   };
 
   const handleChange = (newValue: string) => {
-    validate(newValue);
-    onChange(newValue);
+    onChange(newValue, validate(newValue));
   };
 
   const handleBlur = () => {
     setTouched(true);
-    validate(value);
+    onChange(value, validate(value));
   };
 
   const showValidationIcon = touched && value.trim().length > 0;

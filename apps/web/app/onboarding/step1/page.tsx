@@ -7,6 +7,7 @@ import { startOnboardingAction } from '@/actions/onboarding';
 import ApiError from '@/components/ApiError';
 import Confirm from '@/components/Confirm';
 import LoadingForm from '@/components/LoadingForm';
+import Login from '@/components/Login';
 import Signup from '@/components/Signup';
 
 export default function Page() {
@@ -49,7 +50,7 @@ export default function Page() {
         <Signup onSuccess={handleSignupSuccess} onLoginRedirect={handleLoginRedirect} />
       )}
       {step === 'confirm' && <Confirm name={name} email={email} onSuccess={handleConfirmSuccess} />}
-      {/* {step === 'login' && <Login onSuccess={handleConfirmSuccess} />} */}
+      {step === 'login' && <Login onSuccess={handleConfirmSuccess} />}
       <ApiError error={apiError} />
     </LoadingForm>
   );
