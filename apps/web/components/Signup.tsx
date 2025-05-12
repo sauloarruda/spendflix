@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { signup } from '@/actions/auth';
 import { updateOnboardingAction } from '@/actions/onboarding';
 import ApiError from '@/components/ApiError';
+import RequiredField from '@/components/RequiredField';
 
 const SignupErrorMessages = {
   UsernameExistsException:
@@ -21,7 +22,6 @@ interface SignupProps {
   onLoginRedirect: (email: string) => void;
 }
 
-// eslint-disable-next-line max-lines-per-function
 export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -72,29 +72,16 @@ export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
       </p>
 
       <div className="flex flex-col gap-8 my-8">
-        <div className="flex flex-col">
-          <span className="p-float-label">
-            <InputText
-              id="name"
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-                validateSignup();
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && isFormValid) {
-                  handleSignup();
-                }
-              }}
-              onBlur={() => handleBlur('name')}
-              className={`w-full ${touched.name && errors.name ? 'p-invalid' : ''}`}
-            />
-            <label htmlFor="name">Como podemos te chamar?</label>
-          </span>
-          {touched.name && errors.name && (
-            <small className="text-red-500 mt-1">{errors.name}</small>
-          )}
-        </div>
+        <RequiredField
+          id="name"
+          label="Como podemos te chamar?"
+          value={name}
+          onChange={(value) => {
+            setName(value);
+            validateSignup();
+          }}
+          message="Por favor, nos diga como podemos te chamar."
+        />
 
         <div className="flex flex-col">
           <span className="p-float-label">
