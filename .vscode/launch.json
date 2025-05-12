@@ -31,25 +31,22 @@
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Next.js: debug full stack",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/next/dist/bin/next",
+      "runtimeArgs": ["--inspect"],
+      "skipFiles": ["<node_internals>/**"],
+      "serverReadyAction": {
+        "action": "debugWithChrome",
+        "killOnServerStop": true,
+        "pattern": "- Local:.+(https?://.+)",
+        "uriFormat": "%s",
+        "webRoot": "${workspaceFolder}"
+      },
+      "cwd": "${workspaceFolder}/apps/web"
     }
-    // {
-    //   "name": "[auth] Watch Tests",
-    //   "type": "node",
-    //   "request": "launch",
-    //   "runtimeExecutable": "pnpm",
-    //   "runtimeArgs": [
-    //     "exec",
-    //     "jest",
-    //     "--runInBand",
-    //     "--no-cache",
-    //     "--detectOpenHandles",
-    //     "--watch",
-    //     "${file}"
-    //   ],
-    //   "cwd": "${workspaceFolder}/services/auth",
-    //   "console": "integratedTerminal",
-    //   "internalConsoleOptions": "neverOpen",
-    //   "envFile": "${workspaceFolder}/services/auth/.env.test"
-    // }
   ]
 }
