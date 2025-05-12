@@ -50,8 +50,9 @@ export async function middleware(request: NextRequest) {
     'Running middleware...',
   );
   const path = request.nextUrl.pathname;
-  if (path === '/onboarding/step1') return NextResponse.next();
-
+  if (path === '/onboarding/step1' || path === '/forgot-password' || path === '/login') {
+    return NextResponse.next();
+  }
   const cookie = (await cookies()).get('session')?.value;
   if (!cookie) {
     logger.debug('No cookie found');

@@ -35,5 +35,18 @@ async function login(email: string, password: string): Promise<UserTokens> {
   };
 }
 
-const loginService = { login };
+async function forgotPassword(email: string): Promise<void> {
+  await cognito.forgotPassword(email);
+}
+
+async function resetPassword(email: string, code: string, password: string): Promise<void> {
+  await cognito.resetPassword(email, code, password);
+}
+
+const loginService = {
+  login,
+  forgotPassword,
+  resetPassword,
+};
+
 export default loginService;

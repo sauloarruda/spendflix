@@ -2,7 +2,9 @@ import {
   AdminGetUserCommand,
   AdminGetUserCommandOutput,
   CognitoIdentityProviderClient,
+  ConfirmForgotPasswordCommand,
   ConfirmSignUpCommand,
+  ForgotPasswordCommand,
   GetUserCommand,
   GetUserCommandOutput,
   InitiateAuthCommand,
@@ -96,6 +98,30 @@ async function confirmSignUp(email: string, code: string) {
   authLogger.info({ email }, 'Signup confirmed successfully');
 }
 
+async function forgotPassword(email: string) {
+  authLogger.debug({ email }, 'Forgot password with Cognito');
+  await cognitoClient.send(
+    new ForgotPasswordCommand({
+      ClientId: getConfig().COGNITO_CLIENT_ID,
+      Username: email,
+    }),
+  );
+  authLogger.info({ email }, 'Password reset successfully');
+}
+
+async function resetPassword(email: string, code: string, password: string) {
+  authLogger.debug({ email }, 'Resetting password with Cognito');
+  await cognitoClient.send(
+    new ConfirmForgotPasswordCommand({
+      ClientId: getConfig().COGNITO_CLIENT_ID,
+      Username: email,
+      ConfirmationCode: code,
+      Password: password,
+    }),
+  );
+  authLogger.info({ email }, 'Password reset successfully');
+}
+
 const cognito = {
   signUpCommand,
   getUserStatus,
@@ -103,6 +129,8 @@ const cognito = {
   initiateAuth,
   confirmSignUp,
   getUserFromToken,
+  forgotPassword,
+  resetPassword,
 };
 
 export default cognito;

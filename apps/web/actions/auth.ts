@@ -24,4 +24,12 @@ async function login(email: string, password: string): Promise<void> {
   await setAuthCookie(tokens);
 }
 
-export { signup, confirm, login };
+async function forgotPassword(email: string): Promise<void> {
+  await loginService.forgotPassword(email);
+}
+
+async function resetPassword(email: string, code: string, password: string): Promise<void> {
+  await loginService.resetPassword(email, code, password);
+}
+
+export { signup, confirm, login, forgotPassword, resetPassword };

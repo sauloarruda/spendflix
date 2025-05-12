@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 export default function OnboardingLayout({ children }: { children: React.ReactNode }) {
@@ -8,20 +7,13 @@ export default function OnboardingLayout({ children }: { children: React.ReactNo
   const step = pathname?.includes('step') ? parseInt(pathname.split('step')[1], 10) : undefined;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-50">
-      <div className="w-full max-w-md">
-        <div className="flex justify-center mb-2">
-          <Image src="/spendflix-logo.svg" alt="Spendflix" width={200} height={50} priority />
-        </div>
-        {step ? (
-          <div className="w-full text-sm text-gray-500 mb-4 mt-8 text-center">
-            Etapa {step} de 7
-          </div>
-        ) : (
-          ''
-        )}
-        {children}
-      </div>
-    </div>
+    <>
+      {step ? (
+        <div className="w-full text-sm text-gray-500 mb-4 mt-8 text-center">Etapa {step} de 7</div>
+      ) : (
+        ''
+      )}
+      {children}
+    </>
   );
 }

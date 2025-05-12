@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 
 import RequiredField from './RequiredField';
 
@@ -11,15 +11,25 @@ interface EmailFieldProps {
 }
 
 export default function EmailField({ id, label, value, onChange, message }: EmailFieldProps) {
-  const validateEmail = (email: string) => {
-    if (!email.trim()) {
-      return { isValid: false, message: message || 'Por favor, insira seu email.' };
-    }
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      return { isValid: false, message: 'Email inválido.' };
-    }
-    return { isValid: true };
-  };
+  const validateEmail = useCallback(
+    (email: string) => {
+      if (!email.trim()) {
+        return { isValid: false, message: message || 'Por favor, insira seu email.' };
+      }
+      if (!/\S+@\S+\.\S+/.test(email)) {
+        return { isValid: false, message: 'Email inválido.' };
+      }
+      return { isValid: true };
+    },
+    [message],
+  );
+
+  // Trigger validation and onChange when value changes externally
+  useEffect(() => {
+    const storedEmail = localStorage.getItem('email') || '';
+    const { isValid } = validateEmail(storedEmail);
+    onChange(storedEmail, isValid);
+  }, [onChange, validateEmail]);
 
   const handleChange = (newValue: string) => {
     const { isValid } = validateEmail(newValue);

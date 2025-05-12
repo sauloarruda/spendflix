@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { PrimeReactProvider } from 'primereact/api';
 import './globals.css';
 
@@ -14,7 +15,16 @@ export default function RootLayout({
         <head>
           <title>Spendflix - Descubra, Organize, Realize</title>
         </head>
-        <body suppressHydrationWarning>{children}</body>
+        <body suppressHydrationWarning>
+          <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-50">
+            <div className="w-full max-w-md">
+              <div className="flex justify-center mb-2">
+                <Image src="/spendflix-logo.svg" alt="Spendflix" width={200} height={50} priority />
+              </div>
+              {children}
+            </div>
+          </div>
+        </body>
       </html>
     </PrimeReactProvider>
   );

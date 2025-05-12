@@ -52,7 +52,7 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
   }
 
   async function getEmailFromLocalStorage() {
-    setEmail(localStorage.getItem('email') || '');
+    // setEmail(localStorage.getItem('email') || '');
   }
 
   return (
