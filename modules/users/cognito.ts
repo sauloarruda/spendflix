@@ -1,7 +1,10 @@
 import {
   AdminGetUserCommand,
+  AdminGetUserCommandOutput,
   CognitoIdentityProviderClient,
   ConfirmSignUpCommand,
+  GetUserCommand,
+  GetUserCommandOutput,
   InitiateAuthCommand,
   ResendConfirmationCodeCommand,
   SignUpCommand,
@@ -37,11 +40,19 @@ async function signUpCommand(user: User) {
   return res;
 }
 
-async function getUserStatus(email: string) {
+async function getUserStatus(email: string): Promise<AdminGetUserCommandOutput> {
   return cognitoClient.send(
     new AdminGetUserCommand({
       Username: email,
       UserPoolId: getConfig().COGNITO_USER_POOL_ID,
+    }),
+  );
+}
+
+async function getUserFromToken(accessToken: string): Promise<GetUserCommandOutput> {
+  return cognitoClient.send(
+    new GetUserCommand({
+      AccessToken: accessToken,
     }),
   );
 }
@@ -91,6 +102,7 @@ const cognito = {
   resendConfirmation,
   initiateAuth,
   confirmSignUp,
+  getUserFromToken,
 };
 
 export default cognito;

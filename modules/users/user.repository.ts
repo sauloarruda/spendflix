@@ -61,10 +61,17 @@ async function deleteTempPassword(email: string) {
   getPrisma().user.delete({ where: { id: user.id } });
 }
 
+async function upsertUser(userData: Partial<User>): Promise<User> {
+  if (!userData.id) return getPrisma().user.create({ data: userData as User });
+  return getPrisma().user.update({ where: { id: userData.id }, data: userData });
+}
+
 const userRepository = {
   startOnboarding,
   getTempPassword,
   deleteTempPassword,
+  findByEmail,
+  upsertUser,
 };
 
 export default userRepository;

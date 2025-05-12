@@ -5,6 +5,7 @@ interface RequiredFieldProps {
   id: string;
   label: string;
   value: string;
+  type?: 'text' | 'password' | 'number' | 'month' | 'search' | 'tel' | 'time' | 'url' | 'week';
   onChange: (value: string, isValid: boolean) => void;
   message?: string;
   customValidation?: (value: string) => { isValid: boolean; message?: string };
@@ -14,6 +15,7 @@ export default function RequiredField({
   id,
   label,
   value,
+  type,
   onChange,
   message,
   customValidation,
@@ -54,6 +56,7 @@ export default function RequiredField({
         <InputText
           id={id}
           value={value}
+          type={type || 'text'}
           onChange={(e) => handleChange(e.target.value)}
           onBlur={handleBlur}
           className={`w-full ${touched && error ? 'p-invalid' : ''}`}

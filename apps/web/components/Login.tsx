@@ -4,8 +4,11 @@ import Link from 'next/link';
 import { Button } from 'primereact/button';
 import React, { useState } from 'react';
 
+import { login } from '@/actions/auth';
+
 import ApiError from './ApiError';
 import EmailField from './EmailField';
+import LoadingForm from './LoadingForm';
 import RequiredField from './RequiredField';
 
 export default function Login({ onSuccess }: { onSuccess: () => void }) {
@@ -14,13 +17,23 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [apiError, setApiError] = useState<string>();
+  const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
+  const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false);
+
+  type LoginErrorType = 'UserNotFoundException' | 'InvalidPasswordException';
+  const LoginErrorMessages: Record<LoginErrorType, string> = {
+    UserNotFoundException: 'Usuário não encontrado',
+    InvalidPasswordException: 'Senha inválida conforme a política de senhas',
+  };
+
   async function handleLogin() {
     setLoading(true);
     try {
       await login(email, password);
       onSuccess();
     } catch (error) {
-      setApiError((error as Error).message);
+      const errorName = (error as Error).name as LoginErrorType;
+      setApiError(LoginErrorMessages[errorName] || 'Erro desconhecido');
     } finally {
       setLoading(false);
     }
@@ -28,16 +41,22 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
 
   function handlePasswordChange(value: string, isValid: boolean) {
     setPassword(value);
-    setIsFormValid(isFormValid && isValid);
+    setIsPasswordValid(isValid);
+    setIsFormValid(isEmailValid && isValid);
   }
 
   function handleEmailChange(value: string, isValid: boolean) {
     setEmail(value);
-    setIsFormValid(isFormValid && isValid);
+    setIsEmailValid(isValid);
+    setIsFormValid(isValid && isPasswordValid);
+  }
+
+  async function getEmailFromLocalStorage() {
+    setEmail(localStorage.getItem('email') || '');
   }
 
   return (
-    <>
+    <LoadingForm message="Preparando pra começar..." onLoad={getEmailFromLocalStorage}>
       <h2 className="text-xl font-semibold mb-6 text-center">Entre na sua conta</h2>
       <p className="text-gray-600 text-center mb-6">Informe seu email e senha para entrar.</p>
 
@@ -46,12 +65,14 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
 
         <RequiredField
           label="Senha"
+          type="password"
           id="password"
           value={password}
           message="Por favor, insira sua senha"
           onChange={handlePasswordChange}
         />
       </div>
+
       <ApiError error={apiError} />
 
       <Button
@@ -66,6 +87,6 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
           Esqueci minha senha
         </Link>
       </p>
-    </>
+    </LoadingForm>
   );
 }
