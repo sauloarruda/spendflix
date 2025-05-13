@@ -11,7 +11,8 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "prisma:generate": "../../scripts/prisma.sh",
-    "test": "jest",
+    "test": "LOG_LEVEL=failure jest",
+    "test:coverage": "LOG_LEVEL=failure jest --coverage",
     "test:watch": "jest --watch"
   },
   "dependencies": {
