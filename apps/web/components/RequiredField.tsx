@@ -5,11 +5,22 @@ interface RequiredFieldProps {
   id: string;
   label: string;
   value: string;
-  type?: 'text' | 'password' | 'number' | 'month' | 'search' | 'tel' | 'time' | 'url' | 'week';
+  type?:
+    | 'text'
+    | 'email'
+    | 'password'
+    | 'number'
+    | 'month'
+    | 'search'
+    | 'tel'
+    | 'time'
+    | 'url'
+    | 'week';
   onChange: (value: string, isValid: boolean) => void;
   message?: string;
   customValidation?: (value: string) => { isValid: boolean; message?: string };
   maxLength?: number;
+  isValid?: boolean;
 }
 
 export default function RequiredField({
@@ -21,6 +32,7 @@ export default function RequiredField({
   message,
   customValidation,
   maxLength,
+  isValid: externalIsValid,
 }: RequiredFieldProps) {
   const [error, setError] = useState<string>('');
   const [touched, setTouched] = useState<boolean>(false);
@@ -49,8 +61,10 @@ export default function RequiredField({
     onChange(value, validate(value));
   };
 
-  const showValidationIcon = touched && value.trim().length > 0;
-  const isValid = !error && value.trim().length > 0;
+  const showValidationIcon =
+    externalIsValid !== undefined ? true : touched && value.trim().length > 0;
+  const isValid =
+    externalIsValid !== undefined ? externalIsValid : !error && value.trim().length > 0;
 
   return (
     <div className="flex flex-col">

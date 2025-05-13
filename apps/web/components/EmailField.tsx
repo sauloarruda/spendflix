@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 
 import RequiredField from './RequiredField';
 
@@ -11,6 +11,8 @@ interface EmailFieldProps {
 }
 
 export default function EmailField({ id, label, value, onChange, message }: EmailFieldProps) {
+  const [isValid, setIsValid] = useState<boolean>(false);
+
   const validateEmail = useCallback(
     (email: string) => {
       if (!email.trim()) {
@@ -24,28 +26,30 @@ export default function EmailField({ id, label, value, onChange, message }: Emai
     [message],
   );
 
-  // Only load stored email on initial mount
   useEffect(() => {
-    if (process.env.NODE_ENV === 'test') return;
     const storedEmail = localStorage.getItem('email') || '';
     if (storedEmail && !value) {
-      const { isValid } = validateEmail(storedEmail);
-      onChange(storedEmail, isValid);
+      const validation = validateEmail(storedEmail);
+      setIsValid(validation.isValid);
+      onChange(storedEmail, validation.isValid);
     }
-  }, []); // Empty dependency array means this only runs once on mount
+  }, [value, validateEmail, onChange]);
 
   const handleChange = (newValue: string) => {
-    const { isValid } = validateEmail(newValue);
-    onChange(newValue, isValid);
+    const validation = validateEmail(newValue);
+    setIsValid(validation.isValid);
+    onChange(newValue, validation.isValid);
   };
 
   return (
     <RequiredField
       id={id}
       label={label}
+      type="email"
       value={value}
       onChange={handleChange}
       customValidation={validateEmail}
+      isValid={isValid}
     />
   );
 }
