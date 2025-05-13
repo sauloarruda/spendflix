@@ -1,10 +1,10 @@
 import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
 import React, { useState } from 'react';
 
 import { confirmAction, signupAction } from '@/actions/auth';
 import { updateOnboardingAction } from '@/actions/onboarding';
 import ApiError from '@/components/ApiError';
+
 import RequiredField from './RequiredField';
 
 interface ConfirmProps {
