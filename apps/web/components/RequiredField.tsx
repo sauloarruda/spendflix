@@ -9,6 +9,7 @@ interface RequiredFieldProps {
   onChange: (value: string, isValid: boolean) => void;
   message?: string;
   customValidation?: (value: string) => { isValid: boolean; message?: string };
+  maxLength?: number;
 }
 
 export default function RequiredField({
@@ -19,6 +20,7 @@ export default function RequiredField({
   onChange,
   message,
   customValidation,
+  maxLength,
 }: RequiredFieldProps) {
   const [error, setError] = useState<string>('');
   const [touched, setTouched] = useState<boolean>(false);
@@ -60,6 +62,7 @@ export default function RequiredField({
           onChange={(e) => handleChange(e.target.value)}
           onBlur={handleBlur}
           className={`w-full ${touched && error ? 'p-invalid' : ''}`}
+          maxLength={maxLength}
         />
         <label htmlFor={id}>{label}</label>
         {showValidationIcon && (

@@ -7,7 +7,7 @@ import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { MultiSelect } from 'primereact/multiselect';
 import { useState } from 'react';
 
-import onboardingActions from '@/actions/onboarding';
+import { updateOnboardingAction } from '@/actions/onboarding';
 
 const allBanks: { label: string; value: string }[] = [
   { label: 'Banco ABC Brasil (246)', value: '246' },
@@ -131,7 +131,7 @@ export default function OnboardingStep3() {
       return;
     }
 
-    await onboardingActions.updateOnboarding(onboardingUid, {
+    await updateOnboardingAction(onboardingUid, {
       banks: selectedBankCodes,
       step: 3,
     });
@@ -149,7 +149,7 @@ export default function OnboardingStep3() {
         acceptLabel: 'Sim, quero continuar',
         rejectLabel: 'Não, quero entrar na lista de espera',
         accept: async () => {
-          await onboardingActions.updateOnboarding(onboardingUid, {
+          await updateOnboardingAction(onboardingUid, {
             step: 4,
           });
           router.push('/onboarding/step4');

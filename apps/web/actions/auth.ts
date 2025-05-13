@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 
 import { User } from '@/prisma';
 
-async function signup(name: string, email: string): Promise<User> {
+async function signupAction(name: string, email: string): Promise<User> {
   return signupService.signup(name, email);
 }
 
@@ -14,23 +14,22 @@ async function setAuthCookie(tokens: UserTokens) {
   cookieStore.set('session', tokens.accessToken);
 }
 
-async function confirm(email: string, code: string): Promise<void> {
+async function confirmAction(email: string, code: string): Promise<void> {
   const tokens = await signupService.confirm(email, code);
   await setAuthCookie(tokens);
 }
 
-async function login(email: string, password: string): Promise<void> {
+async function loginAction(email: string, password: string): Promise<void> {
   const tokens = await loginService.login(email, password);
   await setAuthCookie(tokens);
 }
 
-async function forgotPassword(email: string): Promise<void> {
+async function forgotPasswordAction(email: string): Promise<void> {
   await loginService.forgotPassword(email);
 }
 
-async function resetPassword(email: string, code: string, password: string): Promise<void> {
+async function resetPasswordAction(email: string, code: string, password: string): Promise<void> {
   await loginService.resetPassword(email, code, password);
 }
 
-const authActions = { signup, confirm, login, forgotPassword, resetPassword };
-export default authActions;
+export { signupAction, confirmAction, loginAction, forgotPasswordAction, resetPasswordAction };

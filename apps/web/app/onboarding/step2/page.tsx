@@ -6,7 +6,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { useState, useEffect, useRef } from 'react';
 
-import onboardingActions from '@/actions/onboarding';
+import { getOnboardingAction, updateOnboardingAction } from '@/actions/onboarding';
 
 type Step2FormData = {
   goal: 'dream' | 'debt' | '';
@@ -37,7 +37,7 @@ export default function OnboardingStep2() {
     setName(localStorage.getItem('name') || '');
 
     const getOnboarding = async () => {
-      const onboarding = await onboardingActions.getOnboarding(uid);
+      const onboarding = await getOnboardingAction(uid);
       setFormData({
         goal: onboarding.goal as 'dream' | 'debt',
         goalDescription: onboarding.goalDescription || '',
@@ -70,7 +70,7 @@ export default function OnboardingStep2() {
     if (typeof window !== 'undefined') {
       const onboardingUid = localStorage.getItem('onboardingUid');
       if (onboardingUid) {
-        await onboardingActions.updateOnboarding(onboardingUid, {
+        await updateOnboardingAction(onboardingUid, {
           goal: formData.goal as 'dream' | 'debt',
           goalDescription: formData.goalDescription,
           goalValue: formData.goalValue,

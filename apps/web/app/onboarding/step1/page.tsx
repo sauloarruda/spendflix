@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-import onboardingActions from '@/actions/onboarding';
+import { startOnboardingAction } from '@/actions/onboarding';
 import ApiError from '@/components/ApiError';
 import Confirm from '@/components/Confirm';
 import LoadingForm from '@/components/LoadingForm';
@@ -16,10 +16,11 @@ export default function Page() {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [apiError, setApiError] = useState<string>();
+
   async function checkIfOnboardingIsStarted() {
     if (!localStorage.getItem('onboardingUid')) {
       try {
-        const onboarding = await onboardingActions.startOnboarding();
+        const onboarding = await startOnboardingAction();
         localStorage.setItem('onboardingUid', onboarding.id);
       } catch (error) {
         setApiError((error as Error).message);

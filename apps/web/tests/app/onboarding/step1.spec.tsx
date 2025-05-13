@@ -1,7 +1,7 @@
 import { render, waitFor, fireEvent, screen } from '@testing-library/react';
 import React from 'react';
 
-import onboardingActions from '@/actions/onboarding';
+import { startOnboardingAction } from '@/actions/onboarding';
 import Page from '@/app/onboarding/step1/page';
 
 const mockPush = jest.fn();
@@ -30,12 +30,9 @@ jest.mock('@/modules/users/onboarding.repository', () => ({
   }),
 }));
 
-jest.mock('@/actions/onboarding', () => {
-  const TEST_ONBOARDING_ID = 'test-onboarding-id';
-  return {
-    startOnboarding: jest.fn().mockResolvedValue({ id: TEST_ONBOARDING_ID }),
-  };
-});
+jest.mock('@/actions/onboarding', () => ({
+  startOnboardingAction: jest.fn().mockResolvedValue({ id: 'test-onboarding-id' }),
+}));
 
 jest.mock('@/components/Signup', () => {
   const TEST_NAME = 'Test User';
@@ -117,7 +114,7 @@ describe('Onboarding Step 1 Page', () => {
       expect(localStorage.getItem('onboardingUid')).toBe(TEST_ONBOARDING_ID);
     });
 
-    expect(onboardingActions.startOnboarding).toHaveBeenCalledTimes(1);
+    expect(startOnboardingAction).toHaveBeenCalledTimes(1);
   });
 
   it('should not initialize onboarding when onboardingUid already exists', async () => {
@@ -129,7 +126,7 @@ describe('Onboarding Step 1 Page', () => {
       expect(localStorage.getItem('onboardingUid')).toBe(EXISTING_ONBOARDING_ID);
     });
 
-    expect(onboardingActions.startOnboarding).not.toHaveBeenCalled();
+    expect(startOnboardingAction).not.toHaveBeenCalled();
   });
 
   it('should show signup component by default', async () => {
@@ -172,7 +169,7 @@ describe('Onboarding Step 1 Page', () => {
 
   it('should show api error when onboarding initialization fails', async () => {
     const errorMessage = 'Failed to start onboarding';
-    (onboardingActions.startOnboarding as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
+    (startOnboardingAction as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
 
     render(<Page />);
 

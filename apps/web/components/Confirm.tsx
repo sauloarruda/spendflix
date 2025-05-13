@@ -2,9 +2,10 @@ import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import React, { useState } from 'react';
 
-import authActions from '@/actions/auth';
-import onboardingActions from '@/actions/onboarding';
+import { confirmAction, signupAction } from '@/actions/auth';
+import { updateOnboardingAction } from '@/actions/onboarding';
 import ApiError from '@/components/ApiError';
+import RequiredField from './RequiredField';
 
 interface ConfirmProps {
   name: string;
@@ -32,37 +33,20 @@ function translateError(err: unknown): string {
 
 export default function Confirm({ name, email, onSuccess }: ConfirmProps) {
   const [code, setCode] = useState<string>('');
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
-  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [apiError, setApiError] = useState<string>();
 
-  function validateCode(value: string = code) {
-    const validationErrors: Record<string, string> = {};
-    if (!/^\d{6}$/.test(value)) validationErrors.code = 'Informe o código de 6 dígitos.';
-    setErrors(validationErrors);
-    setIsFormValid(Object.keys(validationErrors).length === 0);
-    return Object.keys(validationErrors).length === 0;
-  }
-
-  const handleBlur = (field: string) => {
-    setTouched((prev) => ({ ...prev, [field]: true }));
-    validateCode();
-  };
-
   async function handleConfirm() {
-    if (!validateCode()) return;
     setLoading(true);
     try {
-      await authActions.confirm(email, code);
-      onboardingActions.updateOnboarding(localStorage.getItem('onboardingUid')!, {
+      await confirmAction(email, code);
+      await updateOnboardingAction(localStorage.getItem('onboardingUid')!, {
         step: 2,
       });
       onSuccess();
     } catch (error) {
       setApiError(translateError(error));
-    } finally {
       setLoading(false);
     }
   }
@@ -70,7 +54,7 @@ export default function Confirm({ name, email, onSuccess }: ConfirmProps) {
   async function handleResend() {
     setLoading(true);
     try {
-      await authActions.signup(name, email);
+      await signupAction(name, email);
     } catch (error) {
       setApiError(translateError(error));
     } finally {
@@ -78,47 +62,40 @@ export default function Confirm({ name, email, onSuccess }: ConfirmProps) {
     }
   }
 
+  function validateCode(value: string) {
+    if (!/^\d{6}$/.test(value)) {
+      return { isValid: false, message: 'Informe o código de 6 dígitos.' };
+    }
+    return { isValid: true };
+  }
+
   return (
     <>
-      <h2 className="text-xl font-semibold mb-6 text-center">Confirme seu Email</h2>
-
+      <h2 className="text-xl font-semibold mb-6 text-center">Confirme seu email</h2>
       <p className="text-gray-600 text-center mb-6">
-        Informe o código de 6 dígitos que enviamos para <strong>{email}</strong>.
+        Olá {name}, enviamos um código de confirmação para <strong>{email}</strong>. Por favor,
+        digite o código abaixo:
       </p>
-
-      <div className="flex flex-col my-8">
-        <span className="p-float-label">
-          <InputText
-            id="code"
-            value={code}
-            onChange={(e) => {
-              const newValue = e.target.value;
-              setCode(newValue);
-              validateCode(newValue);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && isFormValid) {
-                handleConfirm();
-              }
-            }}
-            onBlur={() => handleBlur('code')}
-            className={`w-full ${touched.code && errors.code ? 'p-invalid' : ''}`}
-            maxLength={6}
-          />
-          <label htmlFor="code">Código de confirmação</label>
-        </span>
-        {touched.code && errors.code && <small className="text-red-500 mt-1">{errors.code}</small>}
+      <div className="flex flex-col gap-8 my-8">
+        <RequiredField
+          id="code"
+          label="Código de confirmação"
+          value={code}
+          customValidation={validateCode}
+          onChange={(newValue: string, isValid: boolean) => {
+            setCode(newValue);
+            setIsFormValid(isValid);
+          }}
+          maxLength={6}
+        />
       </div>
-
       <ApiError error={apiError} />
-
       <Button
-        className="w-full mt-8"
         label={loading ? 'Confirmando...' : 'Confirmar'}
         onClick={handleConfirm}
         disabled={loading || !isFormValid}
+        className="w-full mt-8"
       />
-
       <p className="text-sm text-center mt-4">
         Não recebeu?{' '}
         <button className="text-primary underline" onClick={handleResend} disabled={loading}>

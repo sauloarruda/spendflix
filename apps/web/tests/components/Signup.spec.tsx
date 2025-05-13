@@ -1,12 +1,17 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import authActions from '@/actions/auth';
-import onboardingActions from '@/actions/onboarding';
+import { signupAction } from '@/actions/auth';
+import { updateOnboardingAction } from '@/actions/onboarding';
 import Signup from '@/components/Signup';
 
-jest.mock('@/actions/auth');
-jest.mock('@/actions/onboarding');
+jest.mock('@/actions/auth', () => ({
+  signupAction: jest.fn(),
+}));
+
+jest.mock('@/actions/onboarding', () => ({
+  updateOnboardingAction: jest.fn(),
+}));
 
 const mockOnSuccess = jest.fn();
 const mockOnLoginRedirect = jest.fn();
@@ -88,8 +93,8 @@ describe('Signup Component', () => {
           setTimeout(resolve, 100);
         });
 
-      (authActions.signup as jest.Mock).mockImplementation(mockSignup);
-      (onboardingActions.updateOnboarding as jest.Mock).mockResolvedValueOnce(undefined);
+      (signupAction as jest.Mock).mockImplementation(mockSignup);
+      (updateOnboardingAction as jest.Mock).mockResolvedValueOnce(undefined);
 
       const { nameInput, emailInput, submitButton } = setupSignupTest();
 
@@ -103,8 +108,8 @@ describe('Signup Component', () => {
       await waitFor(() => {
         expect(screen.queryByText('Enviando...')).not.toBeInTheDocument();
       });
-      expect(authActions.signup).toHaveBeenCalledTimes(1);
-      expect(onboardingActions.updateOnboarding).toHaveBeenCalledTimes(1);
+      expect(signupAction).toHaveBeenCalledTimes(1);
+      expect(updateOnboardingAction).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -114,8 +119,8 @@ describe('Signup Component', () => {
     });
 
     it('handles successful signup', async () => {
-      (authActions.signup as jest.Mock).mockResolvedValueOnce(undefined);
-      (onboardingActions.updateOnboarding as jest.Mock).mockResolvedValueOnce(undefined);
+      (signupAction as jest.Mock).mockResolvedValueOnce(undefined);
+      (updateOnboardingAction as jest.Mock).mockResolvedValueOnce(undefined);
 
       const { nameInput, emailInput, submitButton } = setupSignupTest();
 
@@ -124,8 +129,8 @@ describe('Signup Component', () => {
       await userEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(authActions.signup).toHaveBeenCalledWith('John Doe', 'john@example.com');
-        expect(onboardingActions.updateOnboarding).toHaveBeenCalledWith('test-uid', {
+        expect(signupAction).toHaveBeenCalledWith('John Doe', 'john@example.com');
+        expect(updateOnboardingAction).toHaveBeenCalledWith('test-uid', {
           step: 1,
         });
         expect(mockOnSuccess).toHaveBeenCalledWith('John Doe', 'john@example.com');
@@ -135,7 +140,7 @@ describe('Signup Component', () => {
 
   describe('Error Handling', () => {
     it('handles existing user error', async () => {
-      (authActions.signup as jest.Mock).mockRejectedValueOnce({ name: 'UsernameExistsException' });
+      (signupAction as jest.Mock).mockRejectedValueOnce({ name: 'UsernameExistsException' });
       const { nameInput, emailInput, submitButton } = setupSignupTest();
 
       await userEvent.type(nameInput, 'John Doe');
@@ -148,7 +153,7 @@ describe('Signup Component', () => {
     });
 
     it('displays error message for NotAuthorizedException', async () => {
-      (authActions.signup as jest.Mock).mockRejectedValueOnce({ name: 'NotAuthorizedException' });
+      (signupAction as jest.Mock).mockRejectedValueOnce({ name: 'NotAuthorizedException' });
       const { nameInput, emailInput, submitButton } = setupSignupTest();
 
       await userEvent.type(nameInput, 'John Doe');
@@ -161,7 +166,7 @@ describe('Signup Component', () => {
     });
 
     it('displays error message for CodeDeliveryFailureException', async () => {
-      (authActions.signup as jest.Mock).mockRejectedValueOnce({
+      (signupAction as jest.Mock).mockRejectedValueOnce({
         name: 'CodeDeliveryFailureException',
       });
       const { nameInput, emailInput, submitButton } = setupSignupTest();
@@ -180,7 +185,7 @@ describe('Signup Component', () => {
     });
 
     it('displays error message for TooManyRequestsException', async () => {
-      (authActions.signup as jest.Mock).mockRejectedValueOnce({ name: 'TooManyRequestsException' });
+      (signupAction as jest.Mock).mockRejectedValueOnce({ name: 'TooManyRequestsException' });
       const { nameInput, emailInput, submitButton } = setupSignupTest();
 
       await userEvent.type(nameInput, 'John Doe');
@@ -195,7 +200,7 @@ describe('Signup Component', () => {
     });
 
     it('displays generic error message for unknown errors', async () => {
-      (authActions.signup as jest.Mock).mockRejectedValueOnce({ name: 'UnknownError' });
+      (signupAction as jest.Mock).mockRejectedValueOnce({ name: 'UnknownError' });
       const { nameInput, emailInput, submitButton } = setupSignupTest();
 
       await userEvent.type(nameInput, 'John Doe');
