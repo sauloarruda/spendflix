@@ -24,12 +24,14 @@ export default function EmailField({ id, label, value, onChange, message }: Emai
     [message],
   );
 
-  // Trigger validation and onChange when value changes externally
+  // Only load stored email on initial mount
   useEffect(() => {
     const storedEmail = localStorage.getItem('email') || '';
-    const { isValid } = validateEmail(storedEmail);
-    onChange(storedEmail, isValid);
-  }, [onChange, validateEmail]);
+    if (storedEmail && !value) {
+      const { isValid } = validateEmail(storedEmail);
+      onChange(storedEmail, isValid);
+    }
+  }, []); // Empty dependency array means this only runs once on mount
 
   const handleChange = (newValue: string) => {
     const { isValid } = validateEmail(newValue);
