@@ -2,7 +2,6 @@ import { render, waitFor, fireEvent, screen } from '@testing-library/react';
 import React from 'react';
 
 import onboardingActions from '@/actions/onboarding';
-
 import Page from '@/app/onboarding/step1/page';
 
 const mockPush = jest.fn();
