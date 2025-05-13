@@ -68,20 +68,4 @@ else
     exit 1
 fi
 
-# Copy to Next.js server directory if it exists
-# if [ -d "$NEXT_SERVER_DIR" ]; then
-#     print_step "Copying generated files to Next.js server directory..."
-#     mkdir -p "$NEXT_SERVER_DIR/generated/prisma"
-#     cp -r "$PROJECT_ROOT/database/generated/prisma/"* "$NEXT_SERVER_DIR/generated/prisma/"
-
-#     if [ $? -eq 0 ]; then
-#         print_success "Generated files copied to Next.js server directory"
-#     else
-#         print_error "Failed to copy generated files to Next.js server directory"
-#         exit 1
-#     fi
-# fi
-
-ls -la "$PROJECT_ROOT/apps/web/generated/prisma"
-
 echo -e "\n${GREEN}${BOLD}✨ Prisma setup completed successfully!${NC}\n" 
