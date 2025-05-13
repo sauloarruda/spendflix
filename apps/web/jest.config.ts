@@ -24,6 +24,16 @@ const config: Config = {
   },
   testMatch: ['**/*.spec.ts', '**/*.spec.tsx', '**/*.test.ts', '**/*.test.tsx'],
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json', 'node'],
+  collectCoverageFrom: ['app/**/*.tsx', 'components/**/*.tsx'],
+  coverageDirectory: 'coverage',
+  coverageThreshold: {
+    global: {
+      branches: 50,
+      functions: 100,
+      lines: 90,
+      statements: 90,
+    },
+  },
 };
 
 export default config;
