@@ -3,7 +3,7 @@
 import { Button } from 'primereact/button';
 import React, { useState } from 'react';
 
-import authActions from '@/actions/auth';
+import { forgotPasswordAction } from '@/actions/auth';
 
 import ApiError from './ApiError';
 import EmailField from './EmailField';
@@ -28,7 +28,7 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
     if (!isEmailValid) return;
     setLoading(true);
     try {
-      await authActions.forgotPassword(email);
+      await forgotPasswordAction(email);
       onSuccess(email);
     } catch (error) {
       const errorName = (error as Error).name as ForgotPasswordErrorType;
