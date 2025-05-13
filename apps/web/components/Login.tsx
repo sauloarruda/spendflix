@@ -8,7 +8,6 @@ import { loginAction } from '@/actions/auth';
 
 import ApiError from './ApiError';
 import EmailField from './EmailField';
-import LoadingForm from './LoadingForm';
 import RequiredField from './RequiredField';
 
 export default function Login({ onSuccess }: { onSuccess: () => void }) {
@@ -20,10 +19,10 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
   const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
   const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false);
 
-  type LoginErrorType = 'UserNotFoundException' | 'InvalidPasswordException';
-  const LoginErrorMessages: Record<LoginErrorType, string> = {
+  const LoginErrorMessages: Record<string, string> = {
     UserNotFoundException: 'Usuário não encontrado',
-    InvalidPasswordException: 'Senha inválida conforme a política de senhas',
+    InvalidPasswordException: 'Usuário ou senha inválidos',
+    NotAuthorizedException: 'Usuário ou senha inválidos',
   };
 
   async function handleLogin() {
@@ -32,7 +31,7 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
       await loginAction(email, password);
       onSuccess();
     } catch (error) {
-      const errorName = (error as Error).name as LoginErrorType;
+      const errorName = (error as Error).name as keyof typeof LoginErrorMessages;
       setApiError(LoginErrorMessages[errorName] || 'Erro desconhecido');
     } finally {
       setLoading(false);
@@ -51,17 +50,13 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
     setIsFormValid(isValid && isPasswordValid);
   }
 
-  async function getEmailFromLocalStorage() {
-    // setEmail(localStorage.getItem('email') || '');
-  }
-
   return (
-    <LoadingForm message="Preparando pra começar..." onLoad={getEmailFromLocalStorage}>
+    <>
       <h2 className="text-xl font-semibold mb-6 text-center">Entre na sua conta</h2>
       <p className="text-gray-600 text-center mb-6">Informe seu email e senha para entrar.</p>
 
       <div className="flex flex-col gap-8 my-8">
-        <EmailField label="Email" id="password" value={email} onChange={handleEmailChange} />
+        <EmailField label="Email" id="email" value={email} onChange={handleEmailChange} />
 
         <RequiredField
           label="Senha"
@@ -83,10 +78,14 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
       />
 
       <p className="text-sm text-center mt-4">
-        <Link href="/forgot-password" className="text-primary underline">
+        <Link
+          href="/forgot-password"
+          className="text-primary underline"
+          onClick={() => setLoading(true)}
+        >
           Esqueci minha senha
         </Link>
       </p>
-    </LoadingForm>
+    </>
   );
 }
