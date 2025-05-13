@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { Button } from 'primereact/button';
 import React, { useState } from 'react';
 
-import { signup } from '@/actions/auth';
-import { updateOnboardingAction } from '@/actions/onboarding';
+import authActions from '@/actions/auth';
+import onboardingActions from '@/actions/onboarding';
 import ApiError from '@/components/ApiError';
 import EmailField from '@/components/EmailField';
 import RequiredField from '@/components/RequiredField';
@@ -43,8 +43,10 @@ export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
   async function handleSignup() {
     setLoading(true);
     try {
-      await signup(name, email);
-      updateOnboardingAction(localStorage.getItem('onboardingUid')!, { step: 1 });
+      await authActions.signup(name, email);
+      onboardingActions.updateOnboarding(localStorage.getItem('onboardingUid')!, {
+        step: 1,
+      });
       onSuccess(name, email);
     } catch (err) {
       const error = err as Error;

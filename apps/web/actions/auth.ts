@@ -32,4 +32,5 @@ async function resetPassword(email: string, code: string, password: string): Pro
   await loginService.resetPassword(email, code, password);
 }
 
-export { signup, confirm, login, forgotPassword, resetPassword };
+const authActions = { signup, confirm, login, forgotPassword, resetPassword };
+export default authActions;

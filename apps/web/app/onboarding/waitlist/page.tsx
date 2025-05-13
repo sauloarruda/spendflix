@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { updateOnboardingAction } from '@/actions/onboarding';
+import onboardingActions from '@/actions/onboarding';
 
 export default function WaitlistPage() {
   const router = useRouter();
@@ -16,7 +16,7 @@ export default function WaitlistPage() {
     }
     setName(localStorage.getItem('name') || '');
     const updateWaitlistStatus = async () => {
-      await updateOnboardingAction(localStorage.getItem('onboardingUid')!, {
+      await onboardingActions.updateOnboarding(localStorage.getItem('onboardingUid')!, {
         waitlist: true,
         finishedAt: new Date().toISOString(),
       });

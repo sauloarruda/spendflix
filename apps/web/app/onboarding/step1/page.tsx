@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-import { startOnboardingAction } from '@/actions/onboarding';
+import onboardingActions from '@/actions/onboarding';
 import ApiError from '@/components/ApiError';
 import Confirm from '@/components/Confirm';
 import LoadingForm from '@/components/LoadingForm';
@@ -19,7 +19,7 @@ export default function Page() {
   async function checkIfOnboardingIsStarted() {
     if (!localStorage.getItem('onboardingUid')) {
       try {
-        const onboarding = await startOnboardingAction();
+        const onboarding = await onboardingActions.startOnboarding();
         localStorage.setItem('onboardingUid', onboarding.id);
       } catch (error) {
         setApiError((error as Error).message);

@@ -7,17 +7,22 @@ import { Onboarding } from '@/prisma';
 
 const logger = getLogger().child({ module: 'onboardingActions' });
 
-async function updateOnboardingAction(onboardingUid: string, data: Partial<OnboardingData>) {
+async function updateOnboarding(onboardingUid: string, data: Partial<OnboardingData>) {
   await onboardingService.update(onboardingUid, data);
 }
 
-async function getOnboardingAction(onboardingUid: string): Promise<OnboardingData> {
+async function getOnboarding(onboardingUid: string): Promise<OnboardingData> {
   return (await onboardingService.find(onboardingUid)).data as OnboardingData;
 }
 
-async function startOnboardingAction(): Promise<Onboarding> {
+async function startOnboarding(): Promise<Onboarding> {
   logger.debug('Creating onboarding...');
   return onboardingService.create();
 }
 
-export { startOnboardingAction, updateOnboardingAction, getOnboardingAction };
+const onboardingActions = {
+  startOnboarding,
+  updateOnboarding,
+  getOnboarding,
+};
+export default onboardingActions;

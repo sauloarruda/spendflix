@@ -2,8 +2,8 @@ import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import React, { useState } from 'react';
 
-import { confirm, signup } from '@/actions/auth';
-import { updateOnboardingAction } from '@/actions/onboarding';
+import authActions from '@/actions/auth';
+import onboardingActions from '@/actions/onboarding';
 import ApiError from '@/components/ApiError';
 
 interface ConfirmProps {
@@ -55,8 +55,10 @@ export default function Confirm({ name, email, onSuccess }: ConfirmProps) {
     if (!validateCode()) return;
     setLoading(true);
     try {
-      await confirm(email, code);
-      updateOnboardingAction(localStorage.getItem('onboardingUid')!, { step: 2 });
+      await authActions.confirm(email, code);
+      onboardingActions.updateOnboarding(localStorage.getItem('onboardingUid')!, {
+        step: 2,
+      });
       onSuccess();
     } catch (error) {
       setApiError(translateError(error));
@@ -68,7 +70,7 @@ export default function Confirm({ name, email, onSuccess }: ConfirmProps) {
   async function handleResend() {
     setLoading(true);
     try {
-      await signup(name, email);
+      await authActions.signup(name, email);
     } catch (error) {
       setApiError(translateError(error));
     } finally {

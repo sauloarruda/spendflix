@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Button } from 'primereact/button';
 import React, { useState } from 'react';
 
-import { login } from '@/actions/auth';
+import authActions from '@/actions/auth';
 
 import ApiError from './ApiError';
 import EmailField from './EmailField';
@@ -29,7 +29,7 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
   async function handleLogin() {
     setLoading(true);
     try {
-      await login(email, password);
+      await authActions.login(email, password);
       onSuccess();
     } catch (error) {
       const errorName = (error as Error).name as LoginErrorType;
