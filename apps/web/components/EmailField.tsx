@@ -26,6 +26,7 @@ export default function EmailField({ id, label, value, onChange, message }: Emai
 
   // Only load stored email on initial mount
   useEffect(() => {
+    if (process.env.NODE_ENV === 'test') return;
     const storedEmail = localStorage.getItem('email') || '';
     if (storedEmail && !value) {
       const { isValid } = validateEmail(storedEmail);

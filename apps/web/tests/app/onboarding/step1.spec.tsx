@@ -3,13 +3,31 @@ import React from 'react';
 
 import onboardingActions from '@/actions/onboarding';
 
-import Page from './page';
+import Page from '@/app/onboarding/step1/page';
 
 const mockPush = jest.fn();
 
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
     push: mockPush,
+  }),
+}));
+
+jest.mock('@/modules/users/onboarding.repository', () => ({
+  find: jest.fn().mockResolvedValue({
+    id: 'test-onboarding-id',
+    step: 1,
+    userId: 'test-user-id',
+  }),
+  create: jest.fn().mockResolvedValue({
+    id: 'test-onboarding-id',
+    step: 1,
+    userId: 'test-user-id',
+  }),
+  update: jest.fn().mockResolvedValue({
+    id: 'test-onboarding-id',
+    step: 1,
+    userId: 'test-user-id',
   }),
 }));
 
