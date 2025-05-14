@@ -1,4 +1,5 @@
 import { PrismaClient } from '@/prisma';
+
 import getConfig from './config';
 
 let prisma: PrismaClient;

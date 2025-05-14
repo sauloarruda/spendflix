@@ -1,3 +1,4 @@
+import { User } from '@/prisma';
 import {
   AdminGetUserCommand,
   AdminGetUserCommandOutput,
@@ -11,10 +12,10 @@ import {
   ResendConfirmationCodeCommand,
   SignUpCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
-import getLogger from '@/common/logger';
-import { decrypt } from '@/common/encryption';
+
 import getConfig from '@/common/config';
-import { User } from '@/prisma';
+import { decrypt } from '@/common/encryption';
+import getLogger from '@/common/logger';
 
 const authLogger = getLogger().child({ module: 'cognito' });
 

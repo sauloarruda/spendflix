@@ -1,5 +1,6 @@
-import { config as loadEnv } from 'dotenv';
 import { resolve } from 'path';
+
+import { config as loadEnv } from 'dotenv';
 
 // Only load .env file in development or test environments
 if (process.env.NODE_ENV !== 'production' && process.env.__NEXT_PROCESSED_ENV !== 'true') {

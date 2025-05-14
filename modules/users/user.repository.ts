@@ -1,8 +1,12 @@
-import { encrypt, decrypt } from '@/common/encryption';
 import { User } from '@/prisma';
+
+import { encrypt, decrypt } from '@/common/encryption';
+
 import getPrisma from '../common/prisma';
 
-const generateTemporaryPassword = (length = 12): string => {
+const DEFAULT_PASSWORD_LENGTH = 32;
+const DEFAULT_RAND_FACTOR = 0.5;
+const generateTemporaryPassword = (length = DEFAULT_PASSWORD_LENGTH): string => {
   const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const lower = 'abcdefghijklmnopqrstuvwxyz';
   const digits = '0123456789';
@@ -20,7 +24,7 @@ const generateTemporaryPassword = (length = 12): string => {
     pwdChars.push(all[Math.floor(Math.random() * all.length)]);
   }
 
-  return pwdChars.sort(() => 0.5 - Math.random()).join('');
+  return pwdChars.sort(() => DEFAULT_RAND_FACTOR - Math.random()).join('');
 };
 
 async function findByEmail(email: string): Promise<User | undefined> {
@@ -32,7 +36,7 @@ async function findByEmail(email: string): Promise<User | undefined> {
 async function startOnboarding(name: string, email: string): Promise<User> {
   let user = await findByEmail(email);
   if (!user || !user.temporaryPassword) {
-    const temporaryPassword = generateTemporaryPassword(32);
+    const temporaryPassword = generateTemporaryPassword();
     const encryptedPassword = encrypt(temporaryPassword);
     const data = {
       name,

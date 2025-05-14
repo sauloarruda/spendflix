@@ -3,7 +3,7 @@
 import { Button } from 'primereact/button';
 import React, { useState } from 'react';
 
-import authActions from '@/actions/auth';
+import { resetPasswordAction } from '@/actions/auth';
 
 import ApiError from './ApiError';
 import LoadingForm from './LoadingForm';
@@ -32,7 +32,7 @@ export default function ResetPassword({ email, onSuccess }: ResetPasswordProps) 
     if (!isCodeValid || !isPasswordValid) return;
     setLoading(true);
     try {
-      await authActions.resetPassword(email, code, password);
+      await resetPasswordAction(email, code, password);
       onSuccess();
     } catch (error) {
       const errorName = (error as Error).name as ResetPasswordErrorType;

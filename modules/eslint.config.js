@@ -1,31 +1,28 @@
 const { FlatCompat } = require('@eslint/eslintrc');
-const { createTypeScriptImportResolver } = require('eslint-import-resolver-typescript');
 const path = require('path');
 
 const compat = new FlatCompat({ baseDirectory: __dirname });
-const prettierConfig = require('../../.prettierrc.json');
+const prettierConfig = require('../.prettierrc.json');
 
 module.exports = [
   {
     ignores: [
       'eslint.config.js',
-      'next.config.js',
+      'jest.config.ts',
+      'serverless.ts',
       '**/types/api.d.ts',
       'node_modules/**',
-      '.next/**',
+      '.serverless/**',
       'generated/**',
+      'dist/**',
+      'src/__generated__/**',
     ],
   },
 
-  ...compat.extends(
-    'next/core-web-vitals',
-    'plugin:prettier/recommended',
-    'airbnb-base',
-    'plugin:@typescript-eslint/recommended',
-  ),
+  ...compat.extends('airbnb-base', 'plugin:@typescript-eslint/recommended'),
 
   {
-    files: ['**/*.ts', '**/*.tsx'],
+    files: ['**/*.ts'],
     languageOptions: {
       parser: require('@typescript-eslint/parser'),
       parserOptions: {
@@ -35,23 +32,14 @@ module.exports = [
     },
     plugins: {
       '@typescript-eslint': require('@typescript-eslint/eslint-plugin'),
-      prettier: require('eslint-plugin-prettier'),
     },
     rules: {
       // Clean Code Principles - Function Rules
-      'max-lines-per-function': [
-        'error',
-        {
-          max: 100,
-          skipBlankLines: true,
-          skipComments: true,
-          IIFEs: true,
-        },
-      ], // Increased for React components
-      'max-params': ['error', { max: 4 }], // For React components with context/props/etc
-      complexity: ['error', { max: 15 }], // For more complex components
-      'max-nested-callbacks': ['error', { max: 3 }], // For async operations
-      'max-depth': ['error', { max: 3 }], // Keep max nesting depth at 3
+      'max-lines-per-function': ['error', { max: 20 }], // Functions should be small
+      'max-params': ['error', { max: 3 }], // Functions should have few parameters
+      complexity: ['error', { max: 10 }], // Functions should not be complex
+      'max-nested-callbacks': ['error', { max: 2 }], // Avoid deep nesting
+      'max-depth': ['error', { max: 3 }], // Avoid deep nesting
 
       // Clean Code Principles - Naming
       camelcase: ['error', { properties: 'never' }], // Use meaningful names
@@ -60,14 +48,7 @@ module.exports = [
         {
           selector: 'interface',
           format: ['PascalCase'],
-          custom: {
-            regex: '^I[A-Z]',
-            match: false,
-          },
-          filter: {
-            regex: '^I(Props|State|Context)$',
-            match: false,
-          },
+          prefix: ['I'],
         },
         {
           selector: 'typeAlias',
@@ -80,14 +61,7 @@ module.exports = [
       ],
 
       // Clean Code Principles - Code Organization
-      'max-lines': [
-        'error',
-        {
-          max: 500,
-          skipBlankLines: true,
-          skipComments: true,
-        },
-      ], // For larger components
+      'max-lines': ['error', { max: 300 }], // Files should be small
       'no-duplicate-imports': 'error', // Avoid code duplication
       'import/order': [
         'warn',
@@ -104,40 +78,13 @@ module.exports = [
       'no-return-await': 'error', // Don't return await
 
       // Clean Code Principles - Maintainability
-      'no-magic-numbers': [
-        'warn',
-        {
-          ignore: [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 20, 24, 60, 100, 1000],
-          ignoreArrayIndexes: true,
-          ignoreDefaultValues: true,
-        },
-      ], // Common numbers in web development
+      'no-magic-numbers': ['error', { ignore: [-1, 0, 1, 2] }], // Avoid magic numbers
       'no-var': 'error', // Use const and let
-      'prefer-const': ['error', { destructuring: 'all' }], // Use const when possible
-      'no-restricted-syntax': [
-        'error',
-        {
-          selector: 'VariableDeclaration[kind="let"]',
-          message: 'Use const instead of let',
-        },
-      ], // Prefer const over let
+      'prefer-const': 'error', // Use const when possible
 
       // Existing rules
-      'prettier/prettier': [
-        'error',
-        {
-          ...prettierConfig,
-          endOfLine: 'auto',
-        },
-      ],
       'no-console': 'warn',
-      'no-unused-vars': [
-        'warn',
-        {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-        },
-      ],
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       'import/extensions': 'off',
       'import/no-unresolved': 'off',
       'class-methods-use-this': 'off',
@@ -145,24 +92,21 @@ module.exports = [
       'import/no-relative-packages': 'off',
       'import/no-extraneous-dependencies': 'off',
       'no-use-before-define': 'off',
-      'import/prefer-default-export': 'off', // Allow named exports
-      'operator-linebreak': ['error', 'after'], // Fix prettier conflicts
-      'implicit-arrow-linebreak': 'off', // Fix prettier conflicts
-      'function-paren-newline': 'off', // Fix prettier conflicts
-      'object-curly-newline': 'off', // Fix prettier conflicts
-      indent: 'off', // Let prettier handle indentation
     },
     settings: {
       'import/resolver': {
         typescript: {},
         node: {
-          paths: ['src'],
+          paths: ['lib', 'generated/prisma', 'src'],
           extensions: ['.js', '.ts', '.d.ts', '.tsx'],
+          alias: {
+            '@/prisma': '../database/generated/prisma',
+            '@/fabbrica': '../database/src/__generated__/fabbrica',
+          },
         },
       },
     },
   },
-
   // Override rules for test files
   {
     files: ['**/*.spec.ts', '**/*.spec.tsx', '**/*.test.ts', '**/*.test.tsx'],

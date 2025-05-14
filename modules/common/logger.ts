@@ -1,9 +1,10 @@
 import pino from 'pino';
+
 import getConfig from '@/common/config';
 
 type LogLevel = 'fatal' | 'error' | 'warn' | 'info' | 'debug' | 'trace';
 
-interface LoggerOptions {
+interface ILoggerOptions {
   service?: string;
   level?: LogLevel;
   isOffline?: boolean;
@@ -24,7 +25,7 @@ const SENSITIVE_FIELDS = [
   'key',
 ];
 
-// Utility function to censor sensitive data
+// eslint-disable-next-line max-lines-per-function
 const censorSensitiveData = (data: unknown): unknown => {
   if (data === null || data === undefined) {
     return data;
@@ -52,8 +53,17 @@ const censorSensitiveData = (data: unknown): unknown => {
   return data;
 };
 
+const PINO_PRETTY_OPTIONS = {
+  target: 'pino-pretty',
+  options: {
+    colorize: true,
+    translateTime: 'SYS:standard',
+    levelFirst: true,
+    ignore: 'time,hostname,pid',
+  },
+};
 class Logger {
-  public bindings: LoggerOptions;
+  public bindings: ILoggerOptions;
 
   private logger: pino.Logger;
 
@@ -61,7 +71,7 @@ class Logger {
 
   private level: LogLevel;
 
-  constructor(options: LoggerOptions) {
+  constructor(options: ILoggerOptions) {
     this.bindings = options;
     const { service, level = 'info', isOffline = false } = options;
     this.isOffline = isOffline || false;
@@ -69,17 +79,7 @@ class Logger {
 
     this.logger = pino({
       level,
-      transport: isOffline
-        ? {
-            target: 'pino-pretty',
-            options: {
-              colorize: true,
-              // translateTime: 'SYS:standard',
-              levelFirst: true,
-              ignore: 'time,hostname,pid',
-            },
-          }
-        : undefined,
+      transport: isOffline ? PINO_PRETTY_OPTIONS : undefined,
       base: {
         service,
         environment: getConfig().NODE_ENV,
@@ -126,7 +126,7 @@ class Logger {
     this.logger.trace(censoredObj, censoredMsg, ...censoredArgs);
   }
 
-  child(options: LoggerOptions): Logger {
+  child(options: ILoggerOptions): Logger {
     const childLogger = new Logger({
       service: this.bindings.service as string,
       level: this.level,
@@ -140,10 +140,11 @@ class Logger {
 let logger: Logger;
 
 export default function getLogger() {
-  if (!logger)
+  if (!logger) {
     logger = new Logger({
       level: getConfig().LOG_LEVEL as LogLevel,
       isOffline: getConfig().IS_OFFLINE === 'true',
     });
+  }
   return logger;
 }

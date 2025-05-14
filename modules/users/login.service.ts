@@ -1,4 +1,5 @@
 import { InitiateAuthCommandOutput } from '@aws-sdk/client-cognito-identity-provider';
+
 import cognito from './cognito';
 import userRepository from './user.repository';
 import { UserTokens } from './userTokens';
@@ -7,21 +8,19 @@ async function updateUser(email: string, authResp: InitiateAuthCommandOutput): P
   const user = await userRepository.findByEmail(email);
   const userResp = await cognito.getUserFromToken(authResp.AuthenticationResult?.AccessToken || '');
   const cognitoId = userResp.UserAttributes?.find((attr) => attr.Name === 'sub')?.Value;
-  if (!user) {
+  const name = userResp.UserAttributes?.find((attr) => attr.Name === 'name')?.Value;
+
+  if (!user || user.cognitoId !== cognitoId) {
     await userRepository.upsertUser({
-      email: email,
-      name: userResp.UserAttributes?.find((attr) => attr.Name === 'name')?.Value,
-      cognitoId: cognitoId,
+      ...user,
+      email,
+      name,
+      cognitoId,
     });
-  } else {
-    if (user.cognitoId !== cognitoId)
-      await userRepository.upsertUser({
-        ...user,
-        cognitoId: userResp.UserAttributes?.find((attr) => attr.Name === 'sub')?.Value,
-      });
   }
 }
 
+const DEFAULT_EXPIRES_IN = 3600;
 async function login(email: string, password: string): Promise<UserTokens> {
   const authResp = await cognito.initiateAuth(email, password);
   await updateUser(email, authResp);
@@ -31,7 +30,8 @@ async function login(email: string, password: string): Promise<UserTokens> {
     accessToken: result.AccessToken!,
     refreshToken: result.RefreshToken!,
     idToken: result.IdToken!,
-    expiresIn: result.ExpiresIn || 3600, // the cognito-local doesn't return the expiresIn
+    // the cognito-local doesn't return the expiresIn
+    expiresIn: result.ExpiresIn || DEFAULT_EXPIRES_IN,
   };
 }
 

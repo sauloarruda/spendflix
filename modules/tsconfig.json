@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/prisma": ["../database/generated/prisma"],
+      "@/fabbrica": ["../database/src/__generated__/fabbrica"],
+      "@/*": ["./*"]
+    },
+    "outDir": "dist",
+    "declaration": true,
+    "strict": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

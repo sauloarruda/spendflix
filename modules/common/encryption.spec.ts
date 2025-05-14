@@ -1,5 +1,5 @@
-import { encrypt, decrypt } from '@/common/encryption';
 import getConfig from '@/common/config';
+import { encrypt, decrypt } from '@/common/encryption';
 
 describe('Encryption Utility', () => {
   describe('encrypt', () => {
@@ -45,12 +45,13 @@ describe('Encryption Utility', () => {
 
   describe('encrypt and decrypt', () => {
     it('should handle various text lengths', () => {
+      const maxSpaces = 100;
       const texts = [
         'a',
         'short',
         'medium-length-password',
         'very-long-password-with-special-characters!@#$%^&*()_+',
-        ' '.repeat(100), // 100 spaces
+        ' '.repeat(maxSpaces), // 100 spaces
       ];
 
       texts.forEach((text) => {

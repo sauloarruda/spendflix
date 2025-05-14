@@ -1,18 +1,13 @@
 {
+  "$schema": "https://turbo.build/schema.json",
   "tasks": {
-    "prisma:generate": {
-      "outputs": ["database/generated/prisma/**"]
-    },
     "build": {
-      "outputs": [".serverless/**", ".next/**"],
-      "dependsOn": ["prisma:generate", "^build"]
-    },
-    "dev": {
-      "cache": false
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "build/**"]
     },
     "test": {
-      "outputs": [],
-      "dependsOn": []
+      "dependsOn": ["^build"],
+      "outputs": []
     },
     "lint": {
       "outputs": []
@@ -20,9 +15,8 @@
     "lint:fix": {
       "outputs": []
     },
-    "deploy": {
-      "dependsOn": ["build"]
+    "format": {
+      "outputs": []
     }
-  },
-  "globalDependencies": ["pnpm-lock.yaml"]
+  }
 }

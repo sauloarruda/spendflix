@@ -14,6 +14,7 @@ module.exports = [
       'node_modules/**',
       '.serverless/**',
       'generated/**',
+      'dist/**',
       'src/__generated__/**',
     ],
   },
@@ -66,10 +67,9 @@ module.exports = [
 
       // Clean Code Principles - Code Organization
       'max-lines': ['error', { max: 300 }], // Files should be small
-      'max-lines-per-file': ['error', { max: 300 }], // Files should be small
       'no-duplicate-imports': 'error', // Avoid code duplication
       'import/order': [
-        'error',
+        'warn',
         {
           // Organize imports
           groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
@@ -106,11 +106,21 @@ module.exports = [
           paths: ['lib', 'generated/prisma', 'src'],
           extensions: ['.js', '.ts', '.d.ts', '.tsx'],
           alias: {
-            '@/prisma': './database/generated/prisma',
+            '@/prisma': 'database/generated/prisma',
             '@/fabbrica': 'database/src/__generated__/fabbrica',
           },
         },
       },
+    },
+  },
+  // Override rules for test files
+  {
+    files: ['**/*.spec.ts', '**/*.spec.tsx', '**/*.test.ts', '**/*.test.tsx'],
+    rules: {
+      'max-lines-per-function': 'off', // Disable line limit for test files
+      'max-lines': 'off', // Disable file line limit for test files
+      'max-nested-callbacks': 'off', // Allow more nested callbacks in tests
+      'max-depth': 'off', // Allow deeper nesting in tests
     },
   },
 ];

@@ -1,4 +1,5 @@
 import { Onboarding, Prisma } from '@/prisma';
+
 import getPrisma from '../common/prisma';
 
 export type OnboardingData = {

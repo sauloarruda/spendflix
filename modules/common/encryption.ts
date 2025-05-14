@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+
 import getConfig from '@/common/config';
 import getLogger from '@/common/logger';
 
@@ -9,7 +10,7 @@ const IV_LENGTH = 12; // For GCM, this is 12 bytes
 const TAG_LENGTH = 16;
 const KEY_LENGTH = 32; // 32 bytes = 256 bits
 
-interface CryptoError extends Error {
+interface ICryptoError extends Error {
   code?: string;
 }
 
@@ -25,12 +26,17 @@ function getSecretKey(): string {
 function getKey(secret: string): Buffer {
   // Use a fixed salt for consistent encryption/decryption
   const salt = Buffer.from('spendflix-auth-salt', 'utf8');
-  return crypto.pbkdf2Sync(secret, salt, 100000, KEY_LENGTH, 'sha256');
+  const ITERATIONS = 100000;
+  return crypto.pbkdf2Sync(secret, salt, ITERATIONS, KEY_LENGTH, 'sha256');
 }
 
 export function encrypt(text: string): string {
   authLogger.debug('Starting password encryption');
+  return encryptData(text);
+}
 
+// eslint-disable-next-line max-lines-per-function
+function encryptData(text: string): string {
   try {
     const iv = crypto.randomBytes(IV_LENGTH);
     const key = getKey(getSecretKey());
@@ -47,7 +53,7 @@ export function encrypt(text: string): string {
     authLogger.debug('Password encrypted successfully');
     return result;
   } catch (error: unknown) {
-    const cryptoError = error as CryptoError;
+    const cryptoError = error as ICryptoError;
     authLogger.error(
       {
         error: {
@@ -65,7 +71,11 @@ export function encrypt(text: string): string {
 
 export function decrypt(encryptedText: string): string {
   authLogger.debug('Starting password decryption');
+  return decryptData(encryptedText);
+}
 
+// eslint-disable-next-line max-lines-per-function
+function decryptData(encryptedText: string): string {
   const buffer = Buffer.from(encryptedText, 'base64');
   if (buffer.length < IV_LENGTH + TAG_LENGTH) {
     throw new Error(
