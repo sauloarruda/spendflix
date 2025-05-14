@@ -6,6 +6,8 @@ module.exports = {
     '^@/fabbrica$': '<rootDir>/../database/src/__generated__/fabbrica',
     '^@/(.*)$': '<rootDir>/$1',
   },
+  testMatch: ['**/*.spec.ts'],
+  testPathIgnorePatterns: ['/dist/'],
   transform: {
     '^.+\\.tsx?$': [
       'ts-jest',

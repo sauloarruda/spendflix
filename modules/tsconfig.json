@@ -5,6 +5,7 @@
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "baseUrl": ".",
+    "isolatedModules": true,
     "paths": {
       "@/prisma": ["../database/generated/prisma"],
       "@/fabbrica": ["../database/src/__generated__/fabbrica"],
