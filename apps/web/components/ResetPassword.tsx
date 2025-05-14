@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 import { resetPasswordAction } from '@/actions/auth';
 
 import ApiError from './ApiError';
-import LoadingForm from './LoadingForm';
 import RequiredField from './RequiredField';
 
 interface ResetPasswordProps {
@@ -29,7 +28,6 @@ export default function ResetPassword({ email, onSuccess }: ResetPasswordProps) 
   };
 
   async function handleResetPassword() {
-    if (!isCodeValid || !isPasswordValid) return;
     setLoading(true);
     try {
       await resetPasswordAction(email, code, password);
@@ -51,12 +49,8 @@ export default function ResetPassword({ email, onSuccess }: ResetPasswordProps) 
     setIsPasswordValid(isValid);
   }
 
-  async function onLoad() {
-    // No initialization needed for this step
-  }
-
   return (
-    <LoadingForm message="Preparando..." onLoad={onLoad}>
+    <>
       <h2 className="text-xl font-semibold mb-6 mt-8 text-center">Redefinir senha</h2>
       <p className="text-gray-600 text-center mb-6">
         Informe o código de 6 dígitos enviado para seu email e sua nova senha.
@@ -93,6 +87,6 @@ export default function ResetPassword({ email, onSuccess }: ResetPasswordProps) 
         onClick={handleResetPassword}
         disabled={loading || !isCodeValid || !isPasswordValid}
       />
-    </LoadingForm>
+    </>
   );
 }
