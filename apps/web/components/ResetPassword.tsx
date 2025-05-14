@@ -37,7 +37,6 @@ export default function ResetPassword({ email, onSuccess }: ResetPasswordProps) 
     } catch (error) {
       const errorName = (error as Error).name as ResetPasswordErrorType;
       setApiError(ResetPasswordErrorMessages[errorName] || 'Erro desconhecido');
-    } finally {
       setLoading(false);
     }
   }

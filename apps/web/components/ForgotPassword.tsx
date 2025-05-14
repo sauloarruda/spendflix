@@ -7,7 +7,6 @@ import { forgotPasswordAction } from '@/actions/auth';
 
 import ApiError from './ApiError';
 import EmailField from './EmailField';
-import LoadingForm from './LoadingForm';
 
 interface ForgotPasswordProps {
   onSuccess: (email: string) => void;
@@ -43,12 +42,8 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
     setIsEmailValid(isValid);
   }
 
-  async function getEmailFromLocalStorage() {
-    setEmail(localStorage.getItem('email') || '');
-  }
-
   return (
-    <LoadingForm message="Preparando..." onLoad={getEmailFromLocalStorage}>
+    <>
       <h2 className="text-xl font-semibold mb-6 mt-8 text-center">Esqueceu sua senha?</h2>
       <p className="text-gray-600 text-center mb-6">
         Informe seu email para receber instruções de como redefinir sua senha.
@@ -66,6 +61,6 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
         onClick={handleForgotPassword}
         disabled={loading || !isEmailValid}
       />
-    </LoadingForm>
+    </>
   );
 }
