@@ -4,9 +4,10 @@ import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 
 import { getOnboardingAction, updateOnboardingAction } from '@/actions/onboarding';
+import LoadingForm from '@/components/LoadingForm';
 
 type Step2FormData = {
   goal: 'dream' | 'debt' | '';
@@ -17,36 +18,42 @@ type Step2FormData = {
 // eslint-disable-next-line max-lines-per-function
 export default function OnboardingStep2() {
   const router = useRouter();
-  const [name, setName] = useState<string>('');
   const descriptionInputRef = useRef<HTMLInputElement>(null);
+  const [name, setName] = useState<string>('');
   const [formData, setFormData] = useState<Step2FormData>({
     goal: '',
     goalDescription: '',
     goalValue: undefined,
   });
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const uid = localStorage.getItem('onboardingUid');
-    if (!uid) {
-      router.push('/onboarding/step1');
-      return;
+  const resumeOnboarding = async () => {
+    try {
+      if (name) return;
+      const uid = localStorage.getItem('onboardingUid');
+      if (!uid) {
+        router.push('/onboarding/step1');
+        return;
+      }
+
+      setName(localStorage.getItem('name') || '');
+
+      try {
+        const onboarding = await getOnboardingAction(uid);
+        setFormData({
+          goal: onboarding.goal as 'dream' | 'debt',
+          goalDescription: onboarding.goalDescription || '',
+          goalValue: onboarding.goalValue || undefined,
+        });
+      } catch (error) {
+        console.error('Erro ao carregar dados do onboarding:', error);
+        // Não fazemos nada adicional, permitindo que o usuário continue com dados vazios
+      }
+    } catch (error) {
+      console.error('Erro ao inicializar onboarding:', error);
     }
-
-    setName(localStorage.getItem('name') || '');
-
-    const getOnboarding = async () => {
-      const onboarding = await getOnboardingAction(uid);
-      setFormData({
-        goal: onboarding.goal as 'dream' | 'debt',
-        goalDescription: onboarding.goalDescription || '',
-        goalValue: onboarding.goalValue || undefined,
-      });
-    };
-    getOnboarding();
-    setIsLoading(false);
-  }, [router]);
+  };
 
   const handleGoalSelect = (goal: 'dream' | 'debt') => {
     setFormData((prev) => ({ ...prev, goal }));
@@ -57,42 +64,22 @@ export default function OnboardingStep2() {
   };
 
   const handleContinue = async () => {
-    if (
-      !formData.goal ||
-      !formData.goalDescription.trim() ||
-      formData.goalValue === undefined ||
-      formData.goalValue === null ||
-      formData.goalValue <= 0
-    ) {
-      return;
-    }
-
-    if (typeof window !== 'undefined') {
-      const onboardingUid = localStorage.getItem('onboardingUid');
-      if (onboardingUid) {
-        await updateOnboardingAction(onboardingUid, {
-          goal: formData.goal as 'dream' | 'debt',
-          goalDescription: formData.goalDescription,
-          goalValue: formData.goalValue,
-          step: 3,
-        });
-      }
+    setIsLoading(true);
+    const onboardingUid = localStorage.getItem('onboardingUid');
+    if (onboardingUid) {
+      await updateOnboardingAction(onboardingUid, {
+        goal: formData.goal as 'dream' | 'debt',
+        goalDescription: formData.goalDescription,
+        goalValue: formData.goalValue!,
+        step: 3,
+      });
     }
 
     router.push('/onboarding/step3');
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center">
-        <strong className="mb-4">Preparando pra continuar...</strong>
-        <div className="w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
-  }
-
   return (
-    <>
+    <LoadingForm message="Preparando para continuar..." onLoad={resumeOnboarding}>
       <h2 className="text-xl font-semibold mb-6 text-center">
         Olá {name}, muito prazer! <br />
         Me conta, o que te trouxe até aqui?
@@ -173,6 +160,7 @@ export default function OnboardingStep2() {
           label="Continuar"
           className="w-full"
           disabled={
+            isLoading ||
             !formData.goal ||
             !formData.goalDescription.trim() ||
             formData.goalValue === undefined ||
@@ -182,6 +170,6 @@ export default function OnboardingStep2() {
           onClick={handleContinue}
         />
       </div>
-    </>
+    </LoadingForm>
   );
 }
