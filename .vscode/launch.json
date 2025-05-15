@@ -47,6 +47,23 @@
         "webRoot": "${workspaceFolder}"
       },
       "cwd": "${workspaceFolder}/apps/web"
+    },
+    {
+      "name": "[modules] Current Test",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "exec",
+        "jest",
+        "--runInBand",
+        "--no-cache",
+        "--detectOpenHandles",
+        "${file}"
+      ],
+      "cwd": "${workspaceFolder}/modules",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }
