@@ -2,7 +2,7 @@
   "name": "spendflix",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@10.9.0",
+  "packageManager": "pnpm@10.11.0",
   "license": "CC-BY-NC-4.0",
   "scripts": {
     "dev": "turbo run dev --parallel",

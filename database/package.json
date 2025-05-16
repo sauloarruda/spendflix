@@ -17,7 +17,7 @@
     "@faker-js/faker": "^9.7.0",
     "@quramy/prisma-fabbrica": "^2.2.3",
     "@types/node": "^22.15.2",
-    "prisma": "^6.7.0",
+    "prisma": "^6.8.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.2.2"
   }
