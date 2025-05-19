@@ -15,7 +15,7 @@ import { mockClient } from 'aws-sdk-client-mock';
 
 import getPrisma from '@/common/prisma';
 
-import importerService from './importer';
+import importerService from './importer.service';
 
 initialize({ prisma: getPrisma() });
 

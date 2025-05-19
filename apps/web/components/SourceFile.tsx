@@ -17,7 +17,7 @@ export default function SourceFile() {
     setLoading(true);
     try {
       const result = await putSourceFile(event.files[0]);
-      setUpload(result);
+      setUpload({ success: true, message: `${result} lançamentos processados` });
     } catch (error) {
       console.error('Error uploading file:', error);
       setUpload({ success: false, message: 'Failed to upload file' });

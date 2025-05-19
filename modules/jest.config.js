@@ -4,7 +4,8 @@ module.exports = {
   moduleNameMapper: {
     '^@/prisma$': '<rootDir>/../database/generated/prisma',
     '^@/fabbrica$': '<rootDir>/../database/src/__generated__/fabbrica',
-    '^@/(.*)$': '<rootDir>/$1',
+    '^@/modules/(.*)$': '<rootDir>/$1',
+    '^@/common/(.*)$': '<rootDir>/common/$1',
   },
   testMatch: ['**/*.spec.ts'],
   testPathIgnorePatterns: ['/dist/'],

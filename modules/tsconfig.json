@@ -1,20 +1,24 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "target": "ES2021",
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "esModuleInterop": true,
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "declaration": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
     "baseUrl": ".",
-    "isolatedModules": true,
     "paths": {
       "@/prisma": ["../database/generated/prisma"],
       "@/fabbrica": ["../database/src/__generated__/fabbrica"],
-      "@/*": ["./*"]
-    },
-    "outDir": "dist",
-    "declaration": true,
-    "strict": true
+      "@/common/*": ["./common/*"],
+      "@/modules/users": ["./users/index.ts"],
+      "@/modules/transactions": ["./transactions/index.ts"],
+      "@/modules/categorization": ["./categorization/index.ts"]
+    }
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["../node_modules", "node_modules", "dist"]
 }
