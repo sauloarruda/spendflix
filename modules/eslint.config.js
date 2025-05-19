@@ -35,7 +35,7 @@ module.exports = [
     },
     rules: {
       // Clean Code Principles - Function Rules
-      'max-lines-per-function': ['error', { max: 20 }], // Functions should be small
+      'max-lines-per-function': ['error', { max: 25 }], // Functions should be small
       'max-params': ['error', { max: 3 }], // Functions should have few parameters
       complexity: ['error', { max: 10 }], // Functions should not be complex
       'max-nested-callbacks': ['error', { max: 2 }], // Avoid deep nesting

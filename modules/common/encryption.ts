@@ -74,7 +74,6 @@ export function decrypt(encryptedText: string): string {
   return decryptData(encryptedText);
 }
 
-// eslint-disable-next-line max-lines-per-function
 function decryptData(encryptedText: string): string {
   const buffer = Buffer.from(encryptedText, 'base64');
   if (buffer.length < IV_LENGTH + TAG_LENGTH) {
