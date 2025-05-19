@@ -13,7 +13,7 @@ importers:
         version: 3.797.0
       '@prisma/client':
         specifier: 6.7.0
-        version: 6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3)
+        version: 6.7.0(prisma@6.8.2(typescript@5.8.3))(typescript@5.8.3)
       aws-jwt-verify:
         specifier: ^5.1.0
         version: 5.1.0
@@ -28,7 +28,7 @@ importers:
         version: 13.0.0
       prisma:
         specifier: ^6.7.0
-        version: 6.7.0(typescript@5.8.3)
+        version: 6.8.2(typescript@5.8.3)
     devDependencies:
       '@aws-sdk/client-s3':
         specifier: ^3.810.0
@@ -41,7 +41,7 @@ importers:
         version: 9.7.0
       '@quramy/prisma-fabbrica':
         specifier: ^2.2.3
-        version: 2.3.0(@prisma/client@6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3))(typescript@5.8.3)
+        version: 2.3.0(@prisma/client@6.7.0(prisma@6.8.2(typescript@5.8.3))(typescript@5.8.3))(typescript@5.8.3)
       '@smithy/util-stream':
         specifier: ^4.2.0
         version: 4.2.0
@@ -134,7 +134,7 @@ importers:
         version: 3.803.0
       '@prisma/client':
         specifier: 6.7.0
-        version: 6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3)
+        version: 6.7.0(prisma@6.8.2(typescript@5.8.3))(typescript@5.8.3)
       '@prisma/nextjs-monorepo-workaround-plugin':
         specifier: ^6.7.0
         version: 6.7.0
@@ -164,7 +164,7 @@ importers:
         version: 10.9.5(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       prisma:
         specifier: ^6.7.0
-        version: 6.7.0(typescript@5.8.3)
+        version: 6.8.2(typescript@5.8.3)
       react:
         specifier: ^19.1.0
         version: 19.1.0
@@ -221,36 +221,14 @@ importers:
         specifier: ^5.8.3
         version: 5.8.3
 
-  database:
-    dependencies:
-      '@prisma/client':
-        specifier: 6.7.0
-        version: 6.7.0(prisma@6.8.2(typescript@5.8.3))(typescript@5.8.3)
-    devDependencies:
-      '@faker-js/faker':
-        specifier: ^9.7.0
-        version: 9.7.0
-      '@quramy/prisma-fabbrica':
-        specifier: ^2.2.3
-        version: 2.3.0(@prisma/client@6.7.0(prisma@6.8.2(typescript@5.8.3))(typescript@5.8.3))(typescript@5.8.3)
-      '@types/node':
-        specifier: ^22.15.2
-        version: 22.15.3
-      prisma:
-        specifier: ^6.8.2
-        version: 6.8.2(typescript@5.8.3)
-      ts-node:
-        specifier: ^10.9.2
-        version: 10.9.2(@types/node@22.15.3)(typescript@5.8.3)
-      typescript:
-        specifier: ^5.2.2
-        version: 5.8.3
-
   modules:
     dependencies:
       '@aws-sdk/client-s3':
         specifier: ^3.810.0
         version: 3.810.0
+      '@aws-sdk/util-stream-node':
+        specifier: ^3.374.0
+        version: 3.374.0
       '@types/papaparse':
         specifier: ^5.3.16
         version: 5.3.16
@@ -263,7 +241,7 @@ importers:
         version: 9.7.0
       '@quramy/prisma-fabbrica':
         specifier: ^2.2.3
-        version: 2.3.0(@prisma/client@6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3))(typescript@5.8.3)
+        version: 2.3.0(@prisma/client@6.8.2(prisma@6.8.2(typescript@5.8.3))(typescript@5.8.3))(typescript@5.8.3)
       '@types/jest':
         specifier: ^29.5.2
         version: 29.5.14
@@ -626,6 +604,11 @@ packages:
   '@aws-sdk/util-locate-window@3.723.0':
     resolution: {integrity: sha512-Yf2CS10BqK688DRsrKI/EO6B8ff5J86NXe4C+VCysK7UOgN0l1zOTeTukZ3H8Q9tYYX3oaF1961o8vRkFm7Nmw==}
     engines: {node: '>=18.0.0'}
+
+  '@aws-sdk/util-stream-node@3.374.0':
+    resolution: {integrity: sha512-E9niTpJC9vYQAlManm8cpXGxMmSOBwGQj0TwLGECIaA51Bk+7RjlXAZkcu85PvIps90N3ollYtWWSsRBnH2SJw==}
+    engines: {node: '>=14.0.0'}
+    deprecated: This package has moved to @smithy/util-stream
 
   '@aws-sdk/util-user-agent-browser@3.775.0':
     resolution: {integrity: sha512-txw2wkiJmZKVdDbscK7VBK+u+TJnRtlUjRTLei+elZg2ADhpQxfVAQl436FUeIv6AhB/oRHW6/K/EAGXUSWi0A==}
@@ -1428,6 +1411,18 @@ packages:
       typescript:
         optional: true
 
+  '@prisma/client@6.8.2':
+    resolution: {integrity: sha512-5II+vbyzv4si6Yunwgkj0qT/iY0zyspttoDrL3R4BYgLdp42/d2C8xdi9vqkrYtKt9H32oFIukvyw3Koz5JoDg==}
+    engines: {node: '>=18.18'}
+    peerDependencies:
+      prisma: '*'
+      typescript: '>=5.1.0'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+      typescript:
+        optional: true
+
   '@prisma/config@6.7.0':
     resolution: {integrity: sha512-di8QDdvSz7DLUi3OOcCHSwxRNeW7jtGRUD2+Z3SdNE3A+pPiNT8WgUJoUyOwJmUr5t+JA2W15P78C/N+8RXrOA==}
 
@@ -1530,6 +1525,10 @@ packages:
   '@sinonjs/text-encoding@0.7.3':
     resolution: {integrity: sha512-DE427ROAphMQzU4ENbliGYrBSYPXF+TtLg9S8vzeA+OF4ZKzoDdzfL8sxuMUGS/lgRhM6j1URSk9ghf7Xo1tyA==}
 
+  '@smithy/abort-controller@1.1.0':
+    resolution: {integrity: sha512-5imgGUlZL4dW4YWdMYAKLmal9ny/tlenM81QZY7xYyb76z9Z/QOg7oM5Ak9HQl8QfFTlGVWwcMXl+54jroRgEQ==}
+    engines: {node: '>=14.0.0'}
+
   '@smithy/abort-controller@4.0.2':
     resolution: {integrity: sha512-Sl/78VDtgqKxN2+1qduaVE140XF+Xg+TafkncspwM4jFP/LHr76ZHmIY/y3V1M0mMLNk+Je6IGbzxy23RSToMw==}
     engines: {node: '>=18.0.0'}
@@ -1606,6 +1605,10 @@ packages:
     resolution: {integrity: sha512-GatB4+2DTpgWPday+mnUkoumP54u/MDM/5u44KF9hIu8jF0uafZtQLcdfIKkIcUNuF/fBojpLEHZS/56JqPeXQ==}
     engines: {node: '>=18.0.0'}
 
+  '@smithy/is-array-buffer@1.1.0':
+    resolution: {integrity: sha512-twpQ/n+3OWZJ7Z+xu43MJErmhB/WO/mMTnqR6PwWQShvSJ/emx5d1N59LQZk6ZpTAeuRWrc+eHhkzTp9NFjNRQ==}
+    engines: {node: '>=14.0.0'}
+
   '@smithy/is-array-buffer@2.2.0':
     resolution: {integrity: sha512-GGP3O9QFD24uGeAXYUjwSTXARoqpZykHadOmA8G5vfJPK0/DC67qa//0qvqrJzL1xc8WQWX7/yc7fwudjPHPhA==}
     engines: {node: '>=14.0.0'}
@@ -1658,6 +1661,10 @@ packages:
     resolution: {integrity: sha512-1slS5jf5icHETwl5hxEVBj+mh6B+LbVW4yRINsGtUKH+nxM5Pw2H59+qf+JqYFCHp9jssG4vX81f5WKnjMN3Vw==}
     engines: {node: '>=18.0.0'}
 
+  '@smithy/node-http-handler@1.1.0':
+    resolution: {integrity: sha512-d3kRriEgaIiGXLziAM8bjnaLn1fthCJeTLZIwEIpzQqe6yPX0a+yQoLCTyjb2fvdLwkMoG4p7THIIB5cj5lkbg==}
+    engines: {node: '>=14.0.0'}
+
   '@smithy/node-http-handler@4.0.4':
     resolution: {integrity: sha512-/mdqabuAT3o/ihBGjL94PUbTSPSRJ0eeVTdgADzow0wRJ0rN4A27EOrtlK56MYiO1fDvlO3jVTCxQtQmK9dZ1g==}
     engines: {node: '>=18.0.0'}
@@ -1666,9 +1673,17 @@ packages:
     resolution: {integrity: sha512-wNRoQC1uISOuNc2s4hkOYwYllmiyrvVXWMtq+TysNRVQaHm4yoafYQyjN/goYZS+QbYlPIbb/QRjaUZMuzwQ7A==}
     engines: {node: '>=18.0.0'}
 
+  '@smithy/protocol-http@1.2.0':
+    resolution: {integrity: sha512-GfGfruksi3nXdFok5RhgtOnWe5f6BndzYfmEXISD+5gAGdayFGpjWu5pIqIweTudMtse20bGbc+7MFZXT1Tb8Q==}
+    engines: {node: '>=14.0.0'}
+
   '@smithy/protocol-http@5.1.0':
     resolution: {integrity: sha512-KxAOL1nUNw2JTYrtviRRjEnykIDhxc84qMBzxvu1MUfQfHTuBlCG7PA6EdVwqpJjH7glw7FqQoFxUJSyBQgu7g==}
     engines: {node: '>=18.0.0'}
+
+  '@smithy/querystring-builder@1.1.0':
+    resolution: {integrity: sha512-gDEi4LxIGLbdfjrjiY45QNbuDmpkwh9DX4xzrR2AzjjXpxwGyfSpbJaYhXARw9p17VH0h9UewnNQXNwaQyYMDA==}
+    engines: {node: '>=14.0.0'}
 
   '@smithy/querystring-builder@4.0.2':
     resolution: {integrity: sha512-NTOs0FwHw1vimmQM4ebh+wFQvOwkEf/kQL6bSM1Lock+Bv4I89B3hGYoUEPkmvYPkDKyp5UdXJYu+PoTQ3T31Q==}
@@ -1698,6 +1713,10 @@ packages:
     resolution: {integrity: sha512-WEqP0wQ1N/lVS4pwNK1Vk+0i6QIr66cq/xbu1dVy1tM0A0qYwAYyz0JhbquzM5pMa8s89lyDBtoGKxo7iG74GA==}
     engines: {node: '>=18.0.0'}
 
+  '@smithy/types@1.2.0':
+    resolution: {integrity: sha512-z1r00TvBqF3dh4aHhya7nz1HhvCg4TRmw51fjMrh5do3h+ngSstt/yKlNbHeb9QxJmFbmN8KEVSWgb1bRvfEoA==}
+    engines: {node: '>=14.0.0'}
+
   '@smithy/types@4.2.0':
     resolution: {integrity: sha512-7eMk09zQKCO+E/ivsjQv+fDlOupcFUCSC/L2YUPgwhvowVGWbPQHjEFcmjt7QQ4ra5lyowS92SV53Zc6XD4+fg==}
     engines: {node: '>=18.0.0'}
@@ -1717,6 +1736,10 @@ packages:
   '@smithy/util-body-length-node@4.0.0':
     resolution: {integrity: sha512-q0iDP3VsZzqJyje8xJWEJCNIu3lktUGVoSy1KB0UWym2CL1siV3artm+u1DFYTLejpsrdGyCSWBdGNjJzfDPjg==}
     engines: {node: '>=18.0.0'}
+
+  '@smithy/util-buffer-from@1.1.0':
+    resolution: {integrity: sha512-9m6NXE0ww+ra5HKHCHig20T+FAwxBAm7DIdwc/767uGWbRcY720ybgPacQNB96JMOI7xVr/CDa3oMzKmW4a+kw==}
+    engines: {node: '>=14.0.0'}
 
   '@smithy/util-buffer-from@2.2.0':
     resolution: {integrity: sha512-IJdWBbTcMQ6DA0gdNhh/BwrLkDR+ADW5Kr1aZmd4k3DIF6ezMV4R2NIAmT08wQJ3yUK82thHWmC/TnK/wpMMIA==}
@@ -1766,9 +1789,17 @@ packages:
     resolution: {integrity: sha512-DPuYjZQDXmKr/sNvy9Spu8R/ESa2e22wXZzSAY6NkjOLj6spbIje/Aq8rT97iUMdDj0qHMRIe+bTxvlU74d9Ng==}
     engines: {node: '>=18.0.0'}
 
+  '@smithy/util-stream-node@1.1.0':
+    resolution: {integrity: sha512-gC7La6Xh/Q6ruY2tF2kSmVYxZpca9nKMYsbPSNDUv6EKW6kMHO3UqxTQ4kixynUOz2uZ3igvuX+1d2w+LaD2dw==}
+    engines: {node: '>=14.0.0'}
+
   '@smithy/util-stream@4.2.0':
     resolution: {integrity: sha512-Vj1TtwWnuWqdgQI6YTUF5hQ/0jmFiOYsc51CSMgj7QfyO+RF4EnT2HNjoviNlOOmgzgvf3f5yno+EiC4vrnaWQ==}
     engines: {node: '>=18.0.0'}
+
+  '@smithy/util-uri-escape@1.1.0':
+    resolution: {integrity: sha512-/jL/V1xdVRt5XppwiaEU8Etp5WHZj609n0xMTuehmCqdoOFbId1M+aEeDWZsQ+8JbEB/BJ6ynY2SlYmOaKtt8w==}
+    engines: {node: '>=14.0.0'}
 
   '@smithy/util-uri-escape@4.0.0':
     resolution: {integrity: sha512-77yfbCbQMtgtTylO9itEAdpPXSog3ZxMe09AEhm0dU0NLTalV70ghDZFR+Nfi1C60jnJoh/Re4090/DuZh2Omg==}
@@ -4463,16 +4494,6 @@ packages:
       '@types/react':
         optional: true
 
-  prisma@6.7.0:
-    resolution: {integrity: sha512-vArg+4UqnQ13CVhc2WUosemwh6hr6cr6FY2uzDvCIFwH8pu8BXVv38PktoMLVjtX7sbYThxbnZF5YiR8sN2clw==}
-    engines: {node: '>=18.18'}
-    hasBin: true
-    peerDependencies:
-      typescript: '>=5.1.0'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-
   prisma@6.8.2:
     resolution: {integrity: sha512-JNricTXQxzDtRS7lCGGOB4g5DJ91eg3nozdubXze3LpcMl1oWwcFddrj++Up3jnRE6X/3gB/xz3V+ecBk/eEGA==}
     engines: {node: '>=18.18'}
@@ -6274,6 +6295,11 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
+  '@aws-sdk/util-stream-node@3.374.0':
+    dependencies:
+      '@smithy/util-stream-node': 1.1.0
+      tslib: 2.8.1
+
   '@aws-sdk/util-user-agent-browser@3.775.0':
     dependencies:
       '@aws-sdk/types': 3.775.0
@@ -7089,12 +7115,12 @@ snapshots:
 
   '@pkgr/core@0.2.4': {}
 
-  '@prisma/client@6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3)':
+  '@prisma/client@6.7.0(prisma@6.8.2(typescript@5.8.3))(typescript@5.8.3)':
     optionalDependencies:
-      prisma: 6.7.0(typescript@5.8.3)
+      prisma: 6.8.2(typescript@5.8.3)
       typescript: 5.8.3
 
-  '@prisma/client@6.7.0(prisma@6.8.2(typescript@5.8.3))(typescript@5.8.3)':
+  '@prisma/client@6.8.2(prisma@6.8.2(typescript@5.8.3))(typescript@5.8.3)':
     optionalDependencies:
       prisma: 6.8.2(typescript@5.8.3)
       typescript: 5.8.3
@@ -7198,9 +7224,9 @@ snapshots:
       '@prisma/prisma-schema-wasm': 6.7.0-36.3cff47a7f5d65c3ea74883f1d736e41d68ce91ed
       fs-extra: 11.3.0
 
-  '@quramy/prisma-fabbrica@2.3.0(@prisma/client@6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3))(typescript@5.8.3)':
+  '@quramy/prisma-fabbrica@2.3.0(@prisma/client@6.7.0(prisma@6.8.2(typescript@5.8.3))(typescript@5.8.3))(typescript@5.8.3)':
     dependencies:
-      '@prisma/client': 6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3)
+      '@prisma/client': 6.7.0(prisma@6.8.2(typescript@5.8.3))(typescript@5.8.3)
       '@prisma/generator-helper': 6.7.0
       '@prisma/internals': 6.7.0(typescript@5.8.3)
       short-uuid: 5.2.0
@@ -7209,9 +7235,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@quramy/prisma-fabbrica@2.3.0(@prisma/client@6.7.0(prisma@6.8.2(typescript@5.8.3))(typescript@5.8.3))(typescript@5.8.3)':
+  '@quramy/prisma-fabbrica@2.3.0(@prisma/client@6.8.2(prisma@6.8.2(typescript@5.8.3))(typescript@5.8.3))(typescript@5.8.3)':
     dependencies:
-      '@prisma/client': 6.7.0(prisma@6.8.2(typescript@5.8.3))(typescript@5.8.3)
+      '@prisma/client': 6.8.2(prisma@6.8.2(typescript@5.8.3))(typescript@5.8.3)
       '@prisma/generator-helper': 6.7.0
       '@prisma/internals': 6.7.0(typescript@5.8.3)
       short-uuid: 5.2.0
@@ -7249,6 +7275,11 @@ snapshots:
       type-detect: 4.1.0
 
   '@sinonjs/text-encoding@0.7.3': {}
+
+  '@smithy/abort-controller@1.1.0':
+    dependencies:
+      '@smithy/types': 1.2.0
+      tslib: 2.8.1
 
   '@smithy/abort-controller@4.0.2':
     dependencies:
@@ -7381,6 +7412,10 @@ snapshots:
       '@smithy/types': 4.2.0
       tslib: 2.8.1
 
+  '@smithy/is-array-buffer@1.1.0':
+    dependencies:
+      tslib: 2.8.1
+
   '@smithy/is-array-buffer@2.2.0':
     dependencies:
       tslib: 2.8.1
@@ -7477,6 +7512,14 @@ snapshots:
       '@smithy/types': 4.2.0
       tslib: 2.8.1
 
+  '@smithy/node-http-handler@1.1.0':
+    dependencies:
+      '@smithy/abort-controller': 1.1.0
+      '@smithy/protocol-http': 1.2.0
+      '@smithy/querystring-builder': 1.1.0
+      '@smithy/types': 1.2.0
+      tslib: 2.8.1
+
   '@smithy/node-http-handler@4.0.4':
     dependencies:
       '@smithy/abort-controller': 4.0.2
@@ -7490,9 +7533,20 @@ snapshots:
       '@smithy/types': 4.2.0
       tslib: 2.8.1
 
+  '@smithy/protocol-http@1.2.0':
+    dependencies:
+      '@smithy/types': 1.2.0
+      tslib: 2.8.1
+
   '@smithy/protocol-http@5.1.0':
     dependencies:
       '@smithy/types': 4.2.0
+      tslib: 2.8.1
+
+  '@smithy/querystring-builder@1.1.0':
+    dependencies:
+      '@smithy/types': 1.2.0
+      '@smithy/util-uri-escape': 1.1.0
       tslib: 2.8.1
 
   '@smithy/querystring-builder@4.0.2':
@@ -7546,6 +7600,10 @@ snapshots:
       '@smithy/util-stream': 4.2.0
       tslib: 2.8.1
 
+  '@smithy/types@1.2.0':
+    dependencies:
+      tslib: 2.8.1
+
   '@smithy/types@4.2.0':
     dependencies:
       tslib: 2.8.1
@@ -7568,6 +7626,11 @@ snapshots:
 
   '@smithy/util-body-length-node@4.0.0':
     dependencies:
+      tslib: 2.8.1
+
+  '@smithy/util-buffer-from@1.1.0':
+    dependencies:
+      '@smithy/is-array-buffer': 1.1.0
       tslib: 2.8.1
 
   '@smithy/util-buffer-from@2.2.0':
@@ -7647,6 +7710,13 @@ snapshots:
       '@smithy/types': 4.2.0
       tslib: 2.8.1
 
+  '@smithy/util-stream-node@1.1.0':
+    dependencies:
+      '@smithy/node-http-handler': 1.1.0
+      '@smithy/types': 1.2.0
+      '@smithy/util-buffer-from': 1.1.0
+      tslib: 2.8.1
+
   '@smithy/util-stream@4.2.0':
     dependencies:
       '@smithy/fetch-http-handler': 5.0.2
@@ -7656,6 +7726,10 @@ snapshots:
       '@smithy/util-buffer-from': 4.0.0
       '@smithy/util-hex-encoding': 4.0.0
       '@smithy/util-utf8': 4.0.0
+      tslib: 2.8.1
+
+  '@smithy/util-uri-escape@1.1.0':
+    dependencies:
       tslib: 2.8.1
 
   '@smithy/util-uri-escape@4.0.0':
@@ -8992,14 +9066,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.31.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.3.4)(eslint@9.25.1(jiti@2.4.2)):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.31.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.25.1(jiti@2.4.2)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.31.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)
       eslint: 9.25.1(jiti@2.4.2)
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 4.3.4(eslint-plugin-import-x@4.11.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint-plugin-import@2.31.0)(eslint@9.25.1(jiti@2.4.2))
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import-x@4.11.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint-plugin-import@2.31.0)(eslint@9.25.1(jiti@2.4.2))
     transitivePeerDependencies:
       - supports-color
 
@@ -9048,7 +9122,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.25.1(jiti@2.4.2)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.31.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.3.4)(eslint@9.25.1(jiti@2.4.2))
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.31.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.25.1(jiti@2.4.2))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -10880,16 +10954,6 @@ snapshots:
       react-transition-group: 4.4.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
     optionalDependencies:
       '@types/react': 19.1.2
-
-  prisma@6.7.0(typescript@5.8.3):
-    dependencies:
-      '@prisma/config': 6.7.0
-      '@prisma/engines': 6.7.0
-    optionalDependencies:
-      fsevents: 2.3.3
-      typescript: 5.8.3
-    transitivePeerDependencies:
-      - supports-color
 
   prisma@6.8.2(typescript@5.8.3):
     dependencies:
