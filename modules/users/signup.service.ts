@@ -2,6 +2,7 @@ import { User } from '@/prisma';
 import { UsernameExistsException } from '@aws-sdk/client-cognito-identity-provider';
 
 import getLogger from '@/common/logger';
+import getPrisma from '@/common/prisma';
 
 import cognito from './cognito';
 import userRepository from './user.repository';
@@ -96,12 +97,14 @@ async function authenticate(email: string, password: string): Promise<UserTokens
   };
 }
 
-async function confirm(email: string, code: string): Promise<UserTokens> {
+async function confirm(email: string, code: string): Promise<{ tokens: UserTokens; user: User }> {
   logger.info({ email }, 'Starting confirmation process');
   try {
+    const user = await getPrisma().user.findUnique({ where: { email } });
+    if (!user) throw new Error(`User not found for email: ${email}`);
     const tokens = await verifyPasswordAndConfirm(email, code);
     logger.info({ email }, 'Confirmation process completed successfully');
-    return tokens;
+    return { tokens, user };
   } catch (error) {
     logger.error({ error }, 'Error in confirmation process');
     throw error;

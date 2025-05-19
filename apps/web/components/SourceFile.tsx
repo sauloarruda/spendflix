@@ -5,7 +5,12 @@ import { useState } from 'react';
 
 import { putSourceFile } from '../actions/sources';
 
-export default function SourceFile() {
+interface SourceFileProps {
+  onSuccess: (accountId: string) => void;
+  accountId: string;
+}
+
+export default function SourceFile({ onSuccess, accountId }: SourceFileProps) {
   const [loading, setLoading] = useState(false);
   const [upload, setUpload] = useState<{ success: boolean | null; message: string }>({
     success: null,
@@ -16,11 +21,12 @@ export default function SourceFile() {
   async function handleUpload(event: FileUploadHandlerEvent) {
     setLoading(true);
     try {
-      const result = await putSourceFile(event.files[0]);
+      const result = await putSourceFile(event.files[0], accountId);
       setUpload({ success: true, message: `${result} lançamentos processados` });
     } catch (error) {
       console.error('Error uploading file:', error);
       setUpload({ success: false, message: 'Failed to upload file' });
+      onSuccess(accountId);
     } finally {
       setLoading(false);
     }
@@ -32,8 +38,6 @@ export default function SourceFile() {
 
   return (
     <div key={`source-${index}`} className="flex flex-col mb-4">
-      <label className="block text-sm text-gray-600 mb-1">{`Arquivo do mês ${index + 1}`}</label>
-
       {loading && (
         <div className="p-3 bg-gray-100 text-gray-700 rounded-lg text-sm animate-pulse">
           <ProgressSpinner
@@ -46,7 +50,7 @@ export default function SourceFile() {
         </div>
       )}
 
-      {!loading && upload.success === null && (
+      {!loading && upload.success !== false && (
         <FileUpload
           mode="basic"
           name="file"
@@ -61,7 +65,9 @@ export default function SourceFile() {
       )}
 
       {upload.success === true && (
-        <div className="p-3 bg-green-100 text-green-700 rounded-lg text-sm">{upload.message}</div>
+        <div className="mt-2 p-3 bg-green-100 text-green-700 rounded-lg text-sm">
+          {upload.message}
+        </div>
       )}
 
       {upload.success === false && (

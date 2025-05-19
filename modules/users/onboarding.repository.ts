@@ -25,7 +25,7 @@ async function create(): Promise<Onboarding> {
   });
 }
 
-async function update(id: string, data: Partial<OnboardingData>) {
+async function update(id: string, data: Partial<OnboardingData>, userId: number | undefined) {
   const existingOnboarding = await find(id);
 
   const updatedData = {
@@ -33,9 +33,11 @@ async function update(id: string, data: Partial<OnboardingData>) {
     ...data,
   };
 
+  const userData = userId ? { data: updatedData, userId } : { data: updatedData };
+
   await getPrisma().onboarding.update({
     where: { id },
-    data: { data: updatedData },
+    data: userData,
   });
 }
 

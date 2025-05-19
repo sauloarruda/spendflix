@@ -1,9 +1,7 @@
 /* eslint-disable max-lines */
 import fs from 'fs';
 
-import {
-  Account, PrismaClient, SourceStatus, SourceType,
-} from '@/prisma';
+import { PrismaClient, SourceStatus, SourceType } from '@/prisma';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import Papa from 'papaparse';
 
@@ -276,9 +274,9 @@ async function processLocalFile(filePath: string, accountId: string) {
 }
 
 // eslint-disable-next-line max-lines-per-function
-async function putSourceFile(account: Account, file: File) {
+async function putSourceFile(accountId: string, file: File) {
   try {
-    logger.debug({ account, file }, 'putSourceFile');
+    logger.debug({ accountId, file }, 'putSourceFile');
     // Parse CSV from file to detect type
     const fileBuffer = await file.arrayBuffer();
     const fileContent = Buffer.from(fileBuffer).toString('utf8');
@@ -297,7 +295,7 @@ async function putSourceFile(account: Account, file: File) {
     logger.debug({ type: validation.type }, 'Detected file type');
 
     // Create source with detected type
-    const source = await createSource(account.id, validation.type!);
+    const source = await createSource(accountId, validation.type!);
     logger.debug({ source }, 'Created Source in database');
 
     logger.debug(

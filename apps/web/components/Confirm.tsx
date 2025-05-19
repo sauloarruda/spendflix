@@ -40,10 +40,14 @@ export default function Confirm({ name, email, onSuccess }: ConfirmProps) {
   async function handleConfirm() {
     setLoading(true);
     try {
-      await confirmAction(email, code);
-      await updateOnboardingAction(localStorage.getItem('onboardingUid')!, {
-        step: 2,
-      });
+      const user = await confirmAction(email, code);
+      await updateOnboardingAction(
+        localStorage.getItem('onboardingUid')!,
+        {
+          step: 2,
+        },
+        user.id,
+      );
       onSuccess();
     } catch (error) {
       setApiError(translateError(error));

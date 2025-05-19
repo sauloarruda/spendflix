@@ -1,5 +1,5 @@
+import accountService from './account.service';
 import importerService from './importer.service';
-// import { importCsvFile } from './main';
 import sourceService from './source.service';
 
-export { sourceService, importerService };
+export { sourceService, importerService, accountService };

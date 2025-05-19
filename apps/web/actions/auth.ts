@@ -14,9 +14,10 @@ async function setAuthCookie(tokens: UserTokens) {
   cookieStore.set('session', tokens.accessToken);
 }
 
-async function confirmAction(email: string, code: string): Promise<void> {
-  const tokens = await signupService.confirm(email, code);
+async function confirmAction(email: string, code: string): Promise<User> {
+  const { tokens, user } = await signupService.confirm(email, code);
   await setAuthCookie(tokens);
+  return user;
 }
 
 async function loginAction(email: string, password: string): Promise<void> {

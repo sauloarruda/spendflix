@@ -8,7 +8,7 @@ import LoadingForm from './LoadingForm';
 interface ResumeOnboardingProps {
   message: string;
   children: React.ReactNode;
-  onResume?: (onboarding: OnboardingData) => void;
+  onResume?: (onboarding: OnboardingData, userId: number) => void;
   onError: (error: Error) => void;
 }
 
@@ -45,7 +45,7 @@ export default function ResumeOnboarding({
     try {
       const onboarding = await getOnboardingAction(uid);
       console.log(onboarding);
-      onResume(onboarding);
+      if (onResume) onResume(onboarding.data as OnboardingData, onboarding.userId!);
     } catch (error) {
       localStorage.clear();
       console.error('Error loading onboarding', error);

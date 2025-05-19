@@ -1,21 +1,51 @@
 'use client';
 
+import { OnboardingData } from '@/modules/users';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Button } from 'primereact/button';
+import { useState } from 'react';
 
+import { createAccountAction } from '@/actions/accounts';
 import ResumeOnboarding from '@/components/ResumeOnboarding';
 import SourceFile from '@/components/SourceFile';
 
 export default function OnboardingStep4() {
   const router = useRouter();
+  const [nubankAccountId, setNubankAccountId] = useState('');
+  const [nubankCreditCardId, setNubankCreditCardId] = useState('');
+
+  async function handleResumeOnboarding(onboarding: OnboardingData, userId: number) {
+    setNubankAccountId(
+      await createAccountAction({
+        userId,
+        bankNumber: '260', // only nubank now
+        name: 'Conta Corrente',
+        color: 'green-500',
+      }),
+    );
+
+    setNubankCreditCardId(
+      await createAccountAction({
+        userId,
+        bankNumber: '260', // only nubank now
+        name: 'Cartão de Crédito',
+        color: 'orange-500',
+      }),
+    );
+  }
+
+  function handleAccountSuccess(accountId: string) {
+    console.log(accountId);
+  }
 
   function handleContinue() {}
 
   return (
     <ResumeOnboarding
       message="Preparando para continuar..."
+      onResume={handleResumeOnboarding}
       onError={() => router.push('/onboarding/step1')}
     >
       <h2 className="text-xl font-semibold mb-6 text-center">Prepare seus extratos</h2>
@@ -32,17 +62,28 @@ export default function OnboardingStep4() {
           <AccordionTab
             header={
               <div className="flex justify-between items-center w-full">
-                <span>Conta Corrente</span>
+                <span className="text-green-500">Conta Corrente</span>
                 <Link href="#" className="text-blue-500 text-xs hover:underline">
                   Como obter o extrato?
                 </Link>
               </div>
             }
           >
-            {/* {uploadsConta.map((upload, index) => (
-
-                ))} */}
-            <SourceFile />
+            <SourceFile accountId={nubankAccountId} onSuccess={handleAccountSuccess} />
+          </AccordionTab>
+        </Accordion>
+        <Accordion multiple activeIndex={null}>
+          <AccordionTab
+            header={
+              <div className="flex justify-between items-center w-full">
+                <span className="text-orange-500">Cartão de Crédito</span>
+                <Link href="#" className="text-blue-500 text-xs hover:underline">
+                  Como obter o extrato?
+                </Link>
+              </div>
+            }
+          >
+            <SourceFile accountId={nubankCreditCardId} onSuccess={handleAccountSuccess} />
           </AccordionTab>
         </Accordion>
       </div>
