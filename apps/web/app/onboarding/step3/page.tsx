@@ -8,6 +8,7 @@ import { MultiSelect } from 'primereact/multiselect';
 import { useState } from 'react';
 
 import { updateOnboardingAction } from '@/actions/onboarding';
+import ResumeOnboarding from '@/components/ResumeOnboarding';
 
 const allBanks: { label: string; value: string }[] = [
   { label: 'Banco ABC Brasil (246)', value: '246' },
@@ -172,7 +173,10 @@ export default function OnboardingStep3() {
   };
 
   return (
-    <>
+    <ResumeOnboarding
+      message="Preparando para continuar..."
+      onError={() => router.push('/onboarding/step1')}
+    >
       <ConfirmDialog />
 
       <h2 className="text-xl font-semibold mb-6 text-center">
@@ -227,6 +231,6 @@ export default function OnboardingStep3() {
           onClick={handleContinue}
         />
       </div>
-    </>
+    </ResumeOnboarding>
   );
 }

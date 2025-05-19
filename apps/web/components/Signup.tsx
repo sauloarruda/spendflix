@@ -46,6 +46,7 @@ export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
       await signupAction(name, email);
       await updateOnboardingAction(localStorage.getItem('onboardingUid')!, {
         step: 1,
+        name,
       });
       onSuccess(name, email);
     } catch (err) {

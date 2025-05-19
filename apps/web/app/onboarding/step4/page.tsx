@@ -1,16 +1,23 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Button } from 'primereact/button';
 
+import ResumeOnboarding from '@/components/ResumeOnboarding';
 import SourceFile from '@/components/SourceFile';
 
 export default function OnboardingStep4() {
+  const router = useRouter();
+
   function handleContinue() {}
 
   return (
-    <>
+    <ResumeOnboarding
+      message="Preparando para continuar..."
+      onError={() => router.push('/onboarding/step1')}
+    >
       <h2 className="text-xl font-semibold mb-6 text-center">Prepare seus extratos</h2>
 
       <p className="text-gray-600 text-center mb-8 max-w-md">
@@ -43,6 +50,6 @@ export default function OnboardingStep4() {
       <div className="w-full max-w-md">
         <Button label="Continuar" className="w-full" disabled={true} onClick={handleContinue} />
       </div>
-    </>
+    </ResumeOnboarding>
   );
 }

@@ -124,16 +124,19 @@ describe('Signup Component', () => {
 
       const { nameInput, emailInput, submitButton } = setupSignupTest();
 
-      await userEvent.type(nameInput, 'John Doe');
-      await userEvent.type(emailInput, 'john@example.com');
+      const testName = 'John Doe';
+      const testEmail = 'john@example.com';
+      await userEvent.type(nameInput, testName);
+      await userEvent.type(emailInput, testEmail);
       await userEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(signupAction).toHaveBeenCalledWith('John Doe', 'john@example.com');
+        expect(signupAction).toHaveBeenCalledWith(testName, testEmail);
         expect(updateOnboardingAction).toHaveBeenCalledWith('test-uid', {
+          name: testName,
           step: 1,
         });
-        expect(mockOnSuccess).toHaveBeenCalledWith('John Doe', 'john@example.com');
+        expect(mockOnSuccess).toHaveBeenCalledWith(testName, testEmail);
       });
     });
   });

@@ -62,6 +62,9 @@ describe('Onboarding Step 2 Page', () => {
     // Setup localStorage with required values
     localStorage.setItem('onboardingUid', TEST_ONBOARDING_ID);
     localStorage.setItem('name', TEST_NAME);
+
+    // Setup session cookie
+    document.cookie = 'session=test-session-token';
   });
 
   it('should redirect to step1 if onboardingUid is not present', async () => {

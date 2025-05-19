@@ -1,13 +1,14 @@
 'use client';
 
+import { OnboardingData } from '@/modules/users';
 import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { useState, useRef } from 'react';
 
-import { getOnboardingAction, updateOnboardingAction } from '@/actions/onboarding';
-import LoadingForm from '@/components/LoadingForm';
+import { updateOnboardingAction } from '@/actions/onboarding';
+import ResumeOnboarding from '@/components/ResumeOnboarding';
 
 type Step2FormData = {
   goal: 'dream' | 'debt' | '';
@@ -28,31 +29,14 @@ export default function OnboardingStep2() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const resumeOnboarding = async () => {
-    try {
-      if (name) return;
-      const uid = localStorage.getItem('onboardingUid');
-      if (!uid) {
-        router.push('/onboarding/step1');
-        return;
-      }
-
-      setName(localStorage.getItem('name') || '');
-
-      try {
-        const onboarding = await getOnboardingAction(uid);
-        setFormData({
-          goal: onboarding.goal as 'dream' | 'debt',
-          goalDescription: onboarding.goalDescription || '',
-          goalValue: onboarding.goalValue || undefined,
-        });
-      } catch (error) {
-        console.error('Erro ao carregar dados do onboarding:', error);
-        // Não fazemos nada adicional, permitindo que o usuário continue com dados vazios
-      }
-    } catch (error) {
-      console.error('Erro ao inicializar onboarding:', error);
-    }
+  const handleResumeOnboarding = async (onboarding: OnboardingData) => {
+    if (name) return;
+    setName(onboarding.name!);
+    setFormData({
+      goal: onboarding.goal as 'dream' | 'debt',
+      goalDescription: onboarding.goalDescription || '',
+      goalValue: onboarding.goalValue || undefined,
+    });
   };
 
   const handleGoalSelect = (goal: 'dream' | 'debt') => {
@@ -79,7 +63,11 @@ export default function OnboardingStep2() {
   };
 
   return (
-    <LoadingForm message="Preparando para continuar..." onLoad={resumeOnboarding}>
+    <ResumeOnboarding
+      message="Preparando para continuar..."
+      onResume={handleResumeOnboarding}
+      onError={() => router.push('/onboarding/step1')}
+    >
       <h2 className="text-xl font-semibold mb-6 text-center">
         Olá {name}, muito prazer! <br />
         Me conta, o que te trouxe até aqui?
@@ -170,6 +158,6 @@ export default function OnboardingStep2() {
           onClick={handleContinue}
         />
       </div>
-    </LoadingForm>
+    </ResumeOnboarding>
   );
 }
