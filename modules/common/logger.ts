@@ -43,7 +43,7 @@ const censorSensitiveData = (data: unknown): unknown => {
     return Object.fromEntries(
       Object.entries(data as Record<string, unknown>).map(([key, value]) => [
         key,
-        SENSITIVE_FIELDS.some((field) => key.toLowerCase().includes(field.toLowerCase()))
+        SENSITIVE_FIELDS.some((field) => key.toLowerCase() === field.toLowerCase())
           ? '***'
           : censorSensitiveData(value),
       ]),
