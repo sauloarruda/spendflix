@@ -23,10 +23,10 @@ export default function SourceFile({ onSuccess, accountId }: SourceFileProps) {
     try {
       const result = await putSourceFile(event.files[0], accountId);
       setUpload({ success: true, message: `${result} lançamentos processados` });
+      onSuccess(accountId);
     } catch (error) {
       console.error('Error uploading file:', error);
       setUpload({ success: false, message: 'Failed to upload file' });
-      onSuccess(accountId);
     } finally {
       setLoading(false);
     }
@@ -64,13 +64,13 @@ export default function SourceFile({ onSuccess, accountId }: SourceFileProps) {
         />
       )}
 
-      {upload.success === true && (
+      {!loading && upload.success === true && (
         <div className="mt-2 p-3 bg-green-100 text-green-700 rounded-lg text-sm">
           {upload.message}
         </div>
       )}
 
-      {upload.success === false && (
+      {!loading && upload.success === false && (
         <div className="flex flex-col gap-2">
           <div className="p-3 bg-red-100 text-red-700 rounded-lg text-sm">{upload.message}</div>
           <Button

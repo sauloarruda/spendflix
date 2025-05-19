@@ -1,20 +1,22 @@
 'use client';
 
 import { OnboardingData } from '@/modules/users';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Button } from 'primereact/button';
 import { useState } from 'react';
 
 import { createAccountAction } from '@/actions/accounts';
+import CountTransactionsPerMonth from '@/components/CountTransactionsPerMonth';
 import ResumeOnboarding from '@/components/ResumeOnboarding';
 import SourceFile from '@/components/SourceFile';
 
 export default function OnboardingStep4() {
   const router = useRouter();
   const [nubankAccountId, setNubankAccountId] = useState('');
+  const [nubankAccountTs, setNubankAccountTs] = useState(0);
   const [nubankCreditCardId, setNubankCreditCardId] = useState('');
+  const [nubankCreditCardTs, setNubankCreditCardTs] = useState(0);
 
   async function handleResumeOnboarding(onboarding: OnboardingData, userId: number) {
     setNubankAccountId(
@@ -34,10 +36,6 @@ export default function OnboardingStep4() {
         color: 'orange-500',
       }),
     );
-  }
-
-  function handleAccountSuccess(accountId: string) {
-    console.log(accountId);
   }
 
   function handleContinue() {}
@@ -63,13 +61,15 @@ export default function OnboardingStep4() {
             header={
               <div className="flex justify-between items-center w-full">
                 <span className="text-green-500">Conta Corrente</span>
-                <Link href="#" className="text-blue-500 text-xs hover:underline">
-                  Como obter o extrato?
-                </Link>
+                <span className="text-blue-500 text-xs hover:underline">Como obter o extrato?</span>
               </div>
             }
           >
-            <SourceFile accountId={nubankAccountId} onSuccess={handleAccountSuccess} />
+            <SourceFile
+              accountId={nubankAccountId}
+              onSuccess={() => setNubankAccountTs(new Date().getTime())}
+            />
+            <CountTransactionsPerMonth accountId={nubankAccountId} ts={nubankAccountTs} />
           </AccordionTab>
         </Accordion>
         <Accordion multiple activeIndex={null}>
@@ -77,13 +77,15 @@ export default function OnboardingStep4() {
             header={
               <div className="flex justify-between items-center w-full">
                 <span className="text-orange-500">Cartão de Crédito</span>
-                <Link href="#" className="text-blue-500 text-xs hover:underline">
-                  Como obter o extrato?
-                </Link>
+                <span className="text-blue-500 text-xs hover:underline">Como obter o extrato?</span>
               </div>
             }
           >
-            <SourceFile accountId={nubankCreditCardId} onSuccess={handleAccountSuccess} />
+            <SourceFile
+              accountId={nubankCreditCardId}
+              onSuccess={() => setNubankCreditCardTs(new Date().getTime())}
+            />
+            <CountTransactionsPerMonth accountId={nubankCreditCardId} ts={nubankCreditCardTs} />
           </AccordionTab>
         </Accordion>
       </div>

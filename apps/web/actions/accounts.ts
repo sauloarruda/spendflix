@@ -1,6 +1,6 @@
 'use server';
 
-import { accountService } from '@/modules/transactions';
+import { accountService, transactionsService } from '@/modules/transactions';
 
 async function createAccountAction(accountInput: {
   userId: number;
@@ -11,4 +11,8 @@ async function createAccountAction(accountInput: {
   return (await accountService.firstOrCreate(accountInput)).id;
 }
 
-export { createAccountAction };
+async function countTransactionsPerMonthAction(accountId: string) {
+  return transactionsService.countTransactionsPerMonth(accountId);
+}
+
+export { createAccountAction, countTransactionsPerMonthAction };
