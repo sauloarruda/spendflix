@@ -1,4 +1,7 @@
+import getLogger from '@/common/logger';
 import getPrisma from '@/common/prisma';
+
+const logger = getLogger().child({ module: 'transactions' });
 
 export type TransactionsPerMonth = [
   {
@@ -23,5 +26,34 @@ async function countTransactionsPerMonth(accountId: string): Promise<Transaction
   );
 }
 
-const transactionsService = { countTransactionsPerMonth };
+export type UncategorizedTransaction = {
+  ids: string[];
+  descriptions: string[];
+  values: number[];
+};
+
+async function getUncategorizedTransactions(userId: number): Promise<{
+  categorizedPercent: number;
+  transactions: UncategorizedTransaction[];
+}> {
+  logger.debug({ userId }, 'Get transactions for user');
+  const transactions = await getPrisma().transaction.findMany({
+    where: {
+      categoryId: null,
+      account: {
+        userId,
+      },
+    },
+  });
+  return {
+    categorizedPercent: 0.9,
+    transactions: transactions.map((transaction) => ({
+      ids: [transaction.id],
+      descriptions: [transaction.description],
+      values: [transaction.amount.toNumber()],
+    })),
+  };
+}
+
+const transactionsService = { countTransactionsPerMonth, getUncategorizedTransactions };
 export default transactionsService;

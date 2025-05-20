@@ -7,6 +7,7 @@ import { Button } from 'primereact/button';
 import { useState } from 'react';
 
 import { createAccountAction } from '@/actions/accounts';
+import { updateOnboardingAction } from '@/actions/onboarding';
 import CountTransactionsPerMonth from '@/components/CountTransactionsPerMonth';
 import ResumeOnboarding from '@/components/ResumeOnboarding';
 import SourceFile from '@/components/SourceFile';
@@ -19,6 +20,10 @@ export default function OnboardingStep4() {
   const [nubankAccountTs, setNubankAccountTs] = useState(0);
   const [nubankCreditCardId, setNubankCreditCardId] = useState('');
   const [nubankCreditCardTs, setNubankCreditCardTs] = useState(0);
+
+  function sumMonthsCount(updatedMonthsCount: number) {
+    setMonthsCount(monthsCount + updatedMonthsCount);
+  }
 
   async function handleResumeOnboarding(onboarding: OnboardingData, userId: number) {
     setNubankAccountId(
@@ -42,7 +47,10 @@ export default function OnboardingStep4() {
     );
   }
 
-  function handleContinue() {}
+  async function handleContinue() {
+    await updateOnboardingAction(localStorage.getItem('onboardingUid')!, { step: 5 });
+    router.push('/onboarding/step5');
+  }
 
   return (
     <ResumeOnboarding
@@ -73,7 +81,11 @@ export default function OnboardingStep4() {
               accountId={nubankAccountId}
               onSuccess={() => setNubankAccountTs(new Date().getTime())}
             />
-            <CountTransactionsPerMonth accountId={nubankAccountId} ts={nubankAccountTs} />
+            <CountTransactionsPerMonth
+              accountId={nubankAccountId}
+              ts={nubankAccountTs}
+              onUpdate={sumMonthsCount}
+            />
           </AccordionTab>
         </Accordion>
         <Accordion multiple activeIndex={null}>
@@ -92,7 +104,7 @@ export default function OnboardingStep4() {
             <CountTransactionsPerMonth
               accountId={nubankCreditCardId}
               ts={nubankCreditCardTs}
-              onUpdate={setMonthsCount}
+              onUpdate={sumMonthsCount}
             />
           </AccordionTab>
         </Accordion>
