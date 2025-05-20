@@ -34,7 +34,7 @@ logger.debug(
     bucket: Bucket,
     region,
     hasAccessKey: !!getConfig().S3_KEY,
-    hasSecretKey: !!getConfig().S3_REGION,
+    hasSecretKey: !!getConfig().S3_SECRET,
   },
   'S3 Configuration',
 );
@@ -43,7 +43,7 @@ const s3 = new S3Client({
   region,
   credentials: {
     accessKeyId: getConfig().S3_KEY as string,
-    secretAccessKey: getConfig().S3_REGION as string,
+    secretAccessKey: getConfig().S3_SECRET as string,
   },
 });
 
