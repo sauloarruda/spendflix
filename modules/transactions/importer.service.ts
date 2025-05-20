@@ -1,56 +1,22 @@
 import { createHash } from 'crypto';
 
-import { Prisma, Source, SourceStatus, Transaction } from '@/prisma';
-import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import {
+  Prisma, Source, SourceStatus, Transaction,
+} from '@/prisma';
 import Papa from 'papaparse';
 
-import getConfig from '@/common/config';
 import getLogger from '@/common/logger';
 import getPrisma from '@/common/prisma';
+import s3Service from '@/common/s3';
 import { categorizerService } from '@/modules/categorization';
 
 import sourceService from './source.service';
 
 const logger = getLogger().child({ module: 'importer' });
-const s3 = new S3Client({
-  region: process.env.AWS_REGION,
-});
-
-async function streamToString(stream: NodeJS.ReadableStream): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const chunks: Buffer[] = [];
-    stream.on('data', (chunk: Buffer) => chunks.push(chunk));
-    stream.on('error', reject);
-    stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
-  });
-}
-
-async function getS3FileContent(bucket: string, key: string): Promise<string> {
-  const command = new GetObjectCommand({ Bucket: bucket, Key: key });
-  const response = await s3.send(command);
-
-  if (!response.Body) {
-    throw new Error('Empty response from S3');
-  }
-
-  return streamToString(response.Body as unknown as NodeJS.ReadableStream);
-}
 
 async function getFileFromSource(source: Source): Promise<string> {
-  try {
-    const key = `${source.id}.csv`;
-    const bucket = getConfig().S3_BUCKET;
-
-    if (!bucket) {
-      throw new Error('S3_BUCKET environment variable is not set');
-    }
-
-    return await getS3FileContent(bucket, key);
-  } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    logger.error({ error, source }, 'Error reading CSV file');
-    throw new Error(`Failed to read file: ${errorMessage}`);
-  }
+  const key = [source.id, 'csv'].join('.');
+  return s3Service.get(key);
 }
 
 function parseCsv(csvContents: string): Record<string, string>[] {

@@ -3,4 +3,5 @@ export type UserTokens = {
   refreshToken: string;
   idToken: string;
   expiresIn: number;
+  sub: string;
 };

@@ -94,6 +94,7 @@ async function authenticate(email: string, password: string): Promise<UserTokens
     refreshToken: result.RefreshToken!,
     idToken: result.IdToken!,
     expiresIn: result.ExpiresIn || DEFAULT_TOKEN_EXPIRATION,
+    sub: '',
   };
 }
 

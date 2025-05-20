@@ -3,8 +3,8 @@
 import { importerService, sourceService } from '@/modules/transactions';
 
 async function putSourceFile(file: File, accountId: string) {
-  const response = await sourceService.putSourceFile(accountId, file);
-  return importerService.importFromSource(response.source!);
+  const source = await sourceService.putSourceFile(accountId, file);
+  return importerService.importFromSource(source!);
 }
 
 export { putSourceFile };
