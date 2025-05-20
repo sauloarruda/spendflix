@@ -25,8 +25,16 @@ export default function SourceFile({ onSuccess, accountId }: SourceFileProps) {
       setUpload({ success: true, message: `${result} lançamentos processados` });
       onSuccess(accountId);
     } catch (error) {
-      console.error('Error uploading file:', error);
-      setUpload({ success: false, message: 'Failed to upload file' });
+      console.error('Error uploading file:', (error as Error).name);
+      if ((error as Error).name === 'InvalidSourceTypeError') {
+        setUpload({
+          success: false,
+          message:
+            'Tipo de arquivo inválido. Verifique se o arquivo corresponde ao tipo da conta (ex: cartão de crédito ou conta corrente)',
+        });
+      } else {
+        setUpload({ success: false, message: 'Erro desconhecido ao processar o arquivo' });
+      }
     } finally {
       setLoading(false);
     }

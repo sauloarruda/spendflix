@@ -26,7 +26,7 @@ function getSourceTypeColumnMapping() {
 
 type ColumnMappingType = ReturnType<typeof getSourceTypeColumnMapping>;
 
-function detectSourceType(headers: string[]): SourceType | null {
+function determineSourceType(headers: string[]): SourceType | null {
   const columnMapping = getSourceTypeColumnMapping();
 
   // Using Object.keys instead of iterators for linter compliance
@@ -61,6 +61,10 @@ function parseCsvFile(fileContent: string) {
   };
 }
 
+function sourceS3Key(source: Source) {
+  return [source.id, 'csv'].join('.');
+}
+
 async function createSource(accountId: string, type: SourceType) {
   return getPrisma().source.create({
     data: {
@@ -71,50 +75,49 @@ async function createSource(accountId: string, type: SourceType) {
   });
 }
 
-/**
- * Check if source type can be determined from headers
- */
+class InvalidSourceTypeError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'InvalidSourceTypeError';
+  }
+}
+
 function validateSourceType(headers: string[]) {
-  const detectedType = detectSourceType(headers);
+  const detectedType = determineSourceType(headers);
 
   if (!detectedType) {
-    return {
-      valid: false,
-      message:
-        'Não foi possível determinar o tipo de arquivo. Verifique se o arquivo CSV tem o formato correto.',
-      type: null,
-    };
+    throw new InvalidSourceTypeError(`Can't determine type with headers: ${headers.join(',')}`);
   }
 
-  return {
-    valid: true,
-    message: '',
-    type: detectedType,
-  };
+  return detectedType;
 }
 
-function sourceS3Key(source: Source) {
-  return [source.id, 'csv'].join('.');
-}
-
-// eslint-disable-next-line max-lines-per-function
-async function putSourceFile(accountId: string, file: File) {
-  logger.debug({ accountId, file }, 'putSourceFile');
+async function detectCsvSourceType(file: File): Promise<SourceType> {
   const fileBuffer = await file.arrayBuffer();
   const fileContent = Buffer.from(fileBuffer).toString('utf8');
   const { headers } = parseCsvFile(fileContent);
 
-  // Detect type from headers
-  const validation = validateSourceType(headers);
+  return validateSourceType(headers);
+}
 
-  if (!validation.valid) {
-    throw new Error(validation.message);
+async function validateAccountSourceType(
+  csvSourceType: SourceType,
+  accountId: string,
+): Promise<void> {
+  const account = await getPrisma().account.findFirstOrThrow({ where: { id: accountId } });
+  if (account.sourceType !== csvSourceType) {
+    throw new InvalidSourceTypeError(
+      `Account sourceType (${account.sourceType}) is incompatible with CSV sourceType (${csvSourceType})`,
+    );
   }
+}
 
-  logger.debug({ type: validation.type }, 'Detected file type');
+async function putSourceFile(accountId: string, file: File) {
+  logger.debug({ accountId, file }, 'putSourceFile');
 
-  // Create source with detected type
-  const source = await createSource(accountId, validation.type!);
+  const csvSourceType = await detectCsvSourceType(file);
+  await validateAccountSourceType(csvSourceType, accountId);
+  const source = await createSource(accountId, csvSourceType);
   logger.debug({ source }, 'Created Source in database');
 
   logger.debug(
@@ -125,8 +128,6 @@ async function putSourceFile(accountId: string, file: File) {
     },
     'Starting file upload:',
   );
-
-  // Upload to S3
   await s3Service.upload(sourceS3Key(source), file);
 
   return source;
@@ -135,7 +136,6 @@ async function putSourceFile(accountId: string, file: File) {
 const sourceService = {
   putSourceFile,
   getSourceTypeColumnMapping,
-  detectSourceType,
 };
 
 export default sourceService;

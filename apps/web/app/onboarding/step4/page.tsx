@@ -10,6 +10,7 @@ import { createAccountAction } from '@/actions/accounts';
 import CountTransactionsPerMonth from '@/components/CountTransactionsPerMonth';
 import ResumeOnboarding from '@/components/ResumeOnboarding';
 import SourceFile from '@/components/SourceFile';
+import { SourceType } from '@/prisma';
 
 export default function OnboardingStep4() {
   const router = useRouter();
@@ -25,6 +26,7 @@ export default function OnboardingStep4() {
         bankNumber: '260', // only nubank now
         name: 'Conta Corrente',
         color: 'green-500',
+        sourceType: SourceType.NUBANK_ACCOUNT_CSV,
       }),
     );
 
@@ -34,6 +36,7 @@ export default function OnboardingStep4() {
         bankNumber: '260', // only nubank now
         name: 'Cartão de Crédito',
         color: 'orange-500',
+        sourceType: SourceType.NUBANK_CREDIT_CARD_CSV,
       }),
     );
   }

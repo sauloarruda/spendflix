@@ -66,13 +66,14 @@ model Bank {
 }
 
 model Account {
-  id        String   @id @default(uuid())
-  bankNumber    String
-  userId    Int
-  name      String
-  color     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(uuid())
+  bankNumber  String
+  userId      Int
+  name        String
+  color       String
+  sourceType  SourceType @default(NUBANK_CREDIT_CARD_CSV)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   bank         Bank         @relation(fields: [bankNumber], references: [number])
   user         User         @relation(fields: [userId], references: [id])
