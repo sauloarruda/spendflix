@@ -1,11 +1,10 @@
 import { createHash } from 'crypto';
 
-import {
-  Prisma, Source, SourceStatus, Transaction,
-} from '@/prisma';
+import { Prisma, Source, SourceStatus, Transaction } from '@/prisma';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import Papa from 'papaparse';
 
+import getConfig from '@/common/config';
 import getLogger from '@/common/logger';
 import getPrisma from '@/common/prisma';
 import { categorizerService } from '@/modules/categorization';
@@ -40,10 +39,10 @@ async function getS3FileContent(bucket: string, key: string): Promise<string> {
 async function getFileFromSource(source: Source): Promise<string> {
   try {
     const key = `${source.id}.csv`;
-    const bucket = process.env.AMPLIFY_BUCKET;
+    const bucket = getConfig().S3_BUCKET;
 
     if (!bucket) {
-      throw new Error('AMPLIFY_BUCKET environment variable is not set');
+      throw new Error('S3_BUCKET environment variable is not set');
     }
 
     return await getS3FileContent(bucket, key);

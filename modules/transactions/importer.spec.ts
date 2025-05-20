@@ -43,8 +43,8 @@ describe('Importer', () => {
   beforeEach(async () => {
     s3Mock.reset();
     jest.clearAllMocks();
-    process.env.AMPLIFY_BUCKET = 'test-bucket';
-    process.env.AWS_REGION = 'us-east-1';
+    process.env.S3_BUCKET = 'test-bucket';
+    process.env.S3_REGION = 'us-east-1';
 
     const bankFactory = defineBankFactory();
     const userFactory = defineUserFactory();
@@ -77,7 +77,7 @@ describe('Importer', () => {
       expect(s3Mock.calls()).toHaveLength(1);
       const s3Call = s3Mock.call(0);
       expect(s3Call.args[0].input).toEqual({
-        Bucket: process.env.AMPLIFY_BUCKET,
+        Bucket: process.env.S3_BUCKET,
         Key: `${source.id}.csv`,
       });
 
@@ -106,7 +106,7 @@ describe('Importer', () => {
       expect(s3Mock.calls()).toHaveLength(1);
       const s3Call = s3Mock.call(0);
       expect(s3Call.args[0].input).toEqual({
-        Bucket: process.env.AMPLIFY_BUCKET,
+        Bucket: process.env.S3_BUCKET,
         Key: `${source.id}.csv`,
       });
 

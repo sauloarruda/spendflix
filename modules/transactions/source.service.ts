@@ -15,7 +15,7 @@ const Bucket = getConfig().S3_BUCKET;
 const region = getConfig().S3_REGION;
 
 if (!Bucket) {
-  throw new Error('AMPLIFY_BUCKET environment variable is not set');
+  throw new Error('S3_BUCKET environment variable is not set');
 }
 
 if (!region) {
