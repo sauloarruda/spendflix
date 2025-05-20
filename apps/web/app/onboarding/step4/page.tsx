@@ -14,6 +14,7 @@ import { SourceType } from '@/prisma';
 
 export default function OnboardingStep4() {
   const router = useRouter();
+  const [monthsCount, setMonthsCount] = useState(0);
   const [nubankAccountId, setNubankAccountId] = useState('');
   const [nubankAccountTs, setNubankAccountTs] = useState(0);
   const [nubankCreditCardId, setNubankCreditCardId] = useState('');
@@ -88,13 +89,22 @@ export default function OnboardingStep4() {
               accountId={nubankCreditCardId}
               onSuccess={() => setNubankCreditCardTs(new Date().getTime())}
             />
-            <CountTransactionsPerMonth accountId={nubankCreditCardId} ts={nubankCreditCardTs} />
+            <CountTransactionsPerMonth
+              accountId={nubankCreditCardId}
+              ts={nubankCreditCardTs}
+              onUpdate={setMonthsCount}
+            />
           </AccordionTab>
         </Accordion>
       </div>
 
       <div className="w-full max-w-md">
-        <Button label="Continuar" className="w-full" disabled={true} onClick={handleContinue} />
+        <Button
+          label="Continuar"
+          className="w-full"
+          disabled={monthsCount < 3}
+          onClick={handleContinue}
+        />
       </div>
     </ResumeOnboarding>
   );

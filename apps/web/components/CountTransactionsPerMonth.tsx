@@ -7,9 +7,10 @@ import { countTransactionsPerMonthAction } from '@/actions/accounts';
 interface Props {
   accountId: string;
   ts: number;
+  onUpdate: (monthsCount: number) => void;
 }
 
-export default function CountTransactionsPerMonth({ accountId, ts }: Props) {
+export default function CountTransactionsPerMonth({ accountId, ts, onUpdate }: Props) {
   const [transactionsPerMonth, setTransactionsPerMonth] = useState<
     { month: Date; _count: number; _sum: number }[] | undefined
   >();
@@ -20,6 +21,7 @@ export default function CountTransactionsPerMonth({ accountId, ts }: Props) {
     const fetchData = async () => {
       const data = await countTransactionsPerMonthAction(accountId);
       setTransactionsPerMonth(data);
+      onUpdate(data.length);
     };
 
     if (accountId && ts > 0) {
