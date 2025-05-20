@@ -153,7 +153,7 @@ model CategoryRule {
   @@index([categoryId])
   @@index([userId])
   @@index([keyword, userId])
-  @@unique([keyword, userId])
+  @@unique([keyword, userId, categoryId])
   @@index(fields: [keyword(ops: raw("gin_trgm_ops"))], type: Gin)
 
   @@map("category_rules")

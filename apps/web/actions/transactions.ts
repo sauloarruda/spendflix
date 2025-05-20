@@ -6,4 +6,8 @@ async function getUncategorizedTransactionsAction(userId: number) {
   return transactionsService.getUncategorizedTransactions(userId);
 }
 
-export { getUncategorizedTransactionsAction };
+async function updateCategoryAction(transactionIds: string[], categoryId: string) {
+  await transactionsService.updateCategory(transactionIds, categoryId);
+}
+
+export { getUncategorizedTransactionsAction, updateCategoryAction };

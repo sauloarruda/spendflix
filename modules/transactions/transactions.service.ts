@@ -88,5 +88,29 @@ async function getUncategorizedTransactions(userId: number): Promise<{
   };
 }
 
-const transactionsService = { countTransactionsPerMonth, getUncategorizedTransactions };
+async function updateCategory(transactionIds: string[], categoryId: string): Promise<void> {
+  if (transactionIds.length === 0) return;
+  const transaction = await getPrisma().transaction.findFirstOrThrow({
+    where: { id: transactionIds[0] },
+    include: { account: true },
+  });
+  const categoryUserRule = await categorizerService.findOrCreateUserRule(
+    transaction.description,
+    categoryId,
+    transaction?.account.userId,
+  );
+  await getPrisma().transaction.updateMany({
+    where: { id: { in: transactionIds } },
+    data: {
+      categoryId,
+      categoryRuleId: categoryUserRule.id,
+    },
+  });
+}
+
+const transactionsService = {
+  countTransactionsPerMonth,
+  getUncategorizedTransactions,
+  updateCategory,
+};
 export default transactionsService;

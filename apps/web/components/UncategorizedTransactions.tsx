@@ -2,6 +2,7 @@ import { UncategorizedTransaction } from '@/modules/transactions';
 import { DataView } from 'primereact/dataview';
 import { classNames } from 'primereact/utils';
 
+import { updateCategoryAction } from '@/actions/transactions';
 import { Category } from '@/prisma';
 
 import CategoryDropdown from './CategoryDropDown';
@@ -14,7 +15,7 @@ export default function UncategorizedTransactions({
   transactions,
 }: UncategorizedTransactionRowProps) {
   async function handleCategoryChange(transaction: UncategorizedTransaction, category: Category) {
-    console.log('handleCategoryChange=', transaction, category);
+    await updateCategoryAction(transaction.ids, category.id);
   }
 
   function listTemplate(items: UncategorizedTransaction[]) {

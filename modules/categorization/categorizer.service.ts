@@ -47,5 +47,21 @@ async function inferCategory(
   return rules.length ? rules[0] : undefined;
 }
 
-const categorizerService = { inferCategory, sanitizeDescription };
+async function findOrCreateUserRule(description: string, categoryId: string, userId: number) {
+  const sanitizedDescription = sanitizeDescription(description);
+  const data = {
+    keyword: sanitizedDescription,
+    userId,
+    categoryId,
+  };
+  return getPrisma().categoryRule.upsert({
+    where: {
+      keyword_userId_categoryId: data,
+    },
+    update: {},
+    create: data,
+  });
+}
+
+const categorizerService = { inferCategory, sanitizeDescription, findOrCreateUserRule };
 export default categorizerService;
