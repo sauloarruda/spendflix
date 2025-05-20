@@ -47,5 +47,5 @@ async function inferCategory(
   return rules.length ? rules[0] : undefined;
 }
 
-const categorizerService = { inferCategory };
+const categorizerService = { inferCategory, sanitizeDescription };
 export default categorizerService;

@@ -1,5 +1,8 @@
+import { Transaction } from '@/prisma';
+
 import getLogger from '@/common/logger';
 import getPrisma from '@/common/prisma';
+import { categorizerService } from '@/modules/categorization';
 
 const logger = getLogger().child({ module: 'transactions' });
 
@@ -32,12 +35,8 @@ export type UncategorizedTransaction = {
   values: number[];
 };
 
-async function getUncategorizedTransactions(userId: number): Promise<{
-  categorizedPercent: number;
-  transactions: UncategorizedTransaction[];
-}> {
-  logger.debug({ userId }, 'Get transactions for user');
-  const transactions = await getPrisma().transaction.findMany({
+async function findAllUncategorized(userId: number): Promise<Transaction[]> {
+  return getPrisma().transaction.findMany({
     where: {
       categoryId: null,
       account: {
@@ -45,13 +44,47 @@ async function getUncategorizedTransactions(userId: number): Promise<{
       },
     },
   });
+}
+
+async function calculateUncategorizedPercent(
+  transactions: Transaction[],
+  userId: number,
+): Promise<number> {
+  const categorizedTransactionsCount = await getPrisma().transaction.count({
+    where: {
+      categoryId: { not: null },
+      account: {
+        userId,
+      },
+    },
+  });
+  return 1 - transactions.length / (categorizedTransactionsCount + transactions.length);
+}
+
+function groupUncategorizedTransactions(transactions: Transaction[]): UncategorizedTransaction[] {
+  const groups: Record<string, Transaction[]> = {};
+  transactions.forEach((transaction) => {
+    const sanitizedDescription = categorizerService.sanitizeDescription(transaction.description);
+    if (!groups[sanitizedDescription]) groups[sanitizedDescription] = [transaction];
+    else groups[sanitizedDescription].push(transaction);
+  });
+
+  return Object.values(groups).map((group: Transaction[]) => ({
+    ids: group.map((g) => g.id),
+    descriptions: group.map((g) => g.description),
+    values: group.map((g) => g.amount.toNumber()),
+  }));
+}
+
+async function getUncategorizedTransactions(userId: number): Promise<{
+  categorizedPercent: number;
+  transactions: UncategorizedTransaction[];
+}> {
+  logger.debug({ userId }, 'Get transactions for user');
+  const transactions = await findAllUncategorized(userId);
   return {
-    categorizedPercent: 0.9,
-    transactions: transactions.map((transaction) => ({
-      ids: [transaction.id],
-      descriptions: [transaction.description],
-      values: [transaction.amount.toNumber()],
-    })),
+    categorizedPercent: await calculateUncategorizedPercent(transactions, userId),
+    transactions: groupUncategorizedTransactions(transactions),
   };
 }
 
