@@ -1,12 +1,13 @@
 /* eslint-disable max-lines */
 import fs from 'fs';
 
-import { PrismaClient, SourceStatus, SourceType } from '@/prisma';
+import { SourceStatus, SourceType } from '@/prisma';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import Papa from 'papaparse';
 
 import getConfig from '@/common/config';
 import getLogger from '@/common/logger';
+import getPrisma from '@/common/prisma';
 
 const logger = getLogger().child({ module: 'sources' });
 
@@ -113,7 +114,7 @@ function parseCsvFile(fileContent: string) {
  * Creates a source record in the database
  */
 async function createSource(accountId: string, type: SourceType) {
-  return new PrismaClient().source.create({
+  return getPrisma().source.create({
     data: {
       accountId,
       type,
@@ -210,7 +211,7 @@ function validateSourceType(headers: string[]) {
  * Validate account exists
  */
 async function validateAccount(accountId: string) {
-  const account = await new PrismaClient().account.findUnique({
+  const account = await getPrisma().account.findUnique({
     where: { id: accountId },
   });
 
