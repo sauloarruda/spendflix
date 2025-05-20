@@ -1,4 +1,5 @@
 // import getLogger from '@/common/logger';
+import getConfig from '@/common/config';
 import getLogger from '@/common/logger';
 import { JwtVerifier } from 'aws-jwt-verify';
 import { validateCognitoJwtFields } from 'aws-jwt-verify/cognito-verifier';
@@ -20,12 +21,12 @@ let verifier: JwtVerifierType;
 function getVerifier(): JwtVerifierType {
   if (!verifier) {
     verifier = JwtVerifier.create({
-      issuer: `${process.env.COGNITO_ENDPOINT}/${process.env.COGNITO_USER_POOL_ID}`,
+      issuer: `${getConfig().COGNITO_ENDPOINT}/${getConfig().COGNITO_USER_POOL_ID}`,
       audience: null,
       customJwtCheck: ({ payload }) =>
         validateCognitoJwtFields(payload, {
           tokenUse: 'access',
-          clientId: process.env.COGNITO_CLIENT_ID,
+          clientId: getConfig().COGNITO_CLIENT_ID,
         }),
     });
   }
@@ -35,7 +36,8 @@ function getVerifier(): JwtVerifierType {
 async function checkToken(token: string) {
   try {
     const payload = await getVerifier().verify(token);
-    logger.debug({ payload }, 'Decoded JWT');
+    // logger.debug({ payload }, 'Decoded JWT');
+    return payload;
   } catch (error) {
     logger.error({ error }, 'Error verifying token:');
     throw error;

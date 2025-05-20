@@ -23,6 +23,11 @@ const config = {
   BASE_APP_URL: process.env.BASE_APP_URL || 'http://localhost:3000',
   ENCRYPTION_SECRET: process.env.ENCRYPTION_SECRET,
   DATABASE_URL: process.env.DATABASE_URL,
+
+  S3_KEY: process.env.S3_KEY,
+  S3_SECRET: process.env.S3_SECRET,
+  S3_BUCKET: process.env.S3_BUCKET,
+  S3_REGION: process.env.S3_REGION,
 };
 
 export default function getConfig() {

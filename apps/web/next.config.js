@@ -13,6 +13,11 @@ const nextConfig = {
     COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
     COGNITO_CLIENT_ID: process.env.COGNITO_CLIENT_ID,
     LOG_LEVEL: process.env.LOG_LEVEL,
+    ENCRYPTION_SECRET: process.env.ENCRYPTION_SECRET,
+    S3_KEY: process.env.S3_KEY,
+    S3_SECRET: process.env.S3_SECRET,
+    S3_BUCKET: process.env.S3_BUCKET,
+    S3_REGION: process.env.S3_REGION,
   },
   webpack: (config, { isServer }) => {
     if (isServer) {

@@ -5,12 +5,13 @@ import { PrismaClient, SourceStatus, SourceType } from '@/prisma';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import Papa from 'papaparse';
 
+import getConfig from '@/common/config';
 import getLogger from '@/common/logger';
 
 const logger = getLogger().child({ module: 'sources' });
 
-const Bucket = process.env.AMPLIFY_BUCKET;
-const region = process.env.AWS_REGION;
+const Bucket = getConfig().S3_BUCKET;
+const region = getConfig().S3_REGION;
 
 if (!Bucket) {
   throw new Error('AMPLIFY_BUCKET environment variable is not set');
@@ -31,8 +32,8 @@ logger.debug(
   {
     bucket: Bucket,
     region,
-    hasAccessKey: !!process.env.AWS_ACCESS_KEY_ID,
-    hasSecretKey: !!process.env.AWS_SECRET_ACCESS_KEY,
+    hasAccessKey: !!getConfig().S3_KEY,
+    hasSecretKey: !!getConfig().S3_REGION,
   },
   'S3 Configuration',
 );
@@ -40,8 +41,8 @@ logger.debug(
 const s3 = new S3Client({
   region,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
+    accessKeyId: getConfig().S3_KEY as string,
+    secretAccessKey: getConfig().S3_REGION as string,
   },
 });
 
