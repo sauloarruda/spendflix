@@ -44,7 +44,6 @@ export default function ResumeOnboarding({
 
     try {
       const onboarding = await getOnboardingAction(uid);
-      console.log(onboarding);
       if (onResume) onResume(onboarding.data as OnboardingData, onboarding.userId!);
     } catch (error) {
       localStorage.clear();
