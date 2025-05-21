@@ -2,17 +2,28 @@ import { PrismaClient } from '@/prisma';
 
 import getConfig from './config';
 
-let prisma: PrismaClient;
+const prismaClientPropertyName = '__prevent-name-collision__prisma';
+type GlobalThisWithPrismaClient = typeof globalThis & {
+  [prismaClientPropertyName]: PrismaClient;
+};
+
+function createClient() {
+  return new PrismaClient({
+    datasources: {
+      db: {
+        url: getConfig().DATABASE_URL,
+      },
+    },
+  });
+}
 
 export default function getPrisma(): PrismaClient {
-  if (!prisma) {
-    prisma = new PrismaClient({
-      datasources: {
-        db: {
-          url: getConfig().DATABASE_URL,
-        },
-      },
-    });
+  if (process.env.NODE_ENV === 'production') {
+    return createClient();
   }
-  return prisma;
+  const newGlobalThis = globalThis as GlobalThisWithPrismaClient;
+  if (!newGlobalThis[prismaClientPropertyName]) {
+    newGlobalThis[prismaClientPropertyName] = createClient();
+  }
+  return newGlobalThis[prismaClientPropertyName];
 }
