@@ -1,10 +1,13 @@
-import { TooltipItem } from 'chart.js';
+import { TooltipItem, Chart as Chartjs } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Chart } from 'primereact/chart';
 import { useEffect, useState } from 'react';
 import colors from 'tailwindcss/colors';
 
 import { TransactionDto } from '@/actions/transactions';
 import { currencyFormat, monthFormat } from 'utils/formatter';
+
+Chartjs.register(ChartDataLabels);
 
 interface CategoryBarCharProps {
   transactions: TransactionDto[];
@@ -18,10 +21,12 @@ export default function CategoryBarChar({ transactions }: CategoryBarCharProps) 
     const monthsSet = new Set<string>();
     const categoriesColors: Record<string, string> = {};
     const grouped: Record<string, Record<string, number>> = {};
+    let total = 0;
 
     transactions.forEach((tx) => {
       const month = monthFormat.format(tx.date);
       monthsSet.add(month);
+      total += tx.amount;
       categoriesColors[tx.category] = tx.color;
       if (!grouped[tx.category]) grouped[tx.category] = {};
       grouped[tx.category][month] = (grouped[tx.category][month] || 0) + tx.amount;
@@ -43,8 +48,14 @@ export default function CategoryBarChar({ transactions }: CategoryBarCharProps) 
       labels: months,
       datasets,
     };
+
+    const defaultRatio = 3.5;
     const options = {
-      aspectRatio: 1 / Object.keys(categoriesColors).length,
+      responsive: true,
+      aspectRatio:
+        Object.keys(categoriesColors).length === 1
+          ? 2
+          : defaultRatio / Object.keys(categoriesColors).length,
       indexAxis: 'y',
       plugins: {
         tooltip: {
@@ -54,6 +65,20 @@ export default function CategoryBarChar({ transactions }: CategoryBarCharProps) 
               const value = context.parsed.x;
               return `${category}: ${currencyFormat.format(value)}`;
             },
+          },
+        },
+        datalabels: {
+          font: {
+            size: 12,
+            weight: 'bold',
+          },
+          color: 'black', // Example: Label color
+          backgroundColor: '#DDD',
+          anchor: 'center', // Example: Label position
+          padding: 5,
+          formatter: (value: number) => {
+            const percentage = `${((value / total) * 100).toFixed(0)}%`;
+            return percentage;
           },
         },
       },

@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { TransactionDto } from '@/actions/transactions';
 import { monthFormat } from 'utils/formatter';
 
-import CategoryBarChar from './CategoryBarChart';
 import CategoryFilter, { CategoryReportFilters } from './CategoryFilter';
 import CategoryTable from './CategoryTable';
 
@@ -18,7 +17,6 @@ export default function CategoryReport({
   const [filteredTransactions, setFilteredTransactions] =
     useState<TransactionDto[]>(originalTransactions);
   function handleChangeFilter(filter: CategoryReportFilters) {
-    console.log(filter);
     setFilteredTransactions(
       originalTransactions.filter((tx) => {
         let shouldFilter = true;
@@ -47,7 +45,6 @@ export default function CategoryReport({
         transactions={originalTransactions}
         onChange={handleChangeFilter}
       />
-      <CategoryBarChar transactions={filteredTransactions} />
       <CategoryTable transactions={filteredTransactions} />
     </>
   );

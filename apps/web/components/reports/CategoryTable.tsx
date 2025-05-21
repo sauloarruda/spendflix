@@ -1,49 +1,87 @@
+import { Accordion, AccordionTab } from 'primereact/accordion';
+import { Button } from 'primereact/button';
 import { classNames } from 'primereact/utils';
 
 import { TransactionDto } from '@/actions/transactions';
 import { currencyFormat, dateFormat, monthFormat } from 'utils/formatter';
 
+import CategoryBarChar from './CategoryBarChart';
+
 interface CategoryTableProps {
   transactions: TransactionDto[];
 }
 export default function CategoryTable({ transactions }: CategoryTableProps) {
-  let currentMonth: string;
-  function itemTemplate(transaction: TransactionDto) {
-    const renderMonth = currentMonth !== monthFormat.format(transaction.date);
-    if (renderMonth) {
-      currentMonth = monthFormat.format(transaction.date);
-    }
+  // Group transactions by month
+  const transactionsByMonth = transactions.reduce<Record<string, TransactionDto[]>>((acc, tx) => {
+    const month = monthFormat.format(tx.date);
+    if (!acc[month]) acc[month] = [];
+    acc[month].push(tx);
+    return acc;
+  }, {});
+
+  function triggerEditTransaction(transaction: TransactionDto) {
+    console.log(transaction);
+  }
+
+  function amountClass(amount: number) {
+    return amount >= 0 ? 'text-green-900' : 'text-red-900';
+  }
+
+  function renderTransaction(transaction: TransactionDto) {
     return (
-      <>
-        {renderMonth ? <div className="text-xl font-semibold mb-2 mt-6">{currentMonth}</div> : null}
-        <div className="flex items-top mb-4 bg-white rounded-lg shadow p-4">
-          <div className="w-8 h-8 border-1 border-gray-800 rounded flex items-center justify-center text-xl font-bold text-gray-800 shadow-sm bg-white mr-4">
+      <div className="flex items-top mb-4 bg-white rounded-lg shadow p-4" key={transaction.id}>
+        <div className="w-16 h-24">
+          <div className="mb-4 border-1 border-gray-800 rounded flex items-center justify-center text-xl font-bold text-gray-800 shadow-sm bg-white mr-4">
             {dateFormat.format(transaction.date)}
           </div>
-          <div className="flex-1">
-            <div className="mb-1">
-              <span
-                className="inline-block rounded px-3 py-1 text-sm font-semibold text-white"
-                style={{ backgroundColor: `var(--${transaction.color})` }}
-              >
-                {transaction.category}
-              </span>
-            </div>
-            <div className="text-base text-blue-900">{transaction.description}</div>
-            <div
-              className={classNames([
-                'mt-1 font-bold text-lg',
-                transaction.amount >= 0 ? 'text-green-900' : 'text-red-900',
-              ])}
+          <Button
+            icon="pi pi-pencil"
+            rounded
+            size="small"
+            onClick={() => triggerEditTransaction(transaction)}
+          ></Button>
+        </div>
+        <div className="flex-1">
+          <div className="mb-1">
+            <span
+              className="inline-block rounded px-3 py-1 text-sm font-semibold text-white"
+              style={{ backgroundColor: `var(--${transaction.color})` }}
             >
-              {currencyFormat.format(transaction.amount)}
-            </div>
+              {transaction.category}
+            </span>
+          </div>
+          <div className="text-base text-blue-900">{transaction.description}</div>
+          <div className={classNames(['mt-1 font-bold text-lg', amountClass(transaction.amount)])}>
+            {currencyFormat.format(transaction.amount)}
           </div>
         </div>
-      </>
+      </div>
     );
   }
 
   if (!transactions) return <></>;
-  return <>{transactions.map((transaction) => itemTemplate(transaction))}</>;
+
+  return (
+    <Accordion className="category-report" multiple>
+      {Object.entries(transactionsByMonth).map(([month, monthTransactions]) => {
+        const monthTotal = monthTransactions.reduce((sum, tx) => sum + tx.amount, 0);
+        return (
+          <AccordionTab
+            key={month}
+            header={
+              <div className="flex text-xl font-semibold w-full">
+                <div className="flex-grow-1">{month}</div>
+                <strong className={classNames(['font-semibold', amountClass(monthTotal)])}>
+                  {currencyFormat.format(monthTotal)}
+                </strong>
+              </div>
+            }
+          >
+            <CategoryBarChar transactions={monthTransactions} />
+            <div className="mt-4">{monthTransactions.map(renderTransaction)}</div>
+          </AccordionTab>
+        );
+      })}
+    </Accordion>
+  );
 }

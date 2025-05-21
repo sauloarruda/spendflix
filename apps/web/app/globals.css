@@ -2,3 +2,18 @@
 @import 'primereact/resources/primereact.min.css';
 @import 'primereact/resources/themes/soho-light/theme.css';
 @import 'primeicons/primeicons.css';
+
+.category-report .p-accordion-header-link {
+  padding: 0;
+}
+.category-report .p-accordion-tab {
+  margin-bottom: 1rem;
+}
+.category-report .p-accordion-header-link {
+  border: 0;
+  background-color: transparent;
+}
+.category-report .p-accordion-content {
+  border: 0;
+  padding: 1em 0;
+}

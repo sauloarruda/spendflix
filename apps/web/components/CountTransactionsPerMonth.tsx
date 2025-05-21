@@ -16,8 +16,6 @@ export default function CountTransactionsPerMonth({ accountId, ts, onUpdate }: P
   >();
 
   useEffect(() => {
-    console.log('useEffect triggered', { ts, accountId });
-
     const fetchData = async () => {
       const data = await countTransactionsPerMonthAction(accountId);
       setTransactionsPerMonth(data);

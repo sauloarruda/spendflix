@@ -37,9 +37,9 @@ export default function OnboardingStep6() {
       {userId && (
         <TransactionsProvider userId={userId}>
           <TabView
+            className="border-1 border-gray-300"
             activeIndex={activeIndex}
             onTabChange={(e) => setActiveIndex(e.index)}
-            className="sticky top-0"
           >
             <TabPanel header="Receitas">
               <RevenueReport />
