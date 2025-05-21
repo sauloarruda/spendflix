@@ -15,16 +15,13 @@ function sanitizeDescription(description: string): string {
   // 3. Replace accented characters with their non-accented equivalents
   sanitized = sanitized.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
-  // 4. Apply trim
-  sanitized = sanitized.trim();
+  // 4. Apply trim and lowercase
+  sanitized = sanitized.trim().toLowerCase();
 
   return sanitized;
 }
 
-async function inferCategory(
-  description: string,
-  accountId: string,
-): Promise<CategoryRule | undefined> {
+async function findCategory(description: string, accountId: string) {
   const sanitizedDescription = sanitizeDescription(description);
   const rules = await getPrisma().$queryRawUnsafe<CategoryRule[]>(
     `
@@ -32,31 +29,60 @@ async function inferCategory(
       r.*,
       GREATEST(
         similarity($1, r."keyword"),
-        CASE WHEN $1 ILIKE '%' || r.keyword || '%' THEN 1.0 ELSE 0 END
+        CASE WHEN $1 ILIKE '%' || r."keyword" || '%' THEN 1.0 ELSE 0 END
       ) AS "score"
     FROM
       "category_rules" r
     WHERE 
-      similarity($1, r.keyword) > 0.3
-      OR $1 ILIKE '%' || r.keyword || '%'
-    ORDER BY "score" desc, "ocurrences" desc, "updatedAt" desc
+      (r."accountId" = $2 OR r."accountId" IS NULL)
+      AND (similarity($1, r."keyword") > 0.3
+      OR $1 ILIKE '%' || r."keyword" || '%')
+    ORDER BY "accountId", "score" desc, "ocurrences" desc, "updatedAt" desc
     `,
     sanitizedDescription,
+    accountId,
   );
   logger.debug({ sanitizeDescription, accountId, rules }, 'Categories matched');
-  return rules.length ? rules[0] : undefined;
+  return rules.length ? categoryRuleToMatch(rules[0] as CategoryRuleWithScore) : undefined;
 }
 
-async function findOrCreateUserRule(description: string, categoryId: string, userId: number) {
+export type CategorizerMatch = {
+  categoryId: string;
+  categoryRuleId: string;
+  score: number;
+  accountId: string | null;
+};
+
+type CategoryRuleWithScore = CategoryRule & { score: number };
+
+function categoryRuleToMatch(rule: CategoryRuleWithScore): CategorizerMatch {
+  return {
+    categoryId: rule.categoryId,
+    categoryRuleId: rule.id,
+    accountId: rule.accountId,
+    score: rule.score,
+  };
+}
+
+async function inferCategory(
+  description: string,
+  accountId: string,
+): Promise<CategorizerMatch | undefined> {
+  // make sure that account exists
+  getPrisma().account.findFirstOrThrow({ where: { id: accountId } });
+  return findCategory(description, accountId);
+}
+
+async function findOrCreateUserRule(description: string, categoryId: string, accountId: string) {
   const sanitizedDescription = sanitizeDescription(description);
   const data = {
     keyword: sanitizedDescription,
-    userId,
+    accountId,
     categoryId,
   };
   return getPrisma().categoryRule.upsert({
     where: {
-      keyword_userId_categoryId: data,
+      keyword_accountId_categoryId: data,
     },
     update: {},
     create: data,

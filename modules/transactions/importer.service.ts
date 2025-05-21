@@ -1,8 +1,6 @@
 import { createHash } from 'crypto';
 
-import {
-  Prisma, Source, SourceStatus, Transaction,
-} from '@/prisma';
+import { Prisma, Source, SourceStatus, Transaction } from '@/prisma';
 import Papa from 'papaparse';
 
 import getLogger from '@/common/logger';
@@ -75,7 +73,7 @@ async function hasTransaction(checksum: string): Promise<boolean> {
   return !!(await getPrisma().transaction.findUnique({ where: { checksum } }));
 }
 
-const IGNORED_DESCRIPTIONS = [/Pagamento recebido/];
+const IGNORED_DESCRIPTIONS = [/Pagamento recebido/, /Pagamento de fatura/];
 const CSV_MIN_COLS = 3;
 
 // eslint-disable-next-line max-lines-per-function
@@ -99,7 +97,8 @@ async function processRow(
     ...data,
     checksum,
     categoryId: categoryRule?.categoryId,
-    categoryRuleId: categoryRule?.id,
+    categoryRuleId: categoryRule?.categoryRuleId,
+    categoryScore: categoryRule?.score,
   };
   logger.debug({ data: transactionData }, 'Inserting transaction');
   return getPrisma().transaction.create({

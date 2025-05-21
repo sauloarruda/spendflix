@@ -92,18 +92,18 @@ async function updateCategory(transactionIds: string[], categoryId: string): Pro
   if (transactionIds.length === 0) return;
   const transaction = await getPrisma().transaction.findFirstOrThrow({
     where: { id: transactionIds[0] },
-    include: { account: true },
   });
   const categoryUserRule = await categorizerService.findOrCreateUserRule(
     transaction.description,
     categoryId,
-    transaction?.account.userId,
+    transaction.accountId,
   );
   await getPrisma().transaction.updateMany({
     where: { id: { in: transactionIds } },
     data: {
       categoryId,
       categoryRuleId: categoryUserRule.id,
+      categoryScore: 1,
     },
   });
 }
