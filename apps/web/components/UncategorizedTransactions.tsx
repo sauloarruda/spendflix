@@ -1,6 +1,8 @@
 import { UncategorizedTransaction } from '@/modules/transactions';
-import { DataView } from 'primereact/dataview';
-import { classNames } from 'primereact/utils';
+import { Avatar } from 'primereact/avatar';
+import { Message } from 'primereact/message';
+import { Tag } from 'primereact/tag';
+import { useState } from 'react';
 
 import { updateCategoryAction } from '@/actions/transactions';
 import { Category } from '@/prisma';
@@ -9,50 +11,87 @@ import CategoryDropdown from './CategoryDropDown';
 
 interface UncategorizedTransactionRowProps {
   transactions: UncategorizedTransaction[];
+  onChange: (editedIds: string[]) => void;
 }
 
 export default function UncategorizedTransactions({
   transactions,
+  onChange,
 }: UncategorizedTransactionRowProps) {
+  const [edited, setEdited] = useState<Record<string, boolean>>({});
+
   async function handleCategoryChange(transaction: UncategorizedTransaction, category: Category) {
     await updateCategoryAction(transaction.ids, category.id);
+    setEdited({ ...edited, [transaction.ids.join()]: true });
+    onChange(Object.keys(edited));
+  }
+
+  function displayDescription(transaction: UncategorizedTransaction) {
+    const installmentsRegex = / - Parcela\s+\d+\/\d+/gi;
+    const parts = [<>{transaction.descriptions[0].replace(installmentsRegex, '')}</>];
+    if (transaction.descriptions.length > 1) {
+      parts.push(
+        <span className="ml-1 text-gray-400">({transaction.descriptions.length} lançamentos)</span>,
+      );
+    }
+    if (installmentsRegex.test(transaction.descriptions[0])) {
+      parts.push(<Tag className="ml-1" value="Parcelado"></Tag>);
+    }
+    return parts;
+  }
+
+  function formatCurrency(value: number): string {
+    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  function displayValue(transaction: UncategorizedTransaction): string {
+    const min = Math.min(...transaction.values);
+    const max = Math.max(...transaction.values);
+    return min === max
+      ? formatCurrency(min)
+      : [formatCurrency(max), 'a', formatCurrency(min)].join(' ');
+  }
+
+  function pendingTransactions(): number {
+    return transactions.length - Object.keys(edited).length;
+  }
+
+  function pendingTransactionsText(): string {
+    const pending = pendingTransactions();
+    return pending === 0
+      ? 'Todas as transação foram categorizadas'
+      : `${pending} Transações Pendentes`;
   }
 
   function listTemplate(items: UncategorizedTransaction[]) {
-    return items.map((transaction, index) => (
-      <div
-        className={classNames(
-          'col-12 border-b-1 border-gray-200 p-4',
-          index % 2 === 0 ? 'bg-gray-50' : 'bg-gray-100',
-        )}
-        key={transaction.ids.join(',')}
-      >
+    return items.map((transaction) => (
+      <div className="my-4 p-4 p-card p-component" key={transaction.ids.join(',')}>
+        <div className="text-900 text-sm">{displayDescription(transaction)}</div>
         <div className="">
-          <div className=" flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-            <div className="flex flex-grow-1 flex-column align-items-center sm:align-items-start gap-3">
-              <div className="text-900">{transaction.descriptions.join(',')}</div>
-            </div>
-            <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-              <span className="font-semibold text-end text-nowrap">
-                {transaction.values
-                  .map((value) =>
-                    value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
-                  )
-                  .join(',')}
-              </span>
-            </div>
-          </div>
+          <span className="font-semibold text-end text-nowrap">{displayValue(transaction)}</span>
         </div>
-        <div className="flex-grow-1">
+        <div className="flex-grow-1 mt-2">
           <CategoryDropdown onChange={(category) => handleCategoryChange(transaction, category)} />
+          <Avatar
+            hidden={!edited[transaction.ids.join()]}
+            className="ml-2"
+            style={{ backgroundColor: 'var(--green-700)', color: '#ffffff' }}
+            icon="pi pi-check"
+            shape="circle"
+          />
         </div>
       </div>
     ));
   }
 
   return (
-    <div className="card">
-      <DataView value={transactions} layout="list" listTemplate={listTemplate} />
-    </div>
+    <>
+      <Message
+        className="sticky top-0 z-50"
+        text={pendingTransactionsText()}
+        severity={pendingTransactions() === 0 ? 'success' : 'info'}
+      ></Message>
+      {listTemplate(transactions)}
+    </>
   );
 }

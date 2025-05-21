@@ -6,10 +6,11 @@ import { Category } from '@/prisma';
 
 interface CategoryDropdownProps {
   onChange: (category: Category) => void;
+  value?: Category;
 }
-export default function CategoryDropdown({ onChange }: CategoryDropdownProps) {
+export default function CategoryDropdown({ onChange, value }: CategoryDropdownProps) {
   const [categories, setCategories] = useState<Category[]>();
-  const [selectedCategory, setSelectedCategory] = useState<Category>();
+  const [selectedCategory, setSelectedCategory] = useState<Category>(value);
   useEffect(() => {
     const fetchCategories = async () => {
       setCategories(await getCategoriesAction());

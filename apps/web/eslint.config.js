@@ -146,7 +146,7 @@ module.exports = [
       'import/no-extraneous-dependencies': 'off',
       'no-use-before-define': 'off',
       'import/prefer-default-export': 'off', // Allow named exports
-      'operator-linebreak': ['error', 'after'], // Fix prettier conflicts
+      'operator-linebreak': ['warn', 'after'], // Fix prettier conflicts
       'implicit-arrow-linebreak': 'off', // Fix prettier conflicts
       'function-paren-newline': 'off', // Fix prettier conflicts
       'object-curly-newline': 'off', // Fix prettier conflicts
