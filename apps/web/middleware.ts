@@ -16,7 +16,7 @@ type JwtVerifierType = JwtVerifierSingleIssuer<{
   audience: null;
   customJwtCheck: ({ payload }: { header: JwtHeader; payload: JwtPayload; jwk: Jwk }) => void;
 }>;
-// eslint-disable-next-line no-restricted-syntax
+
 let verifier: JwtVerifierType;
 function getVerifier(): JwtVerifierType {
   if (!verifier) {

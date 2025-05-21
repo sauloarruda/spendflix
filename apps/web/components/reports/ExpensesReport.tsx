@@ -16,8 +16,7 @@ export default function ExpensesReport() {
   if (!expensesTransactions) return <></>;
   return (
     <>
-      <h1>Minhas Despesas</h1>
-      <CategoryReport transactions={expensesTransactions} />
+      <CategoryReport title="Minhas Despesas" transactions={expensesTransactions} />
     </>
   );
 }

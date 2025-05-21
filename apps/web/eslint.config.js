@@ -114,13 +114,6 @@ module.exports = [
       ], // Common numbers in web development
       'no-var': 'error', // Use const and let
       'prefer-const': ['error', { destructuring: 'all' }], // Use const when possible
-      'no-restricted-syntax': [
-        'error',
-        {
-          selector: 'VariableDeclaration[kind="let"]',
-          message: 'Use const instead of let',
-        },
-      ], // Prefer const over let
 
       // Existing rules
       'prettier/prettier': [

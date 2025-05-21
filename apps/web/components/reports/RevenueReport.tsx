@@ -1,8 +1,7 @@
 import { TransactionDto } from '@/actions/transactions';
 import { useTransactions } from '@/contexts/TransactionsContext';
 
-import CategoryBarChar from './CategoryBarChart';
-import CategoryTable from './CategoryTable';
+import CategoryReport from './CategoryReport';
 
 export default function RevenueReport() {
   const transactions = useTransactions();
@@ -16,9 +15,7 @@ export default function RevenueReport() {
   if (!revenueTransactions) return <></>;
   return (
     <>
-      <h1>Minhas Receitas</h1>
-      <CategoryBarChar transactions={revenueTransactions} />
-      <CategoryTable transactions={revenueTransactions} />
+      <CategoryReport title="Minhas Receitas" transactions={revenueTransactions} />
     </>
   );
 }

@@ -7,7 +7,6 @@ interface CategoryTableProps {
   transactions: TransactionDto[];
 }
 export default function CategoryTable({ transactions }: CategoryTableProps) {
-  // eslint-disable-next-line no-restricted-syntax
   let currentMonth: string;
   function itemTemplate(transaction: TransactionDto) {
     const renderMonth = currentMonth !== monthFormat.format(transaction.date);

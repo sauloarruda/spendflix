@@ -39,29 +39,17 @@ export default function CategoryBarChar({ transactions }: CategoryBarCharProps) 
       };
     });
 
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
     const data = {
       labels: months,
       datasets,
     };
     const options = {
-      indexAxis: 'y',
-      maintainAspectRatio: false,
       aspectRatio: 1 / Object.keys(categoriesColors).length,
+      indexAxis: 'y',
       plugins: {
-        legend: {
-          labels: {
-            fontColor: textColor,
-          },
-        },
         tooltip: {
           callbacks: {
             label(context: TooltipItem<'bar'>) {
-              // context.dataset.label is the category name
-              // context.parsed.x is the value for horizontal bar charts
               const category = context.dataset.label;
               const value = context.parsed.x;
               return `${category}: ${currencyFormat.format(value)}`;
@@ -72,24 +60,7 @@ export default function CategoryBarChar({ transactions }: CategoryBarCharProps) 
       scales: {
         x: {
           ticks: {
-            color: textColorSecondary,
-            font: {
-              weight: 500,
-            },
             callback: (value: number) => currencyFormat.format(value),
-          },
-          grid: {
-            display: false,
-            drawBorder: false,
-          },
-        },
-        y: {
-          ticks: {
-            color: textColorSecondary,
-          },
-          grid: {
-            color: surfaceBorder,
-            drawBorder: false,
           },
         },
       },
