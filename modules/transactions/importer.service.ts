@@ -1,6 +1,8 @@
 import { createHash } from 'crypto';
 
-import { Prisma, Source, SourceStatus, Transaction } from '@/prisma';
+import {
+  Prisma, Source, SourceStatus, Transaction,
+} from '@/prisma';
 import Papa from 'papaparse';
 
 import getLogger from '@/common/logger';
