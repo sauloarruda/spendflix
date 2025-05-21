@@ -29,7 +29,8 @@
       "@/common/*": ["../../modules/common/*"],
       "@/prisma": ["./generated/prisma"],
       "@/fabbrica": ["../../database/src/__generated__/fabbrica"],
-      "@/app/*": ["./app/*"]
+      "@/app/*": ["./app/*"],
+      "@/contexts/*": ["./contexts/*"]
     },
     "baseUrl": "."
   },

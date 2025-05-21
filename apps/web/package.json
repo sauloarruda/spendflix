@@ -21,6 +21,7 @@
     "@aws-sdk/s3-request-presigner": "^3.803.0",
     "@prisma/client": "6.7.0",
     "@prisma/nextjs-monorepo-workaround-plugin": "^6.7.0",
+    "chart.js": "^4.4.9",
     "dotenv": "^16.5.0",
     "eslint-config-next": "^15.3.1",
     "next": "^15.3.1",

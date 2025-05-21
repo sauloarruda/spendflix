@@ -108,9 +108,45 @@ async function updateCategory(transactionIds: string[], categoryId: string): Pro
   });
 }
 
+export type TransactionsFilter = {
+  userId: number;
+  dateStart?: Date;
+  dateEnd?: Date;
+};
+
+// eslint-disable-next-line no-magic-numbers
+const SIX_MONTHS = 24 * 3600 * 180 * 1000; // 180 days
+
+async function getTransactionsByFilter(filter: TransactionsFilter) {
+  const defaultFilter: Partial<TransactionsFilter> = {
+    dateStart: new Date(new Date().getTime() - SIX_MONTHS),
+    dateEnd: new Date(),
+  };
+  const queryFilter = {
+    ...defaultFilter,
+    ...filter,
+  };
+  return getPrisma().transaction.findMany({
+    include: {
+      category: true,
+      account: true,
+    },
+    where: {
+      account: {
+        userId: queryFilter.userId,
+      },
+      AND: [{ date: { gte: queryFilter.dateStart } }, { date: { lte: queryFilter.dateEnd } }],
+    },
+    orderBy: {
+      date: 'desc',
+    },
+  });
+}
+
 const transactionsService = {
   countTransactionsPerMonth,
   getUncategorizedTransactions,
   updateCategory,
+  getTransactionsByFilter,
 };
 export default transactionsService;

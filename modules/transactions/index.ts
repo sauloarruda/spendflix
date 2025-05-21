@@ -4,9 +4,10 @@ import sourceService from './source.service';
 import transactionsService, {
   TransactionsPerMonth,
   UncategorizedTransaction,
+  TransactionsFilter,
 } from './transactions.service';
 
-export type { TransactionsPerMonth, UncategorizedTransaction };
+export type { TransactionsPerMonth, UncategorizedTransaction, TransactionsFilter };
 
 export {
   sourceService, importerService, accountService, transactionsService,
