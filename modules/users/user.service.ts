@@ -62,7 +62,7 @@ async function getTempPassword(email: string): Promise<string | undefined> {
 async function deleteTempPassword(email: string) {
   const user = await findByEmail(email);
   if (!user) return;
-  getPrisma().user.delete({ where: { id: user.id } });
+  await getPrisma().user.delete({ where: { id: user.id } });
 }
 
 async function upsertUser(userData: Partial<User>): Promise<User> {

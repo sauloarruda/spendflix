@@ -69,7 +69,7 @@ async function inferCategory(
   accountId: string,
 ): Promise<CategorizerMatch | undefined> {
   // make sure that account exists
-  getPrisma().account.findFirstOrThrow({ where: { id: accountId } });
+  await getPrisma().account.findFirstOrThrow({ where: { id: accountId } });
   return findCategory(description, accountId);
 }
 
