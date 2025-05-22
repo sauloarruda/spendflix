@@ -77,20 +77,9 @@ export default function CategoryTable({ transactions }: CategoryTableProps) {
     setEditingTransaction(undefined);
   }
 
-  function handleTransactionFormChange(transaction: TransactionDto) {
-    const updatedTx = transactionsByMonth.find((tx) => tx.id === transaction.id);
-    if (!updatedTx) return;
-    updatedTx.categoryName = transaction.categoryName;
-    updatedTx.categoryColor = transaction.categoryColor;
-  }
-
   return (
     <>
-      <TransactionForm
-        transactionDto={editingTransaction}
-        onChange={handleTransactionFormChange}
-        onHide={handleTransactionFormHide}
-      />
+      <TransactionForm transactionDto={editingTransaction} onHide={handleTransactionFormHide} />
       <Accordion className="category-report" multiple>
         {Object.entries(transactionsByMonth).map(([month, monthTransactions]) => {
           const monthTotal = monthTransactions.reduce((sum, tx) => sum + tx.amount, 0);
