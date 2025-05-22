@@ -46,11 +46,8 @@ async function checkToken(token: string) {
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
+  logger.info({ path: request.nextUrl.pathname, method: request.method }, 'Request');
   if (request.method !== 'POST') return NextResponse.next();
-  logger.info(
-    { pathname: request.nextUrl.pathname, method: request.method },
-    'Running middleware...',
-  );
   const path = request.nextUrl.pathname;
   if (
     path === '/onboarding/step1' ||

@@ -2,6 +2,7 @@ import { OnboardingData } from '@/modules/users';
 import { useState } from 'react';
 
 import { getOnboardingAction } from '@/actions/onboarding';
+import { hasSessionCookie } from 'utils/auth';
 
 import LoadingForm from './LoadingForm';
 
@@ -19,10 +20,6 @@ export default function ResumeOnboarding({
   onError,
 }: ResumeOnboardingProps) {
   const [loading, setLoading] = useState(true);
-
-  function hasSessionCookie(): boolean {
-    return document.cookie.split(';').some((cookie) => cookie.trim().startsWith('session='));
-  }
 
   async function handleLoading() {
     if (!loading) return;

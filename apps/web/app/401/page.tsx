@@ -19,7 +19,7 @@ export default function Error401() {
     else {
       try {
         const onboarding = await onboardingLoginAction(onboardingUid);
-        router.push(`/onboarding/${(onboarding.data as OnboardingData).step || 1}`);
+        router.push(`/onboarding/step${(onboarding.data as OnboardingData).step || 1}`);
       } catch (err) {
         console.log(err);
         router.push('/login');

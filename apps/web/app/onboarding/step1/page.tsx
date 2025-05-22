@@ -10,6 +10,7 @@ import Confirm from '@/components/Confirm';
 import LoadingForm from '@/components/LoadingForm';
 import Login from '@/components/Login';
 import Signup from '@/components/Signup';
+import { hasSessionCookie } from 'utils/auth';
 
 export default function Page() {
   const router = useRouter();
@@ -29,6 +30,10 @@ export default function Page() {
         setApiError((error as Error).message);
       }
     } else if (onboardingData.step && onboardingData.step > 1) {
+      if (!hasSessionCookie()) {
+        router.push('/401');
+        return;
+      }
       router.push(`/onboarding/step${onboardingData.step}`);
     }
   }
