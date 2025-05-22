@@ -7,9 +7,9 @@ import LoadingForm from './LoadingForm';
 
 interface ResumeOnboardingProps {
   message: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   onResume?: (onboarding: OnboardingData, userId: number) => void;
-  onError: (error: Error) => void;
+  onError: (error: Error, onboardingUid: string | null) => void;
 }
 
 export default function ResumeOnboarding({
@@ -26,19 +26,19 @@ export default function ResumeOnboarding({
 
   async function handleLoading() {
     if (!loading) return;
+    const uid = localStorage.getItem('onboardingUid');
 
     if (!hasSessionCookie()) {
       const error = new Error('Session cookie not found');
       console.error(error.message);
-      onError(error);
+      onError(error, uid);
       return;
     }
 
-    const uid = localStorage.getItem('onboardingUid');
     if (!uid) {
       const error = new Error('onboardingUid not found');
       console.error(error.message);
-      onError(error);
+      onError(error, uid);
       return;
     }
 
@@ -46,9 +46,9 @@ export default function ResumeOnboarding({
       const onboarding = await getOnboardingAction(uid);
       if (onResume) onResume(onboarding.data as OnboardingData, onboarding.userId!);
     } catch (error) {
-      localStorage.clear();
+      // localStorage.clear();
       console.error('Error loading onboarding', error);
-      onError(error as Error);
+      onError(error as Error, uid);
     }
     setLoading(false);
   }

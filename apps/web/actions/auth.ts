@@ -1,9 +1,9 @@
 'use server';
 
-import { loginService, signupService, UserTokens } from '@/modules/users';
+import { loginService, onboardingService, signupService, UserTokens } from '@/modules/users';
 import { cookies } from 'next/headers';
 
-import { User } from '@/prisma';
+import { Onboarding, User } from '@/prisma';
 
 async function signupAction(name: string, email: string): Promise<User> {
   return signupService.signup(name, email);
@@ -25,6 +25,17 @@ async function loginAction(email: string, password: string): Promise<void> {
   await setAuthCookie(tokens);
 }
 
+async function onboardingLoginAction(onboardingUid: string): Promise<Onboarding> {
+  const onboarding = await onboardingService.find(onboardingUid);
+  if (!onboarding.userId) throw new Error('Invalid parameters');
+
+  const user = await signupService.findUser(onboarding.userId);
+  if (!user.temporaryPassword) throw new Error('Invalid user');
+  const tokens = await loginService.login(user.email, user.temporaryPassword!);
+  await setAuthCookie(tokens);
+  return onboarding;
+}
+
 async function forgotPasswordAction(email: string): Promise<void> {
   await loginService.forgotPassword(email);
 }
@@ -33,4 +44,11 @@ async function resetPasswordAction(email: string, code: string, password: string
   await loginService.resetPassword(email, code, password);
 }
 
-export { signupAction, confirmAction, loginAction, forgotPasswordAction, resetPasswordAction };
+export {
+  signupAction,
+  confirmAction,
+  loginAction,
+  forgotPasswordAction,
+  resetPasswordAction,
+  onboardingLoginAction,
+};

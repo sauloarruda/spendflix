@@ -1,5 +1,6 @@
 'use client';
 
+import { OnboardingData } from '@/modules/users';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -17,14 +18,16 @@ export default function Page() {
   const [email, setEmail] = useState<string>('');
   const [apiError, setApiError] = useState<string>();
 
-  async function checkIfOnboardingIsStarted() {
-    if (!localStorage.getItem('onboardingUid')) {
+  async function checkIfOnboardingIsStarted(onboardingData: OnboardingData) {
+    if (!onboardingData) {
       try {
         const onboarding = await startOnboardingAction();
         localStorage.setItem('onboardingUid', onboarding.id);
       } catch (error) {
         setApiError((error as Error).message);
       }
+    } else if (onboardingData.step && onboardingData.step > 1) {
+      router.push(`/onboarding/step${onboardingData.step}`);
     }
   }
 

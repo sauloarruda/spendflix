@@ -52,19 +52,24 @@ export async function middleware(request: NextRequest) {
     'Running middleware...',
   );
   const path = request.nextUrl.pathname;
-  if (path === '/onboarding/step1' || path === '/forgot-password' || path === '/login') {
+  if (
+    path === '/onboarding/step1' ||
+    path === '/forgot-password' ||
+    path === '/login' ||
+    path === '/401'
+  ) {
     return NextResponse.next();
   }
   const cookie = (await cookies()).get('session')?.value;
   if (!cookie) {
-    logger.debug('No cookie found');
-    return Response.json({ success: false, message: 'session cookie not found' }, { status: 401 });
+    logger.warn({}, 'No cookie found');
+    return NextResponse.redirect(new URL('/401', request.url));
   }
   try {
     await checkToken(cookie);
   } catch (error) {
     logger.debug({ error }, 'Invalid session');
-    return Response.json({ success: false, message: 'invalid session' }, { status: 401 });
+    return NextResponse.redirect(new URL('/401', request.url));
   }
   return NextResponse.next();
 }

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from 'primereact/button';
 import { useState } from 'react';
 
+import { updateOnboardingAction } from '@/actions/onboarding';
 import { getUncategorizedTransactionsAction } from '@/actions/transactions';
 import ResumeOnboarding from '@/components/ResumeOnboarding';
 import UncategorizedTransactions from '@/components/UncategorizedTransactions';
@@ -36,7 +37,8 @@ export default function OnboardingStep5() {
     setEdited(editedUpdate);
   }
 
-  function handleContinue() {
+  async function handleContinue() {
+    await updateOnboardingAction(localStorage.getItem('onboardingUid')!, { step: 6 });
     router.push('/onboarding/step6');
   }
 

@@ -3,7 +3,7 @@ import { FileUpload, FileUploadHandlerEvent } from 'primereact/fileupload';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { useState } from 'react';
 
-import { putSourceFile } from '../actions/sources';
+import { putSourceFileAction } from '../actions/sources';
 
 interface SourceFileProps {
   onSuccess: (accountId: string) => void;
@@ -21,7 +21,7 @@ export default function SourceFile({ onSuccess, accountId }: SourceFileProps) {
   async function handleUpload(event: FileUploadHandlerEvent) {
     setLoading(true);
     try {
-      const result = await putSourceFile(event.files[0], accountId);
+      const result = await putSourceFileAction(event.files[0], accountId);
       setUpload({ success: true, message: `${result} lançamentos processados` });
       onSuccess(accountId);
     } catch (error) {

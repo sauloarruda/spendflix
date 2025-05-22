@@ -106,6 +106,7 @@ export default function OnboardingStep3() {
   const [selectedMainBanks, setSelectedMainBanks] = useState<string[]>([]);
   const [showOtherBanks, setShowOtherBanks] = useState(false);
   const [selectedOtherBanks, setSelectedOtherBanks] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const toggleMainBank = (bankName: string) => {
     if (selectedMainBanks.includes(bankName)) {
@@ -116,6 +117,7 @@ export default function OnboardingStep3() {
   };
 
   const handleContinue = async () => {
+    setLoading(true);
     // Get bank codes from main banks
     const mainBankCodes = selectedMainBanks
       .map((bankName) => mainBanks.find((bank) => bank.name === bankName)?.code)
@@ -134,7 +136,7 @@ export default function OnboardingStep3() {
 
     await updateOnboardingAction(onboardingUid, {
       banks: selectedBankCodes,
-      step: 3,
+      step: 4,
     });
 
     if (onlyNubank) {
@@ -227,7 +229,7 @@ export default function OnboardingStep3() {
         <Button
           label="Continuar"
           className="w-full"
-          disabled={selectedMainBanks.length === 0 && selectedOtherBanks.length === 0}
+          disabled={loading || (selectedMainBanks.length === 0 && selectedOtherBanks.length === 0)}
           onClick={handleContinue}
         />
       </div>

@@ -2,17 +2,17 @@ import { User } from '@/prisma';
 import { InitiateAuthCommandOutput } from '@aws-sdk/client-cognito-identity-provider';
 
 import cognito from './cognito';
-import userRepository from './user.repository';
+import userService from './user.service';
 import { UserTokens } from './userTokens';
 
 async function updateUser(email: string, authResp: InitiateAuthCommandOutput): Promise<User> {
-  let user = await userRepository.findByEmail(email);
+  let user = await userService.findByEmail(email);
   const userResp = await cognito.getUserFromToken(authResp.AuthenticationResult?.AccessToken || '');
   const cognitoId = userResp.UserAttributes?.find((attr) => attr.Name === 'sub')?.Value;
   const name = userResp.UserAttributes?.find((attr) => attr.Name === 'name')?.Value;
 
   if (!user || user.cognitoId !== cognitoId) {
-    user = await userRepository.upsertUser({
+    user = await userService.upsertUser({
       ...user,
       email,
       name,

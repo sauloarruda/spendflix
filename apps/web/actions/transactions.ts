@@ -29,8 +29,8 @@ async function getTransactionsByFilterAction(
     date: transaction.date,
     description: transaction.description,
     amount: transaction.amount,
-    categoryName: transaction.category!.name,
-    categoryColor: transaction.category!.color,
+    categoryName: transaction.category?.name || 'Sem categoria',
+    categoryColor: transaction.category?.color || 'red-900',
     accountName: transaction.account!.name,
     accountColor: transaction.account!.color,
   }));

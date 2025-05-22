@@ -26,18 +26,18 @@ async function main() {
 
   // Create categories
   const categories = [
-    { name: 'Alimentação', color: 'indigo-200' },
-    { name: 'Filhos', color: 'yellow-300' },
-    { name: 'Moradia', color: 'green-100' },
-    { name: 'Transporte', color: 'purple-200' },
-    { name: 'Lazer', color: 'green-300' },
-    { name: 'Compras', color: 'orange-200' },
-    { name: 'Serviços', color: 'pink-200' },
-    { name: 'Saúde', color: 'blue-100' },
-    { name: 'Viagem', color: 'amber-700' },
+    { name: 'Alimentação', color: 'indigo-500' },
+    { name: 'Compras', color: 'red-600' },
+    { name: 'Filhos', color: 'yellow-600' },
     { name: 'Investimento', color: 'gray-800' },
-    { name: 'Outros', color: 'gray-200' },
+    { name: 'Lazer', color: 'cyan-800' },
+    { name: 'Moradia', color: 'indigo-800' },
+    { name: 'Outros', color: 'gray-600' },
     { name: 'Receitas', color: 'green-900' },
+    { name: 'Saúde', color: 'teal-900' },
+    { name: 'Serviços', color: 'orange-500' },
+    { name: 'Transporte', color: 'purple-600' },
+    { name: 'Viagem', color: 'teal-600' },
   ];
 
   // Parse the TSV file if it exists
@@ -57,36 +57,37 @@ async function main() {
       update: category,
       create: category,
     });
-    await prisma.categoryRule.deleteMany({
-      where: {
-        userId: null,
-        categoryId: model.id,
-      },
-    });
     const categoryRules = rules[category.name];
     if (!categoryRules?.length) continue;
-    await prisma.categoryRule.createMany({
-      data: categoryRules.map((keyword: string) => {
-        return {
+    await Promise.all(
+      categoryRules.map(async (keyword: string) => {
+        const rule = {
           keyword: keyword,
           categoryId: model.id,
+          accountId: null,
         };
+        if (!(await prisma.categoryRule.findFirst({ where: rule }))) {
+          return prisma.categoryRule.create({ data: rule });
+        }
       }),
-    });
+    );
   }
 
   // Create User
-  const user = await prisma.user.create({
-    data: {
-      name: 'John Doe',
-      email: 'john@doe.com',
-    },
-  });
+  const email = 'john@doe.com';
+  if (!(await prisma.user.findFirst({ where: { email: email } }))) {
+    const user = await prisma.user.create({
+      data: {
+        name: 'John Doe',
+        email: email,
+      },
+    });
 
-  // Create Account
-  const account = await prisma.account.create({
-    data: { userId: user.id, name: 'Nubank Credit Card', color: 'red-100', bankNumber: '260' },
-  });
+    // Create Account
+    const account = await prisma.account.create({
+      data: { userId: user.id, name: 'Nubank Credit Card', color: 'red-100', bankNumber: '260' },
+    });
+  }
 }
 
 main()

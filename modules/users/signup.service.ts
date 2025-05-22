@@ -1,11 +1,12 @@
 import { User } from '@/prisma';
 import { UsernameExistsException } from '@aws-sdk/client-cognito-identity-provider';
 
+import { decrypt } from '@/common/encryption';
 import getLogger from '@/common/logger';
 import getPrisma from '@/common/prisma';
 
 import cognito from './cognito';
-import userRepository from './user.repository';
+import userService from './user.service';
 import { UserTokens } from './userTokens';
 
 const logger = getLogger().child({ module: 'signup' });
@@ -27,7 +28,7 @@ async function handleUnconfirmedUser(email: string, signupUser: User): Promise<U
 
 async function handleGenericSignupError(error: Error, email: string): Promise<never> {
   logger.debug('Deleting temporary password due to error');
-  await userRepository.deleteTempPassword(email);
+  await userService.deleteTempPassword(email);
   logger.error({ error }, 'Error during Cognito signup');
   throw error;
 }
@@ -66,7 +67,7 @@ async function signup(name: string, email: string): Promise<User> {
   logger.debug({ name, email }, 'Starting signup process');
 
   try {
-    const signupUser = await userRepository.startOnboarding(name, email);
+    const signupUser = await userService.startOnboarding(name, email);
     return performCognitoSignup(signupUser, email);
   } catch (error) {
     logger.error({ error }, 'UnknownError in signup process');
@@ -75,7 +76,7 @@ async function signup(name: string, email: string): Promise<User> {
 }
 
 async function verifyPasswordAndConfirm(email: string, code: string): Promise<UserTokens> {
-  const password = await userRepository.getTempPassword(email);
+  const password = await userService.getTempPassword(email);
   if (!password) {
     logger.error({ email }, 'No pending signup found for email');
     throw new Error('No pending signup for this email');
@@ -112,9 +113,16 @@ async function confirm(email: string, code: string): Promise<{ tokens: UserToken
   }
 }
 
+async function findUser(id: number) {
+  const user = await userService.find(id);
+  user.temporaryPassword = decrypt(user.temporaryPassword || '');
+  return user;
+}
+
 const signupService = {
   signup,
   confirm,
+  findUser,
 };
 
 export default signupService;
