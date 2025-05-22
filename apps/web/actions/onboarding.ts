@@ -15,8 +15,15 @@ async function updateOnboardingAction(
   await onboardingService.update(onboardingUid, data, userId);
 }
 
-async function getOnboardingAction(onboardingUid: string): Promise<Onboarding> {
-  return onboardingService.find(onboardingUid);
+async function getOnboardingAction(onboardingUid: string): Promise<Onboarding | null> {
+  logger.debug('getOnboarding');
+  try {
+    const onboarding = await onboardingService.find(onboardingUid);
+    return onboarding;
+  } catch (error) {
+    logger.debug({ error }, 'Onboarding not found');
+    return null;
+  }
 }
 
 async function startOnboardingAction(): Promise<Onboarding> {

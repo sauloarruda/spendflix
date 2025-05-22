@@ -4,7 +4,7 @@ import { OnboardingData } from '@/modules/users';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-import { startOnboardingAction } from '@/actions/onboarding';
+import { getOnboardingAction, startOnboardingAction } from '@/actions/onboarding';
 import ApiError from '@/components/ApiError';
 import Confirm from '@/components/Confirm';
 import LoadingForm from '@/components/LoadingForm';
@@ -18,7 +18,9 @@ export default function Page() {
   const [email, setEmail] = useState<string>('');
   const [apiError, setApiError] = useState<string>();
 
-  async function checkIfOnboardingIsStarted(onboardingData: OnboardingData) {
+  async function checkIfOnboardingIsStarted() {
+    const onboardingData = (await getOnboardingAction(localStorage.getItem('onboardingUid') || ''))
+      ?.data as OnboardingData;
     if (!onboardingData) {
       try {
         const onboarding = await startOnboardingAction();

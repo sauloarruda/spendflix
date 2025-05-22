@@ -44,7 +44,9 @@ export default function ResumeOnboarding({
 
     try {
       const onboarding = await getOnboardingAction(uid);
-      if (onResume) onResume(onboarding.data as OnboardingData, onboarding.userId!);
+      if (!onboarding) {
+        onError(new Error('Onboarding not found'), uid);
+      } else if (onResume) onResume(onboarding.data as OnboardingData, onboarding.userId!);
     } catch (error) {
       // localStorage.clear();
       console.error('Error loading onboarding', error);
