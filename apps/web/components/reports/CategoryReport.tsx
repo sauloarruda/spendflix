@@ -1,3 +1,4 @@
+import { Message } from 'primereact/message';
 import { useState } from 'react';
 
 import { TransactionDto } from '@/actions/transactions';
@@ -45,7 +46,11 @@ export default function CategoryReport({
         transactions={originalTransactions}
         onChange={handleChangeFilter}
       />
-      <CategoryTable transactions={filteredTransactions} />
+      {filteredTransactions.length === 0 ? (
+        <Message text="Nenhum lançamento encontrado"></Message>
+      ) : (
+        <CategoryTable transactions={filteredTransactions} />
+      )}
     </>
   );
 }

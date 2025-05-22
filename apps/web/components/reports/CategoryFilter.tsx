@@ -31,14 +31,20 @@ export default function CategoryFilter({ title, transactions, onChange }: Catego
     setFilter(updateFilter);
     onChange(updateFilter);
   }
+
+  function filtersBadge() {
+    if (!filter.category?.length && !filter.month?.length) return undefined;
+    return ((filter.category?.length || 0) + (filter.month?.length || 0)).toString();
+  }
   return (
     <div className="flex border-b-1 p-2 items-center mb-4">
       <h1 className="text-2xl flex-grow-1">{title}</h1>
       <Button
+        className="text-white"
+        raised
         icon="pi pi-filter"
         size="small"
-        rounded
-        outlined
+        badge={filtersBadge()}
         aria-label="Filter"
         onClick={(e) => filterFormOverlay.current?.toggle(e)}
       />

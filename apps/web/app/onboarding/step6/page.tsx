@@ -50,7 +50,7 @@ export default function OnboardingStep6() {
             <TabPanel header="Despesas">
               <ExpensesReport />
             </TabPanel>
-            <TabPanel header="Resultado"></TabPanel>
+            {/* <TabPanel header="Resultado"></TabPanel> */}
           </TabView>
         </TransactionsProvider>
       )}
