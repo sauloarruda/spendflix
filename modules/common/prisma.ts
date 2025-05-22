@@ -1,4 +1,5 @@
 import { PrismaClient } from '@/prisma';
+import { PrismaPg } from '@prisma/adapter-pg';
 
 import getConfig from './config';
 
@@ -8,13 +9,8 @@ type GlobalThisWithPrismaClient = typeof globalThis & {
 };
 
 function createClient() {
-  return new PrismaClient({
-    datasources: {
-      db: {
-        url: getConfig().DATABASE_URL,
-      },
-    },
-  });
+  const adapter = new PrismaPg({ connectionString: getConfig().DATABASE_URL });
+  return new PrismaClient({ adapter });
 }
 
 export default function getPrisma(): PrismaClient {
