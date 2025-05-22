@@ -21,24 +21,28 @@ function sanitizeDescription(description: string): string {
   return sanitized;
 }
 
+// eslint-disable-next-line max-lines-per-function
 async function findCategory(description: string, accountId: string) {
   const sanitizedDescription = sanitizeDescription(description);
-  const rules = await getPrisma().$queryRawUnsafe<CategoryRule[]>(
-    `
+  const exactMatchSql = "$1 ~* ('\\m' || r.\"keyword\" || '\\M')";
+  const sql = `
     SELECT
       r.*,
       GREATEST(
         similarity($1, r."keyword"),
-        CASE WHEN $1 ILIKE '%' || r."keyword" || '%' THEN 1.0 ELSE 0 END
+        CASE WHEN ${exactMatchSql} THEN 1.0 ELSE 0 END
       ) AS "score"
     FROM
       "category_rules" r
     WHERE 
       (r."accountId" = $2 OR r."accountId" IS NULL)
       AND (similarity($1, r."keyword") > 0.3
-      OR $1 ILIKE '%' || r."keyword" || '%')
+      OR ${exactMatchSql})
     ORDER BY "accountId", "score" desc, "ocurrences" desc, "updatedAt" desc
-    `,
+    `;
+  logger.debug({ sql }, 'Categorizer SQL');
+  const rules = await getPrisma().$queryRawUnsafe<CategoryRule[]>(
+    sql,
     sanitizedDescription,
     accountId,
   );
