@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 import { updateCategoryAction } from '@/actions/transactions';
 import { Category } from '@/prisma';
+import { transactionAmountClass } from 'utils/formatter';
 
 import CategoryDropdown from './CategoryDropDown';
 
@@ -44,12 +45,19 @@ export default function UncategorizedTransactions({
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
-  function displayValue(transaction: UncategorizedTransaction): string {
+  function displayValue(transaction: UncategorizedTransaction) {
     const min = Math.min(...transaction.values);
     const max = Math.max(...transaction.values);
-    return min === max
-      ? formatCurrency(min)
-      : [formatCurrency(max), 'a', formatCurrency(min)].join(' ');
+    if (min === max) {
+      return <span className={transactionAmountClass(min)}>{formatCurrency(min)}</span>;
+    }
+    return (
+      <>
+        <span className={transactionAmountClass(min)}>{formatCurrency(max)}</span>
+        <span className="mx-1">a</span>
+        <span className={transactionAmountClass(max)}>{formatCurrency(min)}</span>
+      </>
+    );
   }
 
   function pendingTransactions(): number {
