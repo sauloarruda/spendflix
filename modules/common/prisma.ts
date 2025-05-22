@@ -1,5 +1,4 @@
 import { PrismaClient } from '@/prisma';
-import { PrismaPg } from '@prisma/adapter-pg';
 
 import getConfig from './config';
 
@@ -9,19 +8,22 @@ import getConfig from './config';
 // };
 
 let prismaClient: PrismaClient;
-
 function createClient() {
   if (!prismaClient) {
-    const adapter = new PrismaPg({ connectionString: getConfig().DATABASE_URL });
-    prismaClient = new PrismaClient({ adapter });
+    prismaClient = new PrismaClient({
+      datasources: {
+        db: {
+          url: getConfig().DATABASE_URL,
+        },
+      },
+    });
   }
   return prismaClient;
 }
 
 export default function getPrisma(): PrismaClient {
-  return createClient();
   // if (process.env.NODE_ENV === 'production') {
-  //   return createClient();
+  return createClient();
   // }
   // const newGlobalThis = globalThis as GlobalThisWithPrismaClient;
   // if (!newGlobalThis[prismaClientPropertyName]) {
