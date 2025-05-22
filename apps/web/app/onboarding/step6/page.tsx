@@ -6,6 +6,7 @@ import { Button } from 'primereact/button';
 import { TabPanel, TabView } from 'primereact/tabview';
 import { useState } from 'react';
 
+import { updateOnboardingAction } from '@/actions/onboarding';
 import ResumeOnboarding from '@/components/ResumeOnboarding';
 import ExpensesReport from '@/components/reports/ExpensesReport';
 import RevenueReport from '@/components/reports/RevenueReport';
@@ -18,12 +19,14 @@ export default function OnboardingStep6() {
   function handleResumeOnboarding(_onboarding: OnboardingData, onboardingUserId: number) {
     setUserId(onboardingUserId);
   }
+
+  async function handleContinue() {
+    await updateOnboardingAction(localStorage.getItem('onboardingUid')!, { step: 7 });
+    router.push('/onboarding/step7');
+  }
+
   return (
-    <ResumeOnboarding
-      message="Preparando para continuar..."
-      onResume={handleResumeOnboarding}
-      onError={() => router.push('/onboarding/step1')}
-    >
+    <ResumeOnboarding message="Preparando para continuar..." onResume={handleResumeOnboarding}>
       <h2 className="text-xl font-semibold mb-6 text-center">
         Parabéns! Agora suas finanças estão organizadas!
         <br />
@@ -52,7 +55,7 @@ export default function OnboardingStep6() {
         </TransactionsProvider>
       )}
       <div className="w-full max-w-md mt-4">
-        <Button label="Continuar" className="w-full" />
+        <Button label="Continuar" className="w-full" onClick={handleContinue} />
       </div>
     </ResumeOnboarding>
   );

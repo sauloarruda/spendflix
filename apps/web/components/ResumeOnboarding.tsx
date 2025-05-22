@@ -1,4 +1,5 @@
 import { OnboardingData } from '@/modules/users';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { getOnboardingAction } from '@/actions/onboarding';
@@ -10,7 +11,7 @@ interface ResumeOnboardingProps {
   message: string;
   children?: React.ReactNode;
   onResume?: (onboarding: OnboardingData, userId: number) => void;
-  onError: (error: Error, onboardingUid: string | null) => void;
+  onError?: (error: Error, onboardingUid: string | null) => void;
 }
 
 export default function ResumeOnboarding({
@@ -19,7 +20,13 @@ export default function ResumeOnboarding({
   onResume,
   onError,
 }: ResumeOnboardingProps) {
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
+
+  async function handleError(error: Error, uid: string | null) {
+    if (onError) onError(error, uid);
+    else router.push('/401');
+  }
 
   async function handleLoading() {
     if (!loading) return;
@@ -27,27 +34,23 @@ export default function ResumeOnboarding({
 
     if (!hasSessionCookie()) {
       const error = new Error('Session cookie not found');
-      console.error(error.message);
-      onError(error, uid);
+      handleError(error, uid);
       return;
     }
 
     if (!uid) {
       const error = new Error('onboardingUid not found');
-      console.error(error.message);
-      onError(error, uid);
+      handleError(error, uid);
       return;
     }
 
     try {
       const onboarding = await getOnboardingAction(uid);
       if (!onboarding) {
-        onError(new Error('Onboarding not found'), uid);
+        handleError(new Error('Onboarding not found'), uid);
       } else if (onResume) onResume(onboarding.data as OnboardingData, onboarding.userId!);
     } catch (error) {
-      // localStorage.clear();
-      console.error('Error loading onboarding', error);
-      onError(error as Error, uid);
+      handleError(error as Error, uid);
     }
     setLoading(false);
   }

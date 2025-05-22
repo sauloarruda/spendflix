@@ -34,14 +34,8 @@ function getVerifier(): JwtVerifierType {
 }
 
 async function checkToken(token: string) {
-  try {
-    const payload = await getVerifier().verify(token);
-    // logger.debug({ payload }, 'Decoded JWT');
-    return payload;
-  } catch (error) {
-    logger.error({ error }, 'Error verifying token:');
-    throw error;
-  }
+  const payload = await getVerifier().verify(token);
+  return payload;
 }
 
 // This function can be marked `async` if using `await` inside
