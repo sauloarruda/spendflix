@@ -109,12 +109,13 @@ async function importFromSource(source: Source) {
   logger.info({ source }, 'Started importing transactions');
   const csvContents = await getFileFromSource(source);
   const rows = parseCsv(csvContents);
-  rows.map(async (row, index) => {
-    logger.debug({ row }, `Processing row ${index + 1}/${rows.length + 1}`);
-    await processRow(row, source).catch((error) => {
-      logger.error({ error, row }, `Error processing row ${index + 1}`);
-    });
-  });
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    logger.debug({ row }, `Processing row ${i + 1}/${rows.length}`);
+    // eslint-disable-next-line no-await-in-loop
+    await processRow(row, source);
+  }
   logger.info(`Finished importing ${rows.length} transactions`);
   await getPrisma().source.update({
     where: { id: source.id },
