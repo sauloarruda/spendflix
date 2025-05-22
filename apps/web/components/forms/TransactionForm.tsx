@@ -46,6 +46,7 @@ export default function TransactionForm({ transactionDto, onHide }: TransactionF
     formState.categoryName = category.name;
     formState.categoryColor = category.color;
     setEdited(true);
+    setTimeout(() => onHide(), 500);
   }
 
   if (!formState || !transaction) return <></>;
