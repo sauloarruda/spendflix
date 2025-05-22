@@ -81,7 +81,6 @@ async function processRow(
   row: Record<string, string>,
   source: Source,
 ): Promise<Transaction | undefined> {
-  logger.debug({ row }, 'Processing row');
   if (Object.keys(row).length < CSV_MIN_COLS) return undefined;
 
   const data = transformRowToData(row, source);
@@ -110,9 +109,10 @@ async function importFromSource(source: Source) {
   logger.info({ source }, 'Started importing transactions');
   const csvContents = await getFileFromSource(source);
   const rows = parseCsv(csvContents);
-  rows.map(async (row) => {
+  rows.map(async (row, index) => {
+    logger.debug({ row }, `Processing row ${index + 1}/${rows.length + 1}`);
     await processRow(row, source).catch((error) => {
-      logger.error({ error, row }, 'Error processing row');
+      logger.error({ error, row }, `Error processing row ${index + 1}`);
     });
   });
   logger.info(`Finished importing ${rows.length} transactions`);
