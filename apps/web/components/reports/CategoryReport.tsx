@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { TransactionDto } from '@/actions/transactions';
-import { monthFormat } from 'utils/formatter';
+import { monthFormatter } from 'utils/formatter';
 
 import CategoryFilter, { CategoryReportFilters } from './CategoryFilter';
 import CategoryTable from './CategoryTable';
@@ -23,14 +23,14 @@ export default function CategoryReport({
         if (
           filter.category &&
           filter.category.length > 0 &&
-          !filter.category.includes(tx.category)
+          !filter.category.includes(tx.categoryName)
         ) {
           shouldFilter = false;
         }
         if (
           filter.month &&
           filter.month.length > 0 &&
-          !filter.month.includes(monthFormat.format(tx.date))
+          !filter.month.includes(monthFormatter.format(tx.date))
         ) {
           shouldFilter = false;
         }

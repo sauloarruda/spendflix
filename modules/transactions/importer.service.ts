@@ -1,8 +1,6 @@
 import { createHash } from 'crypto';
 
-import {
-  Prisma, Source, SourceStatus, Transaction,
-} from '@/prisma';
+import { Source, SourceStatus, Transaction } from '@/prisma';
 import Papa from 'papaparse';
 
 import getLogger from '@/common/logger';
@@ -35,7 +33,7 @@ function calculateChecksum(data: {
   accountId: string;
   date: Date;
   description: string;
-  amount: Prisma.Decimal;
+  amount: number;
 }): string {
   // Normalize the data to ensure consistent hashing
   const normalizedDate = data.date.toISOString().split('T')[0]; // YYYY-MM-DD format
@@ -57,7 +55,7 @@ function transformRowToData(
   sourceId: string;
   date: Date;
   description: string;
-  amount: Prisma.Decimal;
+  amount: number;
 } {
   const columnMapping = sourceService.getSourceTypeColumnMapping()[source.type];
   return {
@@ -66,8 +64,8 @@ function transformRowToData(
     date: parseDate(row[columnMapping.date].trim()),
     description: row[columnMapping.description],
     amount: columnMapping.invertAmountSignal
-      ? new Prisma.Decimal(-1 * parseFloat(row[columnMapping.amount]))
-      : new Prisma.Decimal(parseFloat(row[columnMapping.amount])),
+      ? -1 * parseFloat(row[columnMapping.amount])
+      : parseFloat(row[columnMapping.amount]),
   };
 }
 

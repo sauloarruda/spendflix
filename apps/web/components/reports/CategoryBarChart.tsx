@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import colors from 'tailwindcss/colors';
 
 import { TransactionDto } from '@/actions/transactions';
-import { currencyFormat, monthFormat } from 'utils/formatter';
+import { currencyFormatter, monthFormatter } from 'utils/formatter';
 
 Chartjs.register(ChartDataLabels);
 
@@ -24,12 +24,12 @@ export default function CategoryBarChar({ transactions }: CategoryBarCharProps) 
     let total = 0;
 
     transactions.forEach((tx) => {
-      const month = monthFormat.format(tx.date);
+      const month = monthFormatter.format(tx.date);
       monthsSet.add(month);
       total += tx.amount;
-      categoriesColors[tx.category] = tx.color;
-      if (!grouped[tx.category]) grouped[tx.category] = {};
-      grouped[tx.category][month] = (grouped[tx.category][month] || 0) + tx.amount;
+      categoriesColors[tx.categoryName] = tx.categoryColor;
+      if (!grouped[tx.categoryName]) grouped[tx.categoryName] = {};
+      grouped[tx.categoryName][month] = (grouped[tx.categoryName][month] || 0) + tx.amount;
     });
 
     const months = Array.from(monthsSet);
@@ -63,7 +63,7 @@ export default function CategoryBarChar({ transactions }: CategoryBarCharProps) 
             label(context: TooltipItem<'bar'>) {
               const category = context.dataset.label;
               const value = context.parsed.x;
-              return `${category}: ${currencyFormat.format(value)}`;
+              return `${category}: ${currencyFormatter.format(value)}`;
             },
           },
         },
@@ -85,7 +85,7 @@ export default function CategoryBarChar({ transactions }: CategoryBarCharProps) 
       scales: {
         x: {
           ticks: {
-            callback: (value: number) => currencyFormat.format(value),
+            callback: (value: number) => currencyFormatter.format(value),
           },
         },
       },

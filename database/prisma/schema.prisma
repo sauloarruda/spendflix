@@ -123,7 +123,7 @@ model Transaction {
   categoryScore   Float?
   date            DateTime
   description     String
-  amount          Decimal @db.Decimal(12,2)
+  amount          Float 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 

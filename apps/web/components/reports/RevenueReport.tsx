@@ -9,7 +9,7 @@ export default function RevenueReport() {
   if (!transactions) return <></>;
 
   const revenueTransactions = transactions.filter(
-    (transaction: TransactionDto) => transaction.category === 'Receitas',
+    (transaction: TransactionDto) => transaction.categoryName === 'Receitas',
   );
 
   if (!revenueTransactions) return <></>;

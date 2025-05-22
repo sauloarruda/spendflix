@@ -72,7 +72,7 @@ function groupUncategorizedTransactions(transactions: Transaction[]): Uncategori
   return Object.values(groups).map((group: Transaction[]) => ({
     ids: group.map((g) => g.id),
     descriptions: group.map((g) => g.description),
-    values: group.map((g) => g.amount.toNumber()),
+    values: group.map((g) => g.amount),
   }));
 }
 
@@ -143,10 +143,17 @@ async function getTransactionsByFilter(filter: TransactionsFilter) {
   });
 }
 
+async function findById(id: string): Promise<Transaction> {
+  return getPrisma().transaction.findFirstOrThrow({
+    where: { id },
+  });
+}
+
 const transactionsService = {
   countTransactionsPerMonth,
   getUncategorizedTransactions,
   updateCategory,
   getTransactionsByFilter,
+  findById,
 };
 export default transactionsService;

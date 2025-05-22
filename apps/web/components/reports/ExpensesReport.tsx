@@ -10,7 +10,7 @@ export default function ExpensesReport() {
 
   const ignoredCategories = ['Receitas', 'Investimento'];
   const expensesTransactions = transactions.filter(
-    (transaction: TransactionDto) => !ignoredCategories.includes(transaction.category),
+    (transaction: TransactionDto) => !ignoredCategories.includes(transaction.categoryName),
   );
 
   if (!expensesTransactions) return <></>;

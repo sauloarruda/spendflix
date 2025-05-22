@@ -4,7 +4,7 @@ import { OverlayPanel } from 'primereact/overlaypanel';
 import { useRef, useState } from 'react';
 
 import { TransactionDto } from '@/actions/transactions';
-import { monthFormat } from 'utils/formatter';
+import { monthFormatter } from 'utils/formatter';
 
 export type CategoryReportFilters = {
   category?: string[];
@@ -47,13 +47,13 @@ export default function CategoryFilter({ title, transactions, onChange }: Catego
           <MultiSelect
             value={filter.category}
             onChange={(e) => handleChangeFilter('category', e.value)}
-            options={[...new Set(transactions.map((tx) => tx.category))].sort()}
+            options={[...new Set(transactions.map((tx) => tx.categoryName))].sort()}
             placeholder="Filtrar categorias"
           />
           <MultiSelect
             value={filter.month}
             onChange={(e) => handleChangeFilter('month', e.value)}
-            options={[...new Set(transactions.map((tx) => monthFormat.format(tx.date)))]}
+            options={[...new Set(transactions.map((tx) => monthFormatter.format(tx.date)))]}
             placeholder="Filtrar mês"
           />
         </div>

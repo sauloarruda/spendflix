@@ -15,9 +15,10 @@ export type TransactionDto = {
   date: Date;
   description: string;
   amount: number;
-  category: string;
-  color: string;
-  account: string;
+  categoryName: string;
+  categoryColor: string;
+  accountName: string;
+  accountColor: string;
 };
 
 async function getTransactionsByFilterAction(
@@ -27,11 +28,21 @@ async function getTransactionsByFilterAction(
     id: transaction.id,
     date: transaction.date,
     description: transaction.description,
-    amount: transaction.amount.toNumber(),
-    category: transaction.category!.name,
-    color: transaction.category!.color,
-    account: transaction.account!.name,
+    amount: transaction.amount,
+    categoryName: transaction.category!.name,
+    categoryColor: transaction.category!.color,
+    accountName: transaction.account!.name,
+    accountColor: transaction.account!.color,
   }));
 }
 
-export { getUncategorizedTransactionsAction, updateCategoryAction, getTransactionsByFilterAction };
+async function findTransactionByIdAction(id: string) {
+  return transactionsService.findById(id);
+}
+
+export {
+  getUncategorizedTransactionsAction,
+  updateCategoryAction,
+  getTransactionsByFilterAction,
+  findTransactionByIdAction,
+};
