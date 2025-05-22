@@ -5,6 +5,7 @@ import Papa from 'papaparse';
 
 import getLogger from '@/common/logger';
 import getPrisma from '@/common/prisma';
+import LimitedConcurrentPromise from '@/common/promise';
 import s3Service from '@/common/s3';
 import { categorizerService } from '@/modules/categorization';
 
@@ -110,7 +111,7 @@ async function importFromSource(source: Source) {
   logger.info({ source }, 'Started importing transactions');
   const csvContents = await getFileFromSource(source);
   const rows = parseCsv(csvContents);
-  await Promise.all(rows.map((row) => processRow(row, source))).catch((error) => {
+  await LimitedConcurrentPromise.all(rows.map((row) => processRow(row, source))).catch((error) => {
     logger.error({ error }, 'Error processing row');
   });
   logger.info(`Finished importing ${rows.length} transactions`);
