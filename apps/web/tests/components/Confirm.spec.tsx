@@ -3,8 +3,7 @@ import userEvent from '@testing-library/user-event';
 
 import { confirmAction, signupAction } from '@/actions/auth';
 import { updateOnboardingAction } from '@/actions/onboarding';
-
-import Confirm from '@/components/Confirm';
+import Confirm from '@/components/onboarding/Confirm';
 
 jest.mock('@/actions/auth', () => ({
   confirmAction: jest.fn(),
@@ -101,7 +100,7 @@ describe('Confirm Component', () => {
     it('shows loading state during confirmation', async () => {
       const mockConfirm = () =>
         new Promise((resolve) => {
-          setTimeout(resolve, 100);
+          setTimeout(() => resolve({ id: 'user-id' }), 100);
         });
 
       (confirmAction as jest.Mock).mockImplementation(mockConfirm);
@@ -118,9 +117,13 @@ describe('Confirm Component', () => {
 
       await waitFor(() => {
         expect(confirmAction).toHaveBeenCalledWith(mockEmail, '123456');
-        expect(updateOnboardingAction).toHaveBeenCalledWith('test-uid', {
-          step: 2,
-        });
+        expect(updateOnboardingAction).toHaveBeenCalledWith(
+          'test-uid',
+          {
+            step: 2,
+          },
+          'user-id',
+        );
         expect(mockOnSuccess).toHaveBeenCalled();
       });
     });
@@ -150,7 +153,7 @@ describe('Confirm Component', () => {
     });
 
     it('handles successful confirmation', async () => {
-      (confirmAction as jest.Mock).mockResolvedValueOnce(undefined);
+      (confirmAction as jest.Mock).mockResolvedValueOnce({ id: 'user-id' });
       (updateOnboardingAction as jest.Mock).mockResolvedValueOnce(undefined);
 
       const { codeInput, confirmButton } = setupConfirmTest();
@@ -160,9 +163,13 @@ describe('Confirm Component', () => {
 
       await waitFor(() => {
         expect(confirmAction).toHaveBeenCalledWith(mockEmail, '123456');
-        expect(updateOnboardingAction).toHaveBeenCalledWith('test-uid', {
-          step: 2,
-        });
+        expect(updateOnboardingAction).toHaveBeenCalledWith(
+          'test-uid',
+          {
+            step: 2,
+          },
+          'user-id',
+        );
         expect(mockOnSuccess).toHaveBeenCalled();
       });
     });

@@ -2,7 +2,7 @@ import { Message } from 'primereact/message';
 import { useState } from 'react';
 
 import { TransactionDto } from '@/actions/transactions';
-import { monthFormatter } from 'utils/formatter';
+import { monthFormatter } from '@/utils/formatter';
 
 import CategoryFilter, { CategoryReportFilters } from './CategoryFilter';
 import CategoryTable from './CategoryTable';

@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { updateCategoryAction } from '@/actions/transactions';
 import CategoryDropdown from '@/components/inputs/CategoryDropDown';
 import { Category } from '@/prisma';
-import { transactionAmountClass } from 'utils/formatter';
+import { transactionAmountClass } from '@/utils/formatter';
 
 interface UncategorizedTransactionRowProps {
   transactions: UncategorizedTransaction[];
@@ -65,9 +65,9 @@ export default function UncategorizedTransactions({
 
   function pendingTransactionsText(): string {
     const pending = pendingTransactions();
-    return pending === 0
-      ? 'Todas as transação foram categorizadas'
-      : `${pending} Transações Pendentes`;
+    return pending === 0 ?
+      'Todas as transação foram categorizadas' :
+      `${pending} Transações Pendentes`;
   }
 
   function listTemplate(items: UncategorizedTransaction[]) {

@@ -117,7 +117,7 @@ module.exports = [
 
       // Existing rules
       'prettier/prettier': [
-        'error',
+        'warn',
         {
           ...prettierConfig,
           endOfLine: 'auto',

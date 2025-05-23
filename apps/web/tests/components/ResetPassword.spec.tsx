@@ -3,8 +3,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { resetPasswordAction } from '@/actions/auth';
-
-import ResetPassword from '@/components/ResetPassword';
+import ResetPassword from '@/components/auth/ResetPassword';
 
 jest.mock('@/actions/auth', () => ({
   resetPasswordAction: jest.fn(),

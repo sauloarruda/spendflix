@@ -11,7 +11,7 @@ import {
   updateCategoryAction,
 } from '@/actions/transactions';
 import { Category, Transaction } from '@/prisma';
-import { currencyFormatter, dateFormatter, transactionAmountClass } from 'utils/formatter';
+import { currencyFormatter, dateFormatter, transactionAmountClass } from '@/utils/formatter';
 
 import CategoryDropdown from '../inputs/CategoryDropDown';
 

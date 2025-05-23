@@ -30,7 +30,8 @@
       "@/prisma": ["./generated/prisma"],
       "@/fabbrica": ["../../database/src/__generated__/fabbrica"],
       "@/app/*": ["./app/*"],
-      "@/contexts/*": ["./contexts/*"]
+      "@/contexts/*": ["./contexts/*"],
+      "@/utils/*": ["./utils/*"]
     },
     "baseUrl": "."
   },

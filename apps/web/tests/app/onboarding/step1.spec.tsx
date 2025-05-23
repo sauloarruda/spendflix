@@ -1,7 +1,7 @@
 import { render, waitFor, fireEvent, screen } from '@testing-library/react';
 import React from 'react';
 
-import { startOnboardingAction } from '@/actions/onboarding';
+import { getOnboardingAction, startOnboardingAction } from '@/actions/onboarding';
 import Page from '@/app/onboarding/step1/page';
 
 const mockPush = jest.fn();
@@ -12,29 +12,34 @@ jest.mock('next/navigation', () => ({
   }),
 }));
 
+jest.mock('@/utils/auth', () => ({
+  hasSessionCookie: jest.fn().mockReturnValue(true),
+}));
+
 jest.mock('@/modules/users/onboarding.repository', () => ({
   find: jest.fn().mockResolvedValue({
     id: 'test-onboarding-id',
-    step: 1,
+    data: { step: 0 },
     userId: 'test-user-id',
   }),
   create: jest.fn().mockResolvedValue({
     id: 'test-onboarding-id',
-    step: 1,
+    data: { step: 0 },
     userId: 'test-user-id',
   }),
   update: jest.fn().mockResolvedValue({
     id: 'test-onboarding-id',
-    step: 1,
+    data: { step: 0 },
     userId: 'test-user-id',
   }),
 }));
 
 jest.mock('@/actions/onboarding', () => ({
   startOnboardingAction: jest.fn().mockResolvedValue({ id: 'test-onboarding-id' }),
+  getOnboardingAction: jest.fn().mockResolvedValue(null),
 }));
 
-jest.mock('@/components/Signup', () => {
+jest.mock('@/components/onboarding/Signup', () => {
   const TEST_NAME = 'Test User';
   const TEST_EMAIL = 'test@example.com';
   return {
@@ -54,7 +59,7 @@ jest.mock('@/components/Signup', () => {
   };
 });
 
-jest.mock('@/components/Confirm', () => ({
+jest.mock('@/components/onboarding/Confirm', () => ({
   __esModule: true,
   default: ({ onSuccess }: { onSuccess: () => void }) => (
     <div data-testid="confirm-component">
@@ -63,7 +68,7 @@ jest.mock('@/components/Confirm', () => ({
   ),
 }));
 
-jest.mock('@/components/Login', () => ({
+jest.mock('@/components/auth/Login', () => ({
   __esModule: true,
   default: ({ onSuccess }: { onSuccess: () => void }) => (
     <div data-testid="login-component">
@@ -72,7 +77,7 @@ jest.mock('@/components/Login', () => ({
   ),
 }));
 
-jest.mock('@/components/LoadingForm', () => ({
+jest.mock('@/components/utils/LoadingForm', () => ({
   __esModule: true,
   default: function MockLoadingForm({
     children,
@@ -88,7 +93,7 @@ jest.mock('@/components/LoadingForm', () => ({
   },
 }));
 
-jest.mock('@/components/ApiError', () => ({
+jest.mock('@/components/utils/ApiError', () => ({
   __esModule: true,
   default: function MockApiError({ error }: { error?: string }) {
     return error ? <div data-testid="api-error">{error}</div> : null;
@@ -111,14 +116,21 @@ describe('Onboarding Step 1 Page', () => {
     render(<Page />);
 
     await waitFor(() => {
-      expect(localStorage.getItem('onboardingUid')).toBe(TEST_ONBOARDING_ID);
+      expect(startOnboardingAction).toHaveBeenCalledTimes(1);
     });
 
-    expect(startOnboardingAction).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(localStorage.getItem('onboardingUid')).toBe(TEST_ONBOARDING_ID);
+    });
   });
 
   it('should not initialize onboarding when onboardingUid already exists', async () => {
     localStorage.setItem('onboardingUid', EXISTING_ONBOARDING_ID);
+    (getOnboardingAction as jest.Mock).mockResolvedValueOnce({
+      id: EXISTING_ONBOARDING_ID,
+      data: { step: 0 },
+      userId: 'test-user-id',
+    });
 
     render(<Page />);
 
@@ -170,8 +182,13 @@ describe('Onboarding Step 1 Page', () => {
   it('should show api error when onboarding initialization fails', async () => {
     const errorMessage = 'Failed to start onboarding';
     (startOnboardingAction as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
+    (getOnboardingAction as jest.Mock).mockResolvedValueOnce(null);
 
     render(<Page />);
+
+    await waitFor(() => {
+      expect(startOnboardingAction).toHaveBeenCalledTimes(1);
+    });
 
     await waitFor(() => {
       expect(screen.getByTestId('api-error')).toHaveTextContent(errorMessage);

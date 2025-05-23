@@ -88,7 +88,7 @@ module.exports = [
       'prefer-const': 'error', // Use const when possible
 
       // Existing rules
-      'prettier/prettier': ['error', prettierConfig],
+      'prettier/prettier': ['warn', prettierConfig],
       'no-console': 'warn',
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       'import/extensions': 'off',

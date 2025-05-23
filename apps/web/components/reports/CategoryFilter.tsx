@@ -4,7 +4,7 @@ import { OverlayPanel } from 'primereact/overlaypanel';
 import { useRef, useState } from 'react';
 
 import { TransactionDto } from '@/actions/transactions';
-import { monthFormatter } from 'utils/formatter';
+import { monthFormatter } from '@/utils/formatter';
 
 export type CategoryReportFilters = {
   category?: string[];

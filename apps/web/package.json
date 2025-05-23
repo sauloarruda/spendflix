@@ -10,6 +10,7 @@
     "start": "next start -p 3000",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write .",
     "prisma:generate": "../../scripts/prisma.sh",
     "test": "LOG_LEVEL=failure jest",
     "test:coverage": "LOG_LEVEL=failure jest --coverage",

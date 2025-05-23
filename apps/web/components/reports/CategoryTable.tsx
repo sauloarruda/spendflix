@@ -10,7 +10,7 @@ import {
   dayFormatter,
   monthFormatter,
   transactionAmountClass,
-} from 'utils/formatter';
+} from '@/utils/formatter';
 
 import TransactionForm from '../forms/TransactionForm';
 

@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { getOnboardingAction } from '@/actions/onboarding';
 import LoadingForm from '@/components/utils/LoadingForm';
-import { hasSessionCookie } from 'utils/auth';
+import { hasSessionCookie } from '@/utils/auth';
 
 interface ResumeOnboardingProps {
   message: string;

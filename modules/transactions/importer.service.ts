@@ -20,6 +20,7 @@ async function getFileFromSource(source: Source): Promise<string> {
 function parseCsv(csvContents: string): Record<string, string>[] {
   const csv = Papa.parse(csvContents, {
     header: true,
+    skipEmptyLines: true,
   });
   return csv.data as Record<string, string>[];
 }

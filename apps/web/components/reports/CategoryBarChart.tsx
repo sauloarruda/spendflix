@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import colors from 'tailwindcss/colors';
 
 import { TransactionDto } from '@/actions/transactions';
-import { currencyFormatter, monthFormatter } from 'utils/formatter';
+import { currencyFormatter, monthFormatter } from '@/utils/formatter';
 
 Chartjs.register(ChartDataLabels);
 
@@ -53,9 +53,9 @@ export default function CategoryBarChar({ transactions }: CategoryBarCharProps) 
     const options = {
       responsive: true,
       aspectRatio:
-        Object.keys(categoriesColors).length === 1
-          ? 2
-          : defaultRatio / Object.keys(categoriesColors).length,
+        Object.keys(categoriesColors).length === 1 ?
+          2 :
+          defaultRatio / Object.keys(categoriesColors).length,
       indexAxis: 'y',
       plugins: {
         tooltip: {
