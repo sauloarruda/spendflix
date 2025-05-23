@@ -28,14 +28,13 @@ export default function OnboardingStep6() {
   return (
     <ResumeOnboarding message="Preparando para continuar..." onResume={handleResumeOnboarding}>
       <h2 className="text-xl font-semibold mb-6 text-center">
-        Parabéns! Agora suas finanças estão organizadas!
-        <br />
-        Vamos analisar seus dados.
+        Parabéns!
+        <br /> Agora suas finanças estão organizadas!
       </h2>
       <p className="text-gray-600 text-center mb-8 max-w-md">
-        Nós dividimos seus lançamentos em 3 grandes categorias: Receitas, Despesas e Resultado.
-        Navegue pelas sessões e analise se os dados estão corretos. Você pode corrigir categorias e
-        ignorar lançamentos neste momento.
+        Avalie os totais para cada mês e categoria, confira se os lançamentos foram corretamente
+        categorizados e altere se precisar. Use os filtros pra ver com mais detalhes alguma
+        categoria ou mês.
       </p>
       {userId && (
         <TransactionsProvider userId={userId}>
@@ -50,7 +49,6 @@ export default function OnboardingStep6() {
             <TabPanel header="Despesas">
               <ExpensesReport />
             </TabPanel>
-            {/* <TabPanel header="Resultado"></TabPanel> */}
           </TabView>
         </TransactionsProvider>
       )}
