@@ -22,7 +22,7 @@ function createClient() {
 }
 
 export default function getPrisma(): PrismaClient {
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV !== 'production') {
     const newGlobalThis = globalThis as GlobalThisWithPrismaClient;
     if (!newGlobalThis[prismaClientPropertyName]) {
       newGlobalThis[prismaClientPropertyName] = createClient();

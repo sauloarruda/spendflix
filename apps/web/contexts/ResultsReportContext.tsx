@@ -12,7 +12,7 @@ export type ResultsReportRow = {
   result: number;
 };
 
-const categoryMapping = {
+export const defaultCategoryMapping = {
   revenue: { name: 'Receitas', color: '--green-800' },
   expenses: { name: 'Despesas', color: '--red-800' },
   investment: { name: 'Investimento', color: '--gray-800' },
@@ -25,7 +25,7 @@ interface ResultsReportProviderProps {
 
 interface ResultsReportContextValue {
   rows: ResultsReportRow[];
-  categoryMapping: typeof categoryMapping;
+  categoryMapping: typeof defaultCategoryMapping;
 }
 
 const ResultsReportContext = createContext<ResultsReportContextValue | undefined>(undefined);
@@ -39,7 +39,7 @@ export function ResultsReportProvider({ children }: ResultsReportProviderProps) 
     const months = new Set<string>();
     const grouped: Record<string, Record<string, number>> = {};
 
-    const ptToEnCategory: Record<string, keyof typeof categoryMapping> = {
+    const ptToEnCategory: Record<string, keyof typeof defaultCategoryMapping> = {
       Receitas: 'revenue',
       Despesas: 'expenses',
       Investimento: 'investment',
@@ -64,7 +64,7 @@ export function ResultsReportProvider({ children }: ResultsReportProviderProps) 
   }, [transactions]);
 
   return (
-    <ResultsReportContext.Provider value={{ rows, categoryMapping }}>
+    <ResultsReportContext.Provider value={{ rows, categoryMapping: defaultCategoryMapping }}>
       {children}
     </ResultsReportContext.Provider>
   );

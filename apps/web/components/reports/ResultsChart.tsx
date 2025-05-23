@@ -1,21 +1,18 @@
 import { TooltipItem } from 'chart.js';
 import { Chart } from 'primereact/chart';
 
-import { useResultsReport } from '@/contexts/ResultsReportContext';
+import {
+  useResultsReport,
+  defaultCategoryMapping,
+  ResultsReportRow,
+} from '@/contexts/ResultsReportContext';
 
-import { currencyFormatter } from '../../utils/formatter';
+import { currencyFormatter } from '@/utils/formatter';
 
 export default function ResultsChart() {
-  const defaultCategoryMapping = {
-    revenue: { name: 'Receitas', color: '--green-800' },
-    expenses: { name: 'Despesas', color: '--red-800' },
-    investment: { name: 'Investimento', color: '--gray-800' },
-    result: { name: 'Resultado', color: '--orange-400' },
-  };
-  const { rows, categoryMapping } = useResultsReport() ?? {
-    rows: [],
-    categoryMapping: defaultCategoryMapping,
-  };
+  const context = useResultsReport();
+  const rows: ResultsReportRow[] = context?.rows ?? [];
+  const categoryMapping = context?.categoryMapping ?? defaultCategoryMapping;
   const categories = Object.keys(categoryMapping) as (keyof typeof defaultCategoryMapping)[];
 
   const documentStyle =
@@ -31,7 +28,7 @@ export default function ResultsChart() {
       if (!catInfo) return null;
       return {
         label: catInfo.name,
-        data: rows.map((row) => row[cat as keyof typeof row] as number),
+        data: rows.map((row) => row[cat]),
         fill: false,
         borderColor: documentStyle.getPropertyValue(catInfo.color || '--gray-800'),
         backgroundColor: documentStyle.getPropertyValue(catInfo.color || '--gray-800'),
@@ -55,9 +52,9 @@ export default function ResultsChart() {
       },
       tooltip: {
         callbacks: {
-          label(context: TooltipItem<'line'>) {
-            const category = context.dataset.label;
-            const value = context.parsed.y;
+          label(ttContext: TooltipItem<'line'>) {
+            const category = ttContext.dataset.label;
+            const value = ttContext.parsed.y;
             return `${category}: ${currencyFormatter.format(value)}`;
           },
         },

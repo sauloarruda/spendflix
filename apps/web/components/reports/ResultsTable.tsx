@@ -1,25 +1,22 @@
 import { classNames } from 'primereact/utils';
 
-import { useResultsReport } from '@/contexts/ResultsReportContext';
+import {
+  useResultsReport,
+  defaultCategoryMapping,
+  type ResultsReportRow,
+} from '@/contexts/ResultsReportContext';
 import { currencyFormatter, transactionAmountClass } from 'utils/formatter';
 
 export default function ResultsTable() {
-  const defaultCategoryMapping = {
-    revenue: { name: 'Receitas', color: '--green-800' },
-    expenses: { name: 'Despesas', color: '--red-800' },
-    investment: { name: 'Investimento', color: '--gray-800' },
-    result: { name: 'Resultado', color: '--orange-400' },
-  };
-  const { rows, categoryMapping } = useResultsReport() ?? {
-    rows: [],
-    categoryMapping: defaultCategoryMapping,
-  };
+  const context = useResultsReport();
+  const rows: ResultsReportRow[] = context?.rows ?? [];
+  const categoryMapping = context?.categoryMapping ?? defaultCategoryMapping;
   const categories = Object.keys(categoryMapping) as (keyof typeof defaultCategoryMapping)[];
 
   if (!rows.length) return null;
 
   // Extract months and categories
-  const months = rows.map((row) => row.month);
+  const months: string[] = rows.map((row) => row.month);
 
   return (
     <div className="w-full overflow-x-auto my-8">
@@ -39,7 +36,7 @@ export default function ResultsTable() {
             const cat = categoryMapping[key];
             if (!cat) return null;
             return (
-              <tr key={key}>
+              <tr key={String(key)}>
                 <th className="text-left" style={{ color: `var(${cat.color || '--gray-800'})` }}>
                   {cat.name}
                 </th>
@@ -47,11 +44,11 @@ export default function ResultsTable() {
                   <td
                     className={classNames([
                       'px-1 py-2 text-nowrap text-center',
-                      transactionAmountClass(row[key as keyof typeof row] as number),
+                      transactionAmountClass(row[key]),
                     ])}
                     key={row.month}
                   >
-                    {currencyFormatter.format(row[key as keyof typeof row] as number)}
+                    {currencyFormatter.format(row[key])}
                   </td>
                 ))}
               </tr>
