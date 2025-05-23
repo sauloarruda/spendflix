@@ -27,17 +27,19 @@ async function main() {
   // Create categories
   const categories = [
     { name: 'Alimentação', color: 'indigo-500' },
-    { name: 'Compras', color: 'red-600' },
+    { name: 'Compras', color: 'red-500' },
     { name: 'Filhos', color: 'yellow-600' },
     { name: 'Investimento', color: 'gray-800' },
     { name: 'Lazer', color: 'cyan-800' },
     { name: 'Moradia', color: 'indigo-800' },
     { name: 'Outros', color: 'gray-600' },
     { name: 'Receitas', color: 'green-900' },
-    { name: 'Saúde', color: 'teal-900' },
-    { name: 'Serviços', color: 'orange-500' },
+    { name: 'Saúde', color: 'teal-700' },
+    { name: 'Serviços', color: 'orange-400' },
     { name: 'Transporte', color: 'purple-600' },
-    { name: 'Viagem', color: 'teal-600' },
+    { name: 'Viagem', color: 'teal-500' },
+    { name: 'Cuidado Pessoal', color: 'pink-400' },
+    { name: 'Educação', color: 'purple-300' },
   ];
 
   // Parse the TSV file if it exists

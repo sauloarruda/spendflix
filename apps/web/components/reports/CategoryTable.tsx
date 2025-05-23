@@ -1,5 +1,6 @@
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Button } from 'primereact/button';
+import { Tag } from 'primereact/tag';
 import { classNames } from 'primereact/utils';
 import { useState } from 'react';
 
@@ -88,7 +89,10 @@ export default function CategoryTable({ transactions }: CategoryTableProps) {
               key={month}
               header={
                 <div className="flex text-xl font-semibold w-full">
-                  <div className="flex-grow-1">{month}</div>
+                  <div className="flex-grow-1 flex items-center">
+                    <strong className="mr-2">{month}</strong>
+                    <Tag value={monthTransactions.length} severity="info"></Tag>
+                  </div>
                   <strong
                     className={classNames(['font-semibold', transactionAmountClass(monthTotal)])}
                   >
