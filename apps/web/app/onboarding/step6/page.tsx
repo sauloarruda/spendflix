@@ -29,7 +29,8 @@ export default function OnboardingStep6() {
     <ResumeOnboarding message="Preparando para continuar..." onResume={handleResumeOnboarding}>
       <h2 className="text-xl font-semibold mb-6 text-center">
         Parabéns!
-        <br /> Agora suas finanças estão organizadas!
+        <br /> Agora suas finanças estão{' '}
+        <strong className="font-extrabold text-green-700">organizadas</strong>!
       </h2>
       <p className="text-gray-600 text-center mb-8 max-w-md">
         Avalie os totais para cada mês e categoria, confira se os lançamentos foram corretamente
