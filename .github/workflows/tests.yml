@@ -45,14 +45,21 @@ jobs:
           pnpm install
           pnpm prisma:generate
 
+      - name: Create test database
+        run: |
+          PGPASSWORD=postgres psql -h localhost -U postgres -c 'CREATE DATABASE spendflix_test;'
+        env:
+          PGPASSWORD: postgres
+
       - name: Run Tests
         run: |
           pnpm prisma:migrate
           pnpm test
         env:
-          DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/postgres?schema=public'
+          DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/spendflix_test'
           LOG_LEVEL: fatal
-          ENCRYPTION_SECRET: ${{ secrets.ENCRYPTION_SECRET }}
+          ENCRYPTION_SECRET: test-encryption-secret
+          NODE_ENV: test
 
       - name: Run Danger
         if: github.event_name != 'push'
