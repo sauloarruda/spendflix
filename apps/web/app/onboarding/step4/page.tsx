@@ -8,9 +8,9 @@ import { useState } from 'react';
 
 import { createAccountAction } from '@/actions/accounts';
 import { updateOnboardingAction } from '@/actions/onboarding';
-import CountTransactionsPerMonth from '@/components/CountTransactionsPerMonth';
-import ResumeOnboarding from '@/components/ResumeOnboarding';
-import SourceFile from '@/components/SourceFile';
+import SourceFile from '@/components/inputs/SourceFile';
+import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
+import CountTransactionsPerMonth from '@/components/reports/CountTransactionsPerMonth';
 import { SourceType } from '@/prisma';
 
 export default function OnboardingStep4() {

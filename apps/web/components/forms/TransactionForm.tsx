@@ -13,7 +13,7 @@ import {
 import { Category, Transaction } from '@/prisma';
 import { currencyFormatter, dateFormatter, transactionAmountClass } from 'utils/formatter';
 
-import CategoryDropdown from '../CategoryDropDown';
+import CategoryDropdown from '../inputs/CategoryDropDown';
 
 interface TransactionFormProps {
   transactionDto: TransactionDto | undefined;

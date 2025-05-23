@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 
 import { signupAction } from '@/actions/auth';
 import { updateOnboardingAction } from '@/actions/onboarding';
-import Signup from '@/components/Signup';
+import Signup from '@/components/onboarding/Signup';
 
 jest.mock('@/actions/auth', () => ({
   signupAction: jest.fn(),

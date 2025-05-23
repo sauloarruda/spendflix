@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 
 import { signupAction } from '@/actions/auth';
 import { updateOnboardingAction } from '@/actions/onboarding';
-import ApiError from '@/components/ApiError';
-import EmailField from '@/components/EmailField';
-import RequiredField from '@/components/RequiredField';
+import EmailField from '@/components/inputs/EmailField';
+import RequiredField from '@/components/inputs/RequiredField';
+import ApiError from '@/components/utils/ApiError';
 
 const SignupErrorMessages = {
   NotAuthorizedException: 'Já existe um usuário com o email informado.',

@@ -3,7 +3,7 @@
 import { OnboardingData } from '@/modules/users';
 import { useRouter } from 'next/navigation';
 
-import ResumeOnboarding from '@/components/ResumeOnboarding';
+import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
 
 export default function Home() {
   const router = useRouter();

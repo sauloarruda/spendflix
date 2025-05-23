@@ -8,7 +8,7 @@ import { MultiSelect } from 'primereact/multiselect';
 import { useState } from 'react';
 
 import { updateOnboardingAction } from '@/actions/onboarding';
-import ResumeOnboarding from '@/components/ResumeOnboarding';
+import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
 
 const allBanks: { label: string; value: string }[] = [
   { label: 'Banco ABC Brasil (246)', value: '246' },

@@ -4,7 +4,7 @@ import { OnboardingData } from '@/modules/users';
 import { useRouter } from 'next/navigation';
 
 import { onboardingLoginAction } from '@/actions/auth';
-import ResumeOnboarding from '@/components/ResumeOnboarding';
+import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
 
 export default function Error401() {
   const router = useRouter();

@@ -3,9 +3,8 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { getOnboardingAction } from '@/actions/onboarding';
+import LoadingForm from '@/components/utils/LoadingForm';
 import { hasSessionCookie } from 'utils/auth';
-
-import LoadingForm from './LoadingForm';
 
 interface ResumeOnboardingProps {
   message: string;

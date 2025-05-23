@@ -8,7 +8,7 @@ import { InputText } from 'primereact/inputtext';
 import { useState, useRef } from 'react';
 
 import { updateOnboardingAction } from '@/actions/onboarding';
-import ResumeOnboarding from '@/components/ResumeOnboarding';
+import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
 
 type Step2FormData = {
   goal: 'dream' | 'debt' | '';

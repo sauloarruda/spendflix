@@ -5,10 +5,9 @@ import { Button } from 'primereact/button';
 import React, { useState } from 'react';
 
 import { loginAction } from '@/actions/auth';
-
-import ApiError from './ApiError';
-import EmailField from './EmailField';
-import RequiredField from './RequiredField';
+import EmailField from '@/components/inputs/EmailField';
+import RequiredField from '@/components/inputs/RequiredField';
+import ApiError from '@/components/utils/ApiError';
 
 export default function Login({ onSuccess }: { onSuccess: () => void }) {
   const [email, setEmail] = useState<string>('');

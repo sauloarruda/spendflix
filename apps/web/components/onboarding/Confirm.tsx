@@ -3,9 +3,8 @@ import React, { useState } from 'react';
 
 import { confirmAction, signupAction } from '@/actions/auth';
 import { updateOnboardingAction } from '@/actions/onboarding';
-import ApiError from '@/components/ApiError';
-
-import RequiredField from './RequiredField';
+import RequiredField from '@/components/inputs/RequiredField';
+import ApiError from '@/components/utils/ApiError';
 
 interface ConfirmProps {
   name: string;

@@ -5,10 +5,9 @@ import { Tag } from 'primereact/tag';
 import { useState } from 'react';
 
 import { updateCategoryAction } from '@/actions/transactions';
+import CategoryDropdown from '@/components/inputs/CategoryDropDown';
 import { Category } from '@/prisma';
 import { transactionAmountClass } from 'utils/formatter';
-
-import CategoryDropdown from './CategoryDropDown';
 
 interface UncategorizedTransactionRowProps {
   transactions: UncategorizedTransaction[];

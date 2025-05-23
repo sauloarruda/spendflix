@@ -4,9 +4,8 @@ import { Button } from 'primereact/button';
 import React, { useState } from 'react';
 
 import { resetPasswordAction } from '@/actions/auth';
-
-import ApiError from './ApiError';
-import RequiredField from './RequiredField';
+import RequiredField from '@/components/inputs/RequiredField';
+import ApiError from '@/components/utils/ApiError';
 
 interface ResetPasswordProps {
   email: string;

@@ -4,9 +4,8 @@ import { Button } from 'primereact/button';
 import React, { useState } from 'react';
 
 import { forgotPasswordAction } from '@/actions/auth';
-
-import ApiError from './ApiError';
-import EmailField from './EmailField';
+import EmailField from '@/components/inputs/EmailField';
+import ApiError from '@/components/utils/ApiError';
 
 interface ForgotPasswordProps {
   onSuccess: (email: string) => void;

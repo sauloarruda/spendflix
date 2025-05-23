@@ -8,8 +8,8 @@ import { useState } from 'react';
 
 import { updateOnboardingAction } from '@/actions/onboarding';
 import { getUncategorizedTransactionsAction } from '@/actions/transactions';
-import ResumeOnboarding from '@/components/ResumeOnboarding';
-import UncategorizedTransactions from '@/components/UncategorizedTransactions';
+import UncategorizedTransactions from '@/components/forms/UncategorizedTransactions';
+import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
 
 export default function OnboardingStep5() {
   const router = useRouter();

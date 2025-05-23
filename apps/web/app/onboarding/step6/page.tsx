@@ -7,7 +7,7 @@ import { TabPanel, TabView } from 'primereact/tabview';
 import { useState } from 'react';
 
 import { updateOnboardingAction } from '@/actions/onboarding';
-import ResumeOnboarding from '@/components/ResumeOnboarding';
+import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
 import ExpensesReport from '@/components/reports/ExpensesReport';
 import RevenueReport from '@/components/reports/RevenueReport';
 import { TransactionsProvider } from '@/contexts/TransactionsContext';

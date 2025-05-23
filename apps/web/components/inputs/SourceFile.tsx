@@ -3,7 +3,7 @@ import { FileUpload, FileUploadHandlerEvent } from 'primereact/fileupload';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { useState } from 'react';
 
-import { putSourceFileAction } from '../actions/sources';
+import { putSourceFileAction } from '@/actions/sources';
 
 interface SourceFileProps {
   onSuccess: (accountId: string) => void;

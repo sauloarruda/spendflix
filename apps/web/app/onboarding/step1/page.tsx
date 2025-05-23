@@ -5,11 +5,11 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 import { getOnboardingAction, startOnboardingAction } from '@/actions/onboarding';
-import ApiError from '@/components/ApiError';
-import Confirm from '@/components/Confirm';
-import LoadingForm from '@/components/LoadingForm';
-import Login from '@/components/Login';
-import Signup from '@/components/Signup';
+import Login from '@/components/auth/Login';
+import Confirm from '@/components/onboarding/Confirm';
+import Signup from '@/components/onboarding/Signup';
+import ApiError from '@/components/utils/ApiError';
+import LoadingForm from '@/components/utils/LoadingForm';
 import { hasSessionCookie } from 'utils/auth';
 
 export default function Page() {
