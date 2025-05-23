@@ -1,14 +1,3 @@
-import { resolve } from 'path';
-
-import { config as loadEnv } from 'dotenv';
-
-// Only load .env file in development or test environments
-if (process.env.NODE_ENV !== 'production' && process.env.__NEXT_PROCESSED_ENV !== 'true') {
-  const envFile = process.env.NODE_ENV === 'test' ? '.env.test' : '.env';
-  const envPath = resolve(__dirname, '../../config', envFile);
-  loadEnv({ path: envPath });
-}
-
 const config = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   IS_OFFLINE: process.env.IS_OFFLINE || 'false',

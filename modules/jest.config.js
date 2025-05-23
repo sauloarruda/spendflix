@@ -17,5 +17,5 @@ module.exports = {
       },
     ],
   },
-  setupFiles: ['dotenv/config'],
+  setupFiles: ['<rootDir>/jest.setup.js'],
 };

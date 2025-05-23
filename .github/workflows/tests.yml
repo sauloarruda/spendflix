@@ -16,6 +16,12 @@ jobs:
   build-test-danger-deploy:
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/spendflix_test'
+      LOG_LEVEL: fatal
+      ENCRYPTION_SECRET: test-encryption-secret
+      NODE_ENV: test
+
     services:
       postgres:
         image: postgres
@@ -55,11 +61,6 @@ jobs:
         run: |
           pnpm prisma:migrate
           pnpm test
-        env:
-          DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/spendflix_test'
-          LOG_LEVEL: fatal
-          ENCRYPTION_SECRET: test-encryption-secret
-          NODE_ENV: test
 
       - name: Run Danger
         if: github.event_name != 'push'
