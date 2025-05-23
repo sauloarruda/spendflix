@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 
 import { confirmAction, signupAction } from '@/actions/auth';
 import { updateOnboardingAction } from '@/actions/onboarding';
+
 import Confirm from '@/components/Confirm';
 
 jest.mock('@/actions/auth', () => ({
