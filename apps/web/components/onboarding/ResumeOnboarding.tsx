@@ -1,15 +1,16 @@
 import { OnboardingData } from '@/modules/users';
+import { UnauthorizedException } from '@aws-sdk/client-cognito-identity-provider';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { getOnboardingAction } from '@/actions/onboarding';
 import LoadingForm from '@/components/utils/LoadingForm';
-import { hasSessionCookie } from '@/utils/auth';
+import { hasSessionCookie } from '@/utils/cookie';
 
 interface ResumeOnboardingProps {
   message: string;
   children?: React.ReactNode;
-  onResume?: (onboarding: OnboardingData, userId: number) => void;
+  onResume?: (onboarding: OnboardingData, userId: number, onboardingUid: string) => void;
   onError?: (error: Error, onboardingUid: string | null) => void;
 }
 
@@ -24,7 +25,8 @@ export default function ResumeOnboarding({
 
   async function handleError(error: Error, uid: string | null) {
     if (onError) onError(error, uid);
-    else router.push('/401');
+    if (error instanceof UnauthorizedException) router.push('/401');
+    else router.push('/onboarding/step1');
   }
 
   async function handleLoading() {
@@ -43,13 +45,11 @@ export default function ResumeOnboarding({
       return;
     }
 
-    try {
-      const onboarding = await getOnboardingAction(uid);
-      if (!onboarding) {
-        handleError(new Error('Onboarding not found'), uid);
-      } else if (onResume) onResume(onboarding.data as OnboardingData, onboarding.userId!);
-    } catch (error) {
-      handleError(error as Error, uid);
+    const onboarding = await getOnboardingAction(uid);
+    if (!onboarding) {
+      handleError(new Error('Onboarding not found'), uid);
+    } else if (onResume) {
+      onResume(onboarding.data as OnboardingData, onboarding.userId!, onboarding.id);
     }
     setLoading(false);
   }

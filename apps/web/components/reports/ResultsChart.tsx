@@ -6,7 +6,6 @@ import {
   defaultCategoryMapping,
   ResultsReportRow,
 } from '@/contexts/ResultsReportContext';
-
 import { currencyFormatter } from '@/utils/formatter';
 
 export default function ResultsChart() {
@@ -16,9 +15,9 @@ export default function ResultsChart() {
   const categories = Object.keys(categoryMapping) as (keyof typeof defaultCategoryMapping)[];
 
   const documentStyle =
-    typeof window !== 'undefined'
-      ? getComputedStyle(document.documentElement)
-      : { getPropertyValue: () => '' };
+    typeof window !== 'undefined' ?
+      getComputedStyle(document.documentElement) :
+      { getPropertyValue: () => '' };
 
   const labels = rows.map((row) => row.month);
 

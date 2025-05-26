@@ -8,8 +8,15 @@ import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
 
 export default function Error401() {
   const router = useRouter();
-  function handleResumeOnboarding(onboarding: OnboardingData) {
-    console.log(onboarding);
+  async function handleResumeOnboarding(
+    onboarding: OnboardingData,
+    userId: number,
+    onboardingUid: string,
+  ) {
+    if (onboarding) {
+      await onboardingLoginAction(onboardingUid);
+      router.push(`/onboarding/step${onboarding.step || 2}`);
+    }
   }
 
   async function handleError(error: Error, onboardingUid: string | null) {

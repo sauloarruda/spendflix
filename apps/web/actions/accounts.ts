@@ -2,7 +2,7 @@
 
 import { accountService, transactionsService } from '@/modules/transactions';
 
-import { SourceType } from '@/prisma';
+import { Account, SourceType } from '@/prisma';
 
 async function createAccountAction(accountInput: {
   userId: number;
@@ -10,8 +10,8 @@ async function createAccountAction(accountInput: {
   name: string;
   color: string;
   sourceType: SourceType;
-}): Promise<string> {
-  return (await accountService.firstOrCreate(accountInput)).id;
+}): Promise<Account> {
+  return accountService.firstOrCreate(accountInput);
 }
 
 async function countTransactionsPerMonthAction(accountId: string) {

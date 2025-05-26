@@ -10,7 +10,7 @@ import Confirm from '@/components/onboarding/Confirm';
 import Signup from '@/components/onboarding/Signup';
 import ApiError from '@/components/utils/ApiError';
 import LoadingForm from '@/components/utils/LoadingForm';
-import { hasSessionCookie } from '@/utils/auth';
+import { hasSessionCookie } from '@/utils/cookie';
 
 export default function Page() {
   const router = useRouter();
