@@ -7,9 +7,11 @@ import { Button } from 'primereact/button';
 import { useState } from 'react';
 
 import { updateOnboardingAction } from '@/actions/onboarding';
+import { autorizeAction } from '@/actions/serverActions';
 import { getUncategorizedTransactionsAction } from '@/actions/transactions';
 import UncategorizedTransactions from '@/components/forms/UncategorizedTransactions';
 import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
+import { getSessionCookie } from '@/utils/cookie';
 
 export default function OnboardingStep5() {
   const router = useRouter();
@@ -20,7 +22,10 @@ export default function OnboardingStep5() {
   const [edited, setEdited] = useState<string[]>([]);
 
   async function handleLoadTransactions(_onboarding: OnboardingData, userId: number) {
-    setResult(await getUncategorizedTransactionsAction(userId));
+    const fetchResult = await autorizeAction(getSessionCookie(), () =>
+      getUncategorizedTransactionsAction(userId),
+    );
+    setResult(fetchResult);
   }
 
   function shouldContinue() {
