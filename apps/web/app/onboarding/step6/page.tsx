@@ -32,7 +32,7 @@ export default function OnboardingStep6() {
         <br /> Agora suas finanças estão{' '}
         <strong className="font-extrabold text-green-700">organizadas</strong>!
       </h2>
-      <p className="text-gray-600 text-center mb-8 max-w-md">
+      <p className="text-gray-600 text-center mb-8 max-w-md mx-auto">
         Avalie os totais para cada mês e categoria, confira se os lançamentos foram corretamente
         categorizados e altere se precisar. Use os filtros pra ver com mais detalhes alguma
         categoria ou mês.

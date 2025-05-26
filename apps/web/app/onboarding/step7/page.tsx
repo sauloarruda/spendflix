@@ -29,7 +29,7 @@ export default function OnboardingStep7() {
         <br /> Agora chegou a hora de{' '}
         <strong className="font-extrabold text-green-700">realizar</strong>!
       </h2>
-      <p className="text-gray-600 text-center mb-8 max-w-md">
+      <p className="text-gray-600 text-center mb-8 max-w-md mx-auto">
         Vamos analisar sua capacidade financeira em <strong>resultados</strong> e propor uma
         primeira versão do seu <strong>orçamento</strong>.
       </p>
