@@ -65,9 +65,9 @@ export default function UncategorizedTransactions({
 
   function pendingTransactionsText(): string {
     const pending = pendingTransactions();
-    return pending === 0 ?
-      'Todas as transação foram categorizadas' :
-      `${pending} Transações Pendentes`;
+    return pending === 0
+      ? 'Todas as transação foram categorizadas'
+      : `${pending} Transações Pendentes`;
   }
 
   function listTemplate(items: UncategorizedTransaction[]) {
@@ -93,12 +93,14 @@ export default function UncategorizedTransactions({
 
   return (
     <>
-      <Message
-        className="sticky top-0 z-50"
-        text={pendingTransactionsText()}
-        severity={pendingTransactions() === 0 ? 'success' : 'info'}
-      ></Message>
-      {listTemplate(transactions)}
+      <div className="sticky top-2 z-50 flex justify-center">
+        <Message
+          className=""
+          text={pendingTransactionsText()}
+          severity={pendingTransactions() === 0 ? 'success' : 'info'}
+        ></Message>
+      </div>
+      <div>{listTemplate(transactions)}</div>
     </>
   );
 }

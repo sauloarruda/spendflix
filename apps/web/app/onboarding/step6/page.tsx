@@ -2,11 +2,11 @@
 
 import { OnboardingData } from '@/modules/users';
 import { useRouter } from 'next/navigation';
-import { Button } from 'primereact/button';
 import { TabPanel, TabView } from 'primereact/tabview';
 import { useState } from 'react';
 
 import { updateOnboardingAction } from '@/actions/onboarding';
+import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
 import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
 import ExpensesReport from '@/components/reports/ExpensesReport';
 import RevenueReport from '@/components/reports/RevenueReport';
@@ -53,9 +53,7 @@ export default function OnboardingStep6() {
           </TabView>
         </TransactionsProvider>
       )}
-      <div className="w-full max-w-md mt-4">
-        <Button label="Continuar" className="w-full" onClick={handleContinue} />
-      </div>
+      <OnboardingNavigation onClick={handleContinue} />
     </ResumeOnboarding>
   );
 }

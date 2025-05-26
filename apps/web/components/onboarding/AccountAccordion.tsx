@@ -12,7 +12,7 @@ type AccountAccordionProps = {
   onUpdate: (count: number) => void;
 };
 export default function AccountAccordion({ account, onUpdate }: AccountAccordionProps) {
-  const [accountTs, setAccountTs] = useState(0);
+  const [accountTs, setAccountTs] = useState(1);
 
   if (!account) return <Skeleton width="10rem"></Skeleton>;
 

@@ -2,12 +2,12 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Button } from 'primereact/button';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { MultiSelect } from 'primereact/multiselect';
 import { useState } from 'react';
 
 import { updateOnboardingAction } from '@/actions/onboarding';
+import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
 import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
 
 const allBanks: { label: string; value: string }[] = [
@@ -185,7 +185,7 @@ export default function OnboardingStep3() {
         Quais bancos você usa no dia a dia?
       </h2>
 
-      <div className="grid grid-cols-3 gap-4 w-full max-w-md mb-8">
+      <div className="grid grid-cols-3 gap-4 w-full mb-8">
         {mainBanks.map((bank) => (
           <div
             key={bank.name}
@@ -225,14 +225,10 @@ export default function OnboardingStep3() {
         </div>
       )}
 
-      <div className="w-full max-w-md">
-        <Button
-          label="Continuar"
-          className="w-full"
-          disabled={loading || (selectedMainBanks.length === 0 && selectedOtherBanks.length === 0)}
-          onClick={handleContinue}
-        />
-      </div>
+      <OnboardingNavigation
+        disabled={loading || (selectedMainBanks.length === 0 && selectedOtherBanks.length === 0)}
+        onClick={handleContinue}
+      />
     </ResumeOnboarding>
   );
 }

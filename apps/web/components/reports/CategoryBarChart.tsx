@@ -52,10 +52,11 @@ export default function CategoryBarChar({ transactions }: CategoryBarCharProps) 
     const defaultRatio = 3.5;
     const options = {
       responsive: true,
+      maintainAspectRatio: false,
       aspectRatio:
-        Object.keys(categoriesColors).length === 1 ?
-          2 :
-          defaultRatio / Object.keys(categoriesColors).length,
+        Object.keys(categoriesColors).length === 1
+          ? 2
+          : defaultRatio / Object.keys(categoriesColors).length,
       indexAxis: 'y',
       plugins: {
         tooltip: {

@@ -80,7 +80,7 @@ async function getUncategorizedTransactions(userId: number): Promise<{
   categorizedPercent: number;
   transactions: UncategorizedTransaction[];
 }> {
-  logger.debug({ userId }, 'Get transactions for user');
+  logger.debug({ userId }, 'Get uncategorized transactions for user');
   const transactions = await findAllUncategorized(userId);
   return {
     categorizedPercent: await calculateUncategorizedPercent(transactions, userId),

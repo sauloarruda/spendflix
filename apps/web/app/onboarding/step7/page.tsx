@@ -4,6 +4,7 @@ import { OnboardingData } from '@/modules/users';
 import { TabPanel, TabView } from 'primereact/tabview';
 import { useState } from 'react';
 
+import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
 import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
 import ResultsReport from '@/components/reports/ResultsReport';
 import { ResultsReportProvider } from '@/contexts/ResultsReportContext';
@@ -16,6 +17,11 @@ export default function OnboardingStep7() {
   function handleResumeOnboarding(_onboarding: OnboardingData, onboardingUserId: number) {
     setUserId(onboardingUserId);
   }
+
+  function handleContinue() {
+    alert('TODO');
+  }
+
   return (
     <ResumeOnboarding message="Carregando nosso último passso!" onResume={handleResumeOnboarding}>
       <h2 className="text-xl font-semibold mb-6 text-center">
@@ -43,6 +49,8 @@ export default function OnboardingStep7() {
           </TabView>
         </TransactionsProvider>
       )}
+
+      <OnboardingNavigation onClick={handleContinue} />
     </ResumeOnboarding>
   );
 }

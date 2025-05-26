@@ -2,12 +2,12 @@
 
 import { OnboardingData } from '@/modules/users';
 import { useRouter } from 'next/navigation';
-import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { useState, useRef } from 'react';
 
 import { updateOnboardingAction } from '@/actions/onboarding';
+import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
 import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
 
 type Step2FormData = {
@@ -139,21 +139,17 @@ export default function OnboardingStep2() {
         </div>
       )}
 
-      <div className="w-full max-w-md mt-4">
-        <Button
-          label="Continuar"
-          className="w-full"
-          disabled={
-            isLoading ||
-            !formData.goal ||
-            !formData.goalDescription.trim() ||
-            formData.goalValue === undefined ||
-            formData.goalValue === null ||
-            formData.goalValue <= 0
-          }
-          onClick={handleContinue}
-        />
-      </div>
+      <OnboardingNavigation
+        disabled={
+          isLoading ||
+          !formData.goal ||
+          !formData.goalDescription.trim() ||
+          formData.goalValue === undefined ||
+          formData.goalValue === null ||
+          formData.goalValue <= 0
+        }
+        onClick={handleContinue}
+      />
     </ResumeOnboarding>
   );
 }

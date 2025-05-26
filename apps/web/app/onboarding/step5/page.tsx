@@ -3,13 +3,13 @@
 import { UncategorizedTransaction } from '@/modules/transactions';
 import { OnboardingData } from '@/modules/users';
 import { useRouter } from 'next/navigation';
-import { Button } from 'primereact/button';
 import { useState } from 'react';
 
 import { updateOnboardingAction } from '@/actions/onboarding';
 import { autorizeAction } from '@/actions/serverActions';
 import { getUncategorizedTransactionsAction } from '@/actions/transactions';
 import UncategorizedTransactions from '@/components/forms/UncategorizedTransactions';
+import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
 import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
 import { getSessionCookie } from '@/utils/cookie';
 
@@ -58,7 +58,7 @@ export default function OnboardingStep5() {
         organizar seus lançamentos
       </h2>
 
-      <p className="text-gray-600 text-center mb-8 max-w-md">
+      <p className="text-gray-600 text-center mb-8 max-w-md mx-auto">
         Nós conseguimos categorizar
         <strong className="mx-1">
           {result?.categorizedPercent.toLocaleString('pt-BR', { style: 'percent' })}
@@ -72,14 +72,7 @@ export default function OnboardingStep5() {
         transactions={result.transactions}
       />
 
-      <div className="w-full max-w-md mt-4">
-        <Button
-          label="Continuar"
-          className="w-full"
-          disabled={!shouldContinue}
-          onClick={handleContinue}
-        />
-      </div>
+      <OnboardingNavigation disabled={!shouldContinue} onClick={handleContinue} />
     </ResumeOnboarding>
   );
 }

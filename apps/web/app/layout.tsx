@@ -17,7 +17,7 @@ export default function RootLayout({
         </head>
         <body suppressHydrationWarning>
           <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-50">
-            <div className="w-full max-w-md">
+            <div className="w-full ">
               <div className="flex justify-center mb-2">
                 <Image src="/spendflix-logo.svg" alt="Spendflix" width={200} height={50} priority />
               </div>

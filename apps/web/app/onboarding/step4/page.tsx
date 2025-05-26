@@ -2,13 +2,13 @@
 
 import { OnboardingData } from '@/modules/users';
 import { useRouter } from 'next/navigation';
-import { Button } from 'primereact/button';
 import { useState } from 'react';
 
 import { createAccountAction } from '@/actions/accounts';
 import { updateOnboardingAction } from '@/actions/onboarding';
 import { autorizeAction } from '@/actions/serverActions';
 import AccountAccordion from '@/components/onboarding/AccountAccordion';
+import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
 import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
 import { Account, SourceType } from '@/prisma';
 import { getSessionCookie } from '@/utils/cookie';
@@ -62,7 +62,7 @@ export default function OnboardingStep4() {
     >
       <h2 className="text-xl font-semibold mb-6 text-center">Prepare seus extratos</h2>
 
-      <p className="text-gray-600 text-center mb-8 max-w-md">
+      <p className="text-gray-600 text-center mb-8 max-w-md mx-auto">
         Para descobrir sobre suas finanças, precisamos dos extratos da sua Conta Corrente e do seu
         Cartão de Crédito Nubank.
         <br />
@@ -70,20 +70,13 @@ export default function OnboardingStep4() {
       </p>
 
       {nubankAccountId && nubankCreditCardId && (
-        <div className="w-full max-w-md mb-8">
+        <div className="w-full mb-8">
           <AccountAccordion account={nubankAccountId} onUpdate={sumMonthsCount} />
           <AccountAccordion account={nubankCreditCardId} onUpdate={sumMonthsCount} />
         </div>
       )}
 
-      <div className="w-full max-w-md">
-        <Button
-          label="Continuar"
-          className="w-full"
-          disabled={monthsCount < 3}
-          onClick={handleContinue}
-        />
-      </div>
+      <OnboardingNavigation disabled={monthsCount < 3} onClick={handleContinue} />
     </ResumeOnboarding>
   );
 }
