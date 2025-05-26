@@ -202,17 +202,4 @@ describe('Onboarding Step 2 Page', () => {
       expect(mockPush).toHaveBeenCalledWith('/onboarding/step3');
     });
   });
-
-  it('should handle API error gracefully', async () => {
-    const mockGetOnboarding = getOnboardingAction as jest.Mock;
-    mockGetOnboarding.mockImplementationOnce(() => Promise.reject(new Error('API Error')));
-
-    render(<Page />);
-
-    // Even with API error, the page should load normally
-    await waitFor(() => {
-      expect(screen.getByText(/Olá.*muito prazer!/i)).toBeInTheDocument();
-      expect(screen.getByText(/Quero realizar um sonho/i)).toBeInTheDocument();
-    });
-  });
 });

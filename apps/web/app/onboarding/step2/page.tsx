@@ -63,11 +63,7 @@ export default function OnboardingStep2() {
   };
 
   return (
-    <ResumeOnboarding
-      message="Preparando para continuar..."
-      onResume={handleResumeOnboarding}
-      onError={() => router.push('/onboarding/step1')}
-    >
+    <ResumeOnboarding message="Preparando para continuar..." onResume={handleResumeOnboarding}>
       <h2 className="text-xl font-semibold mb-6 text-center">
         Olá {name}, muito prazer! <br />
         Me conta, o que te trouxe até aqui?

@@ -12,7 +12,7 @@ jest.mock('next/navigation', () => ({
   }),
 }));
 
-jest.mock('@/utils/auth', () => ({
+jest.mock('@/utils/cookie', () => ({
   hasSessionCookie: jest.fn().mockReturnValue(true),
 }));
 
