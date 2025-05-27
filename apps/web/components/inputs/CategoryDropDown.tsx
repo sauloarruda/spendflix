@@ -31,12 +31,12 @@ export default function CategoryDropdown({ onChange, value, categoryId }: Catego
 
   function itemTemplate(option: Category) {
     return (
-      <div
+      <span
         className="px-2 py-1 rounded-lg"
         style={{ color: 'white', backgroundColor: `var(--${option.color})` }}
       >
         {option.name}
-      </div>
+      </span>
     );
   }
 
@@ -53,10 +53,12 @@ export default function CategoryDropdown({ onChange, value, categoryId }: Catego
       inputId="category"
       value={selectedCategory}
       options={categories}
+      optionLabel="name"
       itemTemplate={itemTemplate}
       valueTemplate={valueTemplate}
       onChange={handleChange}
       placeholder="Escolha uma categoria"
+      filter
     ></Dropdown>
   );
 }

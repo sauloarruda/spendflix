@@ -69,7 +69,7 @@ export default function OnboardingStep2() {
         Me conta, o que te trouxe até aqui?
       </h2>
 
-      <div className="grid grid-cols-2 gap-4 w-full max-w-md mb-12">
+      <div className="grid grid-cols-2 gap-4 w-full max-w-md mb-12 mx-auto">
         <div
           className={`border rounded-lg p-4 text-center cursor-pointer transition
           ${formData.goal === 'dream' ? 'bg-primary/20 border-primary' : 'border-gray-300 bg-white'}`}
@@ -96,7 +96,7 @@ export default function OnboardingStep2() {
       </div>
 
       {formData.goal && (
-        <div className="w-full max-w-md space-y-8 mb-8">
+        <div className="w-full max-w-md space-y-8 mb-8 mx-auto">
           <div className="flex flex-col">
             <span className="p-float-label">
               <InputText

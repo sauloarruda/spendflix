@@ -73,7 +73,7 @@ export default function Confirm({ name, email, onSuccess }: ConfirmProps) {
   }
 
   return (
-    <>
+    <div className=" max-w-md mx-auto">
       <h2 className="text-xl font-semibold mb-6 text-center">Confirme seu email</h2>
       <p className="text-gray-600 text-center mb-6">
         Olá {name}, enviamos um código de confirmação para <strong>{email}</strong>. Por favor,
@@ -105,6 +105,6 @@ export default function Confirm({ name, email, onSuccess }: ConfirmProps) {
           Reenviar código
         </button>
       </p>
-    </>
+    </div>
   );
 }

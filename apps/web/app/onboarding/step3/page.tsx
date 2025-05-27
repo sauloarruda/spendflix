@@ -185,7 +185,7 @@ export default function OnboardingStep3() {
         Quais bancos você usa no dia a dia?
       </h2>
 
-      <div className="grid grid-cols-3 gap-4 w-full mb-8">
+      <div className="grid grid-cols-3 gap-4 w-full max-w-md mx-auto mb-8">
         {mainBanks.map((bank) => (
           <div
             key={bank.name}

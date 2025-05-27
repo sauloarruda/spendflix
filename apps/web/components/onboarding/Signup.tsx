@@ -64,7 +64,7 @@ export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
   }
 
   return (
-    <>
+    <div className=" max-w-md mx-auto">
       <h2 className="text-xl font-semibold mb-6 text-center">Descubra, Organize, Realize</h2>
 
       <p className="text-gray-600 text-center mb-6">
@@ -105,6 +105,6 @@ export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
         </Link>
         .
       </p>
-    </>
+    </div>
   );
 }

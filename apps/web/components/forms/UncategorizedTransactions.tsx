@@ -73,26 +73,36 @@ export default function UncategorizedTransactions({
   function listTemplate(items: UncategorizedTransaction[]) {
     return items.map((transaction) => (
       <div className="my-4 p-4 p-card p-component" key={transaction.ids.join(',')}>
-        <div className="text-900 text-sm">{displayDescription(transaction)}</div>
-        <div className="">
-          <span className="font-semibold text-end text-nowrap">{displayValue(transaction)}</span>
-        </div>
-        <div className="flex-grow-1 mt-2">
-          <CategoryDropdown onChange={(category) => handleCategoryChange(transaction, category)} />
-          <Avatar
-            hidden={!edited[transaction.ids.join()]}
-            className="ml-2"
-            style={{ backgroundColor: 'var(--green-700)', color: '#ffffff' }}
-            icon="pi pi-check"
-            shape="circle"
-          />
+        <div className="grid lg:grid-cols-2 lg:grid-rows-1 md:grid-rows-2">
+          <div className="">
+            <div className="text-900 text-sm">{displayDescription(transaction)}</div>
+            <div className="">
+              <span className="font-semibold text-end text-nowrap">
+                {displayValue(transaction)}
+              </span>
+            </div>
+          </div>
+          <div className="">
+            <div className="flex-grow-1 mt-2">
+              <CategoryDropdown
+                onChange={(category) => handleCategoryChange(transaction, category)}
+              />
+              <Avatar
+                hidden={!edited[transaction.ids.join()]}
+                className="ml-2"
+                style={{ backgroundColor: 'var(--green-700)', color: '#ffffff' }}
+                icon="pi pi-check"
+                shape="circle"
+              />
+            </div>
+          </div>
         </div>
       </div>
     ));
   }
 
   return (
-    <>
+    <div className="mb-8 lg:w-5/6 md:w-full mx-auto">
       <div className="sticky top-2 z-50 flex justify-center">
         <Message
           className=""
@@ -101,6 +111,6 @@ export default function UncategorizedTransactions({
         ></Message>
       </div>
       <div>{listTemplate(transactions)}</div>
-    </>
+    </div>
   );
 }

@@ -70,7 +70,7 @@ export default function OnboardingStep4() {
       </p>
 
       {nubankAccountId && nubankCreditCardId && (
-        <div className="w-full mb-8">
+        <div className="mb-8 lg:w-5/6 md:w-full mx-auto">
           <AccountAccordion account={nubankAccountId} onUpdate={sumMonthsCount} />
           <AccountAccordion account={nubankCreditCardId} onUpdate={sumMonthsCount} />
         </div>

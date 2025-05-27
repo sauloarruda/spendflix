@@ -36,7 +36,7 @@ export default function OnboardingStep7() {
       {userId && (
         <TransactionsProvider userId={userId}>
           <TabView
-            className="border-1 border-gray-300"
+            className="border-1 border-gray-300 lg:w-5/6 md:w-full mx-auto"
             activeIndex={activeIndex}
             onTabChange={(e) => setActiveIndex(e.index)}
           >

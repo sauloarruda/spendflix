@@ -74,7 +74,11 @@ async function hasTransaction(checksum: string): Promise<boolean> {
   return !!(await getPrisma().transaction.findUnique({ where: { checksum } }));
 }
 
-const IGNORED_DESCRIPTIONS = [/Pagamento recebido/, /Pagamento de fatura/];
+const IGNORED_DESCRIPTIONS = [
+  /Pagamento recebido/,
+  /Pagamento de fatura/,
+  /Saldo restante da fatura anterior/,
+];
 const CSV_MIN_COLS = 3;
 
 // eslint-disable-next-line max-lines-per-function
