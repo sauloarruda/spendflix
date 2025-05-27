@@ -112,7 +112,7 @@ async function processRow(
 }
 
 async function importFromSource(source: Source) {
-  const timer = Timer('importFromSource', logger);
+  const timer = Timer('importFromSource');
   logger.info({ source }, 'Started importing transactions');
   const csvContents = await getFileFromSource(source);
   const rows = parseCsv(csvContents);
