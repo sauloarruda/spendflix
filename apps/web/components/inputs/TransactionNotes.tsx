@@ -7,7 +7,7 @@ import { TransactionDto } from '@/actions/transactions';
 
 type TransactionNotesProps = {
   transaction: TransactionDto;
-  onChange?: (value: string | null) => void;
+  onChange: (value: string | null) => void;
 };
 export default function TransactionNotes({ transaction, onChange }: TransactionNotesProps) {
   const [notes, setNotes] = useState(transaction.notes);
@@ -25,11 +25,9 @@ export default function TransactionNotes({ transaction, onChange }: TransactionN
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current);
     }
-    if (onChange) {
-      debounceTimer.current = setTimeout(() => {
-        onChange(value);
-      }, 1000);
-    }
+    debounceTimer.current = setTimeout(() => {
+      onChange(value);
+    }, 1000);
   }
 
   function handleBlur() {
@@ -37,9 +35,7 @@ export default function TransactionNotes({ transaction, onChange }: TransactionN
       clearTimeout(debounceTimer.current);
       debounceTimer.current = null;
     }
-    if (onChange) {
-      onChange(notes ?? '');
-    }
+    onChange(notes);
   }
 
   function handleClearNotes() {
