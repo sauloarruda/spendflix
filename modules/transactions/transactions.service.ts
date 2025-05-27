@@ -115,11 +115,11 @@ export type TransactionsFilter = {
 };
 
 // eslint-disable-next-line no-magic-numbers
-const THREE_MONTHS = 24 * 3600 * 90 * 1000; // 90 days
+const ONE_YEAR = 24 * 3600 * 365 * 1000; // 1 year
 
 async function getTransactionsByFilter(filter: TransactionsFilter) {
   const defaultFilter: Partial<TransactionsFilter> = {
-    dateStart: new Date(new Date().getTime() - THREE_MONTHS),
+    dateStart: new Date(new Date().getTime() - ONE_YEAR),
     dateEnd: new Date(),
   };
   const queryFilter = {
