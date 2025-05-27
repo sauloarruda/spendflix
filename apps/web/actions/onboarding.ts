@@ -26,9 +26,18 @@ async function getOnboardingAction(onboardingUid: string): Promise<Onboarding | 
   }
 }
 
+async function getOnboardingFromEmailAction(email: string): Promise<Onboarding | null> {
+  return onboardingService.findByEmail(email);
+}
+
 async function startOnboardingAction(): Promise<Onboarding> {
   logger.debug('Creating onboarding...');
   return onboardingService.create();
 }
 
-export { startOnboardingAction, updateOnboardingAction, getOnboardingAction };
+export {
+  startOnboardingAction,
+  updateOnboardingAction,
+  getOnboardingAction,
+  getOnboardingFromEmailAction,
+};

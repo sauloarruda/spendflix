@@ -8,7 +8,7 @@ import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
 export default function Home() {
   const router = useRouter();
   function handleFetchOnboarding(onboarding: OnboardingData) {
-    router.push(`/onboarding/step${onboarding.step}`);
+    router.push(`/onboarding/step${onboarding.step || 2}`);
   }
 
   function handleError() {

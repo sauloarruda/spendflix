@@ -32,8 +32,6 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
     } catch (error) {
       const errorName = (error as Error).name as keyof typeof LoginErrorMessages;
       setApiError(LoginErrorMessages[errorName] || 'Erro desconhecido');
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -51,9 +49,6 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
 
   return (
     <>
-      <h2 className="text-xl font-semibold mb-6 text-center">Entre na sua conta</h2>
-      <p className="text-gray-600 text-center mb-6">Informe seu email e senha para entrar.</p>
-
       <div className="flex flex-col gap-8 my-8">
         <EmailField label="Email" id="email" value={email} onChange={handleEmailChange} />
 

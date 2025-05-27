@@ -19,6 +19,13 @@ async function find(id: string): Promise<Onboarding> {
   });
 }
 
+async function findByEmail(email: string): Promise<Onboarding | null> {
+  return getPrisma().onboarding.findFirst({
+    include: { user: true },
+    where: { user: { email } },
+  });
+}
+
 async function create(): Promise<Onboarding> {
   return getPrisma().onboarding.create({
     data: { data: { step: 0 } as OnboardingData },
@@ -41,6 +48,11 @@ async function update(id: string, data: Partial<OnboardingData>, userId: number 
   });
 }
 
-const onboardingRepository = { find, create, update };
+const onboardingRepository = {
+  find,
+  create,
+  update,
+  findByEmail,
+};
 
 export default onboardingRepository;
