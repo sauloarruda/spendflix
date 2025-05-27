@@ -35,6 +35,16 @@ export default function CategoryReport({
         ) {
           shouldFilter = false;
         }
+        if (filter.text) {
+          const regex = new RegExp(filter.text, 'i');
+          if (
+            !regex.test(tx.description) &&
+            !regex.test(tx.categoryName) &&
+            !(tx.notes && regex.test(tx.notes))
+          ) {
+            shouldFilter = false;
+          }
+        }
         return shouldFilter;
       }),
     );
