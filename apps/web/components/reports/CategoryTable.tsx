@@ -1,20 +1,15 @@
 import { Accordion, AccordionTab } from 'primereact/accordion';
-import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
 import { classNames } from 'primereact/utils';
 import { useState } from 'react';
 
 import { TransactionDto } from '@/actions/transactions';
-import {
-  currencyFormatter,
-  dayFormatter,
-  monthFormatter,
-  transactionAmountClass,
-} from '@/utils/formatter';
+import { currencyFormatter, monthFormatter, transactionAmountClass } from '@/utils/formatter';
 
 import TransactionForm from '../forms/TransactionForm';
 
 import CategoryBarChar from './CategoryBarChart';
+import TransactionCard from './TransactionCard';
 
 interface CategoryTableProps {
   transactions: TransactionDto[];
@@ -35,40 +30,7 @@ export default function CategoryTable({ transactions }: CategoryTableProps) {
   }
 
   function renderTransaction(transaction: TransactionDto) {
-    return (
-      <div className="flex items-top mb-4 bg-white rounded-lg shadow p-4" key={transaction.id}>
-        <div className="w-16 h-24">
-          <div className="mb-4 border-1 border-gray-800 rounded flex items-center justify-center text-xl font-bold text-gray-800 shadow-sm bg-white mr-4">
-            {dayFormatter.format(transaction.date)}
-          </div>
-          <Button
-            icon="pi pi-pencil"
-            rounded
-            size="small"
-            onClick={() => triggerEditTransaction(transaction)}
-          ></Button>
-        </div>
-        <div className="flex-1">
-          <div className="mb-1">
-            <span
-              className="inline-block rounded px-3 py-1 text-sm font-semibold text-white"
-              style={{ backgroundColor: `var(--${transaction.categoryColor})` }}
-            >
-              {transaction.categoryName}
-            </span>
-          </div>
-          <div className="text-base text-blue-900">{transaction.description}</div>
-          <div
-            className={classNames([
-              'mt-1 font-bold text-lg',
-              transactionAmountClass(transaction.amount),
-            ])}
-          >
-            {currencyFormatter.format(transaction.amount)}
-          </div>
-        </div>
-      </div>
-    );
+    return <TransactionCard transaction={transaction} onEdit={triggerEditTransaction} />;
   }
 
   if (!transactions) return <></>;
