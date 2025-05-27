@@ -4,12 +4,11 @@ import { classNames } from 'primereact/utils';
 import { useState } from 'react';
 
 import { TransactionDto } from '@/actions/transactions';
+import TransactionForm from '@/components/forms/TransactionForm';
+import TransactionCard from '@/components/reports/TransactionCard';
 import { currencyFormatter, monthFormatter, transactionAmountClass } from '@/utils/formatter';
 
-import TransactionForm from '../forms/TransactionForm';
-
 import CategoryBarChar from './CategoryBarChart';
-import TransactionCard from './TransactionCard';
 
 interface CategoryTableProps {
   transactions: TransactionDto[];

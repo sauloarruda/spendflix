@@ -45,10 +45,6 @@ export default function TransactionForm({ transactionDto, onHide }: TransactionF
     if (!formState) throw new Error('Form not defined');
     const id = formState.id!;
     await updateTransactionCategoryAction([id], category.id);
-    setFormState((prev) => {
-      if (!prev) return prev;
-      return { ...prev, categoryName: category.name, categoryColor: category.color };
-    });
     formState.categoryName = category.name;
     formState.categoryColor = category.color;
     setEditedCategory(true);
@@ -59,10 +55,6 @@ export default function TransactionForm({ transactionDto, onHide }: TransactionF
     setEditedNotes(false);
     if (!formState) throw new Error('Form not defined');
     await updateTransactionNotesAction(formState.id, notes);
-    setFormState((prev) => {
-      if (!prev) return prev;
-      return { ...prev, notes };
-    });
     formState.notes = notes;
     if (transaction) transaction.notes = notes;
     setEditedNotes(true);

@@ -1,5 +1,6 @@
 import { Button } from 'primereact/button';
 import { classNames } from 'primereact/utils';
+import { useRef } from 'react';
 
 import { TransactionDto } from '@/actions/transactions';
 import { currencyFormatter, dayFormatter, transactionAmountClass } from '@/utils/formatter';
@@ -9,6 +10,15 @@ type CategoryCardProps = {
   onEdit: (transaction: TransactionDto) => void;
 };
 export default function TransactionCard({ transaction, onEdit }: CategoryCardProps) {
+  const buttonRef = useRef(null);
+
+  function handleEdit(event: React.MouseEvent<HTMLButtonElement>) {
+    const target = event.target as HTMLButtonElement;
+    target.disabled = true;
+    onEdit(transaction);
+    target.disabled = false;
+  }
+
   return (
     <div className="flex items-top mb-4 bg-white rounded-lg shadow p-4" key={transaction.id}>
       <div className="w-16 h-24">
@@ -16,10 +26,11 @@ export default function TransactionCard({ transaction, onEdit }: CategoryCardPro
           {dayFormatter.format(transaction.date)}
         </div>
         <Button
+          ref={buttonRef}
           icon="pi pi-pencil"
           rounded
           size="small"
-          onClick={() => onEdit(transaction)}
+          onClick={handleEdit}
         ></Button>
       </div>
       <div className="flex-1">
