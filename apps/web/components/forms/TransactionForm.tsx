@@ -10,12 +10,10 @@ import {
   updateTransactionCategoryAction,
   updateTransactionNotesAction,
 } from '@/actions/transactions';
+import TransactionHeader from '@/components/forms/TransactionHeader';
+import CategoryDropdown from '@/components/inputs/CategoryDropDown';
+import TransactionNotes from '@/components/inputs/TransactionNotes';
 import { Category, Transaction } from '@/prisma';
-
-import CategoryDropdown from '../inputs/CategoryDropDown';
-import TransactionNotes from '../inputs/TransactionNotes';
-
-import TransactionHeader from './TransactonHeader';
 
 interface TransactionFormProps {
   transactionDto: TransactionDto | undefined;

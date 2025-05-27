@@ -1,4 +1,3 @@
-import { NextMiddlewareResult } from 'next/dist/server/web/types';
 import { Button } from 'primereact/button';
 import { FloatLabel } from 'primereact/floatlabel';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -8,7 +7,7 @@ import { TransactionDto } from '@/actions/transactions';
 
 type TransactionNotesProps = {
   transaction: TransactionDto;
-  onChange?: (value: string | NextMiddlewareResult) => void;
+  onChange?: (value: string | null) => void;
 };
 export default function TransactionNotes({ transaction, onChange }: TransactionNotesProps) {
   const [notes, setNotes] = useState(transaction.notes);
