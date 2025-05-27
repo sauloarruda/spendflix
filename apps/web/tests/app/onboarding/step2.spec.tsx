@@ -10,6 +10,7 @@ jest.mock('next/navigation', () => ({
   useRouter: () => ({
     push: mockPush,
   }),
+  usePathname: () => '/onboarding/step2',
 }));
 
 jest.mock('@/actions/onboarding', () => ({

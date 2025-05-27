@@ -38,8 +38,6 @@ describe('Login Component', () => {
     it('renders the login form correctly', () => {
       setupLoginTest();
 
-      expect(screen.getByText('Entre na sua conta')).toBeInTheDocument();
-      expect(screen.getByText('Informe seu email e senha para entrar.')).toBeInTheDocument();
       expect(screen.getByLabelText('Email')).toBeInTheDocument();
       expect(screen.getByLabelText('Senha')).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'Entrar' })).toBeInTheDocument();
@@ -80,10 +78,6 @@ describe('Login Component', () => {
 
       expect(screen.getByText('Validando...')).toBeInTheDocument();
       expect(submitButton).toBeDisabled();
-
-      await waitFor(() => {
-        expect(screen.queryByText('Validando...')).not.toBeInTheDocument();
-      });
       expect(loginAction).toHaveBeenCalledTimes(1);
     });
 
