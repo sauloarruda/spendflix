@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
 import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
+import BudgetReport from '@/components/reports/BudgetReport';
 import ResultsReport from '@/components/reports/ResultsReport';
 import { ResultsReportProvider } from '@/contexts/ResultsReportContext';
 import { TransactionsProvider } from '@/contexts/TransactionsContext';
@@ -45,7 +46,9 @@ export default function OnboardingStep7() {
                 <ResultsReport />
               </ResultsReportProvider>
             </TabPanel>
-            <TabPanel header="Orçamento"></TabPanel>
+            <TabPanel header="Orçamento">
+              <BudgetReport />
+            </TabPanel>
           </TabView>
         </TransactionsProvider>
       )}
