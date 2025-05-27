@@ -3,14 +3,15 @@ import { FloatLabel } from 'primereact/floatlabel';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { useRef, useState } from 'react';
 
-import { TransactionDto } from '@/actions/transactions';
-
 type TransactionNotesProps = {
-  transaction: TransactionDto;
+  notes: string | null;
   onChange: (value: string | null) => void;
 };
-export default function TransactionNotes({ transaction, onChange }: TransactionNotesProps) {
-  const [notes, setNotes] = useState(transaction.notes);
+export default function TransactionNotes({
+  notes: transactionNotes,
+  onChange,
+}: TransactionNotesProps) {
+  const [notes, setNotes] = useState(transactionNotes);
   const noteRef = useRef<HTMLTextAreaElement>(null);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 

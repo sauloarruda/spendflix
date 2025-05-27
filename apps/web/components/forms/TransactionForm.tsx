@@ -49,6 +49,8 @@ export default function TransactionForm({ transactionDto, onHide }: TransactionF
       if (!prev) return prev;
       return { ...prev, categoryName: category.name, categoryColor: category.color };
     });
+    formState.categoryName = category.name;
+    formState.categoryColor = category.color;
     setEditedCategory(true);
     setTimeout(() => onHide(), 1000);
   }
@@ -61,6 +63,8 @@ export default function TransactionForm({ transactionDto, onHide }: TransactionF
       if (!prev) return prev;
       return { ...prev, notes };
     });
+    formState.notes = notes;
+    if (transaction) transaction.notes = notes;
     setEditedNotes(true);
   }
 
@@ -77,11 +81,14 @@ export default function TransactionForm({ transactionDto, onHide }: TransactionF
         <div className="">{formState.description}</div>
         <div className="grid grid-rows-2 w-full">
           {loading ? (
-            <Skeleton width="15em" height="3.5em"></Skeleton>
+            <>
+              <Skeleton className="mt-8 w-full" height="50px"></Skeleton>
+              <Skeleton className="mt-8" width="15em" height="50px"></Skeleton>
+            </>
           ) : (
             <>
               <div className="mt-8 flex items-center">
-                <TransactionNotes transaction={formState} onChange={handleUpdateNotes} />
+                <TransactionNotes notes={transaction.notes} onChange={handleUpdateNotes} />
                 <Avatar
                   hidden={!editedNotes}
                   className="ml-2"

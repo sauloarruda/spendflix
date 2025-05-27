@@ -16,6 +16,7 @@ export default function OnboardingStep6() {
   const router = useRouter();
   const [userId, setUserId] = useState<number>();
   const [activeIndex, setActiveIndex] = useState<number>(0);
+
   function handleResumeOnboarding(_onboarding: OnboardingData, onboardingUserId: number) {
     setUserId(onboardingUserId);
   }

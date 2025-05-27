@@ -1,4 +1,5 @@
 import { useRouter } from 'next/navigation';
+import { Skeleton } from 'primereact/skeleton';
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 import { autorizeAction, InvalidAuthenticationError } from '@/actions/serverActions';
@@ -14,6 +15,7 @@ const TransactionsContext = createContext<TransactionDto[] | undefined>(undefine
 
 export function TransactionsProvider({ userId, children }: TransactionsProviderProps) {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
   const [transactions, setTransactions] = useState<TransactionDto[]>();
 
   useEffect(() => {
@@ -23,6 +25,7 @@ export function TransactionsProvider({ userId, children }: TransactionsProviderP
           getTransactionsByFilterAction({ userId }),
         );
         setTransactions(fetchedTransactions);
+        setLoading(false);
       } catch (error) {
         setTransactions([]);
         if (error instanceof InvalidAuthenticationError) router.push('/401');
@@ -31,6 +34,7 @@ export function TransactionsProvider({ userId, children }: TransactionsProviderP
     fetchTransactions();
   }, [userId, router]);
 
+  if (loading) return <Skeleton className="lg:w-5/6 md:w-full" height="220px"></Skeleton>;
   return (
     <TransactionsContext.Provider value={transactions}>{children}</TransactionsContext.Provider>
   );
