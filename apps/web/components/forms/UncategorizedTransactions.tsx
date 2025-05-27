@@ -4,7 +4,7 @@ import { Message } from 'primereact/message';
 import { Tag } from 'primereact/tag';
 import { useState } from 'react';
 
-import { updateCategoryAction } from '@/actions/transactions';
+import { updateTransactionCategoryAction } from '@/actions/transactions';
 import CategoryDropdown from '@/components/inputs/CategoryDropDown';
 import { Category } from '@/prisma';
 import { transactionAmountClass } from '@/utils/formatter';
@@ -21,7 +21,7 @@ export default function UncategorizedTransactions({
   const [edited, setEdited] = useState<Record<string, boolean>>({});
 
   async function handleCategoryChange(transaction: UncategorizedTransaction, category: Category) {
-    await updateCategoryAction(transaction.ids, category.id);
+    await updateTransactionCategoryAction(transaction.ids, category.id);
     setEdited({ ...edited, [transaction.ids.join()]: true });
     onChange(Object.keys(edited));
   }

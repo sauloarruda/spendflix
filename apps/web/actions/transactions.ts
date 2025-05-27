@@ -6,8 +6,12 @@ async function getUncategorizedTransactionsAction(userId: number) {
   return transactionsService.getUncategorizedTransactions(userId);
 }
 
-async function updateCategoryAction(transactionIds: string[], categoryId: string) {
+async function updateTransactionCategoryAction(transactionIds: string[], categoryId: string) {
   await transactionsService.updateCategory(transactionIds, categoryId);
+}
+
+async function updateTransactionNotesAction(transactionId: string, notes: string | null) {
+  await transactionsService.updateNotes(transactionId, notes);
 }
 
 export type TransactionDto = {
@@ -19,6 +23,7 @@ export type TransactionDto = {
   categoryColor: string;
   accountName: string;
   accountColor: string;
+  notes: string | null;
 };
 
 async function getTransactionsByFilterAction(
@@ -33,6 +38,7 @@ async function getTransactionsByFilterAction(
     categoryColor: transaction.category?.color || 'red-900',
     accountName: transaction.account!.name,
     accountColor: transaction.account!.color,
+    notes: transaction.notes,
   }));
 }
 
@@ -42,7 +48,8 @@ async function findTransactionByIdAction(id: string) {
 
 export {
   getUncategorizedTransactionsAction,
-  updateCategoryAction,
+  updateTransactionCategoryAction,
   getTransactionsByFilterAction,
   findTransactionByIdAction,
+  updateTransactionNotesAction,
 };

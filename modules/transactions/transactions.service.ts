@@ -108,6 +108,13 @@ async function updateCategory(transactionIds: string[], categoryId: string): Pro
   });
 }
 
+async function updateNotes(transactionId: string, notes: string | null): Promise<void> {
+  await getPrisma().transaction.update({
+    where: { id: transactionId },
+    data: { notes },
+  });
+}
+
 export type TransactionsFilter = {
   userId: number;
   dateStart?: Date;
@@ -153,6 +160,7 @@ const transactionsService = {
   countTransactionsPerMonth,
   getUncategorizedTransactions,
   updateCategory,
+  updateNotes,
   getTransactionsByFilter,
   findById,
 };
