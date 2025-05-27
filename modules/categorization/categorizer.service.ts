@@ -40,7 +40,6 @@ async function findCategory(description: string, accountId: string) {
       OR ${exactMatchSql})
     ORDER BY "accountId", "score" desc, "ocurrences" desc, "updatedAt" desc
     `;
-  logger.debug({ sql }, 'Categorizer SQL');
   const rules = await getPrisma().$queryRawUnsafe<CategoryRule[]>(
     sql,
     sanitizedDescription,

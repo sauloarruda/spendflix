@@ -6,6 +6,7 @@ import Papa from 'papaparse';
 import getLogger from '@/common/logger';
 import getPrisma from '@/common/prisma';
 import s3Service from '@/common/s3';
+import Timer from '@/common/timer';
 import { categorizerService } from '@/modules/categorization';
 
 import sourceService from './source.service';
@@ -111,6 +112,7 @@ async function processRow(
 }
 
 async function importFromSource(source: Source) {
+  const timer = Timer('importFromSource', logger);
   logger.info({ source }, 'Started importing transactions');
   const csvContents = await getFileFromSource(source);
   const rows = parseCsv(csvContents);
@@ -126,6 +128,7 @@ async function importFromSource(source: Source) {
     where: { id: source.id },
     data: { status: SourceStatus.COMPLETED },
   });
+  timer.stop();
   return rows.length;
 }
 

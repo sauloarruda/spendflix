@@ -62,7 +62,8 @@ const PINO_PRETTY_OPTIONS = {
     ignore: 'time,hostname,pid',
   },
 };
-class Logger {
+
+export class Logger {
   public bindings: ILoggerOptions;
 
   private logger: pino.Logger;
