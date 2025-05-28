@@ -116,6 +116,7 @@ module.exports = [
       'max-nested-callbacks': 'off', // Allow more nested callbacks in tests
       'max-depth': 'off', // Allow deeper nesting in tests
       'no-magic-numbers': 'off', // Allow magic numbers in tests
+      'global-require': 'off',
     },
   },
 ];
