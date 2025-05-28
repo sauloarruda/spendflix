@@ -1,8 +1,10 @@
+import {
+  userFactory, accountFactory, categoryFactory, transactionFactory,
+} from '@/factories';
+
 import getPrisma from '../common/prisma';
 
 import transactionsService from './transactions.service';
-
-import { userFactory, accountFactory, categoryFactory, transactionFactory } from '@/factories';
 
 describe('transactionsService', () => {
   let user: Awaited<ReturnType<typeof userFactory.create>>;
