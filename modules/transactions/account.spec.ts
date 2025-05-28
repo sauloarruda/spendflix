@@ -1,8 +1,8 @@
 import { SourceType } from '@/prisma';
 
-import accountService from './account.service';
-
 import { accountFactory, userFactory, bankFactory } from '@/factories';
+
+import accountService from './account.service';
 
 describe('accountService', () => {
   let userId: number;
