@@ -7,12 +7,11 @@ import { mockClient } from 'aws-sdk-client-mock';
 import Papa from 'papaparse';
 
 import getConfig from '@/common/config';
+import { sourceFactory } from '@/factories';
 
 import getPrisma from '../common/prisma';
 
 import importerService from './importer.service';
-
-import { sourceFactory } from '@/factories';
 
 // Mock getConfig
 jest.mock('@/common/config', () => ({

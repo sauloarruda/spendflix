@@ -1,10 +1,9 @@
 import { SourceStatus, SourceType, Account } from '@/prisma';
 
 import s3Service from '@/common/s3';
+import { accountFactory } from '@/factories';
 
 import sourceService from './source.service';
-
-import { accountFactory } from '@/factories';
 
 // Mocks
 jest.mock('@/common/logger', () => () => ({ child: () => ({ debug: jest.fn() }) }));
