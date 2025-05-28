@@ -4,6 +4,8 @@ import {
   defineSourceFactory,
   defineUserFactory,
   initialize,
+  defineTransactionFactory,
+  defineCategoryFactory,
 } from '@/fabbrica';
 
 import getPrisma from '@/common/prisma';
@@ -23,3 +25,10 @@ export const accountFactory = defineAccountFactory({
 export const sourceFactory = defineSourceFactory({
   defaultData: { account: accountFactory },
 });
+export const transactionFactory = defineTransactionFactory({
+  defaultData: {
+    account: accountFactory,
+    source: sourceFactory,
+  },
+});
+export const categoryFactory = defineCategoryFactory({});
