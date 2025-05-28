@@ -6,7 +6,7 @@ import { accountFactory } from '@/factories';
 import sourceService from './source.service';
 
 // Mocks
-jest.mock('@/common/logger', () => () => ({ child: () => ({ debug: jest.fn() }) }));
+// jest.mock('@/common/logger', () => () => ({ child: () => ({ debug: jest.fn() }) }));
 jest.mock('@/common/s3', () => ({ upload: jest.fn() }));
 
 describe('sourceService', () => {

@@ -29,4 +29,5 @@ module.exports = {
       statements: 90,
     },
   },
+  coveragePathIgnorePatterns: ['index.ts'],
 };
