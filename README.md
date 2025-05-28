@@ -92,7 +92,7 @@ spendflix/
 4. Install pnpm:
 
    ```bash
-   npm install -g pnpm@10.9.0
+   npm install -g pnpm@10.11.0
    ```
 
 5. Install Serverless Framework:
