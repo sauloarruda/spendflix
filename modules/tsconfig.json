@@ -16,7 +16,8 @@
       "@/common/*": ["./common/*"],
       "@/modules/users": ["./users/index.ts"],
       "@/modules/transactions": ["./transactions/index.ts"],
-      "@/modules/categorization": ["./categorization/index.ts"]
+      "@/modules/categorization": ["./categorization/index.ts"],
+      "@/factories": ["./test/factories.ts"]
     }
   },
   "include": ["**/*.ts"],
