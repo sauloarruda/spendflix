@@ -6,6 +6,7 @@ import {
   initialize,
   defineTransactionFactory,
   defineCategoryFactory,
+  defineCategoryRuleFactory,
 } from '@/fabbrica';
 
 import getPrisma from '@/common/prisma';
@@ -32,3 +33,11 @@ export const transactionFactory = defineTransactionFactory({
   },
 });
 export const categoryFactory = defineCategoryFactory({});
+export const categoryRuleFactory = defineCategoryRuleFactory({
+  defaultData: ({ seq }) => ({
+    keyword: `keyword-${seq}`,
+    priority: 1,
+    ocurrences: 0,
+    category: categoryFactory,
+  }),
+});

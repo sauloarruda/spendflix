@@ -3,19 +3,20 @@ import { CategoryRule } from '@/prisma';
 import getLogger from '@/common/logger';
 import getPrisma from '@/common/prisma';
 
-const logger = getLogger().child({ module: 'categorizer' });
-
 function sanitizeDescription(description: string): string {
   // 1. Remove "Parcela X/X" pattern
   let sanitized = description.replace(/Parcela\s+\d+\/\d+/gi, '');
 
-  // 2. Remove non-alphanumeric characters (except spaces)
-  sanitized = sanitized.replace(/[^a-zA-Z0-9\s]/g, '');
-
-  // 3. Replace accented characters with their non-accented equivalents
+  // 2. Replace accented characters with their non-accented equivalents
   sanitized = sanitized.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
-  // 4. Apply trim and lowercase
+  // 3. Remove non-alphanumeric characters (except spaces)
+  sanitized = sanitized.replace(/[^a-zA-Z0-9\s]/g, '');
+
+  // 4. Collapse multiple spaces into one
+  sanitized = sanitized.replace(/\s+/g, ' ');
+
+  // 5. Apply trim and lowercase
   sanitized = sanitized.trim().toLowerCase();
 
   return sanitized;
@@ -23,6 +24,7 @@ function sanitizeDescription(description: string): string {
 
 // eslint-disable-next-line max-lines-per-function
 async function findCategory(description: string, accountId: string) {
+  const logger = getLogger().child({ module: 'categorizer' });
   const sanitizedDescription = sanitizeDescription(description);
   const exactMatchSql = "$1 ~* ('\\m' || r.\"keyword\" || '\\M')";
   const sql = `
