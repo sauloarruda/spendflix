@@ -35,7 +35,7 @@ async function findByEmail(email: string): Promise<User | undefined> {
 
 async function startOnboarding(name: string, email: string): Promise<User> {
   let user = await findByEmail(email);
-  if (!user ?? !user.temporaryPassword) {
+  if (!user || !user.temporaryPassword) {
     const temporaryPassword = generateTemporaryPassword();
     const encryptedPassword = encrypt(temporaryPassword);
     const data = {
@@ -52,7 +52,7 @@ async function startOnboarding(name: string, email: string): Promise<User> {
 
 async function getTempPassword(email: string): Promise<string | undefined> {
   const user = await findByEmail(email);
-  if (!user ?? !user.temporaryPassword) {
+  if (!user || !user.temporaryPassword) {
     return undefined;
   }
   const decrypted = decrypt(user.temporaryPassword);

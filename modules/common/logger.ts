@@ -27,7 +27,7 @@ const SENSITIVE_FIELDS = [
 
 // eslint-disable-next-line max-lines-per-function
 const censorSensitiveData = (data: unknown): unknown => {
-  if (data === null ?? data === undefined) {
+  if (!data) {
     return data;
   }
 

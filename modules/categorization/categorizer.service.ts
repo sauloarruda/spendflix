@@ -26,7 +26,7 @@ function sanitizeDescription(description: string): string {
 async function findCategory(description: string, accountId: string) {
   const logger = getLogger().child({ module: 'categorizer' });
   const sanitizedDescription = sanitizeDescription(description);
-  const exactMatchSql = "$1 ~* ('\\m' ?? r.\"keyword\" ?? '\\M')";
+  const exactMatchSql = "$1 ~* ('\\m' || r.\"keyword\" || '\\M')";
   const sql = `
     SELECT
       r.*,

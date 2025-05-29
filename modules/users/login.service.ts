@@ -11,7 +11,7 @@ async function updateUser(email: string, authResp: InitiateAuthCommandOutput): P
   const cognitoId = userResp.UserAttributes?.find((attr) => attr.Name === 'sub')?.Value;
   const name = userResp.UserAttributes?.find((attr) => attr.Name === 'name')?.Value;
 
-  if (!user ?? user.cognitoId !== cognitoId) {
+  if (!user || user.cognitoId !== cognitoId) {
     user = await userService.upsertUser({
       ...user,
       email,
