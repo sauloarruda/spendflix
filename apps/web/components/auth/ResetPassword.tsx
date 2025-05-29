@@ -49,7 +49,7 @@ export default function ResetPassword({ email, onSuccess }: ResetPasswordProps) 
   }
 
   return (
-    <>
+    <div className="max-w-md mx-auto">
       <h2 className="text-xl font-semibold mb-6 mt-8 text-center">Redefinir senha</h2>
       <p className="text-gray-600 text-center mb-6">
         Informe o código de 6 dígitos enviado para seu email e sua nova senha.
@@ -86,6 +86,6 @@ export default function ResetPassword({ email, onSuccess }: ResetPasswordProps) 
         onClick={handleResetPassword}
         disabled={loading || !isCodeValid || !isPasswordValid}
       />
-    </>
+    </div>
   );
 }

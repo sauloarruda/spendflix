@@ -42,7 +42,7 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
   }
 
   return (
-    <>
+    <div className="max-w-md mx-auto">
       <h2 className="text-xl font-semibold mb-6 mt-8 text-center">Esqueceu sua senha?</h2>
       <p className="text-gray-600 text-center mb-6">
         Informe seu email para receber instruções de como redefinir sua senha.
@@ -60,6 +60,6 @@ export default function ForgotPassword({ onSuccess }: ForgotPasswordProps) {
         onClick={handleForgotPassword}
         disabled={loading || !isEmailValid}
       />
-    </>
+    </div>
   );
 }

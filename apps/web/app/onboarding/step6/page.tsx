@@ -1,33 +1,27 @@
 'use client';
 
-import { OnboardingData } from '@/modules/users';
 import { useRouter } from 'next/navigation';
 import { TabPanel, TabView } from 'primereact/tabview';
 import { useState } from 'react';
 
-import { updateOnboardingAction } from '@/actions/onboarding';
 import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
-import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
+import { useOnboarding } from '@/components/onboarding/ResumeOnboarding';
 import ExpensesReport from '@/components/reports/ExpensesReport';
 import RevenueReport from '@/components/reports/RevenueReport';
 import { TransactionsProvider } from '@/contexts/TransactionsContext';
 
 export default function OnboardingStep6() {
   const router = useRouter();
-  const [userId, setUserId] = useState<number>();
   const [activeIndex, setActiveIndex] = useState<number>(0);
-
-  function handleResumeOnboarding(_onboarding: OnboardingData, onboardingUserId: number) {
-    setUserId(onboardingUserId);
-  }
+  const { userId, updateOnboarding } = useOnboarding();
 
   async function handleContinue() {
-    await updateOnboardingAction(localStorage.getItem('onboardingUid')!, { step: 7 });
+    await updateOnboarding({ step: 7 });
     router.push('/onboarding/step7');
   }
 
   return (
-    <ResumeOnboarding message="Preparando para continuar..." onResume={handleResumeOnboarding}>
+    <>
       <h2 className="text-xl font-semibold mb-6 text-center">
         Parabéns!
         <br /> Agora suas finanças estão{' '}
@@ -55,6 +49,6 @@ export default function OnboardingStep6() {
         </TransactionsProvider>
       )}
       <OnboardingNavigation onClick={handleContinue} />
-    </ResumeOnboarding>
+    </>
   );
 }

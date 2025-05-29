@@ -16,7 +16,7 @@ jest.mock('@/utils/cookie', () => ({
   hasSessionCookie: jest.fn().mockReturnValue(true),
 }));
 
-jest.mock('@/modules/users/onboarding.repository', () => ({
+jest.mock('@/modules/users/onboarding.service', () => ({
   find: jest.fn().mockResolvedValue({
     id: 'test-onboarding-id',
     data: { step: 0 },

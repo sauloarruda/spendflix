@@ -6,9 +6,8 @@ import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { MultiSelect } from 'primereact/multiselect';
 import { useState } from 'react';
 
-import { updateOnboardingAction } from '@/actions/onboarding';
 import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
-import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
+import { useOnboarding } from '@/components/onboarding/ResumeOnboarding';
 
 const allBanks: { label: string; value: string }[] = [
   { label: 'Banco ABC Brasil (246)', value: '246' },
@@ -107,6 +106,7 @@ export default function OnboardingStep3() {
   const [showOtherBanks, setShowOtherBanks] = useState(false);
   const [selectedOtherBanks, setSelectedOtherBanks] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const { updateOnboarding } = useOnboarding();
 
   const toggleMainBank = (bankName: string) => {
     if (selectedMainBanks.includes(bankName)) {
@@ -134,7 +134,7 @@ export default function OnboardingStep3() {
       return;
     }
 
-    await updateOnboardingAction(onboardingUid, {
+    await updateOnboarding({
       banks: selectedBankCodes,
       step: 4,
     });
@@ -152,7 +152,7 @@ export default function OnboardingStep3() {
         acceptLabel: 'Sim, quero continuar',
         rejectLabel: 'Não, quero entrar na lista de espera',
         accept: async () => {
-          await updateOnboardingAction(onboardingUid, {
+          await updateOnboarding({
             step: 4,
           });
           router.push('/onboarding/step4');
@@ -175,10 +175,7 @@ export default function OnboardingStep3() {
   };
 
   return (
-    <ResumeOnboarding
-      message="Preparando para continuar..."
-      onError={() => router.push('/onboarding/step1')}
-    >
+    <>
       <ConfirmDialog />
 
       <h2 className="text-xl font-semibold mb-6 text-center">
@@ -229,6 +226,6 @@ export default function OnboardingStep3() {
         disabled={loading || (selectedMainBanks.length === 0 && selectedOtherBanks.length === 0)}
         onClick={handleContinue}
       />
-    </ResumeOnboarding>
+    </>
   );
 }

@@ -1,14 +1,12 @@
 'use client';
 
-import { OnboardingData } from '@/modules/users';
 import { useRouter } from 'next/navigation';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { useState, useRef } from 'react';
 
-import { updateOnboardingAction } from '@/actions/onboarding';
 import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
-import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
+import { useOnboarding } from '@/components/onboarding/ResumeOnboarding';
 
 type Step2FormData = {
   goal: 'dream' | 'debt' | '';
@@ -16,32 +14,22 @@ type Step2FormData = {
   goalValue: number | null | undefined;
 };
 
-// eslint-disable-next-line max-lines-per-function
+// eslint-disable-next-line max-lines-per-function, complexity
 export default function OnboardingStep2() {
   const router = useRouter();
   const descriptionInputRef = useRef<HTMLInputElement>(null);
-  const [name, setName] = useState<string>('');
-  const [formData, setFormData] = useState<Step2FormData>({
-    goal: '',
-    goalDescription: '',
-    goalValue: undefined,
-  });
-
+  const { updateOnboarding, onboardingData } = useOnboarding();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleResumeOnboarding = async (onboarding: OnboardingData) => {
-    if (name) return;
-    setName(onboarding.name!);
-    setFormData({
-      goal: onboarding.goal as 'dream' | 'debt',
-      goalDescription: onboarding.goalDescription || '',
-      goalValue: onboarding.goalValue || undefined,
-    });
-  };
+  // Inicializa o estado local apenas na primeira renderização
+  const [formData, setFormData] = useState<Step2FormData>({
+    goal: onboardingData?.goal || '',
+    goalDescription: onboardingData?.goalDescription || '',
+    goalValue: onboardingData?.goalValue ?? undefined,
+  });
 
   const handleGoalSelect = (goal: 'dream' | 'debt') => {
     setFormData((prev) => ({ ...prev, goal }));
-    // Focus the description input after a short delay to ensure it's rendered
     setTimeout(() => {
       descriptionInputRef.current?.focus();
     }, 0);
@@ -49,23 +37,19 @@ export default function OnboardingStep2() {
 
   const handleContinue = async () => {
     setIsLoading(true);
-    const onboardingUid = localStorage.getItem('onboardingUid');
-    if (onboardingUid) {
-      await updateOnboardingAction(onboardingUid, {
-        goal: formData.goal as 'dream' | 'debt',
-        goalDescription: formData.goalDescription,
-        goalValue: formData.goalValue!,
-        step: 3,
-      });
-    }
-
+    await updateOnboarding({
+      goal: formData.goal as 'dream' | 'debt',
+      goalDescription: formData.goalDescription,
+      goalValue: formData.goalValue!,
+      step: 3,
+    });
     router.push('/onboarding/step3');
   };
 
   return (
-    <ResumeOnboarding message="Preparando para continuar..." onResume={handleResumeOnboarding}>
+    <>
       <h2 className="text-xl font-semibold mb-6 text-center">
-        Olá {name}, muito prazer! <br />
+        Olá {onboardingData?.name || ''}, muito prazer! <br />
         Me conta, o que te trouxe até aqui?
       </h2>
 
@@ -150,6 +134,6 @@ export default function OnboardingStep2() {
         }
         onClick={handleContinue}
       />
-    </ResumeOnboarding>
+    </>
   );
 }
