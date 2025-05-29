@@ -164,6 +164,9 @@ module.exports = [
       'max-lines': 'off', // Disable file line limit for test files
       'max-nested-callbacks': 'off', // Allow more nested callbacks in tests
       'max-depth': 'off', // Allow deeper nesting in tests
+      '@typescript-eslint/no-var-requires': 'off', // Allow require() in test files
+      '@typescript-eslint/no-require-imports': 'off', // Allow require() style imports in test files
+      'global-require': 'off', // Allow require() in test files
     },
   },
 ];

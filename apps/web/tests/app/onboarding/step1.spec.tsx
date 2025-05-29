@@ -1,63 +1,54 @@
 import { render, waitFor, fireEvent, screen } from '@testing-library/react';
 import React from 'react';
 
-import { getOnboardingAction, startOnboardingAction } from '@/actions/onboarding';
 import Page from '@/app/onboarding/step1/page';
 
-const mockPush = jest.fn();
+import {
+  mockPush,
+  TEST_NAME,
+  TEST_EMAIL,
+  setupLocalStorageAndSession,
+  startOnboardingAction,
+  getOnboardingAction,
+} from './__mocks__/onboardingTestUtils';
 
-jest.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: mockPush,
-  }),
-}));
-
-jest.mock('@/utils/cookie', () => ({
-  hasSessionCookie: jest.fn().mockReturnValue(true),
-}));
-
-jest.mock('@/modules/users/onboarding.service', () => ({
-  find: jest.fn().mockResolvedValue({
-    id: 'test-onboarding-id',
-    data: { step: 0 },
-    userId: 'test-user-id',
-  }),
-  create: jest.fn().mockResolvedValue({
-    id: 'test-onboarding-id',
-    data: { step: 0 },
-    userId: 'test-user-id',
-  }),
-  update: jest.fn().mockResolvedValue({
-    id: 'test-onboarding-id',
-    data: { step: 0 },
-    userId: 'test-user-id',
-  }),
-}));
-
-jest.mock('@/actions/onboarding', () => ({
-  startOnboardingAction: jest.fn().mockResolvedValue({ id: 'test-onboarding-id' }),
-  getOnboardingAction: jest.fn().mockResolvedValue(null),
-}));
-
-jest.mock('@/components/onboarding/Signup', () => {
-  const TEST_NAME = 'Test User';
-  const TEST_EMAIL = 'test@example.com';
+jest.mock('next/navigation', () => {
+  const mocks = require('./__mocks__/onboardingTestUtils');
   return {
-    __esModule: true,
-    default: ({
-      onSuccess,
-      onLoginRedirect,
-    }: {
-      onSuccess: (name: string, email: string) => void;
-      onLoginRedirect: (email: string) => void;
-    }) => (
-      <div data-testid="signup-component">
-        <button onClick={() => onSuccess(TEST_NAME, TEST_EMAIL)}>Signup Success</button>
-        <button onClick={() => onLoginRedirect(TEST_EMAIL)}>Login Redirect</button>
-      </div>
-    ),
+    useRouter: () => mocks.mockUseRouter(),
+    usePathname: () => mocks.mockUsePathname(),
   };
 });
+
+jest.mock(
+  '@/modules/users/onboarding.service',
+  () => require('./__mocks__/onboardingTestUtils').onboardingServiceMock,
+);
+
+jest.mock('@/actions/onboarding', () => {
+  const mocks = require('./__mocks__/onboardingTestUtils');
+  return {
+    startOnboardingAction: mocks.startOnboardingAction,
+    getOnboardingAction: mocks.getOnboardingAction,
+    updateOnboardingAction: mocks.updateOnboardingAction,
+  };
+});
+
+jest.mock('@/components/onboarding/Signup', () => ({
+  __esModule: true,
+  default: ({
+    onSuccess,
+    onLoginRedirect,
+  }: {
+    onSuccess: (name: string, email: string) => void;
+    onLoginRedirect: (email: string) => void;
+  }) => (
+    <div data-testid="signup-component">
+      <button onClick={() => onSuccess(TEST_NAME, TEST_EMAIL)}>Signup Success</button>
+      <button onClick={() => onLoginRedirect(TEST_EMAIL)}>Login Redirect</button>
+    </div>
+  ),
+}));
 
 jest.mock('@/components/onboarding/Confirm', () => ({
   __esModule: true,
@@ -103,11 +94,9 @@ jest.mock('@/components/utils/ApiError', () => ({
 describe('Onboarding Step 1 Page', () => {
   const TEST_ONBOARDING_ID = 'test-onboarding-id';
   const EXISTING_ONBOARDING_ID = 'existing-onboarding-id';
-  const TEST_NAME = 'Test User';
-  const TEST_EMAIL = 'test@example.com';
 
   beforeEach(() => {
-    localStorage.clear();
+    setupLocalStorageAndSession();
     jest.clearAllMocks();
     mockPush.mockClear();
   });
@@ -126,7 +115,7 @@ describe('Onboarding Step 1 Page', () => {
 
   it('should not initialize onboarding when onboardingUid already exists', async () => {
     localStorage.setItem('onboardingUid', EXISTING_ONBOARDING_ID);
-    (getOnboardingAction as jest.Mock).mockResolvedValueOnce({
+    getOnboardingAction.mockResolvedValueOnce({
       id: EXISTING_ONBOARDING_ID,
       data: { step: 0 },
       userId: 'test-user-id',
@@ -181,8 +170,8 @@ describe('Onboarding Step 1 Page', () => {
 
   it('should show api error when onboarding initialization fails', async () => {
     const errorMessage = 'Failed to start onboarding';
-    (startOnboardingAction as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
-    (getOnboardingAction as jest.Mock).mockResolvedValueOnce(null);
+    startOnboardingAction.mockRejectedValueOnce(new Error(errorMessage));
+    getOnboardingAction.mockResolvedValueOnce(null);
 
     render(<Page />);
 
