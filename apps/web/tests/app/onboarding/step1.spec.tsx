@@ -4,26 +4,26 @@ import React from 'react';
 import Page from '@/app/onboarding/step1/page';
 
 import {
-  mockPush,
+  mockUseRouter,
+  mockUsePathname,
+  mockRouterPush,
+  setupLocalStorageAndSession,
   TEST_NAME,
   TEST_EMAIL,
-  setupLocalStorageAndSession,
+} from '../testUtils';
+
+import {
   startOnboardingAction,
   getOnboardingAction,
+  onboardingServiceMock,
 } from './__mocks__/onboardingTestUtils';
 
-jest.mock('next/navigation', () => {
-  const mocks = require('./__mocks__/onboardingTestUtils');
-  return {
-    useRouter: () => mocks.mockUseRouter(),
-    usePathname: () => mocks.mockUsePathname(),
-  };
-});
+jest.mock('next/navigation', () => ({
+  useRouter: () => mockUseRouter(),
+  usePathname: () => mockUsePathname(),
+}));
 
-jest.mock(
-  '@/modules/users/onboarding.service',
-  () => require('./__mocks__/onboardingTestUtils').onboardingServiceMock,
-);
+jest.mock('@/modules/users/onboarding.service', () => onboardingServiceMock);
 
 jest.mock('@/actions/onboarding', () => {
   const mocks = require('./__mocks__/onboardingTestUtils');
@@ -98,7 +98,7 @@ describe('Onboarding Step 1 Page', () => {
   beforeEach(() => {
     setupLocalStorageAndSession();
     jest.clearAllMocks();
-    mockPush.mockClear();
+    mockRouterPush.mockClear();
   });
 
   it('should initialize onboarding when no onboardingUid exists', async () => {
@@ -198,9 +198,11 @@ describe('Onboarding Step 1 Page', () => {
     });
 
     fireEvent.click(screen.getByText('Confirm Success'));
+    console.log('Clicked Confirm Success');
 
     await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith('/onboarding/step2');
+      console.log('mockRouterPush calls:', mockRouterPush.mock.calls);
+      expect(mockRouterPush).toHaveBeenCalledWith('/onboarding/step2');
     });
   });
 });

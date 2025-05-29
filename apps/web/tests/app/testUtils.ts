@@ -3,6 +3,7 @@
 // Router mocks
 export const mockRouterPush = jest.fn();
 export const mockUseRouter = () => ({ push: mockRouterPush });
+export const mockUsePathname = jest.fn();
 
 // Common test data
 export const TEST_NAME = 'Test User';

@@ -1,11 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 
-import OnboardingLayout from '@/app/onboarding/layout'; // Adjust path as necessary
+import OnboardingLayout from '@/app/onboarding/layout';
 
-// Mock next/navigation
-const mockUsePathname = jest.fn();
-const mockUseRouter = jest.fn(() => ({ replace: jest.fn() }));
+import { mockUsePathname, mockUseRouter } from '../testUtils'; // Adjust path as necessary
+
+// Mock ResumeOnboarding to prevent real logic from running
+jest.mock('@/components/onboarding/ResumeOnboarding', () => ({
+  __esModule: true,
+  default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+
 jest.mock('next/navigation', () => ({
   usePathname: () => mockUsePathname(),
   useRouter: () => mockUseRouter(),
@@ -15,7 +20,6 @@ describe('OnboardingLayout', () => {
   beforeEach(() => {
     // Clear mock usage history before each test
     mockUsePathname.mockClear();
-    mockUseRouter.mockClear();
   });
 
   it('should render its children', () => {

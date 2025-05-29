@@ -3,12 +3,10 @@ import React from 'react';
 
 import LoginPage from '@/app/login/page'; // Adjust path as necessary
 
-// Mock next/navigation
-const mockRouterPush = jest.fn();
+import { mockRouterPush, mockUseRouter } from '../testUtils';
+
 jest.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: mockRouterPush,
-  }),
+  useRouter: () => mockUseRouter(),
 }));
 
 describe('LoginPage', () => {

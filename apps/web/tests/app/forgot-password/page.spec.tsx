@@ -3,13 +3,10 @@ import React from 'react';
 
 import ForgotPasswordPage from '@/app/forgot-password/page';
 
-const mockRouterPush = jest.fn();
-const TEST_EMAIL = 'test@example.com';
+import { mockRouterPush, mockUseRouter, TEST_EMAIL } from '../testUtils';
 
 jest.mock('next/navigation', () => ({
-  useRouter: () => ({
-    push: mockRouterPush,
-  }),
+  useRouter: () => mockUseRouter(),
 }));
 
 // Mock child components

@@ -60,7 +60,7 @@ jobs:
       - name: Run Tests
         run: |
           pnpm prisma:migrate
-          pnpm test
+          pnpm test --coverage
 
       - name: Run Danger
         if: github.event_name != 'push'
