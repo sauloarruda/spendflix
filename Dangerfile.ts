@@ -1,7 +1,7 @@
 import { danger, warn, fail, message } from 'danger';
 
 // 1. Check if the PR description is filled out
-if (!danger.github.pr.body || danger.github.pr.body.length < 10) {
+if (!danger.github.pr.body ?? danger.github.pr.body.length < 10) {
   fail('⚠️ Pull Request must have a proper description explaining the changes.');
 }
 

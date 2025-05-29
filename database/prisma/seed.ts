@@ -48,7 +48,7 @@ async function main() {
   const fileContent = fs.readFileSync(rulesPath, 'utf-8');
   const parseResult = Papa.parse<string[]>(fileContent, { delimiter: '\t' });
   for (const row of parseResult.data) {
-    rules[row[0]] ||= [];
+    rules[row[0]] ??= [];
     rules[row[0]].push(row[1]);
   }
 

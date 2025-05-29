@@ -27,7 +27,7 @@ const SENSITIVE_FIELDS = [
 
 // eslint-disable-next-line max-lines-per-function
 const censorSensitiveData = (data: unknown): unknown => {
-  if (data === null || data === undefined) {
+  if (data === null ?? data === undefined) {
     return data;
   }
 
@@ -75,7 +75,7 @@ export class Logger {
   constructor(options: ILoggerOptions) {
     this.bindings = options;
     const { service, level = 'info', isOffline = false } = options;
-    this.isOffline = isOffline || false;
+    this.isOffline = isOffline ?? false;
     this.level = level;
 
     this.logger = pino({

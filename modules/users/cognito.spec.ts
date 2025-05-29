@@ -19,7 +19,7 @@ jest.mock('@/common/config', () => () => ({
 }));
 
 jest.mock('@/common/encryption', () => ({
-  decrypt: jest.fn((pw) => pw || 'decrypted-password'),
+  decrypt: jest.fn((pw) => pw ?? 'decrypted-password'),
 }));
 
 jest.mock('@/common/logger', () => () => ({

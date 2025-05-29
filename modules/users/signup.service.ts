@@ -94,7 +94,7 @@ async function authenticate(email: string, password: string): Promise<UserTokens
     accessToken: result.AccessToken!,
     refreshToken: result.RefreshToken!,
     idToken: result.IdToken!,
-    expiresIn: result.ExpiresIn || DEFAULT_TOKEN_EXPIRATION,
+    expiresIn: result.ExpiresIn ?? DEFAULT_TOKEN_EXPIRATION,
     sub: '',
   };
 }
@@ -115,7 +115,7 @@ async function confirm(email: string, code: string): Promise<{ tokens: UserToken
 
 async function findUser(id: number) {
   const user = await userService.find(id);
-  user.temporaryPassword = decrypt(user.temporaryPassword || '');
+  user.temporaryPassword = decrypt(user.temporaryPassword ?? '');
   return user;
 }
 
