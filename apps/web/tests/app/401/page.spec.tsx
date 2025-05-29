@@ -1,11 +1,10 @@
+import { OnboardingData } from '@/modules/users';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
 
-import Error401Page from '@/app/401/page';
 import { onboardingLoginAction } from '@/actions/auth';
-import { OnboardingData } from '@/modules/users';
+import Error401Page from '@/app/401/page';
 
-const mockPush = jest.fn();
 const mockRouterPush = jest.fn();
 
 jest.mock('next/navigation', () => ({
@@ -19,53 +18,43 @@ jest.mock('@/actions/auth', () => ({
 }));
 
 // Mock ResumeOnboarding component as its internals are not the focus of this test
-jest.mock('@/components/onboarding/ResumeOnboarding', () => {
-  return {
-    __esModule: true,
-    default: ({
-      children,
-      onResume,
-      onError,
-      message,
-    }: {
-      children: React.ReactNode;
-      onResume: (onboarding: OnboardingData, userId: number, onboardingUid: string) => void;
-      onError: (error: Error, onboardingUid: string | null) => void;
-      message: string;
-    }) => (
-      <div data-testid="resume-onboarding">
-        <div data-testid="message">{message}</div>
-        {children}
-        <button
-          data-testid="trigger-onresume"
-          onClick={() =>
-            onResume(
-              { step: 2, someData: 'test' },
-              123,
-              'test-onboarding-uid-resume',
-            )
-          }
-        >
-          Resume
-        </button>
-        <button
-          data-testid="trigger-onerror-no-uid"
-          onClick={() => onError(new Error('Test Error No UID'), null)}
-        >
-          Error No UID
-        </button>
-        <button
-          data-testid="trigger-onerror-with-uid"
-          onClick={() =>
-            onError(new Error('Test Error With UID'), 'test-onboarding-uid-error')
-          }
-        >
-          Error With UID
-        </button>
-      </div>
-    ),
-  };
-});
+jest.mock('@/components/onboarding/ResumeOnboarding', () => ({
+  __esModule: true,
+  default: ({
+    children,
+    onResume,
+    onError,
+    message,
+  }: {
+    children: React.ReactNode;
+    onResume: (onboarding: OnboardingData, userId: number, onboardingUid: string) => void;
+    onError: (error: Error, onboardingUid: string | null) => void;
+    message: string;
+  }) => (
+    <div data-testid="resume-onboarding">
+      <div data-testid="message">{message}</div>
+      {children}
+      <button
+        data-testid="trigger-onresume"
+        onClick={() => onResume({ step: 2, someData: 'test' }, 123, 'test-onboarding-uid-resume')}
+      >
+        Resume
+      </button>
+      <button
+        data-testid="trigger-onerror-no-uid"
+        onClick={() => onError(new Error('Test Error No UID'), null)}
+      >
+        Error No UID
+      </button>
+      <button
+        data-testid="trigger-onerror-with-uid"
+        onClick={() => onError(new Error('Test Error With UID'), 'test-onboarding-uid-error')}
+      >
+        Error With UID
+      </button>
+    </div>
+  ),
+}));
 
 describe('Error401 Page', () => {
   beforeEach(() => {
@@ -107,7 +96,9 @@ describe('Error401 Page', () => {
     });
 
     it('should redirect to /login if onboardingUid is present and onboardingLoginAction fails', async () => {
-      (onboardingLoginAction as jest.Mock).mockRejectedValueOnce(new Error('Action failed'));
+      (onboardingLoginAction as jest.Mock).mockRejectedValueOnce(
+        new Error('Test Error Action failed'),
+      );
       render(<Error401Page />);
       fireEvent.click(screen.getByTestId('trigger-onerror-with-uid'));
       await waitFor(() => {
@@ -118,7 +109,7 @@ describe('Error401 Page', () => {
       });
     });
 
-     it('should redirect to /onboarding/step1 if step is null in onboarding data from action', async () => {
+    it('should redirect to /onboarding/step1 if step is null in onboarding data from action', async () => {
       (onboardingLoginAction as jest.Mock).mockResolvedValueOnce({
         data: { step: null },
       });
@@ -147,12 +138,12 @@ describe('Error401 Page', () => {
       });
     });
 
-     it('should redirect to /onboarding/step2 if step is null in onboarding data prop', async () => {
+    it('should redirect to /onboarding/step2 if step is null in onboarding data prop', async () => {
       // The mock for ResumeOnboarding is hardcoded to pass { step: 2 }
-      // To test this scenario, we'd need a more flexible mock or directly test handleResumeOnboarding.
+      // To test this scenario, we'd need a more flexible mock or directly test
+      // handleResumeOnboarding.
       // For now, this relies on the current mock structure.
       (onboardingLoginAction as jest.Mock).mockResolvedValueOnce({});
-       const mockResumeOnboarding = jest.fn();
       // We need to simulate the ResumeOnboarding calling onResume with step: null
       // This is a bit tricky with the current simple mock.
       // A more robust way would be to extract handleResumeOnboarding and test it directly,

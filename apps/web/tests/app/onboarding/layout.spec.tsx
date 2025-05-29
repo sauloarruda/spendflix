@@ -5,14 +5,17 @@ import OnboardingLayout from '@/app/onboarding/layout'; // Adjust path as necess
 
 // Mock next/navigation
 const mockUsePathname = jest.fn();
+const mockUseRouter = jest.fn(() => ({ replace: jest.fn() }));
 jest.mock('next/navigation', () => ({
   usePathname: () => mockUsePathname(),
+  useRouter: () => mockUseRouter(),
 }));
 
 describe('OnboardingLayout', () => {
   beforeEach(() => {
     // Clear mock usage history before each test
     mockUsePathname.mockClear();
+    mockUseRouter.mockClear();
   });
 
   it('should render its children', () => {
@@ -21,7 +24,7 @@ describe('OnboardingLayout', () => {
     render(
       <OnboardingLayout>
         <div>{childText}</div>
-      </OnboardingLayout>
+      </OnboardingLayout>,
     );
     expect(screen.getByText(childText)).toBeInTheDocument();
   });
@@ -31,7 +34,7 @@ describe('OnboardingLayout', () => {
     render(
       <OnboardingLayout>
         <div>Child content</div>
-      </OnboardingLayout>
+      </OnboardingLayout>,
     );
     expect(screen.getByText('Etapa 3 de 7')).toBeInTheDocument();
   });
@@ -41,7 +44,7 @@ describe('OnboardingLayout', () => {
     render(
       <OnboardingLayout>
         <div>Child content</div>
-      </OnboardingLayout>
+      </OnboardingLayout>,
     );
     expect(screen.getByText('Etapa 5 de 7')).toBeInTheDocument();
   });
@@ -51,7 +54,7 @@ describe('OnboardingLayout', () => {
     render(
       <OnboardingLayout>
         <div>Child content</div>
-      </OnboardingLayout>
+      </OnboardingLayout>,
     );
     expect(screen.queryByText(/Etapa \d de 7/)).not.toBeInTheDocument();
   });
@@ -61,10 +64,11 @@ describe('OnboardingLayout', () => {
     render(
       <OnboardingLayout>
         <div>Child content</div>
-      </OnboardingLayout>
+      </OnboardingLayout>,
     );
     // Expecting 'NaN de 7' might be too specific if implementation changes,
-    // better to check that the step message is not displayed or displayed as "Etapa undefined de 7" or similar
+    // better to check that the step message is not displayed or displayed as
+    // "Etapa undefined de 7" or similar
     // Based on current implementation parseInt("ABC",10) is NaN, which is falsy.
     // Thus, the component should not render the step string.
     expect(screen.queryByText('Etapa NaN de 7')).not.toBeInTheDocument();
@@ -72,12 +76,12 @@ describe('OnboardingLayout', () => {
     expect(screen.queryByText(/Etapa .* de 7/)).not.toBeInTheDocument();
   });
 
-   it('should not display the step message if pathname is just "/onboarding/"', () => {
+  it('should not display the step message if pathname is just "/onboarding/"', () => {
     mockUsePathname.mockReturnValue('/onboarding/');
     render(
       <OnboardingLayout>
         <div>Child content</div>
-      </OnboardingLayout>
+      </OnboardingLayout>,
     );
     expect(screen.queryByText(/Etapa \d de 7/)).not.toBeInTheDocument();
   });
@@ -87,7 +91,7 @@ describe('OnboardingLayout', () => {
     render(
       <OnboardingLayout>
         <div>Child content</div>
-      </OnboardingLayout>
+      </OnboardingLayout>,
     );
     const stepDiv = screen.getByText('Etapa 2 de 7');
     expect(stepDiv).toHaveClass('w-full text-sm text-gray-500 mb-4 mt-8 text-center');

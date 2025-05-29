@@ -29,7 +29,10 @@ describe('GlobalError Component', () => {
   it('should render the main error message heading', () => {
     render(<GlobalError error={mockError} reset={mockReset} />);
     // The component renders <html><body><h2>... so we search for the h2 content.
-    const headingElement = screen.getByRole('heading', { level: 2, name: /something went wrong!/i });
+    const headingElement = screen.getByRole('heading', {
+      level: 2,
+      name: /something went wrong!/i,
+    });
     expect(headingElement).toBeInTheDocument();
   });
 
@@ -52,7 +55,7 @@ describe('GlobalError Component', () => {
     // For global error components, Next.js expects full html and body tags.
     // JSDOM, when rendering such a component, might make these the document's root elements.
     // We check if these elements exist in the document and contain our component's content.
-    
+
     // document.documentElement refers to the <html> tag of the document
     expect(document.documentElement).toBeInTheDocument();
     // document.body refers to the <body> tag of the document
@@ -62,8 +65,11 @@ describe('GlobalError Component', () => {
     expect(screen.getByRole('heading', { name: /something went wrong!/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument();
 
-    // Check if the document's body is indeed the one from our component (optional, might be fragile)
+    // Check if the document's body is indeed the one from our component
+    // (optional, might be fragile)
     // This checks if the h2 is a child of document.body directly or indirectly.
-    expect(document.body.contains(screen.getByRole('heading', { name: /something went wrong!/i }))).toBe(true);
+    expect(
+      document.body.contains(screen.getByRole('heading', { name: /something went wrong!/i })),
+    ).toBe(true);
   });
 });

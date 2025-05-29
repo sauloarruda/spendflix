@@ -20,15 +20,12 @@ export default function Error401() {
   }
 
   async function handleError(error: Error, onboardingUid: string | null) {
-    console.error(error);
-    console.log('continue onboarding?', onboardingUid);
     if (!onboardingUid) router.push('/login');
     else {
       try {
         const onboarding = await onboardingLoginAction(onboardingUid);
         router.push(`/onboarding/step${(onboarding.data as OnboardingData).step || 1}`);
-      } catch (err) {
-        console.log(err);
+      } catch {
         router.push('/login');
       }
     }

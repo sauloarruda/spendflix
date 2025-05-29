@@ -20,7 +20,6 @@ export default function OnboardingStep5() {
   const { userId, updateOnboarding } = useOnboarding();
 
   async function fetchUncategorizedTransactions() {
-    console.log('loading uncategorized transactions', userId, result);
     if (!userId || result) return;
     setResult(
       await autorizeAction(getSessionCookie(), () => getUncategorizedTransactionsAction(userId)),

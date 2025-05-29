@@ -16,7 +16,7 @@ describe('DeclinePage', () => {
   it('should render the main paragraph message', () => {
     render(<DeclinePage />);
     const paragraphElement = screen.getByText(
-      /Não foi dessa vez, mas desejamos todo sucesso na sua jornada financeira!/i
+      /Não foi dessa vez, mas desejamos todo sucesso na sua jornada financeira!/i,
     );
     expect(paragraphElement).toBeInTheDocument();
     // Check if it's a paragraph, though getByText is usually sufficient

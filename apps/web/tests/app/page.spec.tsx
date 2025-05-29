@@ -1,8 +1,8 @@
+import { OnboardingData } from '@/modules/users';
 import { render, screen, act } from '@testing-library/react';
 import React from 'react';
 
 import HomePage from '@/app/page'; // Assuming Home is the default export from page.tsx
-import { OnboardingData } from '@/modules/users';
 
 const mockRouterPush = jest.fn();
 let mockResumeOnboardingOnResume: (onboarding: OnboardingData) => void;
@@ -55,7 +55,15 @@ describe('HomePage', () => {
     expect(screen.getByText('Redirecionando...')).toBeInTheDocument();
     // Check for spinner presence by class or a more specific test id if available
     const spinner = screen.getByText('Redirecionando...').nextElementSibling;
-    expect(spinner).toHaveClass('w-6', 'h-6', 'border-4', 'border-blue-500', 'border-t-transparent', 'rounded-full', 'animate-spin');
+    expect(spinner).toHaveClass(
+      'w-6',
+      'h-6',
+      'border-4',
+      'border-blue-500',
+      'border-t-transparent',
+      'rounded-full',
+      'animate-spin',
+    );
   });
 
   it('calls router.push with correct path when ResumeOnboarding.onResume is triggered (no specific step)', () => {
@@ -81,7 +89,7 @@ describe('HomePage', () => {
 
     expect(mockRouterPush).toHaveBeenCalledWith('/onboarding/step3');
   });
-  
+
   it('calls router.push with /onboarding/step2 if step is 0 when ResumeOnboarding.onResume is triggered', () => {
     render(<HomePage />);
     const mockOnboardingData: OnboardingData = { step: 0 };
@@ -92,7 +100,6 @@ describe('HomePage', () => {
 
     expect(mockRouterPush).toHaveBeenCalledWith('/onboarding/step2');
   });
-
 
   it('calls router.push with /onboarding/step1 when ResumeOnboarding.onError is triggered', () => {
     render(<HomePage />);
