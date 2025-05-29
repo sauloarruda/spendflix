@@ -13,7 +13,7 @@ jest.mock('next/navigation', () => ({
   usePathname: () => '/onboarding/step2',
 }));
 
-jest.mock('@/components/onboarding/ResumeOnboarding', () => ({
+jest.mock('@/contexts/OnboardingContext', () => ({
   useOnboarding: () => ({
     isLoadingOnboarding: false,
     userId: 123,

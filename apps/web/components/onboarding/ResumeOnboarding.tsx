@@ -2,30 +2,13 @@
 
 import { OnboardingData } from '@/modules/users';
 import { useRouter } from 'next/navigation';
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 import { onboardingLoginAction } from '@/actions/auth';
 import { getOnboardingAction, updateOnboardingAction } from '@/actions/onboarding';
 import { checkToken } from '@/actions/serverActions';
+import OnboardingContext from '@/contexts/OnboardingContext';
 import { getSessionCookie } from '@/utils/cookie';
-
-// Types
-
-interface OnboardingContextType {
-  isLoadingOnboarding: boolean;
-  userId: number | null;
-  onboardingData: OnboardingData | null;
-  updateOnboarding: (data: Partial<OnboardingData>) => Promise<void>;
-  finishOnboarding: () => Promise<void>;
-}
-
-const OnboardingContext = createContext<OnboardingContextType | undefined>(undefined);
-
-export function useOnboarding() {
-  const ctx = useContext(OnboardingContext);
-  if (!ctx) throw new Error('useOnboarding must be used within ResumeOnboarding');
-  return ctx;
-}
 
 interface ResumeOnboardingProps {
   children: React.ReactNode;
@@ -34,7 +17,6 @@ interface ResumeOnboardingProps {
 async function checkSessionCookie(uid: string): Promise<boolean> {
   let session = getSessionCookie();
   if (!session) {
-    // Tenta autologin
     try {
       await onboardingLoginAction(uid);
       session = getSessionCookie();
@@ -47,7 +29,6 @@ async function checkSessionCookie(uid: string): Promise<boolean> {
     await checkToken(session);
     return true;
   } catch {
-    // Tenta autologin novamente se o token for inválido
     try {
       await onboardingLoginAction(uid);
       session = getSessionCookie();
@@ -105,29 +86,24 @@ export default function ResumeOnboarding({ children }: ResumeOnboardingProps) {
     restoreOnboarding();
   }, [router]);
 
-  // Update onboarding
   const updateOnboarding = useCallback(
     async (data: Partial<OnboardingData>) => {
       if (!onboardingUid) return;
       await updateOnboardingAction(onboardingUid, data);
-      // Atualiza o onboardingData local após update
       setOnboardingData((prev: OnboardingData | null) => ({ ...prev, ...data }));
     },
     [onboardingUid],
   );
 
-  // Finish onboarding
   const finishOnboarding = useCallback(async () => {
     if (!onboardingUid) return;
     await updateOnboardingAction(onboardingUid, {
-      step: 999,
       finishedAt: new Date().toISOString(),
     });
     localStorage.removeItem('onboardingUid');
     router.replace('/');
   }, [onboardingUid, router]);
 
-  // Loading UI
   if (isLoadingOnboarding) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
@@ -137,7 +113,6 @@ export default function ResumeOnboarding({ children }: ResumeOnboardingProps) {
     );
   }
 
-  // Provide context to children
   return (
     <OnboardingContext.Provider
       value={{ isLoadingOnboarding, userId, onboardingData, updateOnboarding, finishOnboarding }}

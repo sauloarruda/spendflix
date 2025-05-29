@@ -5,9 +5,9 @@ import { TabPanel, TabView } from 'primereact/tabview';
 import { useState } from 'react';
 
 import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
-import { useOnboarding } from '@/components/onboarding/ResumeOnboarding';
 import ExpensesReport from '@/components/reports/ExpensesReport';
 import RevenueReport from '@/components/reports/RevenueReport';
+import { useOnboarding } from '@/contexts/OnboardingContext';
 import { TransactionsProvider } from '@/contexts/TransactionsContext';
 
 export default function OnboardingStep6() {

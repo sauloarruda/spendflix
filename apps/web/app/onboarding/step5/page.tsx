@@ -7,8 +7,8 @@ import { autorizeAction } from '@/actions/serverActions';
 import { getUncategorizedTransactionsAction } from '@/actions/transactions';
 import UncategorizedTransactions from '@/components/forms/UncategorizedTransactions';
 import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
-import { useOnboarding } from '@/components/onboarding/ResumeOnboarding';
 import LoadingForm from '@/components/utils/LoadingForm';
+import { useOnboarding } from '@/contexts/OnboardingContext';
 import { getSessionCookie } from '@/utils/cookie';
 
 type UncategorizedTransactionFetch = Awaited<ReturnType<typeof getUncategorizedTransactionsAction>>;

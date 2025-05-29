@@ -6,7 +6,7 @@ import { InputText } from 'primereact/inputtext';
 import { useState, useRef } from 'react';
 
 import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
-import { useOnboarding } from '@/components/onboarding/ResumeOnboarding';
+import { useOnboarding } from '@/contexts/OnboardingContext';
 
 type Step2FormData = {
   goal: 'dream' | 'debt' | '';

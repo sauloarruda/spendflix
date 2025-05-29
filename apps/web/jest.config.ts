@@ -13,6 +13,7 @@ const config: Config = {
     '^@/prisma$': '<rootDir>/generated/prisma',
     '^@/fabbrica$': '<rootDir>/../../database/src/__generated__/fabbrica',
     '^@/app/(.*)$': '<rootDir>/app/$1',
+    '^@/contexts/(.*)$': '<rootDir>/contexts/$1',
     '^@/utils/(.*)$': '<rootDir>/utils/$1',
     '^react$': '<rootDir>/../../node_modules/react',
     '^react-dom$': '<rootDir>/../../node_modules/react-dom',

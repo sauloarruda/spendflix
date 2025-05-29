@@ -7,7 +7,7 @@ import { createAccountAction } from '@/actions/accounts';
 import { autorizeAction } from '@/actions/serverActions';
 import AccountAccordion from '@/components/onboarding/AccountAccordion';
 import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
-import { useOnboarding } from '@/components/onboarding/ResumeOnboarding';
+import { useOnboarding } from '@/contexts/OnboardingContext';
 import { Account, SourceType } from '@/prisma';
 import { getSessionCookie } from '@/utils/cookie';
 

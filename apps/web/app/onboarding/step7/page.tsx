@@ -4,8 +4,8 @@ import { TabPanel, TabView } from 'primereact/tabview';
 import { useState } from 'react';
 
 import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
-import { useOnboarding } from '@/components/onboarding/ResumeOnboarding';
 import ResultsReport from '@/components/reports/ResultsReport';
+import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ResultsReportProvider } from '@/contexts/ResultsReportContext';
 import { TransactionsProvider } from '@/contexts/TransactionsContext';
 
