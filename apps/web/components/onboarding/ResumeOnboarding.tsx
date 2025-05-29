@@ -114,10 +114,10 @@ export default function ResumeOnboarding({ children }: ResumeOnboardingProps) {
   }
 
   return (
-    <OnboardingContext.Provider
+    <OnboardingContext
       value={{ isLoadingOnboarding, userId, onboardingData, updateOnboarding, finishOnboarding }}
     >
       {children}
-    </OnboardingContext.Provider>
+    </OnboardingContext>
   );
 }
