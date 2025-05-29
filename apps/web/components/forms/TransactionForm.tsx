@@ -1,4 +1,5 @@
 import { Avatar } from 'primereact/avatar';
+import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { FloatLabel } from 'primereact/floatlabel';
 import { Skeleton } from 'primereact/skeleton';
@@ -6,6 +7,8 @@ import { useState, useEffect } from 'react';
 
 import {
   findTransactionByIdAction,
+  hideTransactionAction,
+  showTransactionAction,
   TransactionDto,
   updateTransactionCategoryAction,
   updateTransactionNotesAction,
@@ -19,6 +22,7 @@ interface TransactionFormProps {
   transactionDto: TransactionDto | undefined;
   onHide: () => void;
 }
+// eslint-disable-next-line max-lines-per-function
 export default function TransactionForm({ transactionDto, onHide }: TransactionFormProps) {
   const [formState, setFormState] = useState<TransactionDto | undefined>(transactionDto);
   const [transaction, setTransaction] = useState<Transaction>();
@@ -60,6 +64,19 @@ export default function TransactionForm({ transactionDto, onHide }: TransactionF
     setEditedNotes(true);
   }
 
+  async function handleShowHide() {
+    setEditedCategory(false);
+    if (!formState) return;
+    if (formState.isHidden) {
+      showTransactionAction(formState.id);
+    } else {
+      hideTransactionAction(formState.id);
+    }
+    formState.isHidden = !formState.isHidden;
+    if (transaction) transaction.isHidden = !transaction.isHidden;
+    setEditedCategory(true);
+  }
+
   if (!formState || !transaction) return <></>;
   return (
     <Dialog
@@ -79,7 +96,7 @@ export default function TransactionForm({ transactionDto, onHide }: TransactionF
             </>
           ) : (
             <>
-              <div className="mt-8 flex items-center">
+              <div className="mt-8 flex items-center gap-2">
                 <TransactionNotes notes={transaction.notes} onChange={handleUpdateNotes} />
                 <Avatar
                   hidden={!editedNotes}
@@ -89,7 +106,7 @@ export default function TransactionForm({ transactionDto, onHide }: TransactionF
                   shape="circle"
                 />
               </div>
-              <div className="mt-8 flex items-center">
+              <div className="mt-8 flex items-center gap-2">
                 <FloatLabel>
                   <CategoryDropdown
                     categoryId={transaction.categoryId}
@@ -99,10 +116,15 @@ export default function TransactionForm({ transactionDto, onHide }: TransactionF
                 </FloatLabel>
                 <Avatar
                   hidden={!editedCategory}
-                  className="ml-2"
                   style={{ backgroundColor: 'var(--green-700)', color: '#ffffff' }}
                   icon="pi pi-check"
                   shape="circle"
+                />
+                <Button
+                  icon={`pi${formState.isHidden ? ' pi-eye' : ' pi-eye-slash'}`}
+                  label={`${formState.isHidden ? 'Re-exibir' : 'Ocultar'}`}
+                  severity={`${formState.isHidden ? 'info' : 'danger'}`}
+                  onClick={handleShowHide}
                 />
               </div>
             </>

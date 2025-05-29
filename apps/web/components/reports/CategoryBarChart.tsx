@@ -24,12 +24,14 @@ export default function CategoryBarChar({ transactions }: CategoryBarCharProps) 
     let total = 0;
 
     transactions.forEach((tx) => {
-      const month = monthFormatter.format(tx.date);
-      monthsSet.add(month);
-      total += tx.amount;
-      categoriesColors[tx.categoryName] = tx.categoryColor;
-      if (!grouped[tx.categoryName]) grouped[tx.categoryName] = {};
-      grouped[tx.categoryName][month] = (grouped[tx.categoryName][month] || 0) + tx.amount;
+      if (!tx.isHidden) {
+        const month = monthFormatter.format(tx.date);
+        monthsSet.add(month);
+        total += tx.amount;
+        categoriesColors[tx.categoryName] = tx.categoryColor;
+        if (!grouped[tx.categoryName]) grouped[tx.categoryName] = {};
+        grouped[tx.categoryName][month] = (grouped[tx.categoryName][month] || 0) + tx.amount;
+      }
     });
 
     const months = Array.from(monthsSet);

@@ -150,6 +150,20 @@ async function getTransactionsByFilter(filter: TransactionsFilter) {
   });
 }
 
+async function show(id: string): Promise<void> {
+  await getPrisma().transaction.update({
+    where: { id },
+    data: { isHidden: true },
+  });
+}
+
+async function hide(id: string): Promise<void> {
+  await getPrisma().transaction.update({
+    where: { id },
+    data: { isHidden: false },
+  });
+}
+
 async function findById(id: string): Promise<Transaction> {
   return getPrisma().transaction.findFirstOrThrow({
     where: { id },
@@ -163,5 +177,7 @@ const transactionsService = {
   updateNotes,
   getTransactionsByFilter,
   findById,
+  show,
+  hide,
 };
 export default transactionsService;

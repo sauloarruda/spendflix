@@ -24,6 +24,7 @@ export type TransactionDto = {
   accountName: string;
   accountColor: string;
   notes: string | null;
+  isHidden: boolean;
 };
 
 async function getTransactionsByFilterAction(
@@ -39,11 +40,20 @@ async function getTransactionsByFilterAction(
     accountName: transaction.account!.name,
     accountColor: transaction.account!.color,
     notes: transaction.notes,
+    isHidden: transaction.isHidden,
   }));
 }
 
 async function findTransactionByIdAction(id: string) {
   return transactionsService.findById(id);
+}
+
+async function showTransactionAction(id: string) {
+  transactionsService.show(id);
+}
+
+async function hideTransactionAction(id: string) {
+  transactionsService.hide(id);
 }
 
 export {
@@ -52,4 +62,6 @@ export {
   getTransactionsByFilterAction,
   findTransactionByIdAction,
   updateTransactionNotesAction,
+  showTransactionAction,
+  hideTransactionAction,
 };
