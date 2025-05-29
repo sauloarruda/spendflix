@@ -7,7 +7,7 @@ import { UserTokens } from './userTokens';
 
 async function updateUser(email: string, authResp: InitiateAuthCommandOutput): Promise<User> {
   let user = await userService.findByEmail(email);
-  const userResp = await cognito.getUserFromToken(authResp.AuthenticationResult?.AccessToken || '');
+  const userResp = await cognito.getUserFromToken(authResp.AuthenticationResult?.AccessToken ?? '');
   const cognitoId = userResp.UserAttributes?.find((attr) => attr.Name === 'sub')?.Value;
   const name = userResp.UserAttributes?.find((attr) => attr.Name === 'name')?.Value;
 
@@ -33,7 +33,7 @@ async function login(email: string, password: string): Promise<UserTokens> {
     refreshToken: result.RefreshToken!,
     idToken: result.IdToken!,
     // the cognito-local doesn't return the expiresIn
-    expiresIn: result.ExpiresIn || DEFAULT_EXPIRES_IN,
+    expiresIn: result.ExpiresIn ?? DEFAULT_EXPIRES_IN,
     sub: user.id.toString(),
   };
 }

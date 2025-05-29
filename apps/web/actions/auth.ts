@@ -31,7 +31,7 @@ async function onboardingLoginAction(onboardingUid: string): Promise<Onboarding>
 
   const user = await signupService.findUser(onboarding.userId);
   if (!user.temporaryPassword) throw new Error('Invalid user');
-  const tokens = await loginService.login(user.email, user.temporaryPassword!);
+  const tokens = await loginService.login(user.email, user.temporaryPassword);
   await setAuthCookie(tokens);
   return onboarding;
 }

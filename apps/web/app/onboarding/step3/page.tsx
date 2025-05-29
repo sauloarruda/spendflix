@@ -186,6 +186,7 @@ export default function OnboardingStep3() {
         {mainBanks.map((bank) => (
           <div
             key={bank.name}
+            data-testid={`bank-card-${bank.name}`}
             className={`border rounded-lg p-2 flex flex-col items-center cursor-pointer transition
             ${selectedMainBanks.includes(bank.name) ? 'border-primary bg-primary/20' : 'border-gray-300 bg-white'}`}
             onClick={() => toggleMainBank(bank.name)}
@@ -197,6 +198,7 @@ export default function OnboardingStep3() {
           </div>
         ))}
         <div
+          data-testid="bank-card-Outro"
           className={`border rounded-lg p-2 flex flex-col items-center cursor-pointer transition
           ${showOtherBanks ? 'border-primary bg-primary/20' : 'border-gray-300 bg-white'}`}
           onClick={() => setShowOtherBanks(!showOtherBanks)}
