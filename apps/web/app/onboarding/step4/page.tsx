@@ -1,15 +1,13 @@
 'use client';
 
-import { OnboardingData } from '@/modules/users';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { createAccountAction } from '@/actions/accounts';
-import { updateOnboardingAction } from '@/actions/onboarding';
 import { autorizeAction } from '@/actions/serverActions';
 import AccountAccordion from '@/components/onboarding/AccountAccordion';
 import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
-import ResumeOnboarding from '@/components/onboarding/ResumeOnboarding';
+import { useOnboarding } from '@/contexts/OnboardingContext';
 import { Account, SourceType } from '@/prisma';
 import { getSessionCookie } from '@/utils/cookie';
 
@@ -18,48 +16,49 @@ export default function OnboardingStep4() {
   const [monthsCount, setMonthsCount] = useState(0);
   const [nubankAccountId, setNubankAccountId] = useState<Account>();
   const [nubankCreditCardId, setNubankCreditCardId] = useState<Account>();
+  const { userId, updateOnboarding } = useOnboarding();
 
   function sumMonthsCount(updatedMonthsCount: number) {
     setMonthsCount(monthsCount + updatedMonthsCount);
   }
 
-  async function handleResumeOnboarding(onboarding: OnboardingData, userId: number) {
-    setNubankAccountId(
-      await autorizeAction(getSessionCookie(), () =>
-        createAccountAction({
-          userId,
-          bankNumber: '260', // only nubank now
-          name: 'Conta Corrente',
-          color: 'green-500',
-          sourceType: SourceType.NUBANK_ACCOUNT_CSV,
-        }),
-      ),
-    );
+  useEffect(() => {
+    async function findOrCreateAccounts() {
+      if (!userId) return;
+      setNubankAccountId(
+        await autorizeAction(getSessionCookie(), () =>
+          createAccountAction({
+            userId,
+            bankNumber: '260', // only nubank now
+            name: 'Conta Corrente',
+            color: 'green-500',
+            sourceType: SourceType.NUBANK_ACCOUNT_CSV,
+          }),
+        ),
+      );
 
-    setNubankCreditCardId(
-      await autorizeAction(getSessionCookie(), () =>
-        createAccountAction({
-          userId,
-          bankNumber: '260', // only nubank now
-          name: 'Cartão de Crédito',
-          color: 'orange-500',
-          sourceType: SourceType.NUBANK_CREDIT_CARD_CSV,
-        }),
-      ),
-    );
-  }
+      setNubankCreditCardId(
+        await autorizeAction(getSessionCookie(), () =>
+          createAccountAction({
+            userId,
+            bankNumber: '260', // only nubank now
+            name: 'Cartão de Crédito',
+            color: 'orange-500',
+            sourceType: SourceType.NUBANK_CREDIT_CARD_CSV,
+          }),
+        ),
+      );
+    }
+    findOrCreateAccounts();
+  }, [userId]);
 
   async function handleContinue() {
-    await updateOnboardingAction(localStorage.getItem('onboardingUid')!, { step: 5 });
+    await updateOnboarding({ step: 5 });
     router.push('/onboarding/step5');
   }
 
   return (
-    <ResumeOnboarding
-      message="Preparando para continuar..."
-      onResume={handleResumeOnboarding}
-      onError={() => router.push('/onboarding/step1')}
-    >
+    <>
       <h2 className="text-xl font-semibold mb-6 text-center">Prepare seus extratos</h2>
 
       <p className="text-gray-600 text-center mb-8 max-w-md mx-auto">
@@ -77,6 +76,6 @@ export default function OnboardingStep4() {
       )}
 
       <OnboardingNavigation disabled={monthsCount < 3} onClick={handleContinue} />
-    </ResumeOnboarding>
+    </>
   );
 }

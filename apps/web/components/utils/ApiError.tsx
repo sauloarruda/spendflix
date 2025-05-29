@@ -3,5 +3,5 @@ interface ApiErrorProps {
 }
 
 export default function ApiError({ error }: ApiErrorProps) {
-  return error ? <div className="text-red-500 mb-4">{error}</div> : null;
+  return error ? <div className="text-red-500 mb-4 max-w-md mx-auto">{error}</div> : null;
 }

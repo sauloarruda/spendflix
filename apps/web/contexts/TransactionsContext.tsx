@@ -19,6 +19,7 @@ export function TransactionsProvider({ userId, children }: TransactionsProviderP
   const [transactions, setTransactions] = useState<TransactionDto[]>();
 
   useEffect(() => {
+    if (transactions) return;
     async function fetchTransactions() {
       try {
         const fetchedTransactions = await autorizeAction<TransactionDto[]>(getSessionCookie(), () =>
@@ -32,7 +33,7 @@ export function TransactionsProvider({ userId, children }: TransactionsProviderP
       }
     }
     fetchTransactions();
-  }, [userId, router]);
+  }, [userId, router, transactions, setTransactions]);
 
   if (loading) return <Skeleton className="lg:w-5/6 md:w-full" height="220px"></Skeleton>;
   return (

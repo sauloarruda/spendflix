@@ -48,7 +48,7 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
   }
 
   return (
-    <>
+    <div className="max-w-md mx-auto">
       <div className="flex flex-col gap-8 my-8">
         <EmailField label="Email" id="email" value={email} onChange={handleEmailChange} />
 
@@ -80,6 +80,6 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
           Esqueci minha senha
         </Link>
       </p>
-    </>
+    </div>
   );
 }

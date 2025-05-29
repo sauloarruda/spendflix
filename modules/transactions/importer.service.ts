@@ -5,6 +5,7 @@ import Papa from 'papaparse';
 
 import getLogger from '@/common/logger';
 import getPrisma from '@/common/prisma';
+import LimitedConcurrentPromise from '@/common/promise';
 import s3Service from '@/common/s3';
 import Timer from '@/common/timer';
 import { categorizerService } from '@/modules/categorization';
@@ -116,13 +117,12 @@ async function importFromSource(source: Source) {
   logger.info({ source }, 'Started importing transactions');
   const csvContents = await getFileFromSource(source);
   const rows = parseCsv(csvContents);
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < rows.length; i++) {
-    const row = rows[i];
-    logger.debug({ row }, `Processing row ${i + 1}/${rows.length}`);
-    // eslint-disable-next-line no-await-in-loop
-    await processRow(row, source);
-  }
+  await LimitedConcurrentPromise.all(
+    rows.map((row, i) => {
+      logger.debug({ row }, `Processing row ${i + 1}/${rows.length}`);
+      return processRow(row, source);
+    }),
+  );
   logger.info(`Finished importing ${rows.length} transactions`);
   await getPrisma().source.update({
     where: { id: source.id },

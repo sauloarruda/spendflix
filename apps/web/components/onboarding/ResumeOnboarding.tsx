@@ -1,62 +1,123 @@
-import { OnboardingData } from '@/modules/users';
-import { UnauthorizedException } from '@aws-sdk/client-cognito-identity-provider';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+'use client';
 
-import { getOnboardingAction } from '@/actions/onboarding';
-import LoadingForm from '@/components/utils/LoadingForm';
-import { hasSessionCookie } from '@/utils/cookie';
+import { OnboardingData } from '@/modules/users';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState, useCallback } from 'react';
+
+import { onboardingLoginAction } from '@/actions/auth';
+import { getOnboardingAction, updateOnboardingAction } from '@/actions/onboarding';
+import { checkToken } from '@/actions/serverActions';
+import OnboardingContext from '@/contexts/OnboardingContext';
+import { getSessionCookie } from '@/utils/cookie';
 
 interface ResumeOnboardingProps {
-  message: string;
-  children?: React.ReactNode;
-  onResume?: (onboarding: OnboardingData, userId: number, onboardingUid: string) => void;
-  onError?: (error: Error, onboardingUid: string | null) => void;
+  children: React.ReactNode;
 }
 
-export default function ResumeOnboarding({
-  message,
-  children,
-  onResume,
-  onError,
-}: ResumeOnboardingProps) {
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
-
-  async function handleError(error: Error, uid: string | null) {
-    if (onError) onError(error, uid);
-    if (error instanceof UnauthorizedException) router.push('/401');
-    else router.push('/onboarding/step1');
+async function checkSessionCookie(uid: string): Promise<boolean> {
+  let session = getSessionCookie();
+  if (!session) {
+    try {
+      await onboardingLoginAction(uid);
+      session = getSessionCookie();
+    } catch {
+      return false;
+    }
   }
-
-  async function handleLoading() {
-    if (!loading) return;
-    const uid = localStorage.getItem('onboardingUid');
-
-    if (!hasSessionCookie()) {
-      const error = new Error('Session cookie not found');
-      handleError(error, uid);
-      return;
+  if (!session) return false;
+  try {
+    await checkToken(session);
+    return true;
+  } catch {
+    try {
+      await onboardingLoginAction(uid);
+      session = getSessionCookie();
+      if (!session) return false;
+      await checkToken(session);
+      return true;
+    } catch {
+      return false;
     }
+  }
+}
 
-    if (!uid) {
-      const error = new Error('onboardingUid not found');
-      handleError(error, uid);
-      return;
-    }
+export default function ResumeOnboarding({ children }: ResumeOnboardingProps) {
+  const router = useRouter();
+  const [isLoadingOnboarding, setIsLoadingOnboarding] = useState(true);
+  const [userId, setUserId] = useState<number | null>(null);
+  const [onboardingUid, setOnboardingUid] = useState<string | null>(null);
+  const [onboardingData, setOnboardingData] = useState<OnboardingData | null>(null);
 
-    const onboarding = await getOnboardingAction(uid);
-    if (!onboarding) {
-      handleError(new Error('Onboarding not found'), uid);
-    } else if (onResume) {
-      onResume(onboarding.data as OnboardingData, onboarding.userId!, onboarding.id);
+  useEffect(() => {
+    async function restoreOnboarding() {
+      setIsLoadingOnboarding(true);
+      try {
+        const uid = localStorage.getItem('onboardingUid');
+        setOnboardingUid(uid);
+        if (!uid) {
+          router.replace('/onboarding/step1');
+          return;
+        }
+        const sessionValid = await checkSessionCookie(uid);
+        if (!sessionValid) {
+          router.replace('/onboarding/step1?error=401');
+          return;
+        }
+        // TODO: trocar para chamada via API route /api/onboarding/[uid]
+        const onboarding = await getOnboardingAction(uid);
+        if (!onboarding || !onboarding.data) {
+          router.replace('/onboarding/step1?error=404');
+          return;
+        }
+        if (!onboarding.userId) {
+          router.replace('/onboarding/step1?error=403');
+          return;
+        }
+        setUserId(onboarding.userId);
+        setOnboardingData(onboarding.data as OnboardingData);
+      } catch {
+        throw new Error(
+          'Ocorreu um erro ao restaurar seu cadastro. Tente novamente ou entre em contato com o suporte.',
+        );
+      } finally {
+        setIsLoadingOnboarding(false);
+      }
     }
-    setLoading(false);
+    restoreOnboarding();
+  }, [router]);
+
+  const updateOnboarding = useCallback(
+    async (data: Partial<OnboardingData>) => {
+      if (!onboardingUid) return;
+      await updateOnboardingAction(onboardingUid, data);
+      setOnboardingData((prev: OnboardingData | null) => ({ ...prev, ...data }));
+    },
+    [onboardingUid],
+  );
+
+  const finishOnboarding = useCallback(async () => {
+    if (!onboardingUid) return;
+    await updateOnboardingAction(onboardingUid, {
+      finishedAt: new Date().toISOString(),
+    });
+    localStorage.removeItem('onboardingUid');
+    router.replace('/');
+  }, [onboardingUid, router]);
+
+  if (isLoadingOnboarding) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <strong className="mb-4">Retomando de onde você parou...</strong>
+        <div className="w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
   }
 
   return (
-    <LoadingForm message={message} onLoad={handleLoading}>
+    <OnboardingContext.Provider
+      value={{ isLoadingOnboarding, userId, onboardingData, updateOnboarding, finishOnboarding }}
+    >
       {children}
-    </LoadingForm>
+    </OnboardingContext.Provider>
   );
 }

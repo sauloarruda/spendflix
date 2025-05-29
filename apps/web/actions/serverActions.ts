@@ -59,4 +59,4 @@ async function autorizeAction<T>(
   }
 }
 
-export { autorizeAction };
+export { autorizeAction, checkToken };

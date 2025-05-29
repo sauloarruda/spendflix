@@ -10,12 +10,13 @@ export default function LoadingForm({ message, onLoad, children }: LoadingFormPr
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!isLoading) return;
     const load = async () => {
       await onLoad();
       setIsLoading(false);
     };
     load();
-  }, [onLoad]);
+  }, [onLoad, isLoading]);
 
   if (isLoading) {
     return (

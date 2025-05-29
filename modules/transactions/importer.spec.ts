@@ -1,13 +1,5 @@
 import { Readable } from 'stream';
 
-import {
-  defineAccountFactory,
-  defineBankFactory,
-  defineSourceFactory,
-  defineUserFactory,
-  initialize,
-  SourceFactoryInterface,
-} from '@/fabbrica';
 import { Source, SourceType } from '@/prisma';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { sdkStreamMixin } from '@aws-sdk/util-stream-node';
@@ -15,7 +7,9 @@ import { mockClient } from 'aws-sdk-client-mock';
 import Papa from 'papaparse';
 
 import getConfig from '@/common/config';
-import getPrisma from '@/common/prisma';
+import { sourceFactory } from '@/factories';
+
+import getPrisma from '../common/prisma';
 
 import importerService from './importer.service';
 
@@ -30,8 +24,6 @@ jest.mock('@/common/config', () => ({
     DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/spendflix_test',
   }),
 }));
-
-initialize({ prisma: getPrisma() });
 
 const s3Mock = mockClient(S3Client);
 
@@ -52,24 +44,13 @@ function setupS3Mock(mockCsvContent: string) {
 
 describe('Importer', () => {
   let mockCsvContent: string;
-  let sourceFactory: SourceFactoryInterface;
   let source: Source;
 
   beforeEach(async () => {
     s3Mock.reset();
     jest.clearAllMocks();
-
-    const bankFactory = defineBankFactory();
-    const userFactory = defineUserFactory();
-    const accountFactory = defineAccountFactory({
-      defaultData: {
-        user: userFactory,
-        bank: bankFactory,
-      },
-    });
-    sourceFactory = await defineSourceFactory({
-      defaultData: { account: accountFactory },
-    });
+    // Use centralized sourceFactory
+    // sourceFactory already has defaultData with accountFactory, which has user and bank
   });
 
   describe('NUBANK_ACCOUNT_CSV', () => {

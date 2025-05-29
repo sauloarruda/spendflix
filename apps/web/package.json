@@ -12,7 +12,7 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write .",
     "prisma:generate": "../../scripts/prisma.sh",
-    "test": "LOG_LEVEL=failure jest",
+    "test": "LOG_LEVEL=error jest",
     "test:coverage": "LOG_LEVEL=failure jest --coverage",
     "test:watch": "jest --watch"
   },

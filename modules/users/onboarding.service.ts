@@ -48,11 +48,11 @@ async function update(id: string, data: Partial<OnboardingData>, userId: number 
   });
 }
 
-const onboardingRepository = {
+const onboardingService = {
   find,
   create,
   update,
   findByEmail,
 };
 
-export default onboardingRepository;
+export default onboardingService;
