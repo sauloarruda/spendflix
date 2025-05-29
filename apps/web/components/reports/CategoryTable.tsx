@@ -44,7 +44,10 @@ export default function CategoryTable({ transactions }: CategoryTableProps) {
       <TransactionForm transactionDto={editingTransaction} onHide={handleTransactionFormHide} />
       <Accordion className="category-report" multiple>
         {Object.entries(transactionsByMonth).map(([month, monthTransactions]) => {
-          const monthTotal = monthTransactions.reduce((sum, tx) => sum + tx.amount, 0);
+          const monthTotal = monthTransactions.reduce(
+            (sum, tx) => (tx.isHidden ? sum : sum + tx.amount),
+            0,
+          );
           return (
             <AccordionTab
               key={month}

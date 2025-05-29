@@ -20,7 +20,13 @@ export default function TransactionCard({ transaction, onEdit }: CategoryCardPro
   }
 
   return (
-    <div className="flex items-top mb-4 bg-white rounded-lg shadow p-4" key={transaction.id}>
+    <div
+      className={classNames(
+        'flex items-top mb-4 bg-white rounded-lg shadow p-4',
+        transaction.isHidden ? 'opacity-50' : '',
+      )}
+      key={transaction.id}
+    >
       <div className="w-16 h-24">
         <div className="mb-4 border-1 border-gray-800 rounded flex items-center justify-center text-xl font-bold text-gray-800 shadow-sm bg-white mr-4">
           {dayFormatter.format(transaction.date)}

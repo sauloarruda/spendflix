@@ -46,7 +46,7 @@ export default function TransactionNotes({
 
   if (notes !== null) {
     return (
-      <div className="flex w-full gap-2">
+      <div className="flex grow-1 gap-2">
         <FloatLabel className="grow">
           <InputTextarea
             ref={noteRef}
