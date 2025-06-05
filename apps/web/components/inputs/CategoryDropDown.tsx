@@ -1,9 +1,10 @@
 import { Dropdown, DropdownProps } from 'primereact/dropdown';
 import { Skeleton } from 'primereact/skeleton';
-import { cache, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { getCategoriesAction } from '@/actions/categories';
 import { Category } from '@/prisma';
+
+import { useCategories } from '@/hooks/useCategories';
 
 interface CategoryDropdownProps {
   onChange: (category: Category) => void;
@@ -11,18 +12,14 @@ interface CategoryDropdownProps {
   categoryId?: string | null;
 }
 export default function CategoryDropdown({ onChange, value, categoryId }: CategoryDropdownProps) {
-  const [categories, setCategories] = useState<Category[]>();
+  const { categories, isLoading } = useCategories();
   const [selectedCategory, setSelectedCategory] = useState<Category | null | undefined>(value);
-  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const fetchCategories = cache(async () => {
-      const result = await getCategoriesAction();
-      setCategories(result);
-      if (categoryId) setSelectedCategory(result.find((cat) => cat.id === categoryId));
-      setLoading(false);
-    });
-    fetchCategories();
-  }, [categoryId]);
+    if (categories && categoryId) {
+      setSelectedCategory(categories.find((cat: Category) => cat.id === categoryId));
+    }
+  }, [categories, categoryId]);
 
   function handleChange(event: { value: Category }) {
     setSelectedCategory(event.value);
@@ -45,7 +42,7 @@ export default function CategoryDropdown({ onChange, value, categoryId }: Catego
     return itemTemplate(option);
   }
 
-  return loading ? (
+  return isLoading ? (
     <Skeleton width="15em" height="3.5em"></Skeleton>
   ) : (
     <Dropdown

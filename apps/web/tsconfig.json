@@ -31,7 +31,8 @@
       "@/fabbrica": ["../../database/src/__generated__/fabbrica"],
       "@/app/*": ["./app/*"],
       "@/contexts/*": ["./contexts/*"],
-      "@/utils/*": ["./utils/*"]
+      "@/utils/*": ["./utils/*"],
+      "@/hooks/*": ["./hooks/*"]
     },
     "baseUrl": "."
   },

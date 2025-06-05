@@ -34,7 +34,8 @@
     "primereact": "^10.9.5",
     "prisma": "^6.7.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "swr": "^2.3.3"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
