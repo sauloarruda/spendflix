@@ -22,6 +22,7 @@
     "@aws-sdk/s3-request-presigner": "^3.803.0",
     "@prisma/client": "6.7.0",
     "@prisma/nextjs-monorepo-workaround-plugin": "^6.7.0",
+    "axios": "^1.9.0",
     "chart.js": "^4.4.9",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dotenv": "^16.5.0",

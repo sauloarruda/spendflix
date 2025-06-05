@@ -98,7 +98,11 @@ async function processRow(
   const checksum = calculateChecksum(data);
   if (await hasTransaction(checksum)) return undefined;
 
-  const categoryRule = await categorizerService.inferCategory(data.description, source.accountId);
+  const categoryRule = await categorizerService.inferCategory(
+    data.description,
+    source.accountId,
+    data.amount,
+  );
   const transactionData = {
     ...data,
     checksum,

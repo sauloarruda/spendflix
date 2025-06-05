@@ -3,7 +3,6 @@ import { DataTable } from 'primereact/datatable';
 import { useEffect, useState } from 'react';
 
 import { countTransactionsPerMonthAction } from '@/actions/accounts';
-import { autorizeAction } from '@/actions/serverActions';
 import { getSessionCookie } from '@/utils/cookie';
 
 interface Props {
@@ -19,9 +18,7 @@ export default function CountTransactionsPerMonth({ accountId, ts, onUpdate }: P
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await autorizeAction(getSessionCookie(), () =>
-        countTransactionsPerMonthAction(accountId),
-      );
+      const data = await countTransactionsPerMonthAction(getSessionCookie(), accountId);
       setTransactionsPerMonth(data);
       onUpdate(data.length);
     };

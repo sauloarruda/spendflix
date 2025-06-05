@@ -2,11 +2,12 @@ import { UncategorizedTransaction } from '@/modules/transactions';
 import { Avatar } from 'primereact/avatar';
 import { Message } from 'primereact/message';
 import { Tag } from 'primereact/tag';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 import { updateTransactionCategoryAction } from '@/actions/transactions';
 import CategoryDropdown from '@/components/inputs/CategoryDropDown';
 import { Category } from '@/prisma';
+import { getSessionCookie } from '@/utils/cookie';
 import { transactionAmountClass } from '@/utils/formatter';
 
 interface UncategorizedTransactionRowProps {
@@ -21,21 +22,25 @@ export default function UncategorizedTransactions({
   const [edited, setEdited] = useState<Record<string, boolean>>({});
 
   async function handleCategoryChange(transaction: UncategorizedTransaction, category: Category) {
-    await updateTransactionCategoryAction(transaction.ids, category.id);
+    await updateTransactionCategoryAction(getSessionCookie(), transaction.ids, category.id);
     setEdited({ ...edited, [transaction.ids.join()]: true });
     onChange(Object.keys(edited));
   }
 
-  function displayDescription(transaction: UncategorizedTransaction) {
+  function displayDescription(transaction: UncategorizedTransaction): ReactNode {
     const installmentsRegex = / - Parcela\s+\d+\/\d+/gi;
-    const parts = [<>{transaction.descriptions[0].replace(installmentsRegex, '')}</>];
+    const parts = [
+      <span key={1}>{transaction.descriptions[0].replace(installmentsRegex, '')}</span>,
+    ];
     if (transaction.descriptions.length > 1) {
       parts.push(
-        <span className="ml-1 text-gray-400">({transaction.descriptions.length} lançamentos)</span>,
+        <span key={2} className="ml-1 text-gray-400">
+          ({transaction.descriptions.length} lançamentos)
+        </span>,
       );
     }
     if (installmentsRegex.test(transaction.descriptions[0])) {
-      parts.push(<Tag className="ml-1" value="Parcelado"></Tag>);
+      parts.push(<Tag key={3} className="ml-1" value="Parcelado"></Tag>);
     }
     return parts;
   }
@@ -65,9 +70,9 @@ export default function UncategorizedTransactions({
 
   function pendingTransactionsText(): string {
     const pending = pendingTransactions();
-    return pending === 0
-      ? 'Todas as transação foram categorizadas'
-      : `${pending} Transações Pendentes`;
+    return pending === 0 ?
+      'Todas as transação foram categorizadas' :
+      `${pending} Transações Pendentes`;
   }
 
   function listTemplate(items: UncategorizedTransaction[]) {

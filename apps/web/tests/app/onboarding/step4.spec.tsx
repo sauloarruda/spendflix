@@ -1,6 +1,5 @@
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import React from 'react';
-import { autorizeAction } from '@/actions/serverActions';
 import OnboardingStep4Page from '@/app/onboarding/step4/page';
 import OnboardingContext, { OnboardingContextType } from '@/contexts/OnboardingContext';
 import { Account, SourceType } from '@/prisma';
@@ -15,10 +14,6 @@ jest.mock('@/modules/transactions', () => ({
     firstOrCreate: jest.fn(),
   },
   transactionsService: {},
-}));
-
-jest.mock('@/actions/serverActions', () => ({
-  autorizeAction: jest.fn((cookie, action) => (action as () => unknown)()),
 }));
 
 const mockRouterPush = jest.fn();
@@ -141,13 +136,6 @@ describe('OnboardingStep4Page', () => {
   beforeAll(() => {
     const { createAccountsAction } = require('@/actions/accounts');
     createAccountsAction.mockResolvedValue([mockNubankAccount, mockNubankCreditCard]);
-
-    jest
-      .spyOn(require('@/actions/serverActions'), 'autorizeAction')
-      .mockImplementation((...args: unknown[]) => {
-        const action = args[1] as () => unknown;
-        return action();
-      });
   });
 
   it('renders initial text content', () => {
@@ -162,7 +150,6 @@ describe('OnboardingStep4Page', () => {
     });
 
     expect(getSessionCookie).toHaveBeenCalled();
-    expect(autorizeAction).toHaveBeenCalledTimes(1);
     // Use jest.mocked to access the mock
     const accountsActions = require('@/actions/accounts');
     // console.log(accountsActions.createAccountsAction.mock);

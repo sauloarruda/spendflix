@@ -51,7 +51,7 @@ describe('categorizerService', () => {
       category: { connect: { id: category.id } },
       account: undefined,
     });
-    const match = await categorizerService.inferCategory(keyword, account.id);
+    const match = await categorizerService.inferCategory(keyword, account.id, 0);
     expect(match).toBeDefined();
     expect(match!.categoryRuleId).toBe(rule.id);
     expect(match!.categoryId).toBe(category.id);
@@ -74,7 +74,7 @@ describe('categorizerService', () => {
       ocurrences: 2,
     });
     // Should prefer the account-specific rule
-    const match = await categorizerService.inferCategory(keyword, account.id);
+    const match = await categorizerService.inferCategory(keyword, account.id, 0);
     expect(match).toBeDefined();
     expect(match!.categoryRuleId).toBe(userRule.id);
     expect(match!.accountId).toBe(account.id);
@@ -99,9 +99,9 @@ describe('categorizerService', () => {
       ocurrences: 2,
     });
     // Match for similarity
-    const simMatch = await categorizerService.inferCategory(simKeyword, account.id);
+    const simMatch = await categorizerService.inferCategory(simKeyword, account.id, 0);
     // Match for exact
-    const exactMatch = await categorizerService.inferCategory(exactKeyword, account.id);
+    const exactMatch = await categorizerService.inferCategory(exactKeyword, account.id, 0);
     expect(simMatch).toBeDefined();
     expect(exactMatch).toBeDefined();
     expect(simMatch!.score).toBeGreaterThan(0.7);
@@ -129,14 +129,28 @@ describe('categorizerService', () => {
       where: { id: rule1.id },
       data: { updatedAt: new Date(Date.now() + 1000) },
     });
-    const match = await categorizerService.inferCategory(keyword, account2.id);
+    const match = await categorizerService.inferCategory(keyword, account2.id, 0);
     // Should prefer rule2 (higher ocurrences)
     expect(match).toBeDefined();
     expect(match!.categoryRuleId).toBe(rule2.id);
   });
 
   it('returns undefined if no match', async () => {
-    const match = await categorizerService.inferCategory(`NoMatchKeyword-${uid}`, account.id);
+    const match = await categorizerService.inferCategory(`NoMatchKeyword-${uid}`, account.id, 0);
     expect(match).toBeUndefined();
+  });
+
+  it('returns Receitas category when value is positive and there is no matching rule', async () => {
+    // Ensure Receitas category exists
+    const receitasCategory = await categoryFactory.create({ name: 'Receitas' });
+    const description = `NoMatchKeyword-${uid}`;
+    const amount = 100;
+    // No category rules created for this description
+    const match = await categorizerService.inferCategory(description, account.id, amount);
+    expect(match).toBeDefined();
+    expect(match!.categoryId).toBe(receitasCategory.id);
+    expect(match!.categoryRuleId).toBeNull();
+    expect(match!.score).toBe(0);
+    expect(match!.accountId).toBe(account.id);
   });
 });

@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import { autorizeAction } from '@/actions/serverActions';
 import { getUncategorizedTransactionsAction } from '@/actions/transactions';
 import UncategorizedTransactions from '@/components/forms/UncategorizedTransactions';
 import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
@@ -21,9 +20,7 @@ export default function OnboardingStep5() {
 
   async function fetchUncategorizedTransactions() {
     if (!userId || result) return;
-    setResult(
-      await autorizeAction(getSessionCookie(), () => getUncategorizedTransactionsAction(userId)),
-    );
+    setResult(await getUncategorizedTransactionsAction(getSessionCookie(), userId));
   }
 
   function shouldContinue() {

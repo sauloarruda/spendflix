@@ -23,7 +23,7 @@ function sanitizeDescription(description: string): string {
 }
 
 // eslint-disable-next-line max-lines-per-function
-async function findCategory(description: string, accountId: string) {
+async function findCategory(description: string, accountId: string, amount: number) {
   const logger = getLogger().child({ module: 'categorizer' });
   const sanitizedDescription = sanitizeDescription(description);
   const exactMatchSql = "$1 ~* ('\\m' || r.\"keyword\" || '\\M')";
@@ -48,12 +48,34 @@ async function findCategory(description: string, accountId: string) {
     accountId,
   );
   logger.debug({ sanitizeDescription, accountId, rules }, 'Categories matched');
-  return rules.length ? categoryRuleToMatch(rules[0] as CategoryRuleWithScore) : undefined;
+  return rules.length
+    ? categoryRuleToMatch(rules[0] as CategoryRuleWithScore)
+    : inferCategoryByAmount(amount, accountId);
+}
+
+const INCOMING_CATEGORY_NAME = 'Receitas';
+async function inferCategoryByAmount(
+  amount: number,
+  accountId: string,
+): Promise<CategorizerMatch | undefined> {
+  if (amount > 0) {
+    const category = await getPrisma().category.findUnique({
+      where: { name: INCOMING_CATEGORY_NAME },
+    });
+    if (!category) return undefined;
+    return {
+      categoryRuleId: null,
+      categoryId: category.id,
+      accountId,
+      score: 0,
+    };
+  }
+  return undefined;
 }
 
 export type CategorizerMatch = {
   categoryId: string;
-  categoryRuleId: string;
+  categoryRuleId: string | null;
   score: number;
   accountId: string | null;
 };
@@ -72,10 +94,11 @@ function categoryRuleToMatch(rule: CategoryRuleWithScore): CategorizerMatch {
 async function inferCategory(
   description: string,
   accountId: string,
+  amount: number,
 ): Promise<CategorizerMatch | undefined> {
   // make sure that account exists
   await getPrisma().account.findFirstOrThrow({ where: { id: accountId } });
-  return findCategory(description, accountId);
+  return findCategory(description, accountId, amount);
 }
 
 async function findOrCreateUserRule(description: string, categoryId: string, accountId: string) {

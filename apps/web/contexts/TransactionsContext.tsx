@@ -1,10 +1,8 @@
 import { useRouter } from 'next/navigation';
 import { Skeleton } from 'primereact/skeleton';
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
 
-import { autorizeAction, InvalidAuthenticationError } from '@/actions/serverActions';
-import { getTransactionsByFilterAction, TransactionDto } from '@/actions/transactions';
-import { getSessionCookie } from '@/utils/cookie';
+import { TransactionDto } from '@/actions/transactions';
 
 interface TransactionsProviderProps {
   userId: number;
@@ -17,19 +15,44 @@ export function TransactionsProvider({ userId, children }: TransactionsProviderP
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [transactions, setTransactions] = useState<TransactionDto[]>();
+  const lastModifiedRef = useRef<string | undefined>(undefined);
 
   useEffect(() => {
     if (transactions) return;
     async function fetchTransactions() {
       try {
-        const fetchedTransactions = await autorizeAction<TransactionDto[]>(getSessionCookie(), () =>
-          getTransactionsByFilterAction({ userId }),
+        const headers: HeadersInit = {};
+        if (lastModifiedRef.current) {
+          headers['If-Modified-Since'] = lastModifiedRef.current;
+        }
+        const res = await fetch(`/api/transactions?userId=${userId}`, {
+          headers,
+          credentials: 'include',
+        });
+        if (res.status === 401) {
+          router.push('/401');
+          return;
+        }
+        const lastModified = res.headers.get('Last-Modified');
+        if (lastModified) {
+          lastModifiedRef.current = lastModified;
+        }
+        if (res.status === 304) {
+          setLoading(false);
+          return;
+        }
+        if (!res.ok) throw new Error('Failed to fetch transactions');
+        const fetchedTransactions = await res.json();
+        setTransactions(
+          fetchedTransactions.map((tx: TransactionDto) => ({
+            ...tx,
+            date: new Date(tx.date),
+            updatedAt: new Date(tx.updatedAt),
+          })),
         );
-        setTransactions(fetchedTransactions);
         setLoading(false);
-      } catch (error) {
+      } catch {
         setTransactions([]);
-        if (error instanceof InvalidAuthenticationError) router.push('/401');
       }
     }
     fetchTransactions();

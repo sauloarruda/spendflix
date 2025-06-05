@@ -1,20 +1,17 @@
+'use server';
+
 import getConfig from '@/common/config';
 import getLogger from '@/common/logger';
 import { validateCognitoJwtFields } from 'aws-jwt-verify/cognito-verifier';
-import { Jwk } from 'aws-jwt-verify/jwk';
+import { Fetcher } from 'aws-jwt-verify/https';
+import { Jwk, SimpleJwksCache } from 'aws-jwt-verify/jwk';
 import { JwtHeader, JwtPayload } from 'aws-jwt-verify/jwt-model';
 import { JwtVerifier, JwtVerifierSingleIssuer } from 'aws-jwt-verify/jwt-verifier';
+import axios from 'axios';
+
+import { InvalidAuthenticationError } from './InvalidAuthenticationError';
 
 const logger = getLogger().child({ module: 'serverActions' });
-
-export class InvalidAuthenticationError extends Error {
-  cause: Error;
-
-  constructor(message: string, cause?: unknown) {
-    super(message);
-    this.cause = cause as Error;
-  }
-}
 
 type JwtVerifierType = JwtVerifierSingleIssuer<{
   issuer: string;
@@ -22,27 +19,45 @@ type JwtVerifierType = JwtVerifierSingleIssuer<{
   customJwtCheck: ({ payload }: { header: JwtHeader; payload: JwtPayload; jwk: Jwk }) => void;
 }>;
 
+class CustomFetcher implements Fetcher {
+  instance = axios.create();
+
+  public async fetch(uri: string) {
+    return this.instance
+      .get(uri, { responseType: 'arraybuffer' })
+      .then((response) => response.data);
+  }
+}
+
 let verifier: JwtVerifierType;
 function getVerifier(): JwtVerifierType {
   if (!verifier) {
-    verifier = JwtVerifier.create({
-      issuer: `${getConfig().COGNITO_ENDPOINT}/${getConfig().COGNITO_USER_POOL_ID}`,
-      audience: null,
-      customJwtCheck: ({ payload }) =>
-        validateCognitoJwtFields(payload, {
-          tokenUse: 'access',
-          clientId: getConfig().COGNITO_CLIENT_ID,
+    verifier = JwtVerifier.create(
+      {
+        issuer: `${getConfig().COGNITO_ENDPOINT}/${getConfig().COGNITO_USER_POOL_ID}`,
+        audience: null,
+        customJwtCheck: ({ payload }) =>
+          validateCognitoJwtFields(payload, {
+            tokenUse: 'access',
+            clientId: getConfig().COGNITO_CLIENT_ID,
+          }),
+      },
+      {
+        jwksCache: new SimpleJwksCache({
+          fetcher: new CustomFetcher(),
         }),
-    });
+      },
+    );
   }
   return verifier;
 }
 
-async function checkToken(token: string) {
+async function checkToken(token: string): Promise<JwtPayload> {
   const payload = await getVerifier().verify(token);
   return payload;
 }
-async function autorizeAction<T>(
+
+async function authorizeAction<T>(
   authorization: string | undefined,
   action: (tokenPayload: JwtPayload | undefined) => Promise<T>,
 ): Promise<T> {
@@ -54,9 +69,9 @@ async function autorizeAction<T>(
     const tokenPayload = await checkToken(authorization);
     return action(tokenPayload);
   } catch (error) {
-    logger.debug({ error }, 'Invalid authorization');
+    logger.warn({ error }, 'Invalid authorization');
     throw new InvalidAuthenticationError('Invalid authorization', error);
   }
 }
 
-export { autorizeAction, checkToken };
+export { authorizeAction, checkToken };

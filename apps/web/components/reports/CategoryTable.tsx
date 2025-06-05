@@ -29,7 +29,13 @@ export default function CategoryTable({ transactions }: CategoryTableProps) {
   }
 
   function renderTransaction(transaction: TransactionDto) {
-    return <TransactionCard transaction={transaction} onEdit={triggerEditTransaction} />;
+    return (
+      <TransactionCard
+        key={transaction.id}
+        transaction={transaction}
+        onEdit={triggerEditTransaction}
+      />
+    );
   }
 
   if (!transactions) return <></>;

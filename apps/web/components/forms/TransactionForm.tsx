@@ -17,6 +17,7 @@ import TransactionHeader from '@/components/forms/TransactionHeader';
 import CategoryDropdown from '@/components/inputs/CategoryDropDown';
 import TransactionNotes from '@/components/inputs/TransactionNotes';
 import { Category, Transaction } from '@/prisma';
+import { getSessionCookie } from '@/utils/cookie';
 
 interface TransactionFormProps {
   transactionDto: TransactionDto | undefined;
@@ -37,7 +38,7 @@ export default function TransactionForm({ transactionDto, onHide }: TransactionF
     setFormState(transactionDto);
 
     const fetchTransaction = async (id: string) => {
-      setTransaction(await findTransactionByIdAction(id));
+      setTransaction(await findTransactionByIdAction(getSessionCookie(), id));
       setLoading(false);
     };
 
@@ -48,7 +49,7 @@ export default function TransactionForm({ transactionDto, onHide }: TransactionF
     setEditedCategory(false);
     if (!formState) throw new Error('Form not defined');
     const id = formState.id!;
-    await updateTransactionCategoryAction([id], category.id);
+    await updateTransactionCategoryAction(getSessionCookie(), [id], category.id);
     formState.categoryName = category.name;
     formState.categoryColor = category.color;
     setEditedCategory(true);
@@ -58,7 +59,7 @@ export default function TransactionForm({ transactionDto, onHide }: TransactionF
   async function handleUpdateNotes(notes: string | null) {
     setEditedNotes(false);
     if (!formState) throw new Error('Form not defined');
-    await updateTransactionNotesAction(formState.id, notes);
+    await updateTransactionNotesAction(getSessionCookie(), formState.id, notes);
     formState.notes = notes;
     if (transaction) transaction.notes = notes;
     setEditedNotes(true);
@@ -68,9 +69,9 @@ export default function TransactionForm({ transactionDto, onHide }: TransactionF
     setEditedCategory(false);
     if (!formState) return;
     if (formState.isHidden) {
-      showTransactionAction(formState.id);
+      showTransactionAction(getSessionCookie(), formState.id);
     } else {
-      hideTransactionAction(formState.id);
+      hideTransactionAction(getSessionCookie(), formState.id);
     }
     formState.isHidden = !formState.isHidden;
     if (transaction) transaction.isHidden = !transaction.isHidden;

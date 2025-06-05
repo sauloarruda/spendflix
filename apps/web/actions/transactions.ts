@@ -1,17 +1,29 @@
 'use server';
 
-import { TransactionsFilter, transactionsService } from '@/modules/transactions';
+import { transactionsService } from '@/modules/transactions';
 
-async function getUncategorizedTransactionsAction(userId: number) {
-  return transactionsService.getUncategorizedTransactions(userId);
+import { authorizeAction } from './serverActions';
+
+async function getUncategorizedTransactionsAction(session: string | undefined, userId: number) {
+  return authorizeAction(session, () => transactionsService.getUncategorizedTransactions(userId));
 }
 
-async function updateTransactionCategoryAction(transactionIds: string[], categoryId: string) {
-  await transactionsService.updateCategory(transactionIds, categoryId);
+async function updateTransactionCategoryAction(
+  session: string | undefined,
+  transactionIds: string[],
+  categoryId: string,
+) {
+  await authorizeAction(session, () =>
+    transactionsService.updateCategory(transactionIds, categoryId),
+  );
 }
 
-async function updateTransactionNotesAction(transactionId: string, notes: string | null) {
-  await transactionsService.updateNotes(transactionId, notes);
+async function updateTransactionNotesAction(
+  session: string | undefined,
+  transactionId: string,
+  notes: string | null,
+) {
+  await authorizeAction(session, () => transactionsService.updateNotes(transactionId, notes));
 }
 
 export type TransactionDto = {
@@ -25,41 +37,24 @@ export type TransactionDto = {
   accountColor: string;
   notes: string | null;
   isHidden: boolean;
+  updatedAt: Date;
 };
 
-async function getTransactionsByFilterAction(
-  filter: TransactionsFilter,
-): Promise<TransactionDto[]> {
-  return (await transactionsService.getTransactionsByFilter(filter)).map((transaction) => ({
-    id: transaction.id,
-    date: transaction.date,
-    description: transaction.description,
-    amount: transaction.amount,
-    categoryName: transaction.category?.name ?? 'Sem categoria',
-    categoryColor: transaction.category?.color ?? 'red-900',
-    accountName: transaction.account!.name,
-    accountColor: transaction.account!.color,
-    notes: transaction.notes,
-    isHidden: transaction.isHidden,
-  }));
+async function findTransactionByIdAction(session: string | undefined, id: string) {
+  return authorizeAction(session, async () => transactionsService.findById(id));
 }
 
-async function findTransactionByIdAction(id: string) {
-  return transactionsService.findById(id);
-}
-
-async function showTransactionAction(id: string) {
+async function showTransactionAction(session: string | undefined, id: string) {
   transactionsService.show(id);
 }
 
-async function hideTransactionAction(id: string) {
+async function hideTransactionAction(session: string | undefined, id: string) {
   transactionsService.hide(id);
 }
 
 export {
   getUncategorizedTransactionsAction,
   updateTransactionCategoryAction,
-  getTransactionsByFilterAction,
   findTransactionByIdAction,
   updateTransactionNotesAction,
   showTransactionAction,
