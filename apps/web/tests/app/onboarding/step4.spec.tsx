@@ -1,12 +1,25 @@
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import React from 'react';
-
-import { createAccountAction } from '@/actions/accounts';
 import { autorizeAction } from '@/actions/serverActions';
 import OnboardingStep4Page from '@/app/onboarding/step4/page';
 import OnboardingContext, { OnboardingContextType } from '@/contexts/OnboardingContext';
 import { Account, SourceType } from '@/prisma';
 import { getSessionCookie } from '@/utils/cookie';
+
+jest.mock('@/actions/accounts', () => ({
+  createAccountsAction: jest.fn(),
+}));
+
+jest.mock('@/modules/transactions', () => ({
+  accountService: {
+    firstOrCreate: jest.fn(),
+  },
+  transactionsService: {},
+}));
+
+jest.mock('@/actions/serverActions', () => ({
+  autorizeAction: jest.fn((cookie, action) => (action as () => unknown)()),
+}));
 
 const mockRouterPush = jest.fn();
 let mockResumeOnboardingOnResume: (
@@ -24,13 +37,30 @@ jest.mock('@/utils/cookie', () => ({
   getSessionCookie: jest.fn().mockReturnValue('test-session-cookie'),
 }));
 
-jest.mock('@/actions/accounts', () => ({
-  createAccountAction: jest.fn(),
-}));
+const TEST_ONBOARDING_UID = 'test-onboarding-uid-step4';
+const TEST_USER_ID = 123;
 
-jest.mock('@/actions/serverActions', () => ({
-  autorizeAction: jest.fn((cookie, action) => action()), // Immediately invoke the action
-}));
+const mockNubankAccount: Account = {
+  id: 'nubank-account-id',
+  userId: TEST_USER_ID,
+  bankNumber: '260',
+  name: 'Conta Corrente',
+  color: 'green-500',
+  sourceType: SourceType.NUBANK_ACCOUNT_CSV,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
+const mockNubankCreditCard: Account = {
+  id: 'nubank-cc-id',
+  userId: TEST_USER_ID,
+  bankNumber: '260',
+  name: 'Cartão de Crédito',
+  color: 'orange-500',
+  sourceType: SourceType.NUBANK_CREDIT_CARD_CSV,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
 
 // This mock will be slightly adjusted to ensure onUpdate is correctly passed and callable.
 const mockAccountAccordionInstances: Array<(months: number) => void> = [];
@@ -84,31 +114,6 @@ jest.mock('@/components/onboarding/ResumeOnboarding', () => ({
   },
 }));
 
-const TEST_ONBOARDING_UID = 'test-onboarding-uid-step4';
-const TEST_USER_ID = 123;
-
-const mockNubankAccount: Account = {
-  id: 'nubank-account-id',
-  userId: TEST_USER_ID,
-  bankNumber: '260',
-  name: 'Conta Corrente',
-  color: 'green-500',
-  sourceType: SourceType.NUBANK_ACCOUNT_CSV,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
-
-const mockNubankCreditCard: Account = {
-  id: 'nubank-cc-id',
-  userId: TEST_USER_ID,
-  bankNumber: '260',
-  name: 'Cartão de Crédito',
-  color: 'orange-500',
-  sourceType: SourceType.NUBANK_CREDIT_CARD_CSV,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
-
 const mockContextValue: OnboardingContextType = {
   isLoadingOnboarding: false,
   userId: 123,
@@ -127,14 +132,22 @@ describe('OnboardingStep4Page', () => {
     mockRouterPush.mockClear();
     localStorage.setItem('onboardingUid', TEST_ONBOARDING_UID);
     mockAccountAccordionInstances.length = 0; // Clear instances
-
-    (createAccountAction as jest.Mock)
-      .mockResolvedValueOnce(mockNubankAccount)
-      .mockResolvedValueOnce(mockNubankCreditCard);
   });
 
   afterEach(() => {
     localStorage.removeItem('onboardingUid');
+  });
+
+  beforeAll(() => {
+    const { createAccountsAction } = require('@/actions/accounts');
+    createAccountsAction.mockResolvedValue([mockNubankAccount, mockNubankCreditCard]);
+
+    jest
+      .spyOn(require('@/actions/serverActions'), 'autorizeAction')
+      .mockImplementation((...args: unknown[]) => {
+        const action = args[1] as () => unknown;
+        return action();
+      });
   });
 
   it('renders initial text content', () => {
@@ -150,9 +163,12 @@ describe('OnboardingStep4Page', () => {
     });
 
     expect(getSessionCookie).toHaveBeenCalled();
-    expect(autorizeAction).toHaveBeenCalledTimes(2);
-    expect(createAccountAction).toHaveBeenCalledTimes(2);
-    // ... (assertions for createAccountAction params remain the same)
+    expect(autorizeAction).toHaveBeenCalledTimes(1);
+    // Use jest.mocked to access the mock
+    const accountsActions = require('@/actions/accounts');
+    // console.log(accountsActions.createAccountsAction.mock);
+    expect(accountsActions.createAccountsAction.mock.calls.length).toBe(1);
+    // ... (assertions for createAccountsAction params can be added here)
 
     await waitFor(() => {
       expect(screen.getByTestId('account-accordion-Conta Corrente')).toBeInTheDocument();

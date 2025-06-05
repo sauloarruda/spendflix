@@ -198,8 +198,6 @@ describe('Onboarding Step 1 Page', () => {
     });
 
     fireEvent.click(screen.getByText('Confirm Success'));
-    console.log('Clicked Confirm Success');
-
     await waitFor(() => {
       console.log('mockRouterPush calls:', mockRouterPush.mock.calls);
       expect(mockRouterPush).toHaveBeenCalledWith('/onboarding/step2');

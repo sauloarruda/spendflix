@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { createAccountAction } from '@/actions/accounts';
+import { createAccountsAction } from '@/actions/accounts';
 import { autorizeAction } from '@/actions/serverActions';
 import AccountAccordion from '@/components/onboarding/AccountAccordion';
 import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
@@ -25,29 +25,26 @@ export default function OnboardingStep4() {
   useEffect(() => {
     async function findOrCreateAccounts() {
       if (!userId) return;
-      setNubankAccountId(
-        await autorizeAction(getSessionCookie(), () =>
-          createAccountAction({
+      const [nubankAccount, nubankCreditCard] = await autorizeAction(getSessionCookie(), () =>
+        createAccountsAction([
+          {
             userId,
             bankNumber: '260', // only nubank now
             name: 'Conta Corrente',
             color: 'green-500',
             sourceType: SourceType.NUBANK_ACCOUNT_CSV,
-          }),
-        ),
-      );
-
-      setNubankCreditCardId(
-        await autorizeAction(getSessionCookie(), () =>
-          createAccountAction({
+          },
+          {
             userId,
             bankNumber: '260', // only nubank now
             name: 'Cartão de Crédito',
             color: 'orange-500',
             sourceType: SourceType.NUBANK_CREDIT_CARD_CSV,
-          }),
-        ),
+          },
+        ]),
       );
+      setNubankAccountId(nubankAccount);
+      setNubankCreditCardId(nubankCreditCard);
     }
     findOrCreateAccounts();
   }, [userId]);
