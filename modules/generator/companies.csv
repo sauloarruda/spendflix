@@ -1,0 +1,2432 @@
+company,category,organization
+CPFL,Moradia,$moradia/energia
+CTEEP,Moradia,$moradia/energia
+EDP,Moradia,$moradia/energia
+ELETROBRAS,Moradia,$moradia/energia
+ELETRONORTE,Moradia,$moradia/energia
+ELETROSUL,Moradia,$moradia/energia
+ENEL,Moradia,$moradia/energia
+ENERGISA,Moradia,$moradia/energia
+EQUATORIAL,Moradia,$moradia/energia
+ESPERANZA,Moradia,$moradia/energia
+EST UNIF,Moradia,$moradia/energia
+ETAP,Moradia,$moradia/energia
+ETAU,Moradia,$moradia/energia
+GUARACIABA,Moradia,$moradia/energia
+INTERLIGACAO ELETRICA,Moradia,$moradia/energia
+INTESA,Moradia,$moradia/energia
+JAGUAR 6,Moradia,$moradia/energia
+NEOENERGIA,Moradia,$moradia/energia
+AGS TELECOM,Moradia,$moradia/celular
+AMERICEL,Moradia,$moradia/celular
+CLARO,Moradia,$moradia/celular
+TELEFONICA BRASIL S.A.,Moradia,$moradia/celular
+VIVO,Moradia,$moradia/celular
+VOIPBRASIL,Moradia,$moradia/celular
+CONDOMINIO RESIDENCIAL PRAIA DA GRACIOSA II,Moradia,$moradia/condominio
+RESIDENCIAL AUSTRIA,Moradia,$moradia/condominio
+RESIDENCIAL JARDIM DAS CEREJEIRAS,Moradia,$moradia/condominio
+EDIFICIO CALEGARI,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL SAN LORENZO,Moradia,$moradia/condominio
+CONDOMINIO FOCUS BUSINESS CENTER,Moradia,$moradia/condominio
+C E MAUA,Moradia,$moradia/condominio
+CONDOMINIO SOLE RESIDENCE,Moradia,$moradia/condominio
+RESIDENCIAL ERTHAL PALACE,Moradia,$moradia/condominio
+CONDOMINIO EDIFICIO DONA JANAINA,Moradia,$moradia/condominio
+EDIFICIO MONACO,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL PARQUE UNIVERSITARIO I,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL ALBERTO AMBROSIO DOS SANTOS,Moradia,$moradia/condominio
+EDIFICIO MARTA BORGES,Moradia,$moradia/condominio
+RESIDENCIAL DOM IGOR,Moradia,$moradia/condominio
+RESIDENCIAL DONA SANTINA,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL PIAZZA DE SAN MARCO,Moradia,$moradia/condominio
+CONDOMINIO DO RESIDENCIAL SAFIRA,Moradia,$moradia/condominio
+CONDOMINIO FLAMBOYANT MIRIM,Moradia,$moradia/condominio
+CONDOMINIO PRIME RESIDENCE,Moradia,$moradia/condominio
+CONDOMINIO VINCENT VAN GOGH,Moradia,$moradia/condominio
+EDIFICIO MONUMENTAL COQUEIRINHO,Moradia,$moradia/condominio
+RESIDENCIAL TOPAZIO IMPERIAL,Moradia,$moradia/condominio
+RESIDENCIAL RECANTO DA VILLA,Moradia,$moradia/condominio
+RESIDENCIAL LAGOA,Moradia,$moradia/condominio
+MONACO BETHAVILLE,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL FRANCOIS CEVERT,Moradia,$moradia/condominio
+EDIFICIO ESTRELAS DO SUL,Moradia,$moradia/condominio
+EDIFICIO RESIDENCIAL ILHA DAS FLORES,Moradia,$moradia/condominio
+EDIFICIO JOAO FERRAZ,Moradia,$moradia/condominio
+REDENTOR HOME & BUSINESS,Moradia,$moradia/condominio
+RESIDENCIAL JARDINS,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL BARCELOS RESIDENCE,Moradia,$moradia/condominio
+CONDOMINIO DO EDIFICIO ELENISIA,Moradia,$moradia/condominio
+SOLAR DAS NACOES,Moradia,$moradia/condominio
+DUMONT RESIDENCE,Moradia,$moradia/condominio
+CONDOMINIO PARQUE RESIDENCIAL ALTO DAS ANDORINHAS I,Moradia,$moradia/condominio
+CONDOMINIO BELIZE RESIDENCE,Moradia,$moradia/condominio
+CONDOMINIO MARQUES DE ALCANTARA,Moradia,$moradia/condominio
+EDIFICIO MOURAO,Moradia,$moradia/condominio
+RESIDENCIAL NOSSA SENHORA APARECIDA,Moradia,$moradia/condominio
+EDIFICIO VERA CRUZ,Moradia,$moradia/condominio
+CONDOMINIO DO EDIFICIO OMEGA,Moradia,$moradia/condominio
+RESIDENCIAL PETRA,Moradia,$moradia/condominio
+PRIME CAMPESTRE,Moradia,$moradia/condominio
+CONDOMINIO EDIFICIO SOROCABA,Moradia,$moradia/condominio
+CONDOMINIO RAVELLO RESIDENCE,Moradia,$moradia/condominio
+FELICIDADE 5,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL E COMERCIAL SANTORINI,Moradia,$moradia/condominio
+RESIDENCIAL BARILOCHE THREE,Moradia,$moradia/condominio
+RESIDENCIAL RESERVA DO VALE,Moradia,$moradia/condominio
+CONDOMINIO EXCLUSIVE PLACE,Moradia,$moradia/condominio
+EDIFICIO GABRIEL PACHECO,Moradia,$moradia/condominio
+PIAZZA DI ROMA TROPICAL,Moradia,$moradia/condominio
+RESIDENCIAL HORTENCIAS,Moradia,$moradia/condominio
+CONDOMINIO BELA VISTA,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIA PARANANBUCO,Moradia,$moradia/condominio
+EDIFICIO RESIDENCIAL FIGUEIRA,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL SAINT MICHAEL,Moradia,$moradia/condominio
+CONDOMINIO EDIFICIO RESIDENCE PORTINARI,Moradia,$moradia/condominio
+RESIDENCIAL LISBOA,Moradia,$moradia/condominio
+CONDOMINIO MISTO MASTER,Moradia,$moradia/condominio
+RESIDENCIAL NILO MAZZEI,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL PARMA,Moradia,$moradia/condominio
+EDIFICIO ARCIE,Moradia,$moradia/condominio
+CONDOMINIO EDIFICIO ACROPOLE,Moradia,$moradia/condominio
+CONDOMINIO DO EDIFICIO GOMES SERPA,Moradia,$moradia/condominio
+CONDOMINIO PAULINA,Moradia,$moradia/condominio
+CLOCK VILA ROMANA,Moradia,$moradia/condominio
+EDIFICIO GENERAL CMARA,Moradia,$moradia/condominio
+EDIFICIO MEDITERRANEO,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL FORTINITE,Moradia,$moradia/condominio
+RESIDENCIAL AERO RANCHO CH 007,Moradia,$moradia/condominio
+EDIFICIO COMANCHES,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL PEDRA BRANCA,Moradia,$moradia/condominio
+CONDOMINIO JAMEL RESIDENCE,Moradia,$moradia/condominio
+CONDOMINIO DO EDIFICIO GUARARA,Moradia,$moradia/condominio
+EDIFICIO RESIDENCIAL BELLAGIO RESIDENCE,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL CORREA VI,Moradia,$moradia/condominio
+LE VISAGE DIVINITE,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL VIDA BUENA,Moradia,$moradia/condominio
+RESIDENCIAL BEIRA DA MATA II,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL UNIQUE UBERABA II,Moradia,$moradia/condominio
+CENTRAL PLACE,Moradia,$moradia/condominio
+EDIFICIO RESIDENCIAL DONA OLINDA,Moradia,$moradia/condominio
+CONDOMINIO VERDE MAR,Moradia,$moradia/condominio
+SETOR COMERCIAL,Moradia,$moradia/condominio
+RESIDENCIAL BLUE PARK,Moradia,$moradia/condominio
+CONDOMINIO EDIFICIO VISCONDE DE TAUNAY,Moradia,$moradia/condominio
+EDIFICIO SAO GERONIMO,Moradia,$moradia/condominio
+ELEV ARACATUBA,Moradia,$moradia/condominio
+EDIFICIO KARINA,Moradia,$moradia/condominio
+CONDOMINIO LAISAN,Moradia,$moradia/condominio
+CONJUNTO HABITACIONAL NOVA PAMPULHA,Moradia,$moradia/condominio
+EDIFICIO JACUTINGA,Moradia,$moradia/condominio
+CONDOMINIO E EDIFICIO FLOW WORK + LIVE,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL VILLAGE DAS ROMAS,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL VIVENDA CASA BRANCA II,Moradia,$moradia/condominio
+CONDOMINIO EDIFICIO PIUNA,Moradia,$moradia/condominio
+RESIDENCIAL HORTENSIA,Moradia,$moradia/condominio
+EDIFICIO RESIDENCIAL VILA RICA,Moradia,$moradia/condominio
+EDIFICIO LAS VERBENAS,Moradia,$moradia/condominio
+RESIDENCIAL RAVENNA,Moradia,$moradia/condominio
+CONDOMINIO UNIQUE UBERABA I,Moradia,$moradia/condominio
+CONDOMINIO DO RESIDENCIAL VALE DO AMAZONAS,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL PARK DAS CASTANHEIRAS VI,Moradia,$moradia/condominio
+EDIFICIO RESIDENCIAL DONA MARIA,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL UPSIDE DIADEMA,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL VILLAGE II,Moradia,$moradia/condominio
+CONDOMINIO EDIFICIO GEO GRAND EXTO OFFICES,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL POTENZA,Moradia,$moradia/condominio
+CONDOMINIO EDIFICIO LA PROVIDENCE VII,Moradia,$moradia/condominio
+CONDOMINIO DO EDIFICIO ROSA DO ALMIRANTE,Moradia,$moradia/condominio
+RESIDENCIAL RICARDO MAIA,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL SANTA ROSALIA II,Moradia,$moradia/condominio
+CONDOMINIO DO EDIFICIO NOSSA SENHORA D'AJUDA,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL COLIBRI,Moradia,$moradia/condominio
+CONDOMINIO ANTONIO MENDES,Moradia,$moradia/condominio
+VIVA VISTA BRISA,Moradia,$moradia/condominio
+RESIDENCIAL OLIVEIRA,Moradia,$moradia/condominio
+EDIFICIO SAVANNA,Moradia,$moradia/condominio
+CONDOMINIO BURITIS,Moradia,$moradia/condominio
+RESIDENCIAL CECILIA MEIRELES,Moradia,$moradia/condominio
+CONDOMINIO ESTUDIO K-PLATZ,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL ALTA VISTA,Moradia,$moradia/condominio
+CONDOMINIO DO EDIFICIO RESIDENCIAL NINIVE ALMEIDA,Moradia,$moradia/condominio
+BELIZE RESIDENCIAL CLUB,Moradia,$moradia/condominio
+RESIDENCIAL PARK PALMEIRAS,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL FELICITA,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL PARQUE CONTINENTAL,Moradia,$moradia/condominio
+CONDOMINIO DO EDIFICIO TEIXEIRA,Moradia,$moradia/condominio
+RESIDENCIAL LAGUNA,Moradia,$moradia/condominio
+RESIDENCIAL TERRACE VIII,Moradia,$moradia/condominio
+CONDOMINIO SONHO MEU,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL VALENCIA,Moradia,$moradia/condominio
+RESIDENCIAL MONTEBELLO,Moradia,$moradia/condominio
+IBERIA RESIDENCE,Moradia,$moradia/condominio
+RESIDENCIAL DA TIJUCA,Moradia,$moradia/condominio
+CONDOMINIO B,Moradia,$moradia/condominio
+RESIDENCIAL SOLAR ITALIA,Moradia,$moradia/condominio
+RESIDENCIAL SANTA INES,Moradia,$moradia/condominio
+CONDOMINIO EDIFICIO RESIDENCIAL BOM PASTOR,Moradia,$moradia/condominio
+RESIDENCIAL DEPUTADO GUILHERME UCHOA II,Moradia,$moradia/condominio
+EDIFICIO RESIDENCIAL PAUL HUGON,Moradia,$moradia/condominio
+EDIFICIO 12 DE OUTUBRO,Moradia,$moradia/condominio
+VILLA LOBOS RESIDENCE,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL MONTE REY,Moradia,$moradia/condominio
+RESIDENCIAL KEPLER,Moradia,$moradia/condominio
+CONDOMINIO DO EDIFICIO BRUNA,Moradia,$moradia/condominio
+RESIDENCIAL LAGUNA,Moradia,$moradia/condominio
+EDIFICIO MONTES CLAROS II,Moradia,$moradia/condominio
+RESIDENCIALVILLAGIO ALVES DE ALMEIDA,Moradia,$moradia/condominio
+RESIDENCIAL IPE FLORIDO,Moradia,$moradia/condominio
+EDIFICIO PIEMONTE,Moradia,$moradia/condominio
+EDIFICIO RESIDENCIAL ECCO,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL MURANO,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL ANGUILLA,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL DOM PADILHA,Moradia,$moradia/condominio
+CONDOMINIO DO EDIFICIO RESIDENCIAL VIENA,Moradia,$moradia/condominio
+CENTRO COMERCIAL XV DE NOVEMBRO,Moradia,$moradia/condominio
+EDIFICIO CANAA I,Moradia,$moradia/condominio
+CENTRO EMPRESARIAL CAYMMI,Moradia,$moradia/condominio
+RESIDENCIAL BELO JARDIM II,Moradia,$moradia/condominio
+CONDOMINIO EDIFICIO HAVAI 295,Moradia,$moradia/condominio
+RESIDENCIAL BERTIOGA,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL PIAZZA DI SPAGNA,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL GOLDBERG II,Moradia,$moradia/condominio
+RESIDENCIAL YOHANAN II,Moradia,$moradia/condominio
+RESIDENCIAL JARDINS DE FLORENCA,Moradia,$moradia/condominio
+RESIDENCIAL OCEANIC III,Moradia,$moradia/condominio
+EDIFICIO RESIDENCIAL E COMERCIAL MARIA CLARA NOBRE,Moradia,$moradia/condominio
+EDIFICIO COMERCIAL ALPENVILLE,Moradia,$moradia/condominio
+RESIDENCIAL LEBLON MARISTA,Moradia,$moradia/condominio
+CONDOMINIO PARQUE DOS GIRASSOIS,Moradia,$moradia/condominio
+CONDOMINIO DO EDIFICIO PEDRO AFONSO,Moradia,$moradia/condominio
+CONDOMINIO DO EDIFICIO VINTAGE 3O3 PREMIUM,Moradia,$moradia/condominio
+RESIDENCIAL SOLAR,Moradia,$moradia/condominio
+GALERIA GRAO MOGOL,Moradia,$moradia/condominio
+EDIFICIO SAN REMO,Moradia,$moradia/condominio
+CONDOMINIO EDIMBURDO,Moradia,$moradia/condominio
+CONDOMINIO VILLA DA MATA RESIDENCE,Moradia,$moradia/condominio
+CONDOMINIO ALTO DE SANTA,Moradia,$moradia/condominio
+JARDIM IMPERIAL,Moradia,$moradia/condominio
+CONDOMINIO COSTA DO MARFIM,Moradia,$moradia/condominio
+NOVA FRIBURGO,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL VILLAGIO DOS GIRASSOIS,Moradia,$moradia/condominio
+RESIDENCIAL PAULO DE SOUZA,Moradia,$moradia/condominio
+EDIFICIO RESIDENCIAL VIDA BOA,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL ILHA DO MEL,Moradia,$moradia/condominio
+RESIDENCIAL MARGARIDA MARIA,Moradia,$moradia/condominio
+RESIDENCIAL VILLA DEI FIORI,Moradia,$moradia/condominio
+CONDOMINIO RESIDENCIAL VALPARAISO,Moradia,$moradia/condominio
+EDIFICIO RESIDENCIAL PREMIATTO,Moradia,$moradia/condominio
+CONDOMINIO ARLETE COELHO,Moradia,$moradia/condominio
+EDIFICIO RESIDENCIAL LEWGOY,Moradia,$moradia/condominio
+RESIDENCIAL PORTO SEGURO,Moradia,$moradia/condominio
+RESIDENCIAL LUIZ DE ALMEIDA,Moradia,$moradia/condominio
+RESIDENCIAL OURO PRETO,Moradia,$moradia/condominio
+RESIDENCIAL MONTE SINAI,Moradia,$moradia/condominio
+NEW CENTER CIVIC,Moradia,$moradia/aluguel
+AFT ADMINISTRACAO DE BENS,Moradia,$moradia/aluguel
+MOLINARI INFORMATICA,Moradia,$moradia/aluguel
+FLL CONSTRUCOES,Moradia,$moradia/aluguel
+WILLPAR,Moradia,$moradia/aluguel
+NIOGY EMPREENDIMENTOS,Moradia,$moradia/aluguel
+AIP,Moradia,$moradia/aluguel
+CENTRO COMERCIAL MANTIQUEIRA,Moradia,$moradia/aluguel
+MEMBECA AGROFLORESTAL LIMITADA,Moradia,$moradia/aluguel
+ALEM WIN ADMINISTRADORA DE BENS LTDA,Moradia,$moradia/aluguel
+FAZENDA SAO MARCOS,Moradia,$moradia/aluguel
+FAREA PATICIPACOES,Moradia,$moradia/aluguel
+SRC EMPREENDIMENTO E ALUGUEL DE IMOVEIS PROPRIOS,Moradia,$moradia/aluguel
+FERRARI OLIVEIRA EMPREENDIMENTOS,Moradia,$moradia/aluguel
+PIRA ADMINISTRADORA DE BENS,Moradia,$moradia/aluguel
+J C EMPREENDIMENTOS IMOBILIARIOS,Moradia,$moradia/aluguel
+ISC PATRIMONIAL,Moradia,$moradia/aluguel
+BBS EMPREENDIMENTOS,Moradia,$moradia/aluguel
+J. SANTOS & FILHOS PARTICIPACOES,Moradia,$moradia/aluguel
+SX NEGOCIOS IMOBILIARIOS,Moradia,$moradia/aluguel
+RB INVESTIMENTOS,Moradia,$moradia/aluguel
+CCN ADMINISTRADORA DE IMOVEIS,Moradia,$moradia/aluguel
+VITORIA DO SAO LOURENCO,Moradia,$moradia/aluguel
+JATOBA EMPREENDIMENTOS,Moradia,$moradia/aluguel
+ABC IMOBILIARIA,Moradia,$moradia/aluguel
+SLVA ROSA LOCACAO,Moradia,$moradia/aluguel
+LUCARELLI EMPREENDIMENTOS,Moradia,$moradia/aluguel
+HBR 74 - INVESTIMENTOS IMOBILIARIOS LTDA.,Moradia,$moradia/aluguel
+J M EMPREENDIMENTOS,Moradia,$moradia/aluguel
+SITIO TURICUM,Moradia,$moradia/aluguel
+OLIVEIRA EMPREENDIMENTOS E PARTICIPACOES,Moradia,$moradia/aluguel
+JV PAR EMPREENDIMENTOS,Moradia,$moradia/aluguel
+S A G,Moradia,$moradia/aluguel
+JRM ADMINISTRADORA DE IMOVEIS,Moradia,$moradia/aluguel
+PAVESI IMOVEIS,Moradia,$moradia/aluguel
+CEMM EMPREENDIMENTOS IMOBILIARIOS,Moradia,$moradia/aluguel
+RESIDENCIAL PREMIUM,Moradia,$moradia/aluguel
+WMF IMOVEIS,Moradia,$moradia/aluguel
+LBA GESTAO DE MOVEIS,Moradia,$moradia/aluguel
+"CB CONSTRUTORA, INCORPORADORA E IMOBILIARIA LTDA",Moradia,$moradia/aluguel
+ELALI,Moradia,$moradia/aluguel
+JR ADM DE IMOVEIS,Moradia,$moradia/aluguel
+3 VARAS EMPREENDIMENTOS,Moradia,$moradia/aluguel
+LSS ALUGUEL DE IMOVEIS,Moradia,$moradia/aluguel
+LEXUS ADMINISTRADORA,Moradia,$moradia/aluguel
+TOLEDO & CAMOLESE ADMINISTRACOES LTDA,Moradia,$moradia/aluguel
+PRESTIGE ADMINISTRADORA DE BENS,Moradia,$moradia/aluguel
+I O PICCOLI NEGOCIOS IMOBILIARIOS,Moradia,$moradia/aluguel
+HBR 82 - INVESTIMENTOS IMOBILIARIOS LTDA.,Moradia,$moradia/aluguel
+WOOD IMOVEIS,Moradia,$moradia/aluguel
+MN EMPREENDIMENTOS IMOBILIARIOS,Moradia,$moradia/aluguel
+BENEDICTO'S HOLDING,Moradia,$moradia/aluguel
+FAZENDA DIAMANTE,Moradia,$moradia/aluguel
+AP2 GESTAO PATRIMONIAL,Moradia,$moradia/aluguel
+SCHUCH ADMINISTRADORA DE BENS,Moradia,$moradia/aluguel
+ECO IWC,Moradia,$moradia/aluguel
+GIOX ADMINISTRADORA DE BENS,Moradia,$moradia/aluguel
+FS REAL ESTATE & FAMILY OFFICE,Moradia,$moradia/aluguel
+IMOBILIARIA GRAUNAS,Moradia,$moradia/aluguel
+RIO VERDE ADMINISTRADORA DE BENS,Moradia,$moradia/aluguel
+LANCES ADMINISTRADORA IMOVEIS,Moradia,$moradia/aluguel
+VIA BAHIA,Moradia,$moradia/aluguel
+JLPAIXAO PATRIMONIAL,Moradia,$moradia/aluguel
+MARINO S,Moradia,$moradia/aluguel
+JLC LOCACOES,Moradia,$moradia/aluguel
+CK HOLDING LTDA,Moradia,$moradia/aluguel
+TRENNEPHOL ADMINISTRADORA DE BENS,Moradia,$moradia/aluguel
+VERADEUS CORPORATE,Moradia,$moradia/aluguel
+LANZARINI ADMINISTRADORA DE BENS,Moradia,$moradia/aluguel
+MATHUS HOLDING ADM DE BENS,Moradia,$moradia/aluguel
+GLORIA IMOVEIS,Moradia,$moradia/aluguel
+PREMIUM ADMINISTRADORA DE BENS,Moradia,$moradia/aluguel
+R7,Moradia,$moradia/aluguel
+TAG PATRIMONIAL,Moradia,$moradia/aluguel
+LMMBBB ADMINISTRADORA DE IMOVEIS,Moradia,$moradia/aluguel
+JPMB PATRIMONIAL,Moradia,$moradia/aluguel
+ODORIZZI-INVESTIMENTOS,Moradia,$moradia/aluguel
+T.R.I EMPREENDIMENTOS IMOBILIAIROS,Moradia,$moradia/aluguel
+ADMTITO,Moradia,$moradia/aluguel
+AGRO-RIO,Moradia,$moradia/aluguel
+BOQUEIRAO,Moradia,$moradia/aluguel
+NELMA,Moradia,$moradia/aluguel
+ELCANTO,Moradia,$moradia/aluguel
+QUADRANTE IMOVEIS,Moradia,$moradia/aluguel
+MONTE CARLO IMOVEIS,Moradia,$moradia/aluguel
+2MPR ADMINISTRACAO DE BENS,Moradia,$moradia/aluguel
+CBF GESTAO IMOBILIARIA,Moradia,$moradia/aluguel
+PLUG DIGITACAO,Moradia,$moradia/aluguel
+M & F IMOBILIARIA,Moradia,$moradia/aluguel
+THAITI ADMINISTRADORA DE BENS,Moradia,$moradia/aluguel
+GIARETTA PARTICIPACOES,Moradia,$moradia/aluguel
+NOVO VIP,Moradia,$moradia/aluguel
+HMA LOCADORA DE IMOVEIS,Moradia,$moradia/aluguel
+SBC,Moradia,$moradia/aluguel
+VENUS,Moradia,$moradia/aluguel
+HCB PARTICIPACAOES,Moradia,$moradia/aluguel
+MEGGA,Moradia,$moradia/aluguel
+ENGEPOLI,Moradia,$moradia/aluguel
+VESTIRE,Moradia,$moradia/aluguel
+EMPRESARIAL METROSHOP,Moradia,$moradia/aluguel
+PLAZA D'ORO SHOPPING,Moradia,$moradia/aluguel
+ARCAJU,Moradia,$moradia/aluguel
+OMEGA,Moradia,$moradia/aluguel
+MEGA,Moradia,$moradia/aluguel
+MELPAR,Moradia,$moradia/aluguel
+L&T EMPREENDIMENTOS IMOBILIARIOS,Moradia,$moradia/aluguel
+MAFASA,Moradia,$moradia/aluguel
+ARROSIL,Moradia,$moradia/aluguel
+VINHAL LOCACOES E CONSTRUCOES LTDA,Moradia,$moradia/aluguel
+MATERIAIS DE CONSTRUCAO VALE,Moradia,$moradia/aluguel
+LUPUS PROMOCOES,Moradia,$moradia/aluguel
+LIDERANCA,Moradia,$moradia/aluguel
+FACA FEIRA,Moradia,$moradia/aluguel
+NATAL COMERCIO E SERVICOS,Moradia,$moradia/aluguel
+ONCOCLIN,Moradia,$moradia/aluguel
+A GESTORA DE CONDOMINIOS BRASIL,Moradia,$moradia/aluguel
+MEUKARRO,Moradia,$moradia/aluguel
+KIMURA E KIMURA,Moradia,$moradia/aluguel
+LARANJEIRAS,Moradia,$moradia/aluguel
+HOTEL TRENTO,Moradia,$moradia/aluguel
+CLINICA DRA. CRISTINA SCREMIN,Moradia,$moradia/aluguel
+IMOBILIARIA LAS VEGAS,Moradia,$moradia/aluguel
+LUMICA,Moradia,$moradia/aluguel
+SHOPPING SCHROEDER,Moradia,$moradia/aluguel
+V-SILVEIRA ADMINISTRADORA DE BENS LTDA,Moradia,$moradia/aluguel
+IMOBILIARIA BURITI,Moradia,$moradia/aluguel
+ANGROTEL,Moradia,$moradia/aluguel
+CASA MENA,Moradia,$moradia/aluguel
+CERIMONIAL ANA NOIVAS,Moradia,$moradia/aluguel
+CONSEL,Moradia,$moradia/aluguel
+HABITAOKA CONSTRUCOES,Moradia,$moradia/aluguel
+RMS IMOBILIARIA,Moradia,$moradia/aluguel
+ALMA BRASILEIRA,Moradia,$moradia/aluguel
+CONEF BRASIL,Moradia,$moradia/aluguel
+RIPAMA,Moradia,$moradia/aluguel
+AURA INVESTIMENTOS,Moradia,$moradia/aluguel
+SOMA,Moradia,$moradia/aluguel
+MY PLACE,Moradia,$moradia/aluguel
+R VIEL,Moradia,$moradia/aluguel
+SUPRA,Moradia,$moradia/aluguel
+NUNES LAR IMOBILIARIA,Moradia,$moradia/aluguel
+ONORARE,Moradia,$moradia/aluguel
+SAULEX,Moradia,$moradia/aluguel
+LIDERAUTO RENT A CAR E ASSESSORIA IMOBILIARIA,Moradia,$moradia/aluguel
+FAZENDA 3R,Moradia,$moradia/aluguel
+SUPERMERCADO GAUCHINHO,Moradia,$moradia/aluguel
+HEIL,Moradia,$moradia/aluguel
+V.T. SERVICOS,Moradia,$moradia/aluguel
+COSTABELLA INCORPORACOES,Moradia,$moradia/aluguel
+AGIR IMOBILIARIA,Moradia,$moradia/aluguel
+DIZAN,Moradia,$moradia/aluguel
+IMOBILIARIA AR LTDA,Moradia,$moradia/aluguel
+LFX EMPREENDIMENTOS,Moradia,$moradia/aluguel
+CRIVELA ADMINISTRADORA DE BENS,Moradia,$moradia/aluguel
+PERICUMA IMOVEIS,Moradia,$moradia/aluguel
+FIESTA EMPREENDIMENTOS,Moradia,$moradia/aluguel
+RUSCELLO PARTICIPACOES,Moradia,$moradia/aluguel
+DIAMANTE ATIVIDADES IMOBILIARIOS,Moradia,$moradia/aluguel
+SF IMOBILIARIA,Moradia,$moradia/aluguel
+PSP,Moradia,$moradia/aluguel
+GRUPO JIKAL INVEST,Moradia,$moradia/aluguel
+JC BRANDAO PATRIMONIAL,Moradia,$moradia/aluguel
+LEG ADMINISTRADORA DE BENS,Moradia,$moradia/aluguel
+MARQUES & MARQUES REPRESENTACOES,Moradia,$moradia/aluguel
+LLCS PARTICIPACOES,Moradia,$moradia/aluguel
+LARCOL EMPREENDIMENTOS IMOBILIARIOS,Moradia,$moradia/aluguel
+BRASIL NORTE PARTICIPACOES,Moradia,$moradia/aluguel
+SCHMITT & SCHUSTER EMPREENDIMENTOS IMOBILIARIOS LTDA,Moradia,$moradia/aluguel
+RR LOCACAO,Moradia,$moradia/aluguel
+SAN VITO EMPREENDIMENTOS IMOBILIARIOS,Moradia,$moradia/aluguel
+A&S,Moradia,$moradia/aluguel
+MAR AZUL EMPREENDIMENTOS IMOBILIARIOS,Moradia,$moradia/aluguel
+CORDPAR,Moradia,$moradia/aluguel
+DANTEVINI,Moradia,$moradia/aluguel
+VICCAE IMOVEIS,Moradia,$moradia/aluguel
+WALF AGROPECUARIA,Moradia,$moradia/aluguel
+PREMIERE ADMINISTRADORA,Moradia,$moradia/aluguel
+APALV EMPREENDIMENTOS IMOBILIARIOS,Moradia,$moradia/aluguel
+S. H. A. LOCACOES,Moradia,$moradia/aluguel
+C G O ALUGUEIS DE IMOVEIS PROPRIOS,Moradia,$moradia/aluguel
+INCORPORADORA GURIRI,Moradia,$moradia/aluguel
+BARRETO SAMPAIO PATRIMONIAL,Moradia,$moradia/aluguel
+J A A IMOBILIARIA,Moradia,$moradia/aluguel
+GONCALVES GUERRA,Moradia,$moradia/aluguel
+OFICINA.COM,Moradia,$moradia/aluguel
+MEIO-FIO IMOVEIS,Moradia,$moradia/aluguel
+XTORAG,Moradia,$moradia/aluguel
+PMP ADMINISTRACAO E PARTICIPACAO,Moradia,$moradia/aluguel
+3A&D PARTICIPACOES LTDA,Moradia,$moradia/aluguel
+MENDONCA MELO ADMINISTRADORA,Moradia,$moradia/aluguel
+UNIMA PARTICIPACOES,Moradia,$moradia/aluguel
+OLIVEIRA MARTINS,Moradia,$moradia/aluguel
+SESSO GESTAO PATRIMONIAL,Moradia,$moradia/aluguel
+AMAIOR,Moradia,$moradia/aluguel
+MOVIMENT MALL,Moradia,$moradia/aluguel
+BIARRITZ PATRIMONIAL,Moradia,$moradia/aluguel
+ALA INVESTIMENTOS,Moradia,$moradia/aluguel
+JB AGRO,Moradia,$moradia/aluguel
+STIVAL ADMINISTRADORA DE BENS LTDA,Moradia,$moradia/aluguel
+DRELLA ADMINISTRADORA DE IMOVEIS,Moradia,$moradia/aluguel
+BANCO MERCANTIL,Moradia,$moradia/aluguel
+BANCO ITAU S/A,Moradia,$moradia/aluguel
+BANCO BMG S.A.,Moradia,$moradia/aluguel
+BANCO SANTANDER,Moradia,$moradia/aluguel
+BANCO DIGITAL TRIBANK,Moradia,$moradia/aluguel
+BANCO TOPAZIO,Moradia,$moradia/aluguel
+BANCO CARGILL,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A,Moradia,$moradia/aluguel
+BANCO DO NORDESTE DO BRASIL S/A,Moradia,$moradia/aluguel
+BANCO CRUZEIRO DO SUL S/A,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO RIO GRANDE DO SUL S.A.,Moradia,$moradia/aluguel
+BANCO DO BRASIL S.A./CENTRO ADMINISTRATIVO - JOAO PESSO,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - SALVATERRA,Moradia,$moradia/aluguel
+BANCO DO NORDESTE,Moradia,$moradia/aluguel
+BANCO BMG S.A,Moradia,$moradia/aluguel
+BANCO SOFISA S/A,Moradia,$moradia/aluguel
+BANCO SANTANDER MERIDIONAL S.A.,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AG. SAO GERALDO DO ARAGUAIA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - BUJARU,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - FLORESTA DO ARAGUAIA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - MELGACO,Moradia,$moradia/aluguel
+BANCO PAN SA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A - SAO FELIX DO XINGU,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO RIO GRANDE DO SUL,Moradia,$moradia/aluguel
+BANCO RABOBANK INTERNATIONAL BRASIL S/A,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - RUROPOLIS/PA,Moradia,$moradia/aluguel
+BANCO SOFISA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG. PICARRA,Moradia,$moradia/aluguel
+BANCO BTG PACTUAL S.A. AGENCIA ZOOP,Moradia,$moradia/aluguel
+BANCO CRIZEIRO DO SUL,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG. NOVA TIMBOTEUA,Moradia,$moradia/aluguel
+BANCO DO NORDESTE DO BRASIL,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AG. MAGALHAES BARATA,Moradia,$moradia/aluguel
+BANCO DAYCOVAL,Moradia,$moradia/aluguel
+BANCO DO NORDESTE DO BRASIL S.A.,Moradia,$moradia/aluguel
+BANCO DO NORDESTE DO BRASIL S.A,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AGENCIA MARAPANIM,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AGENCIA SOURE,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AGENCIA ITAITUBA CIDADE ALTA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AGENCIA LIMOEIRO DO AJURU,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AFUA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AG. CONCEICAO DO ARAGUAIA,Moradia,$moradia/aluguel
+BANCO BMG SA,Moradia,$moradia/aluguel
+BANCO MAZE BANK S.A.,Moradia,$moradia/aluguel
+BANCO BRADESCO ARGENTINA S.A.,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA AG - CACHOEIRA DO PIRIA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO RIO GRANDE DO SUL S.A,Moradia,$moradia/aluguel
+BANCO DO NORDESTE DO BRASIL SA - AGENCIA DE TUTOIA,Moradia,$moradia/aluguel
+BANCO DE BRASILIA - BRB,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - ANAJAS,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AG. SAO CAETANO DE ODIVELAS,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AGENCIA OURILANDIA DO NORTE,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AGUA AZUL DO NORTE,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - ANAPU,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG - TERRA ALTA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A - AG. ABEL FIGUEIREDO,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - QUATRO BOCAS,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - IPIXUNA DO PARA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - CUMARU DO NORTE,Moradia,$moradia/aluguel
+BANCO BTG PACTUAL S.A. AGENCIA BAAS,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG - NOVA IPIXUNA,Moradia,$moradia/aluguel
+BANCO BTG PACTUAL S.A. BTG+ BUSINESS,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AGENCIA PONTA DE PEDRAS,Moradia,$moradia/aluguel
+BANCO DAYCOVAL S A,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - BREJO GRANDE DO ARAGUAIA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - SANTO ANTONIO DO TAUA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A - AUGUSTO CORREA,Moradia,$moradia/aluguel
+BANCO ITAU S.A.,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A AG SAO DOMINGOS DO ARAGUAIA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A - TRACUATEUA,Moradia,$moradia/aluguel
+BANCO DO NORDESTA S.A.,Moradia,$moradia/aluguel
+BANCO FENICIA S/A,Moradia,$moradia/aluguel
+BANCO DIGIMAIS,Moradia,$moradia/aluguel
+BANCO DIRETO SPAULO SP,Moradia,$moradia/aluguel
+BANCO BTG PACTUAL S.A. AQUICARD,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG. BAGRE,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A AG SANTAREM NOVO,Moradia,$moradia/aluguel
+BANCO BVA S/A,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - MEDICILANDIA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - SALINOPOLIS,Moradia,$moradia/aluguel
+BANCO SANTOS S.A.,Moradia,$moradia/aluguel
+BANCO AFINZ,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A - ELDORADO DOS CARAJAS,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A - TERRA SANTA,Moradia,$moradia/aluguel
+BANCO BRADESCO AG. PRIME BELEM,Moradia,$moradia/aluguel
+BANCO CRUZEIRO DO SUL,Moradia,$moradia/aluguel
+BANCO SENFF,Moradia,$moradia/aluguel
+BANCO INERMEDIUM S.A,Moradia,$moradia/aluguel
+BANCO DO NORDESTE DO BRASIL S. A,Moradia,$moradia/aluguel
+BANCO INTER S.A.,Moradia,$moradia/aluguel
+BANCO REGIONAL DE BRASILIA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - GOIANESIA DO PARA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - CURRALINHO,Moradia,$moradia/aluguel
+BANCO BMG,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A - CACHOEIRA DO ARARI,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AGENCIA BREU BRANCO,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - MOJUI DOS CAMPOS,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - MUANA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AGENCIA IGARAPE ACU,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A - MARABA SAO FELIX,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG - QUATIPURU,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - SAPUCAIA,Moradia,$moradia/aluguel
+BANCO BMG S/A,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AGENCIA MOSQUEIRO,Moradia,$moradia/aluguel
+BANCO SAFRA,Moradia,$moradia/aluguel
+BANCO VERDE DIGITAL,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AG. PORTO DE MOZ,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AG. PAU D'ARCO,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA AG. MOCAJUBA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG - ULIANOPOLIS,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG - BANNACH,Moradia,$moradia/aluguel
+BANCO BTG PACTUAL S.A. AGENCIA ALIPAY,Moradia,$moradia/aluguel
+BANCO MORADA,Moradia,$moradia/aluguel
+BANCO V8,Moradia,$moradia/aluguel
+BANCO DIRETO RJANEIRO RJ,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG. INHANGAPI,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO RIO GRANDE DO SUL SA,Moradia,$moradia/aluguel
+BANCO MERCANTIL DO BRASIL,Moradia,$moradia/aluguel
+BANCO INTERMEDIUM SA,Moradia,$moradia/aluguel
+BANCO BTG PACTUAL S.A. FILIAL ARTON,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA-AG. BAIAO,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - ACARA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - SAO JOAO DE PIRABAS,Moradia,$moradia/aluguel
+BANCO BTG PACTUAL S.A. AGENCIA NVIO BRASIL,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A - TRAIRAO,Moradia,$moradia/aluguel
+BANCO DO ESRADO DO PARA - AG. SENADOR JOSE PORFIRIO,Moradia,$moradia/aluguel
+BANCO CRED CLUB,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG - SAO JOAO DO ARAGUAIA,Moradia,$moradia/aluguel
+BANCO BTG PACTUAL S.A. ZOOM,Moradia,$moradia/aluguel
+BANCO ITAU S.A,Moradia,$moradia/aluguel
+BANCO DO BRASIL FEDERAL SAVINGS BANK,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AGENCIA ALMERIM,Moradia,$moradia/aluguel
+BANCO SAFRA S/A - LUXEMBOURG BRANCH,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AGENCIA BONITO,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AGENCIA NOVO PROGRESSO,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A - CURIONOPOLIS,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PAR-AG. FARO,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AG. OEIRAS DO PARA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG. PACAJA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG. IRITUIA,Moradia,$moradia/aluguel
+BANCO BTG PACTUAL S.A. AGENCIA BUSCAPE,Moradia,$moradia/aluguel
+BANCO SOFISA S.A,Moradia,$moradia/aluguel
+BANCO BOCOM BBM S.A. - FILIAL NASSAU-BAHAMAS,Moradia,$moradia/aluguel
+BANCO SANTOS NEVES,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AGENCIA SAO MIGUEL DO GUAMA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AGENCIA SANTANA DO ARAGUAIA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - VITORIA DO XINGU,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - GARRAFAO DO NORTE,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - CURUA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A - AURORA DO PARA,Moradia,$moradia/aluguel
+BANCO INTERMEDIUM S.A,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA - AG. PALESTINA DO PARA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG. PRAINHA,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG. COLARES,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG - CASA DE TABUA,Moradia,$moradia/aluguel
+BANCO BTG PACTUAL S.A. AGENCIA GEMINI,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG - BRASIL NOVO,Moradia,$moradia/aluguel
+BANCO DO ESTADO DO PARA S/A. AG. OUREM,Moradia,$moradia/aluguel
+ECCO GAS DISTRIBUIDORA LTDA,Moradia,$moradia/gas
+GNC,Moradia,$moradia/gas
+GASPISA,Moradia,$moradia/gas
+VIRTU INFRA,Moradia,$moradia/gas
+EST-UNIF,Moradia,$moradia/gas
+AMAZONIA GASES,Moradia,$moradia/gas
+MACAIBA GAS,Moradia,$moradia/gas
+GAS BRASILIANO,Moradia,$moradia/gas
+* CEG *,Moradia,$moradia/gas
+ECO COMERCIALIZADORA DE GNV,Moradia,$moradia/gas
+SAMUEL GAS E AGUA,Moradia,$moradia/gas
+FURNAS GAS,Moradia,$moradia/gas
+LOGAS LOGISTICA E DISTRIBUICAO DE GAS S.A,Moradia,$moradia/gas
+MGAS - RIO DE JANEIRO,Moradia,$moradia/gas
+BRASIL GNC,Moradia,$moradia/gas
+NEOGAS DO BRASIL,Moradia,$moradia/gas
+METAGAS,Moradia,$moradia/gas
+TRAFIGURA DO BRASIL,Moradia,$moradia/gas
+OXI SERRA,Moradia,$moradia/gas
+GEO GAS,Moradia,$moradia/gas
+MGAS - BAHIA,Moradia,$moradia/gas
+CNOOC TRADING,Moradia,$moradia/gas
+IGAS,Moradia,$moradia/gas
+GAS DO PARA,Moradia,$moradia/gas
+CDGN - COMPANHIA DISTRIBUIDORA DE GAS NATURAL,Moradia,$moradia/gas
+CDGN LOGISTICA S.A.,Moradia,$moradia/gas
+TOP GAS,Moradia,$moradia/gas
+NEOGAS DO BRASIL GAS NATURAL COMPRIMIDO S.A.,Moradia,$moradia/gas
+MASTERGAS DISTRIBUIDORA,Moradia,$moradia/gas
+GASAP,Moradia,$moradia/gas
+SHARE GAS,Moradia,$moradia/gas
+NEG NATURAL,Moradia,$moradia/gas
+MASTER SERVICE,Moradia,$moradia/gas
+FENIX COMERCIO LTDA.,Moradia,$moradia/gas
+GASMAR,Moradia,$moradia/gas
+LOGAS - LOGISTICA E DISTRIBUICAO DE GAS LTDA,Moradia,$moradia/gas
+BOLSA BRASILEIRA DE GAS NATURAL - BBGN,Moradia,$moradia/gas
+GOIASGAS,Moradia,$moradia/gas
+PETROBRAS - UTE CUIABA,Moradia,$moradia/gas
+COMPANHIA DE GAS DE SAO PAULO COMGAS,Moradia,$moradia/gas
+GAS ENERGY DISTRIBUIDORA DE GAS,Moradia,$moradia/gas
+AMAZONICA ENERGY,Moradia,$moradia/gas
+NOSSO GAS,Moradia,$moradia/gas
+ARCO GASNATURAL,Moradia,$moradia/gas
+LOGAS LOGISTICA E DISTRIBUICAO DE GAS S.A.,Moradia,$moradia/gas
+GNC BRASIL DISTRIBUIDORA DE GAS NATURAL LTDA,Moradia,$moradia/gas
+OXIVIDA,Moradia,$moradia/gas
+ECO COMERCIALIZADORA DE GNV LTDA,Moradia,$moradia/gas
+ENERGY PLUS,Moradia,$moradia/gas
+ITA,Moradia,$moradia/gas
+COMPANHIA DE GAS DO PARA,Moradia,$moradia/gas
+GASMAR SDGN2,Moradia,$moradia/gas
+CDGN,Moradia,$moradia/gas
+AYA I EMPREENDIMENTOS IMOBILIARIOS LTDA,Moradia,$moradia/gas
+NEOGAS DO BRASIL GAS NATURAL COMPRIMIDO S/A,Moradia,$moradia/gas
+ADOXI GASES INDUSTRIAIS,Moradia,$moradia/gas
+PREMIER DISTRIBUIDORA,Moradia,$moradia/gas
+GASMAR SDGN3,Moradia,$moradia/gas
+PREFEITURA MUNICIPAL DE SÃO PAULO,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE RIO DE JANEIRO,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE BRASÍLIA,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE SALVADOR,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE FORTALEZA,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE BELO HORIZONTE,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE MANAUS,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE CURITIBA,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE RECIFE,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE GOIÂNIA,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE BELÉM,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE PORTO ALEGRE,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE GUARULHOS,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE CAMPINAS,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE SÃO LUÍS,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE SÃO GONÇALO,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE MACEIÓ,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE DUQUE DE CAXIAS,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE CAMPO GRANDE,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE NATAL,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE TERESINA,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE SÃO BERNARDO DO CAMPO,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE NOVA IGUAÇU,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE JOÃO PESSOA,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE SÃO JOSÉ DOS CAMPOS,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE SANTO ANDRÉ,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE RIBEIRÃO PRETO,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE JABOATÃO DOS GUARARAPES,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE OSASCO,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE UBERLÂNDIA,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE SOROCABA,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE CONTAGEM,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE ARACAJU,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE FEIRA DE SANTANA,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE APARECIDA DE GOIÂNIA,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE JOINVILLE,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE ANANINDEUA,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE NITERÓI,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE LONDRINA,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE BELFORD ROXO,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE CAMPOS DOS GOYTACAZES,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE SÃO JOÃO DE MERITI,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE FLORIANÓPOLIS,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE VILA VELHA,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE CAXIAS DO SUL,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE MAUÁ,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE SERRA,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE CARAPICUÍBA,Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE NATALÂNDIA  (VERIFICAÇÃO RECOMENDADA),Moradia,$moradia/iptu
+PREFEITURA MUNICIPAL DE MACAPÁ,Moradia,$moradia/iptu
+PEIA CHOPP & GRILL EIRELI,Alimentação,$alimentação/restaurante
+ESPETINHO ALAMBIQUE,Alimentação,$alimentação/restaurante
+PIZZA ZERO ZERO,Alimentação,$alimentação/restaurante
+BELLA PIZZA,Alimentação,$alimentação/restaurante
+UBAR,Alimentação,$alimentação/restaurante
+SUSHI HOUSE,Alimentação,$alimentação/restaurante
+ANGURME CULINARIA AFRO-BRASILEIRA,Alimentação,$alimentação/restaurante
+SUSHI HEALTHY JARDINS,Alimentação,$alimentação/restaurante
+SELF- SERVICE FLOR'S,Alimentação,$alimentação/restaurante
+LM LANCHES,Alimentação,$alimentação/restaurante
+TOP 10 PIZZAS - LOJA PIONEIRA,Alimentação,$alimentação/restaurante
+RESTAURANTE DA RITA,Alimentação,$alimentação/restaurante
+SUSHI MAIS,Alimentação,$alimentação/restaurante
+SABORES DO SUL,Alimentação,$alimentação/restaurante
+FILIPEIA TRATTORIA,Alimentação,$alimentação/restaurante
+ULTRA MIX ACAI,Alimentação,$alimentação/restaurante
+HAWAII FLORIANOPOLIS,Alimentação,$alimentação/restaurante
+CHURRASCARIA MISTURAMA,Alimentação,$alimentação/restaurante
+BAHIA FACIL REPRESENTACOES,Alimentação,$alimentação/restaurante
+CANTINA E RESTAURANTE MARAJA,Alimentação,$alimentação/restaurante
+FILIPPO MASSAS,Alimentação,$alimentação/restaurante
+ONAMI SUSHI FATIMA,Alimentação,$alimentação/restaurante
+MANITA EMPREENDIMENTOS,Alimentação,$alimentação/restaurante
+RESTAURANTE COLLANGELI,Alimentação,$alimentação/restaurante
+PIZZA HOUSE DELIVERY,Alimentação,$alimentação/restaurante
+GIGANTE NORDESTINO,Alimentação,$alimentação/restaurante
+ROCHA GRILL,Alimentação,$alimentação/restaurante
+ESQUINA DA BRASA,Alimentação,$alimentação/restaurante
+SPETOS BURGUER,Alimentação,$alimentação/restaurante
+CANTINA DO CHEF,Alimentação,$alimentação/restaurante
+UMAI ORIENTAL HOUSE,Alimentação,$alimentação/restaurante
+RESTAURANTE SABOR DE MAE,Alimentação,$alimentação/restaurante
+REI DO PASTEL DELIVERY,Alimentação,$alimentação/restaurante
+"JHONNY BAR, RESTAURANTE E PIZZARIA",Alimentação,$alimentação/restaurante
+SALES DOCES,Alimentação,$alimentação/restaurante
+KINSHU GASTRONOMIA,Alimentação,$alimentação/restaurante
+MARIA FUMACA,Alimentação,$alimentação/restaurante
+O BUTECO,Alimentação,$alimentação/restaurante
+CHURRASCARIA E MARMITARIA JK,Alimentação,$alimentação/restaurante
+O MANIFESTO BAR,Alimentação,$alimentação/restaurante
+CANTINHO DO MACARRAO,Alimentação,$alimentação/restaurante
+GOSTINHO GOIANO,Alimentação,$alimentação/restaurante
+RESTAURANTE E LANCHONETE MARTINS,Alimentação,$alimentação/restaurante
+KOMTAINER BEER,Alimentação,$alimentação/restaurante
+CANTINHO DO BODE,Alimentação,$alimentação/restaurante
+SABOR CASEIRO,Alimentação,$alimentação/restaurante
+PIZZA DA MAMAE,Alimentação,$alimentação/restaurante
+PATRONES SUSHI BAR E RESTAURANTE EIRELI,Alimentação,$alimentação/restaurante
+MEGA MASTER,Alimentação,$alimentação/restaurante
+RESTAURANTE TEMPERO DE FAMILIA,Alimentação,$alimentação/restaurante
+BAIUCA DELIVERY,Alimentação,$alimentação/restaurante
+KZAN BURGER E BISTRO,Alimentação,$alimentação/restaurante
+CABANA CANTO DO BEIJA FLOR,Alimentação,$alimentação/restaurante
+CALCADA DO SABOR ALIMENTOS,Alimentação,$alimentação/restaurante
+SUMMER GRILL,Alimentação,$alimentação/restaurante
+TAIKO DELIVERY,Alimentação,$alimentação/restaurante
+HOME SUSHI HOME CARUARU,Alimentação,$alimentação/restaurante
+TORINO BRACERIA,Alimentação,$alimentação/restaurante
+DOM VITTO STEAKHOUSE,Alimentação,$alimentação/restaurante
+DEGUSTARE LANCHES,Alimentação,$alimentação/restaurante
+RESTAURANTE DE FATIMA,Alimentação,$alimentação/restaurante
+O NORDESTINO,Alimentação,$alimentação/restaurante
+PIZZARIA GOLFETTI,Alimentação,$alimentação/restaurante
+RESTAURANTE RECANTO DO SABOR,Alimentação,$alimentação/restaurante
+REI DA TILAPIA,Alimentação,$alimentação/restaurante
+SABORES NORDESTINOS PADARIA,Alimentação,$alimentação/restaurante
+VILLAS RESTAURANTE E PIZZARIA,Alimentação,$alimentação/restaurante
+PAMPAS GRILL,Alimentação,$alimentação/restaurante
+BAMA RESTAURANTE,Alimentação,$alimentação/restaurante
+RJ REFEICOES,Alimentação,$alimentação/restaurante
+MARMITARIA PALOSCHI,Alimentação,$alimentação/restaurante
+EMPORIUM JARDIM HOLLYWOOD,Alimentação,$alimentação/restaurante
+MILK SHAKE MIX MORADA NOVA,Alimentação,$alimentação/restaurante
+SAJ RESTAURANTES,Alimentação,$alimentação/restaurante
+MAKA SUSHI,Alimentação,$alimentação/restaurante
+RESTAURANTE DA VO,Alimentação,$alimentação/restaurante
+PASSIRA PIZZARIA E RESTAURANTE,Alimentação,$alimentação/restaurante
+ESPETINHO O CARIOCA,Alimentação,$alimentação/restaurante
+GR CLUBE BAR E RESTAURANTE,Alimentação,$alimentação/restaurante
+CHURRASCARIA E POUSADA IRACEMA,Alimentação,$alimentação/restaurante
+QTAL PIZZA,Alimentação,$alimentação/restaurante
+PIZZA BIG.COM,Alimentação,$alimentação/restaurante
+PIZZARIA O POINT,Alimentação,$alimentação/restaurante
+Q ESPETUS DELAS,Alimentação,$alimentação/restaurante
+ITA RESTAURANTE,Alimentação,$alimentação/restaurante
+OH! CARMELITA,Alimentação,$alimentação/restaurante
+CHURRASCARIA CANTU,Alimentação,$alimentação/restaurante
+QUINTAL ADRIANOPOLIS,Alimentação,$alimentação/restaurante
+A MASSA PIZZAS E MASSAS LTDA,Alimentação,$alimentação/restaurante
+TAKASHI SUSHI,Alimentação,$alimentação/restaurante
+KOREAN CHICKEN,Alimentação,$alimentação/restaurante
+PIT STOP DA NONNA,Alimentação,$alimentação/restaurante
+CHOPERIA DA MANSA,Alimentação,$alimentação/restaurante
+TERROAH GASTRONOMIA,Alimentação,$alimentação/restaurante
+CHEF'S GOURMET,Alimentação,$alimentação/restaurante
+RESTAURANTE BODE ASSADO,Alimentação,$alimentação/restaurante
+TREM DAS ONZE,Alimentação,$alimentação/restaurante
+B2P GRILL,Alimentação,$alimentação/restaurante
+EMPORIO BEER,Alimentação,$alimentação/restaurante
+GUARDIOES DA PIZZA,Alimentação,$alimentação/restaurante
+BELLA MASSA,Alimentação,$alimentação/restaurante
+SODRE RESTAURANTE E PIZZARIA,Alimentação,$alimentação/restaurante
+POINT DA VILLA,Alimentação,$alimentação/restaurante
+SENORA GASTRONOMIA,Alimentação,$alimentação/restaurante
+CHURRASCARIA ACONCHEGO,Alimentação,$alimentação/restaurante
+OZEKI SUSHI DELIVERY E TEMAKERIA,Alimentação,$alimentação/restaurante
+PIZZARIA SICILIANA,Alimentação,$alimentação/restaurante
+ECLAIRE RESTAURANTE,Alimentação,$alimentação/restaurante
+RESTAURANTE JOIA DO SERTAO,Alimentação,$alimentação/restaurante
+CHURRASCARIA E PIZZARIA DOS EUCALIPITOS,Alimentação,$alimentação/restaurante
+AFTER,Alimentação,$alimentação/restaurante
+PORTUGUESA DE ALDEIA,Alimentação,$alimentação/restaurante
+ASSADO DO DIONISINHO,Alimentação,$alimentação/restaurante
+RESTAURANTE CASA DA GIL,Alimentação,$alimentação/restaurante
+ESPETTO CARIOCA,Alimentação,$alimentação/restaurante
+PIZZARIA E ESFIHARIA ORQUIDEAS,Alimentação,$alimentação/restaurante
+RESTAURANTE SAO FRANCISCO,Alimentação,$alimentação/restaurante
+ELIS CAPOTE,Alimentação,$alimentação/restaurante
+ETB COMERCIO,Alimentação,$alimentação/restaurante
+REI DOS PIRATAS HAMBURGUERIA & RESTAURANTE,Alimentação,$alimentação/restaurante
+EXPRESSO GRILL RESTAURANTE,Alimentação,$alimentação/restaurante
+IVAMARA RESTAURANTE,Alimentação,$alimentação/restaurante
+JANAS RESTAURANTE,Alimentação,$alimentação/restaurante
+FIFA BEBIDAS,Alimentação,$alimentação/restaurante
+RESTAURANTE E LANCHONETE E CIA TRES CORACOES,Alimentação,$alimentação/restaurante
+MR. FORNERIA,Alimentação,$alimentação/restaurante
+ZERO UM,Alimentação,$alimentação/restaurante
+EXPRESSO GRILL DELIVERY,Alimentação,$alimentação/restaurante
+BRASEIRO CHURRASPAO,Alimentação,$alimentação/restaurante
+RESTAURANTE O CASARAO,Alimentação,$alimentação/restaurante
+PAPAS PIZZA DELIVERY,Alimentação,$alimentação/restaurante
+123PEDIU,Alimentação,$alimentação/restaurante
+URBANA PIZZARIA QUADRADA E RESTAURANTE,Alimentação,$alimentação/restaurante
+ZAY SUSHI,Alimentação,$alimentação/restaurante
+O CORONEL COZINHA E BAR,Alimentação,$alimentação/restaurante
+CASA DO ASSADO,Alimentação,$alimentação/restaurante
+SUSHI PRIME,Alimentação,$alimentação/restaurante
+RESTAURANTE DOCE FAMILIA,Alimentação,$alimentação/restaurante
+DEDO DE PROSA ESPETARIA,Alimentação,$alimentação/restaurante
+VILLA GUARAREMA,Alimentação,$alimentação/restaurante
+BUTEKO DO PEIXE,Alimentação,$alimentação/restaurante
+DOLORES RESTAURANTE,Alimentação,$alimentação/restaurante
+PORTO MAR RESTAURANTE E PIZZARIA,Alimentação,$alimentação/restaurante
+PILLA ALBERTI REFEICOES VOTUPORANGA LTDA,Alimentação,$alimentação/restaurante
+COMIDARIA 131,Alimentação,$alimentação/restaurante
+COSTELAO CHURRASCARIA,Alimentação,$alimentação/restaurante
+OKANE CULINARIA ORIENTAL,Alimentação,$alimentação/restaurante
+SABROSO BISTRO,Alimentação,$alimentação/restaurante
+RESTAURANTE BRECHO,Alimentação,$alimentação/restaurante
+3 MARIAS GASTRONOMIA,Alimentação,$alimentação/restaurante
+STOP MIX,Alimentação,$alimentação/restaurante
+RODIZIO VILLA PIZZA,Alimentação,$alimentação/restaurante
+POLLO LOKO PERUS,Alimentação,$alimentação/restaurante
+GALPAO KARIOK'S HOUSE BEER RESTAURANTE,Alimentação,$alimentação/restaurante
+SANTO ORIENTAL,Alimentação,$alimentação/restaurante
+PANELA MINEIRA,Alimentação,$alimentação/restaurante
+YUGI SUSHI,Alimentação,$alimentação/restaurante
+CHURRASCARIA GAUCHA,Alimentação,$alimentação/restaurante
+JANINHA,Alimentação,$alimentação/restaurante
+EL PATRON PERINI,Alimentação,$alimentação/restaurante
+MANA NA BRASA,Alimentação,$alimentação/restaurante
+NEGA DO SUSHI 2,Alimentação,$alimentação/restaurante
+CAI NAGUA,Alimentação,$alimentação/restaurante
+EMPORIO ARAUJO,Alimentação,$alimentação/restaurante
+BOM DE GARFO BAR E RESTAURANTE,Alimentação,$alimentação/restaurante
+LOTUS SUSHI,Alimentação,$alimentação/restaurante
+RESTAURANTE PEGORINI,Alimentação,$alimentação/restaurante
+RESTAURANTE PRATO DE OURO,Alimentação,$alimentação/restaurante
+PICANHA & COMPANHIA,Alimentação,$alimentação/restaurante
+RESTAURANTE SABOR NA MESA,Alimentação,$alimentação/restaurante
+RESTAURANTE MISSOES,Alimentação,$alimentação/restaurante
+PAPA PIZZA,Alimentação,$alimentação/restaurante
+BISTRO MARGARIDA,Alimentação,$alimentação/restaurante
+CHURRASCARIA TCHE GALETOS,Alimentação,$alimentação/restaurante
+SAHARA RESTAURANTE BAR,Alimentação,$alimentação/restaurante
+VELHO TEXAS BAR E RESTAURANTE,Alimentação,$alimentação/restaurante
+BORGES RESTAURANTE,Alimentação,$alimentação/restaurante
+TEMPERO 2,Alimentação,$alimentação/restaurante
+BIANCO RISTORANTINO,Alimentação,$alimentação/restaurante
+O BERRINHA,Alimentação,$alimentação/restaurante
+ESPLENDOR RESTAURANTE E PETISCARIA BIER,Alimentação,$alimentação/restaurante
+HAPPY PIZZA,Alimentação,$alimentação/restaurante
+BISTRO ALECRIM DO SITIO,Alimentação,$alimentação/restaurante
+REDE PREMIUM RESTAURANTES,Alimentação,$alimentação/restaurante
+GUILHERMINA EXPRESS,Alimentação,$alimentação/restaurante
+HEALTHY POR VC,Alimentação,$alimentação/restaurante
+BRABOS FOOD,Alimentação,$alimentação/restaurante
+VR HOTEL & ESPACO EVENTOS,Alimentação,$alimentação/restaurante
+RESTAURANTE BOM SABOR,Alimentação,$alimentação/restaurante
+EMPORIO GOURMET ITAIPAVA,Alimentação,$alimentação/restaurante
+MASTER GRILL,Alimentação,$alimentação/restaurante
+COMIDA CASEIRA,Alimentação,$alimentação/restaurante
+SRA. PIZZA,Alimentação,$alimentação/restaurante
+RESTAURANTE 50TAO,Alimentação,$alimentação/restaurante
+KONI STORE,Alimentação,$alimentação/restaurante
+PIZZA MANIA,Alimentação,$alimentação/restaurante
+US MINEIRO HOTEL E COZINHA MINEIRA,Alimentação,$alimentação/restaurante
+J K RESTAURANTE,Alimentação,$alimentação/restaurante
+ACAIDERA FAST,Alimentação,$alimentação/restaurante
+FORMULA PIZZARIA,Alimentação,$alimentação/restaurante
+GABRIEL ESPETOS,Alimentação,$alimentação/restaurante
+VACCARO BURGER,Alimentação,$alimentação/restaurante
+LOS PAMPAS BURGUER,Alimentação,$alimentação/restaurante
+BLEND PARRILLA,Alimentação,$alimentação/restaurante
+DIRE LANCHONETE,Alimentação,$alimentação/restaurante
+LANCHONETE LEANDRO,Alimentação,$alimentação/restaurante
+NA COZINHA DA KARLE,Alimentação,$alimentação/restaurante
+GIRAFFAS SHOPPING LIGHT,Alimentação,$alimentação/restaurante
+CALORENTOS BURGUER,Alimentação,$alimentação/restaurante
+PROTEIN CLUB,Alimentação,$alimentação/restaurante
+BOB'S,Alimentação,$alimentação/restaurante
+PRI LANCHES DELIVERY,Alimentação,$alimentação/restaurante
+MUITAMIDIA,Alimentação,$alimentação/restaurante
+ROMERO BURGER,Alimentação,$alimentação/restaurante
+MOUTS BURGUER,Alimentação,$alimentação/restaurante
+TROPICANA LANCHES,Alimentação,$alimentação/restaurante
+BNM FAST FOOD,Alimentação,$alimentação/restaurante
+PASTELARIA CHAPECOENSE,Alimentação,$alimentação/restaurante
+ICE LAN SORVETES,Alimentação,$alimentação/restaurante
+C FOOD'S,Alimentação,$alimentação/restaurante
+JOKERS BURGER,Alimentação,$alimentação/restaurante
+MY BROWNIES,Alimentação,$alimentação/restaurante
+JF SALGADOS,Alimentação,$alimentação/restaurante
+PASTEL OKINAWA,Alimentação,$alimentação/restaurante
+NICOS BURGUER,Alimentação,$alimentação/restaurante
+DUCKBILL,Alimentação,$alimentação/restaurante
+SABOR DA HORA,Alimentação,$alimentação/restaurante
+AMOR NO PALITO,Alimentação,$alimentação/restaurante
+AIQFRUTA,Alimentação,$alimentação/restaurante
+MIGUEL LANCHES,Alimentação,$alimentação/restaurante
+CAFE AVENIDA,Alimentação,$alimentação/restaurante
+SUPERDAN COMERCIO DE ALIMENTOS,Alimentação,$alimentação/restaurante
+ARENA CHICUTE,Alimentação,$alimentação/restaurante
+ACAI POWER ALBERTO CINTRA,Alimentação,$alimentação/restaurante
+BIS GASTRONOMIA,Alimentação,$alimentação/restaurante
+REZA A LENDA PETISCARIA E HAMBURGUERIA,Alimentação,$alimentação/restaurante
+FILIAL 23 - SAO BERNARDO DO CAMPO,Alimentação,$alimentação/restaurante
+MAMMA MIA SALGADOS E DOCES,Alimentação,$alimentação/restaurante
+SINHA BENTA,Alimentação,$alimentação/restaurante
+THE BEST ACAI PONTA GROSSA,Alimentação,$alimentação/restaurante
+GREGO DO DEL,Alimentação,$alimentação/restaurante
+KELL COFFEE,Alimentação,$alimentação/restaurante
+CASA DO PARA,Alimentação,$alimentação/restaurante
+ACAI PERFECT,Alimentação,$alimentação/restaurante
+RUFY ACAI,Alimentação,$alimentação/restaurante
+DINO'S HAMBURGUERIA E SORVETERIA,Alimentação,$alimentação/restaurante
+N1 CHICKEN SP,Alimentação,$alimentação/restaurante
+LANCHONETE INSANA,Alimentação,$alimentação/restaurante
+PRACAI,Alimentação,$alimentação/restaurante
+DEBURG DELIVERY,Alimentação,$alimentação/restaurante
+OURO FINO COMERCIO,Alimentação,$alimentação/restaurante
+TAPIOCA DA ILHA,Alimentação,$alimentação/restaurante
+AQUA SORVETERIA,Alimentação,$alimentação/restaurante
+EMPORIO DA PIZZA,Alimentação,$alimentação/restaurante
+SWEET CAKE,Alimentação,$alimentação/restaurante
+ACONCHEGO MINEIRO,Alimentação,$alimentação/restaurante
+EMPANDA,Alimentação,$alimentação/restaurante
+SORVETERIA DONATO,Alimentação,$alimentação/restaurante
+MY COFFEE CE,Alimentação,$alimentação/restaurante
+SABOR E VIDA,Alimentação,$alimentação/restaurante
+PEPPER BURGUER,Alimentação,$alimentação/restaurante
+FAMILIA PORTELA BUFFET E REFEICOES,Alimentação,$alimentação/restaurante
+VOLCANO BURGER,Alimentação,$alimentação/restaurante
+PREDIUM 72,Alimentação,$alimentação/restaurante
+VMF COMERCIO DE SOBREMESAS,Alimentação,$alimentação/restaurante
+KIBARLANA TRINDADE,Alimentação,$alimentação/restaurante
+GELATERIA MELLOW,Alimentação,$alimentação/restaurante
+JUPASTEL,Alimentação,$alimentação/restaurante
+AMSTERDAM BURGERS & BEERS,Alimentação,$alimentação/restaurante
+LAZZULI,Alimentação,$alimentação/restaurante
+VILA DO ACAI,Alimentação,$alimentação/restaurante
+OAKBERRY UBATUBA,Alimentação,$alimentação/restaurante
+CAFE SHOW,Alimentação,$alimentação/restaurante
+BE LIFE FOOD,Alimentação,$alimentação/restaurante
+GULA GULA LANCHES,Alimentação,$alimentação/restaurante
+BAH'ABITUS LANCHES,Alimentação,$alimentação/restaurante
+GRILL GARDEN,Alimentação,$alimentação/restaurante
+ALCE GELADOS & CAFES,Alimentação,$alimentação/restaurante
+JJANG COFFEE,Alimentação,$alimentação/restaurante
+PATRONI PIZZA,Alimentação,$alimentação/restaurante
+PASTEL DE QUE,Alimentação,$alimentação/restaurante
+CASA DO SABOR,Alimentação,$alimentação/restaurante
+LANCHONETE SILVA,Alimentação,$alimentação/restaurante
+TASTY SALAD SHOP,Alimentação,$alimentação/restaurante
+ACAI DI APE,Alimentação,$alimentação/restaurante
+ZUQUI LANCHES,Alimentação,$alimentação/restaurante
+SORVETE ITALIA,Alimentação,$alimentação/restaurante
+CAFETARIA OFFICE JARDINS,Alimentação,$alimentação/restaurante
+VEINHO LANCHES,Alimentação,$alimentação/restaurante
+FORMOSA FORMIGA DOCES E SALGADOS,Alimentação,$alimentação/restaurante
+FISH ONE,Alimentação,$alimentação/restaurante
+UMAI HOUSE,Alimentação,$alimentação/restaurante
+LA VILLET,Alimentação,$alimentação/restaurante
+OFICINA BURGUER CURITIBA,Alimentação,$alimentação/restaurante
+LANCHONETE E PIZZARIA DELICIAS DA MICHA,Alimentação,$alimentação/restaurante
+D'GUST ACAITERIA,Alimentação,$alimentação/restaurante
+CONVENIENCIA OLHOS D'AGUA,Alimentação,$alimentação/restaurante
+DU'CHEFF PASTELARIA,Alimentação,$alimentação/restaurante
+ESPETINHOS EXPRESS,Alimentação,$alimentação/restaurante
+GOSTOZIM,Alimentação,$alimentação/restaurante
+KOMPRAO KOCH ATACADISTA,Alimentação,$alimentação/supermercado
+MERCEARIA GALENO,Alimentação,$alimentação/supermercado
+EXPRESS BEBIDAS,Alimentação,$alimentação/supermercado
+GIGANTE ATACADISTA,Alimentação,$alimentação/supermercado
+SUPERMERCADO BERNARDAO,Alimentação,$alimentação/supermercado
+MERCEARIA SPILARI,Alimentação,$alimentação/supermercado
+BOA ESPERANCA SUPERMERCADO,Alimentação,$alimentação/supermercado
+PEG PAG NUNES,Alimentação,$alimentação/supermercado
+BAR E ARMAZEM SANTA MARIA,Alimentação,$alimentação/supermercado
+ARMAZEM RIBEIRO,Alimentação,$alimentação/supermercado
+PANIFICADORA MARIENSE,Alimentação,$alimentação/supermercado
+SUPERMERCADO ORIENTE MEDIO,Alimentação,$alimentação/supermercado
+LOJA JEAN,Alimentação,$alimentação/supermercado
+MERCADINHO FONTANA,Alimentação,$alimentação/supermercado
+A PIONEIRA,Alimentação,$alimentação/supermercado
+PANIFICADORA E CONFEITARIA ZAMBELLE,Alimentação,$alimentação/supermercado
+COMERCIAL GADELHA,Alimentação,$alimentação/supermercado
+BAR E ARMAZEM DO GORDO,Alimentação,$alimentação/supermercado
+CESTAO POPULAR,Alimentação,$alimentação/supermercado
+HIPER MODELO,Alimentação,$alimentação/supermercado
+ARMAZEM SARAMANDAIA,Alimentação,$alimentação/supermercado
+TREVO DISTRIBUIDORA DE MERCADORIAS EM GERAL,Alimentação,$alimentação/supermercado
+DISTRIBUIDORA CASA VELHA,Alimentação,$alimentação/supermercado
+COMERCIAL JUNIOR,Alimentação,$alimentação/supermercado
+COMERCIAL MELLO,Alimentação,$alimentação/supermercado
+LOJA DA FABRICA DM,Alimentação,$alimentação/supermercado
+SUPER CAMELO FILHO,Alimentação,$alimentação/supermercado
+ASSAI ATACADISTA,Alimentação,$alimentação/supermercado
+SUPERMERCADO KOCH,Alimentação,$alimentação/supermercado
+ROBERTO PAIVA DE OLIVEIRA MERCEARIA,Alimentação,$alimentação/supermercado
+NORDECENTRO,Alimentação,$alimentação/supermercado
+FLOR DE MEL,Alimentação,$alimentação/supermercado
+ARMAZEM LEMOS,Alimentação,$alimentação/supermercado
+BP SOLAR INTERNATIONAL LLC,Alimentação,$alimentação/supermercado
+ARMAZEM DOS AMIGOS,Alimentação,$alimentação/supermercado
+SUPERMERCADO BELA VISTA,Alimentação,$alimentação/supermercado
+ARMAZEM ESPERANCA,Alimentação,$alimentação/supermercado
+SUPERMERCADO PEG PAG,Alimentação,$alimentação/supermercado
+ARMAZEM DELVA,Alimentação,$alimentação/supermercado
+MERCADINHO ECONOMIA,Alimentação,$alimentação/supermercado
+MINIBOX REZENDE,Alimentação,$alimentação/supermercado
+SUPERMERCADO BEZERRA,Alimentação,$alimentação/supermercado
+COMERCIAL CURITIBA,Alimentação,$alimentação/supermercado
+PANIFICADORA PROGRESSO,Alimentação,$alimentação/supermercado
+SUPERMERCADOS BOMPRECO,Alimentação,$alimentação/supermercado
+HIPER BOMPRECO,Alimentação,$alimentação/supermercado
+O CESTAO,Alimentação,$alimentação/supermercado
+MERCEARIA MINEIRA,Alimentação,$alimentação/supermercado
+CASA MIRANDA,Alimentação,$alimentação/supermercado
+L.B. RODRIGUES QUENTINHAS,Alimentação,$alimentação/supermercado
+SUPERMERCADO BIG LAR,Alimentação,$alimentação/supermercado
+BAR E MERCEARIA ORIENTE,Alimentação,$alimentação/supermercado
+MERCADO CENTRAL,Alimentação,$alimentação/supermercado
+ARMAZEM MUSSI,Alimentação,$alimentação/supermercado
+SUPERMERCADOS PEG PAG,Alimentação,$alimentação/supermercado
+LOJAO DAS VERDURAS,Alimentação,$alimentação/supermercado
+ATLAS,Alimentação,$alimentação/supermercado
+ROSAL SUPERMERCADOS,Alimentação,$alimentação/supermercado
+SUPER MERCADOS LEAO,Alimentação,$alimentação/supermercado
+MERCADO PARAISO,Alimentação,$alimentação/supermercado
+COMERCIAL SILVA,Alimentação,$alimentação/supermercado
+LISAMAR SUPERMERCADO,Alimentação,$alimentação/supermercado
+PIT STOP DA BEBIDA,Alimentação,$alimentação/supermercado
+RN ALIMENTOS,Alimentação,$alimentação/supermercado
+SAO LUIZ MERCADINHO,Alimentação,$alimentação/supermercado
+CEASA,Alimentação,$alimentação/supermercado
+PANIFICADORA E CONFEITARIA PINHO,Alimentação,$alimentação/supermercado
+PEG PAG RODRIGUES,Alimentação,$alimentação/supermercado
+MERCEARIA SAO PAULO,Alimentação,$alimentação/supermercado
+CASA NOSSA SENHORA APARECIDA,Alimentação,$alimentação/supermercado
+MERCEARIA SAO JOSE,Alimentação,$alimentação/supermercado
+MERCEARIA BRASILIA,Alimentação,$alimentação/supermercado
+MERCEARIA ITACOLOMI,Alimentação,$alimentação/supermercado
+CARREFOUR,Alimentação,$alimentação/supermercado
+ARMAZEM BRASIL,Alimentação,$alimentação/supermercado
+MERCEARIA RODRIGUEZ,Alimentação,$alimentação/supermercado
+EDIPAL,Alimentação,$alimentação/supermercado
+SORVETERIA LUANA,Alimentação,$alimentação/supermercado
+SUPERMERCADO CONFIANCA,Alimentação,$alimentação/supermercado
+CASA BEZERRA,Alimentação,$alimentação/supermercado
+MERCEARIA CENTRAL,Alimentação,$alimentação/supermercado
+SONHO DE MEL LANCHONETE E CONFEITARIA,Alimentação,$alimentação/supermercado
+BAR E ARMAZEM ELDORADO,Alimentação,$alimentação/supermercado
+O FLORESTAO,Alimentação,$alimentação/supermercado
+ARMAZEM SAO LUIZ,Alimentação,$alimentação/supermercado
+COMERCIAL BIRIGUI,Alimentação,$alimentação/supermercado
+SUPERMERCADO SAO JOSE,Alimentação,$alimentação/supermercado
+MERCADO PINHEIRO,Alimentação,$alimentação/supermercado
+BARTO ATACADISTA,Alimentação,$alimentação/supermercado
+CALANGOS BEATS LANCHONETE E MERCEARIA,Alimentação,$alimentação/supermercado
+ARMAZEM SILVA,Alimentação,$alimentação/supermercado
+CE QUE SABE LANCHONETE,Alimentação,$alimentação/supermercado
+MAQUINA DE BENEFICIAR ARROZ LIMOEIRO,Alimentação,$alimentação/supermercado
+BAR E ARMAZEM CANGUARA,Alimentação,$alimentação/supermercado
+ARMAZEM ALAGOANO,Alimentação,$alimentação/supermercado
+EMPORIO LAGOANO,Alimentação,$alimentação/supermercado
+MERCEARIA REZENDE,Alimentação,$alimentação/supermercado
+BAR E MERCEARIA SAO JOSE,Alimentação,$alimentação/supermercado
+CASA FLORESTA,Alimentação,$alimentação/supermercado
+ATACADAO,Alimentação,$alimentação/supermercado
+REDE OBA,Alimentação,$alimentação/supermercado
+SUPERMERCADO SANTIAGO,Alimentação,$alimentação/supermercado
+CESTA DO POVO,Alimentação,$alimentação/supermercado
+GIL SUPERMERCADO,Alimentação,$alimentação/supermercado
+MERCADO DUCIDO,Alimentação,$alimentação/supermercado
+DIA BRASIL SOCIEDADE LIMITADA,Alimentação,$alimentação/supermercado
+SUPERMERCADO GRANJEIRO,Alimentação,$alimentação/supermercado
+SUPERMERCADO ISABELLA,Alimentação,$alimentação/supermercado
+SUPERMERCADO PAIZAO,Alimentação,$alimentação/supermercado
+SMART BOX SICILIANO,Alimentação,$alimentação/supermercado
+MINI MERCADO 2 IRMAOS,Alimentação,$alimentação/supermercado
+MERCADO DAS CARNES,Alimentação,$alimentação/supermercado
+DUTRONO ALIMENTOS,Alimentação,$alimentação/supermercado
+SUPERMERCADO AUGUSTONI,Alimentação,$alimentação/supermercado
+MERCADO SACOLA CHEIA,Alimentação,$alimentação/supermercado
+SUPERMERCADO EXPRESS,Alimentação,$alimentação/supermercado
+COOP - COOPERATIVA DE CONSUMO,Alimentação,$alimentação/supermercado
+PAXA SUPERMERCADOS,Alimentação,$alimentação/supermercado
+SUPERMERCADO SAO FRANCISCO LOJA 4,Alimentação,$alimentação/supermercado
+SUPERMERCADO MAIS BARATO,Alimentação,$alimentação/supermercado
+SUPERMERCADO NEVES,Alimentação,$alimentação/supermercado
+DIA,Alimentação,$alimentação/supermercado
+DA TERRA HORTIFRUTI,Alimentação,$alimentação/supermercado
+SUPER CONRADINHO,Alimentação,$alimentação/supermercado
+SUPER UNIAO SUPERMERCADOS,Alimentação,$alimentação/supermercado
+SUPER ALIANCA,Alimentação,$alimentação/supermercado
+ATACADISTA MEGA,Alimentação,$alimentação/supermercado
+SUPERMERCADO 3 IRMAOS,Alimentação,$alimentação/supermercado
+PAO DA TERRA,Alimentação,$alimentação/supermercado
+JAS ON,Alimentação,$alimentação/supermercado
+SUPERMERCADO + ECONOMICO,Alimentação,$alimentação/supermercado
+MERCADO TRADICAO,Alimentação,$alimentação/supermercado
+SUPERMERCADO BOY,Alimentação,$alimentação/supermercado
+JMS MERCADO E DEPOSITO DE BEBIDAS,Alimentação,$alimentação/supermercado
+SUPERMERCADO BONA,Alimentação,$alimentação/supermercado
+GRAN ARMAZEM,Alimentação,$alimentação/supermercado
+RG SUPERMERCADO,Alimentação,$alimentação/supermercado
+SUPERMERCADO E HORTIFRUTI MIX,Alimentação,$alimentação/supermercado
+SUPERMERCADO SAO LUIZ,Alimentação,$alimentação/supermercado
+MERCADO DUAS IRMAS,Alimentação,$alimentação/supermercado
+SUPERMERCADO PRIME,Alimentação,$alimentação/supermercado
+MERCADO MIRAPORTO & DISTRIBUIDORA JB,Alimentação,$alimentação/supermercado
+MERCADINHO ECONOMICO IV,Alimentação,$alimentação/supermercado
+FAMA SUPERMERCADO,Alimentação,$alimentação/supermercado
+M2BE MARKET,Alimentação,$alimentação/supermercado
+FURKIM SERVICOS,Alimentação,$alimentação/supermercado
+VIRTUE,Alimentação,$alimentação/supermercado
+MERCEARIA BRANDAO,Alimentação,$alimentação/supermercado
+SUPERCOUTO,Alimentação,$alimentação/supermercado
+COMERCIAL FERREIRA,Alimentação,$alimentação/supermercado
+SAO LUIS SUPERMERCADO,Alimentação,$alimentação/supermercado
+SUPERMERCADO COMPRE BEM,Alimentação,$alimentação/supermercado
+SAO JORGE SUPER,Alimentação,$alimentação/supermercado
+MERCADINHO CEDRO,Alimentação,$alimentação/supermercado
+CASA DE CARNES RICCI,Alimentação,$alimentação/supermercado
+MERCANTIL IMPERATRIZ,Alimentação,$alimentação/supermercado
+SUPERMERCADO RODRIGUES,Alimentação,$alimentação/supermercado
+SUPERMERCADO SAO ROQUE LTDA,Alimentação,$alimentação/supermercado
+PORTAL SUPERMERCADO E CONVENIENCIA,Alimentação,$alimentação/supermercado
+SUPERMERCADO NOVO LAR,Alimentação,$alimentação/supermercado
+MIX MATEUS,Alimentação,$alimentação/supermercado
+SUPERMERCADO NOSSA SENHORA APARECIDA,Alimentação,$alimentação/supermercado
+TOTI SUPERMERCADO,Alimentação,$alimentação/supermercado
+SUPERMERCADO SANTO ANTONIO EXPRESS,Alimentação,$alimentação/supermercado
+BW COMERCIO DE ALIMENTOS,Alimentação,$alimentação/supermercado
+BOM SABOR SUPERMERCADOS,Alimentação,$alimentação/supermercado
+TANTO SUPERMERCADOS,Alimentação,$alimentação/supermercado
+IDST SUPERMERCADOS,Alimentação,$alimentação/supermercado
+KIPRECO SUPERMERCADO,Alimentação,$alimentação/supermercado
+CASA GARGAU,Alimentação,$alimentação/supermercado
+GAS & CIA QUERENCIA,Alimentação,$alimentação/supermercado
+ATACADISTA BRASIL,Alimentação,$alimentação/supermercado
+SUPERMERCADO CENTRAL,Alimentação,$alimentação/supermercado
+POSTERUS,Alimentação,$alimentação/supermercado
+SUPERMERCADOS BH,Alimentação,$alimentação/supermercado
+CARVALHO'S MERCADO E DISTRIBUIDORA,Alimentação,$alimentação/supermercado
+FLASH UTILIDADES,Alimentação,$alimentação/supermercado
+LOJA DA MARCY,Alimentação,$alimentação/supermercado
+HIPER M SOUZA,Alimentação,$alimentação/supermercado
+SUPERMERCADO JARDIM PARAISO,Alimentação,$alimentação/supermercado
+MASTER COMERCIO E SERVICO,Alimentação,$alimentação/supermercado
+MERCADO PIMENTEL ALBERTON,Alimentação,$alimentação/supermercado
+SUPERMERCADO CANTINHO RURAL,Alimentação,$alimentação/supermercado
+SUPERMERCADO BARATAO,Alimentação,$alimentação/supermercado
+SUPERMERCADO SILVA,Alimentação,$alimentação/supermercado
+SUPERMERCADO E CONVENIENCIA TODO DIA,Alimentação,$alimentação/supermercado
+MERCADO PARANA,Alimentação,$alimentação/supermercado
+SAIDEIRA SUPERMERCADOS,Alimentação,$alimentação/supermercado
+ATACADAO MAX ARGOLO,Alimentação,$alimentação/supermercado
+VIVORE HORTIFRUTI,Alimentação,$alimentação/supermercado
+HORTIFRUTI UNIAO,Alimentação,$alimentação/supermercado
+SUPERMERCADO DO ROXINHO,Alimentação,$alimentação/supermercado
+S M SUPERMERCADO FERREIRA,Alimentação,$alimentação/supermercado
+SUPERMERCADO GUIMARAES,Alimentação,$alimentação/supermercado
+CHAMA SUPERMERCADO,Alimentação,$alimentação/supermercado
+SUPERMERCADO MODELO,Alimentação,$alimentação/supermercado
+EMPORIO DB,Alimentação,$alimentação/supermercado
+JUZE,Alimentação,$alimentação/supermercado
+SUPERMERCADO FENIX,Alimentação,$alimentação/supermercado
+SUPERMERCADO SAO PEDRO,Alimentação,$alimentação/supermercado
+SUPERMERCADO NOVA ALIANCA,Alimentação,$alimentação/supermercado
+CERVEJA E TUDO CAXANGA,Alimentação,$alimentação/supermercado
+TEMPERO DO BILL,Alimentação,$alimentação/supermercado
+MINI MERCADO NACK,Alimentação,$alimentação/supermercado
+MARCELINHO DISTRIBUIDORA,Alimentação,$alimentação/supermercado
+MERCADO TOP,Alimentação,$alimentação/supermercado
+MERCADO DOIS IRMAOS,Alimentação,$alimentação/supermercado
+COMERCIAL ITAMAR,Alimentação,$alimentação/supermercado
+LOKOKO,Alimentação,$alimentação/supermercado
+JR MERCADO,Alimentação,$alimentação/supermercado
+EMPORIO DO VOVO E DA VOVO,Alimentação,$alimentação/supermercado
+SUPERMERCADO GOMES & SILVA,Alimentação,$alimentação/supermercado
+VIA BRASIL DISTRIBUIDORA,Alimentação,$alimentação/supermercado
+COMERCIAL AIUB,Alimentação,$alimentação/supermercado
+MERCADO BIG BEN,Alimentação,$alimentação/supermercado
+JAPAN CONVENIENCE,Alimentação,$alimentação/supermercado
+MERCANTIL SUPER MAX,Alimentação,$alimentação/supermercado
+DISTRISERV COMERCIO E SERVICOS,Alimentação,$alimentação/supermercado
+MERCEARIA O JACINTO MARIA,Alimentação,$alimentação/supermercado
+HORA DO BOTEQUIM,Alimentação,$alimentação/supermercado
+TIO PEREIRA DELICIAS DA ROCA,Alimentação,$alimentação/supermercado
+COMERCIAL SOUZA,Alimentação,$alimentação/supermercado
+PINHEIRO COMERCIO,Alimentação,$alimentação/supermercado
+MERCADINHO NOSSA SENHORA DOS MILAGRES,Alimentação,$alimentação/supermercado
+MERCADINHO NOVA VIDA,Alimentação,$alimentação/supermercado
+MERCANTIL MAGALHAES,Alimentação,$alimentação/supermercado
+MINAS PLASTICOS,Alimentação,$alimentação/supermercado
+MERCADO SANTA LUZIA,Alimentação,$alimentação/supermercado
+ARMAZEM SAO JOSE,Alimentação,$alimentação/supermercado
+MERCADINHO E CONVENIENCIA DAORA,Alimentação,$alimentação/supermercado
+DEGAS BEEF,Alimentação,$alimentação/supermercado
+EMPORIO VO MARIA,Alimentação,$alimentação/supermercado
+SUPER CLARA,Alimentação,$alimentação/supermercado
+JAK MULTI VARIEDADES,Alimentação,$alimentação/supermercado
+MERCEARIA TOM JOBIM,Alimentação,$alimentação/supermercado
+MERCADINHO & FRUTARIA DA REGIANE,Alimentação,$alimentação/supermercado
+MINI PRECO,Alimentação,$alimentação/supermercado
+JP 25 DE AGOSTO,Alimentação,$alimentação/supermercado
+MERCEARIA J. LO,Alimentação,$alimentação/supermercado
+MERCADO PIRATUBA,Alimentação,$alimentação/supermercado
+W.E. CONVENIENCIA,Alimentação,$alimentação/supermercado
+MERCADINHO BORGES,Alimentação,$alimentação/supermercado
+MANGUEIRAO IMPORTADOS,Alimentação,$alimentação/supermercado
+ADEGA LIDER,Alimentação,$alimentação/supermercado
+SHOW DO IOGURTE,Alimentação,$alimentação/supermercado
+PEDRAO SUPERMERCADO,Alimentação,$alimentação/supermercado
+AN MERCADINHO LUIZA,Alimentação,$alimentação/supermercado
+RFMERCADO,Alimentação,$alimentação/supermercado
+COMERCIAL LUIZ ROSA METO,Alimentação,$alimentação/supermercado
+JARNILSON BOM PRECO E REPRESENTACOES,Alimentação,$alimentação/supermercado
+PIZZARIA ESFIHARIA ANDORINHA,Alimentação,$alimentação/supermercado
+MERCEARIA E FRIGORIFICO JL,Alimentação,$alimentação/supermercado
+SAULO DA LARANJA,Alimentação,$alimentação/supermercado
+COMERCIAL BEIRA RIO,Alimentação,$alimentação/supermercado
+MERCADINHO OLIVEIRA,Alimentação,$alimentação/supermercado
+MINIMERCADO ZAPP,Alimentação,$alimentação/supermercado
+MERCADINHO VIEIRA,Alimentação,$alimentação/supermercado
+ATACADAO DOS FRIOS,Alimentação,$alimentação/supermercado
+MCDONALDS,Alimentação,$alimentação/restaurante
+BURGER KING,Alimentação,$alimentação/restaurante
+SUBWAY,Alimentação,$alimentação/restaurante
+SPOLETO,Alimentação,$alimentação/restaurante
+GIRAFFAS,Alimentação,$alimentação/restaurante
+KFC,Alimentação,$alimentação/restaurante
+PIZZA HUT,Alimentação,$alimentação/restaurante
+OUTBACK,Alimentação,$alimentação/restaurante
+VIVENDA DO CAMARÃO,Alimentação,$alimentação/restaurante
+PATRONI PIZZA,Alimentação,$alimentação/restaurante
+RAGAZZO,Alimentação,$alimentação/restaurante
+STARBUCKS,Alimentação,$alimentação/restaurante
+BOB’S,Alimentação,$alimentação/restaurante
+CASA DO PÃO DE QUEIJO,Alimentação,$alimentação/restaurante
+REI DO MATE,Alimentação,$alimentação/restaurante
+CACAU SHOW,Alimentação,$alimentação/restaurante
+KOPENHAGEN,Alimentação,$alimentação/restaurante
+BACIO DI LATTE,Alimentação,$alimentação/restaurante
+CHIQUINHO SORVETES,Alimentação,$alimentação/restaurante
+GELA GUELA,Alimentação,$alimentação/restaurante
+CASTELO EMBALAGENS,Alimentação,$alimentação/supermercado
+N. B. A. COMERCIO E DISTRIBUIDORA,Alimentação,$alimentação/supermercado
+SINHA EXPRESS,Alimentação,$alimentação/supermercado
+SUPERMERCADO E ACOUGUE KMY,Alimentação,$alimentação/supermercado
+TOP MAR PRODUTOS DA FAZENDA E NATURAIS E ERVAS,Alimentação,$alimentação/supermercado
+COMERCIAL FLOR DO CAMPO,Alimentação,$alimentação/supermercado
+COMERCIAL GUANDUENSE,Alimentação,$alimentação/supermercado
+MERCADO UNIAO,Alimentação,$alimentação/supermercado
+PETISQUE,Alimentação,$alimentação/supermercado
+SUCATA BRASIL,Alimentação,$alimentação/supermercado
+BOUTIQUE SPLENDORE,Alimentação,$alimentação/supermercado
+MERCADO SANTA LUISA,Alimentação,$alimentação/supermercado
+MERCADO D'NUNES,Alimentação,$alimentação/supermercado
+SUPERMERCADOS QUERO MAIS,Alimentação,$alimentação/supermercado
+PRIME EVANGELINA,Alimentação,$alimentação/supermercado
+SUPERMERCADO LEVE MAIS,Alimentação,$alimentação/supermercado
+COMERCIAL DAVI,Alimentação,$alimentação/supermercado
+COMERCIAL FAUSTINO II,Alimentação,$alimentação/supermercado
+ARMAZEM REAL,Alimentação,$alimentação/supermercado
+SHOPPING VARIEDADES,Alimentação,$alimentação/supermercado
+MERCADINHO AKITEM,Alimentação,$alimentação/supermercado
+MERCEARIA FAMILIAR,Alimentação,$alimentação/supermercado
+TBS COMERCIO E EMPREENDIMENTOS,Alimentação,$alimentação/supermercado
+COMERCIAL DPF,Alimentação,$alimentação/supermercado
+COMERCIAL MARCIANO,Alimentação,$alimentação/supermercado
+JL FRANGOS E VERDURAS,Alimentação,$alimentação/supermercado
+BARATINHOS MINIMERCADO,Alimentação,$alimentação/supermercado
+MERCADO BOM PRECO,Alimentação,$alimentação/supermercado
+COMERCIAL CUNHA,Alimentação,$alimentação/supermercado
+PADARIA XV,Alimentação,$alimentação/supermercado
+INHOUSE COMERCIO E SERVICOS,Alimentação,$alimentação/supermercado
+SUPERMERCADO DO NENEM,Alimentação,$alimentação/supermercado
+DOCE HOME CAFE,Alimentação,$alimentação/supermercado
+EMPORIO NOGUEIRA,Alimentação,$alimentação/supermercado
+OXXO LARGO DO AROUCHE,Alimentação,$alimentação/supermercado
+R & C COMERCIO E SERVICOS,Alimentação,$alimentação/supermercado
+MERCADO E ACOUGUE ECONOMIA,Alimentação,$alimentação/supermercado
+A QUEIJARIA,Alimentação,$alimentação/supermercado
+CONVENIENCIA AVENIDA,Alimentação,$alimentação/supermercado
+STORE MATOS,Alimentação,$alimentação/supermercado
+MERCADO E ACOUGUE NOVO PRECO,Alimentação,$alimentação/supermercado
+SR. ESPONJA DISTRIBUIDORA,Alimentação,$alimentação/supermercado
+MINI MERCADO PARIPIRANGA,Alimentação,$alimentação/supermercado
+MISS BARRIGA MODA GESTANTE,Compras,$compras
+LITORANEUS PAULO AFONSO,Compras,$compras
+LA SOPHIE STORE,Compras,$compras
+OUTLET TAIPAS,Compras,$compras
+LOTUS IMPERIAL,Compras,$compras
+JUELY MODAS,Compras,$compras
+TOP 10 MODAS,Compras,$compras
+J KIDS BABY,Compras,$compras
+ROSELI VIEIRA DA SILVA,Compras,$compras
+JANA LINGERIE,Compras,$compras
+PARAISO DOS BIQUINIS,Compras,$compras
+CLOSET DE LUXO,Compras,$compras
+NINA ROSA MODA PRAIA,Compras,$compras
+J L MODAS,Compras,$compras
+AMAZONAS IMPORTADOS PORTEL,Compras,$compras
+LOJA DONA,Compras,$compras
+PEPIS STORE,Compras,$compras
+TEM TOTAL MODAS,Compras,$compras
+LOJAS LUCINEIDE,Compras,$compras
+SURAMINHA MODAS,Compras,$compras
+AB STORE,Compras,$compras
+ESPACO 10,Compras,$compras
+ORACULO IMOVEIS,Compras,$compras
+UAI MENINA,Compras,$compras
+TACTICAL FORCE,Compras,$compras
+KFS MEN CLOSET,Compras,$compras
+ARCO IRIS,Compras,$compras
+ELITE MULTIMARCAS,Compras,$compras
+SOL E LUA,Compras,$compras
+HEMING,Compras,$compras
+RE BOUTIQUE,Compras,$compras
+R.A.IMPORTS,Compras,$compras
+NARJARA CLOSET,Compras,$compras
+NOVOSTYLO,Compras,$compras
+LOJAS MARES,Compras,$compras
+LU ROSA,Compras,$compras
+PREMISSA,Compras,$compras
+FLOR DE CAFE BOUTIQUE,Compras,$compras
+SHOPPING CARUARU,Compras,$compras
+EMPORIO PAULISTA CONFECCOES E ACESSORIOS,Compras,$compras
+LADYS STORE,Compras,$compras
+SARDEGNA SARTORIA,Compras,$compras
+THE LITTLE KING,Compras,$compras
+431 MODOAS,Compras,$compras
+ROMANA TRICOT,Compras,$compras
+MAGAZINE PARREIRA,Compras,$compras
+FLUMINENSE FC LOJA OFICIAL,Compras,$compras
+RR ROUPAS E ACESSORIOS,Compras,$compras
+TODA LINDA,Compras,$compras
+VAINA MODA,Compras,$compras
+ZULU MODAS,Compras,$compras
+BARATO MANIA,Compras,$compras
+DONNA FASHIONISTA,Compras,$compras
+DUALITY,Compras,$compras
+SCARLET STORE,Compras,$compras
+DUDA MODAS,Compras,$compras
+LUMOS STORE,Compras,$compras
+VIOT,Compras,$compras
+A PRINCIPAL BEBE E MAMAE,Compras,$compras
+CALCEFLEXX CALCADOS,Compras,$compras
+DIVINO JEANS,Compras,$compras
+EMNORONHA,Compras,$compras
+CASALWOD,Compras,$compras
+JCMS UNIFORMES E CONFECCOES,Compras,$compras
+BIOTIPO MODAS,Compras,$compras
+BABY STYLE,Compras,$compras
+PRECO JUSTO STORE,Compras,$compras
+SANDALINDAS,Compras,$compras
+BJC COMERCIAL,Compras,$compras
+A M MODAS E ACESSORIOS,Compras,$compras
+MALU KIDS,Compras,$compras
+KATIA MAGAZINE,Compras,$compras
+KIDSTOK SP MARKET CENTER,Compras,$compras
+DINAMOTION,Compras,$compras
+NACAO BRASILIA,Compras,$compras
+SISTERS BY COELHO,Compras,$compras
+MERCANTIL PARAMBU,Compras,$compras
+BLACK PINK,Compras,$compras
+ITS MUNDO FASHION,Compras,$compras
+ALVORE,Compras,$compras
+ANA JULIA STORIE VARIEDADES,Compras,$compras
+PIM,Compras,$compras
+FORMATO Z,Compras,$compras
+DINEY MODAS,Compras,$compras
+KENNE FASHION,Compras,$compras
+LOOK DA MODA OFICIAL,Compras,$compras
+REUTILIZANDO BRECHO,Compras,$compras
+VITOR CONFECCOES,Compras,$compras
+TESOURA DE OURO,Compras,$compras
+VALDIR VARIEDADES,Compras,$compras
+GAVAZZI,Compras,$compras
+BABY MHAR FRALDAS E ACESSORIOS PARA BEBE,Compras,$compras
+SOPRANO MODAS,Compras,$compras
+MFW,Compras,$compras
+USE BHOTO,Compras,$compras
+FLOR DE LIZ STORE,Compras,$compras
+INTIMMA LINGERIE,Compras,$compras
+GAFBR,Compras,$compras
+DANICELL TELECOMUNICACOES,Compras,$compras
+NACIONAL MAGAZINE,Compras,$compras
+CUBO MARKET,Compras,$compras
+RED STORE,Compras,$compras
+GP INFORMATICA,Compras,$compras
+TECNERD,Compras,$compras
+NOVA NET ISP,Compras,$compras
+GENIUN'S TEC,Compras,$compras
+VIPTECH INFORMATICA,Compras,$compras
+PROSOMA AUTOMACAO COMERCIAL,Compras,$compras
+Ensa Gestao e Tecnologia,Compras,$compras
+MSA COMERCIO DE ELETRONICOS,Compras,$compras
+LIRAZ,Compras,$compras
+AZZE STORE,Compras,$compras
+TOOL KIT TI,Compras,$compras
+ALLSYS TECNOLOGIA,Compras,$compras
+GRUPO ALTA IMPRESSAO,Compras,$compras
+HARD-OFF,Compras,$compras
+DAYTECH INFORMATICA & CIA,Compras,$compras
+M4N,Compras,$compras
+MFM SUPRIMENTOS EM INFORMATICA,Compras,$compras
+MTEC INFORMATICA EIRELI,Compras,$compras
+TAUPRON COMERCIO E SERVICOS,Compras,$compras
+AUTENTICO IMPORTADO,Compras,$compras
+GRS TECNOLOGIA E SEGURANCA,Compras,$compras
+TONY IMPORTADOS,Compras,$compras
+PACHECO TECNOLOGIA DA INFORMACAO,Compras,$compras
+SARAIVA COMERCIO,Compras,$compras
+INFOSHOP INFORMATICA,Compras,$compras
+FOCO SEGURANCA,Compras,$compras
+JLOPES ENGENHARIA E PROJETOS,Compras,$compras
+EVIDENCIA INFORMATICA,Compras,$compras
+JONBEZ E-COMMERCE,Compras,$compras
+IGS IMPORTS,Compras,$compras
+A CASA DOS NOTEBOOKS,Compras,$compras
+REAL FAST,Compras,$compras
+RS SISTEMA DE IMPRESSAO,Compras,$compras
+R25,Compras,$compras
+WMD ONLINE,Compras,$compras
+GF E-COMMERCE,Compras,$compras
+PRINTT SUB,Compras,$compras
+LWR MERCADO SEGURANCA,Compras,$compras
+TERALINK TELECOM,Compras,$compras
+VILELAGG,Compras,$compras
+ATLAS TEC,Compras,$compras
+FORCETECH,Compras,$compras
+SNAW,Compras,$compras
+ALL COMMERCE,Compras,$compras
+ISTEQ,Compras,$compras
+RM SOLUCOES,Compras,$compras
+CENTRAL CELL,Compras,$compras
+K VENDAS,Compras,$compras
+INFOTEC 3F,Compras,$compras
+GLOBALTEC,Compras,$compras
+WORLD INFORMATICA IBITIRAMA,Compras,$compras
+RNA DIVERSOES ELETRONICAS,Compras,$compras
+IONS CABOS,Compras,$compras
+"MDR - COMERCIO, PROJETOS, OBRAS E ENGENHARIA",Compras,$compras
+3D ALFA,Compras,$compras
+ELOHIM TECH,Compras,$compras
+CENTER TECH INFORMATICA E SERVICOS,Compras,$compras
+DT IMPORTS,Compras,$compras
+JSS TRANS COMERCIAL,Compras,$compras
+INFO MEGA TECNOLOGIA,Compras,$compras
+CELCOMM,Compras,$compras
+MINAS SOLUCOES,Compras,$compras
+INNOVA TECH SMART,Compras,$compras
+ALITECH AUTOMACAO COMERCIAL,Compras,$compras
+.BAT,Compras,$compras
+TN4-TECH,Compras,$compras
+WISH BRASIL,Compras,$compras
+S.O.S CELULAR E INFORMATICA,Compras,$compras
+TATI VAREJO,Compras,$compras
+MODE ON,Compras,$compras
+SM ARTIGOS DE INFORMATICA,Compras,$compras
+CONTARINA,Compras,$compras
+MARCAO INFORMATICA,Compras,$compras
+TOP INFORMATICA,Compras,$compras
+MSINFO SOLUCOES EM TECNOLOGIA,Compras,$compras
+CASSMAR,Compras,$compras
+3L DISTRIBUIDORA,Compras,$compras
+LION TECHNOLOGY,Compras,$compras
+MULTIHARD,Compras,$compras
+META PROMOCOES,Compras,$compras
+TIAGO PAMPA SOLUCOES,Compras,$compras
+SOLUTION ASSESSORIA,Compras,$compras
+INFOIMPRESS COMERCIO E SERVICOS,Compras,$compras
+MK CELL,Compras,$compras
+DELTA,Compras,$compras
+APPLEINFOCELL SOLUTIONS,Compras,$compras
+PLAYTECH,Compras,$compras
+HUBTECHNOLOGY,Compras,$compras
+OXOSTORE,Compras,$compras
+CR SERVICOS,Compras,$compras
+CALIFORNIA TECH,Compras,$compras
+SHOP DO ENVELOPADOR,Compras,$compras
+G W A SERVICOS E PARTICIPACOES,Compras,$compras
+AIB TECNOLOGIA,Compras,$compras
+MULTI SHOP CHAPECO,Compras,$compras
+PRADO INFORMATICA,Compras,$compras
+HAVAN,Compras,$compras
+RIACHUELO,Compras,$compras
+RENNER,Compras,$compras
+ADIDAS,Compras,$compras
+ASICS,Compras,$compras
+RESERVA,Compras,$compras
+AREZZO,Compras,$compras
+PERNAMBUCANAS,Compras,$compras
+CAEDU,Compras,$compras
+LOJAO DO BRAS,Compras,$compras
+RENNER,Compras,$compras
+RIACHUELO,Compras,$compras
+MARISA,Compras,$compras
+ZARA,Compras,$compras
+FOREVER 21,Compras,$compras
+YOUCOM,Compras,$compras
+LUIGI BERTOLLI,Compras,$compras
+HERING,Compras,$compras
+HERING KIDS,Compras,$compras
+ARAMIS,Compras,$compras
+LE LIS BLANC,Compras,$compras
+RICHARDS,Compras,$compras
+ANIMALE,Compras,$compras
+FARM,Compras,$compras
+DRESS TO,Compras,$compras
+SHOULDER,Compras,$compras
+TNG,Compras,$compras
+LACOSTE,Compras,$compras
+SCHUTZ,Compras,$compras
+VIA MIA,Compras,$compras
+ANACAPRI,Compras,$compras
+MR. CAT,Compras,$compras
+MELISSA,Compras,$compras
+CENTAURO,Compras,$compras
+ARTWALK,Compras,$compras
+WORLD TENNIS,Compras,$compras
+TRACKEFIELD,Compras,$compras
+SAMSUNG,Compras,$compras
+APPLE (IPLACE OU FAST SHOP),Compras,$compras
+XIAOMI,Compras,$compras
+MOTOROLA,Compras,$compras
+VIVO,Compras,$compras
+CLARO,Compras,$compras
+TIM,Compras,$compras
+OI,Compras,$compras
+AMERICANAS EXPRESS,Compras,$compras
+MAGAZINE LUIZA,Compras,$compras
+O BOTICARIO,Compras,$compras
+NATURA,Compras,$compras
+QUEM DISSE BERENICE,Compras,$compras
+SEPHORA,Compras,$compras
+MAC,Compras,$compras
+LOCCITANE,Compras,$compras
+THE BODY SHOP,Compras,$compras
+GRANADO,Compras,$compras
+LUSH,Compras,$compras
+CONTEM 1G,Compras,$compras
+IMAGINARIUM,Compras,$compras
+TOKSTOK,Compras,$compras
+CAMICADO,Compras,$compras
+LE BISCUIT,Compras,$compras
+MULTICOISAS,Compras,$compras
+DAISO JAPAN,Compras,$compras
+KALUNGA,Compras,$compras
+MINISO,Compras,$compras
+ZELO,Compras,$compras
+PONTO,Compras,$compras
+SARAIVA,Compras,$compras
+LEITURA,Compras,$compras
+LIVRARIA DA VILA,Compras,$compras
+RI HAPPY,Compras,$compras
+PBKIDS,Compras,$compras
+PITICAS,Compras,$compras
+GEEK10,Compras,$compras
+UZ GAMES,Compras,$compras
+LOJAS AMERICANAS,Compras,$compras
+MAGIC GAMES,Compras,$compras
+CHILLI BEANS,Compras,$compras
+ÓTICAS CAROL,Compras,$compras
+ÓTICAS DINIZ,Compras,$compras
+LOJAS MARABRAZ,Compras,$compras
+AMIL,Saúde,$saude/plano
+UNIMED NACIONAL,Saúde,$saude/plano
+BRADESCO SAÚDE,Saúde,$saude/plano
+SULAMÉRICA SAÚDE,Saúde,$saude/plano
+NOTREDAME INTERMÉDICA,Saúde,$saude/plano
+HAPVIDA SAÚDE,Saúde,$saude/plano
+UNIMED-RIO,Saúde,$saude/plano
+UNIMED-BH,Saúde,$saude/plano
+UNIMED PAULISTANA,Saúde,$saude/plano
+UNIMED CAMPINAS,Saúde,$saude/plano
+UNIMED PORTO ALEGRE,Saúde,$saude/plano
+UNIMED FORTALEZA,Saúde,$saude/plano
+UNIMED RECIFE,Saúde,$saude/plano
+UNIMED CURITIBA,Saúde,$saude/plano
+UNIMED BELÉM,Saúde,$saude/plano
+UNIMED VITÓRIA,Saúde,$saude/plano
+UNIMED FESP (FEDERAÇÃO ESTADO DE SÃO PAULO),Saúde,$saude/plano
+GOLDEN CROSS,Saúde,$saude/plano
+PORTO SAÚDE (PORTO SEGURO),Saúde,$saude/plano
+PROMED ASSISTÊNCIA MÉDICA,Saúde,$saude/plano
+SÃO FRANCISCO SAÚDE,Saúde,$saude/plano
+BIOVIDA SAÚDE,Saúde,$saude/plano
+GREENLINE SAÚDE,Saúde,$saude/plano
+PREVENT SENIOR,Saúde,$saude/plano
+MEDSÊNIOR,Saúde,$saude/plano
+CASSI (BANCO DO BRASIL),Saúde,$saude/plano
+POSTAL SAÚDE (CORREIOS),Saúde,$saude/plano
+PETROBRAS DISTRIBUIDORA SAÚDE (PETROS),Saúde,$saude/plano
+CEMIG SAÚDE,Saúde,$saude/plano
+FUNDAÇÃO SAÚDE ITAÚ (FUSATI),Saúde,$saude/plano
+RAIA DROGASIL,Saúde,$saude/farmacia
+DROGARIA SÃO PAULO,Saúde,$saude/farmacia
+DROGARIA PACHECO,Saúde,$saude/farmacia
+PAGUE MENOS,Saúde,$saude/farmacia
+DROGASIL,Saúde,$saude/farmacia
+DROGA RAIA,Saúde,$saude/farmacia
+PANVEL,Saúde,$saude/farmacia
+DROGARIA ARAUJO,Saúde,$saude/farmacia
+DROGARIA VENANCIO,Saúde,$saude/farmacia
+FARMÁCIAS SÃO JOÃO,Saúde,$saude/farmacia
+NISSEI,Saúde,$saude/farmacia
+FARMA CONDE,Saúde,$saude/farmacia
+DROGARIA MODERNA,Saúde,$saude/farmacia
+DROGARIA TOTAL,Saúde,$saude/farmacia
+DROGARIA SANTA MARTA,Saúde,$saude/farmacia
+REDE INDIANA,Saúde,$saude/farmacia
+FARMÁCIAS POUPAFARMA,Saúde,$saude/farmacia
+FARMÁCIAS SANTA LÚCIA,Saúde,$saude/farmacia
+DROGARIA CRISTAL,Saúde,$saude/farmacia
+FARMÁCIAS PAGUE FÁCIL,Saúde,$saude/farmacia
+DROGARIAS GALANTI,Saúde,$saude/farmacia
+DROGARIA ULTRA POPULAR,Saúde,$saude/farmacia
+DROGARIA ROSÁRIO,Saúde,$saude/farmacia
+FARMÁCIAS MAIS ECONÔMICA,Saúde,$saude/farmacia
+FARMÁCIA PREÇO POPULAR,Saúde,$saude/farmacia
+DROGARIA COOP,Saúde,$saude/farmacia
+DROGARIA SÃO BENTO,Saúde,$saude/farmacia
+DROGARIAS FARMAIS,Saúde,$saude/farmacia
+FARMAIS,Saúde,$saude/farmacia
+REDEPHARMA,Saúde,$saude/farmacia
+DROGARIA IDEAL,Saúde,$saude/farmacia
+FARMÁCIA INDIANA,Saúde,$saude/farmacia
+DROGARIA FTB,Saúde,$saude/farmacia
+FARMÁCIAS FARMA FARMA,Saúde,$saude/farmacia
+DROGARIA DO POVO,Saúde,$saude/farmacia
+DROGARIAS ECONÔMICAS,Saúde,$saude/farmacia
+FARMÁCIAS SÃO RAFAEL,Saúde,$saude/farmacia
+DROGARIA POPULAR,Saúde,$saude/farmacia
+FARMÁCIA SÃO PEDRO,Saúde,$saude/farmacia
+DROGARIA ESSENCIAL,Saúde,$saude/farmacia
+FARMA VITTA,Saúde,$saude/farmacia
+REDE SUPER POPULAR,Saúde,$saude/farmacia
+DROGARIA ULTRA FARMA,Saúde,$saude/farmacia
+DROGARIA MENOR PREÇO,Saúde,$saude/farmacia
+FARMA 10,Saúde,$saude/farmacia
+FARMÁCIA CENTRAL,Saúde,$saude/farmacia
+DROGARIA PAGUE MENOS EXPRESS,Saúde,$saude/farmacia
+DROGARIA FARMELHOR,Saúde,$saude/farmacia
+DROGARIA MULTMAIS,Saúde,$saude/farmacia
+REDE SANTA BRANCA,Saúde,$saude/farmacia
+BARBEARIA CAVALERA,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA VIP,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA DOM HELIO,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+THE BARBER,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA CARTEL,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA CLUBE,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA SEU ELIAS,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA NAVALHA,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA VISAGE,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA OLD TOWN,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA DON JUAN,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+CORLEONE BARBER SHOP,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+GARAGEM BARBEARIA,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA BLACK WHITE,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA RETRÔ,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA CAVALHEIROS,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA DO ZÉ,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+DON MAX BARBER CLUB,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBER CLUB BRASIL,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBER SHOP MOUSTACHE,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA 9 DE JULHO,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA SÃO JORGE,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA BARBA RUIVA,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA DON,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA REI DOS CORTES,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA LORD’S,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA CORTE & COMPANHIA,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA NOBRE ARTE,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA BLACK AND GOLD,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA DO ALEMÃO,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA MOISÉS,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA ROYAL,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA GARAGE 77,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA DO BARBA,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA CHIC,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA BRUTUS,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA MAN CAVE,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA EL PATRON,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA PORTO,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA DO SAMUKA,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BARBEARIA CORLEONE PREMIUM,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+THE MEN’S CLUB,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+MR. MUSTACHE,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+VINTAGE BARBER SHOP,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+THE BARBER’S CLUB,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+MACHO-LÂNDIA,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+BIG BOSS BARBER SHOP,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+SPAZIO UOMO,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+CLUBE DO BARBEIRO,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+LE BARBE,Cuidado Pessoal,$cuidado_pessoal/barbeiro
+SMART FIT,Cuidado Pessoal,$cuidado_pessoal/academia
+BLUE FIT,Cuidado Pessoal,$cuidado_pessoal/academia
+SELFIT,Cuidado Pessoal,$cuidado_pessoal/academia
+JUST FIT,Cuidado Pessoal,$cuidado_pessoal/academia
+BODYTECH,Cuidado Pessoal,$cuidado_pessoal/academia
+COMPANHIA ATHLETICA,Cuidado Pessoal,$cuidado_pessoal/academia
+FORMULA ACADEMIA,Cuidado Pessoal,$cuidado_pessoal/academia
+MOVEMENT,Cuidado Pessoal,$cuidado_pessoal/academia
+PRATIQUEM FITNESS,Cuidado Pessoal,$cuidado_pessoal/academia
+FIT ONE,Cuidado Pessoal,$cuidado_pessoal/academia
+RED FIT,Cuidado Pessoal,$cuidado_pessoal/academia
+ECO FIT,Cuidado Pessoal,$cuidado_pessoal/academia
+ENERGY FITNESS,Cuidado Pessoal,$cuidado_pessoal/academia
+IRONBERG,Cuidado Pessoal,$cuidado_pessoal/academia
+ACADEMIA GAVIÕES,Cuidado Pessoal,$cuidado_pessoal/academia
+MALHACAO BRASIL,Cuidado Pessoal,$cuidado_pessoal/academia
+ALPHAFIT,Cuidado Pessoal,$cuidado_pessoal/academia
+ATITUDE FITNESS,Cuidado Pessoal,$cuidado_pessoal/academia
+K2 FITNESS,Cuidado Pessoal,$cuidado_pessoal/academia
+TECHNOGYM,Cuidado Pessoal,$cuidado_pessoal/academia
+CROSSFIT BRASIL,Cuidado Pessoal,$cuidado_pessoal/academia
+BLACK FIT,Cuidado Pessoal,$cuidado_pessoal/academia
+HYPE FIT,Cuidado Pessoal,$cuidado_pessoal/academia
+VIKINGS FITNESS,Cuidado Pessoal,$cuidado_pessoal/academia
+ACADEMIA HERA,Cuidado Pessoal,$cuidado_pessoal/academia
+ZION FITNESS,Cuidado Pessoal,$cuidado_pessoal/academia
+INFINITY ACADEMIA,Cuidado Pessoal,$cuidado_pessoal/academia
+ACADEMIA OLIMPO,Cuidado Pessoal,$cuidado_pessoal/academia
+SUPERA GYM,Cuidado Pessoal,$cuidado_pessoal/academia
+PERFORMANCE FITNESS,Cuidado Pessoal,$cuidado_pessoal/academia
+PREMIUM FIT,Cuidado Pessoal,$cuidado_pessoal/academia
+ACADEMIA ESPAÇO SAUDE,Cuidado Pessoal,$cuidado_pessoal/academia
+R2 ACADEMIA,Cuidado Pessoal,$cuidado_pessoal/academia
+CLUB LIFE,Cuidado Pessoal,$cuidado_pessoal/academia
+FIT UP,Cuidado Pessoal,$cuidado_pessoal/academia
+MAXFIT,Cuidado Pessoal,$cuidado_pessoal/academia
+ELITE FITNESS,Cuidado Pessoal,$cuidado_pessoal/academia
+EVIDENCE FITNESS,Cuidado Pessoal,$cuidado_pessoal/academia
+LIFE ACADEMIA,Cuidado Pessoal,$cuidado_pessoal/academia
+GOLD FIT,Cuidado Pessoal,$cuidado_pessoal/academia
+XBODY,Cuidado Pessoal,$cuidado_pessoal/academia
+BE FIT,Cuidado Pessoal,$cuidado_pessoal/academia
+PROFIT ACADEMIA,Cuidado Pessoal,$cuidado_pessoal/academia
+SAO FRANCISCO GYM,Cuidado Pessoal,$cuidado_pessoal/academia
+HERCULES ACADEMIA,Cuidado Pessoal,$cuidado_pessoal/academia
+BODY CLUB,Cuidado Pessoal,$cuidado_pessoal/academia
+STARFIT,Cuidado Pessoal,$cuidado_pessoal/academia
+OXIGEN ACADEMIA,Cuidado Pessoal,$cuidado_pessoal/academia
+BRAVUS FIT,Cuidado Pessoal,$cuidado_pessoal/academia
+TITAN ACADEMIA,Cuidado Pessoal,$cuidado_pessoal/academia
+AMERICAN AIRLINES,Viagem,$viagem/passagem
+DELTA AIR LINES,Viagem,$viagem/passagem
+UNITED AIRLINES,Viagem,$viagem/passagem
+SOUTHWEST AIRLINES,Viagem,$viagem/passagem
+AIR FRANCE,Viagem,$viagem/passagem
+KLM ROYAL DUTCH AIRLINES,Viagem,$viagem/passagem
+LUFTHANSA,Viagem,$viagem/passagem
+BRITISH AIRWAYS,Viagem,$viagem/passagem
+RYANAIR,Viagem,$viagem/passagem
+EASYJET,Viagem,$viagem/passagem
+EMIRATES,Viagem,$viagem/passagem
+QATAR AIRWAYS,Viagem,$viagem/passagem
+ETIHAD AIRWAYS,Viagem,$viagem/passagem
+SINGAPORE AIRLINES,Viagem,$viagem/passagem
+TURKISH AIRLINES,Viagem,$viagem/passagem
+ANA - ALL NIPPON AIRWAYS,Viagem,$viagem/passagem
+JAPAN AIRLINES,Viagem,$viagem/passagem
+CATHAY PACIFIC,Viagem,$viagem/passagem
+AIR CANADA,Viagem,$viagem/passagem
+QANTAS AIRWAYS,Viagem,$viagem/passagem
+LATAM AIRLINES,Viagem,$viagem/passagem
+GOL LINHAS AEREAS,Viagem,$viagem/passagem
+AZUL LINHAS AEREAS,Viagem,$viagem/passagem
+VOEPASS,Viagem,$viagem/passagem
+MAP LINHAS AEREAS,Viagem,$viagem/passagem
+JETSMART,Viagem,$viagem/passagem
+SKY AIRLINE,Viagem,$viagem/passagem
+AEROLINEAS ARGENTINAS,Viagem,$viagem/passagem
+COPA AIRLINES,Viagem,$viagem/passagem
+TAP PORTUGAL,Viagem,$viagem/passagem
+DECOLAR,Viagem,$viagem/passagem
+KAYAK,Viagem,$viagem/passagem
+SKYSANNER,Viagem,$viagem/passagem
+VIAJANET,Viagem,$viagem/passagem
+SUBMARINO VIAGENS,Viagem,$viagem/passagem
+CVC,Viagem,$viagem/passagem
+MAXMILHAS,Viagem,$viagem/passagem
+123MILHAS,Viagem,$viagem/passagem
+LATAM PASSAGENS,Viagem,$viagem/passagem
+GOL VIAGENS,Viagem,$viagem/passagem
+AZUL VIAGENS,Viagem,$viagem/passagem
+HURB,Viagem,$viagem/passagem
+OMNIBEES,Viagem,$viagem/passagem
+VIAJAR BARATO,Viagem,$viagem/passagem
+TRIP ADVISOR FLIGHTS,Viagem,$viagem/passagem
+GOOGLE VOOS,Viagem,$viagem/passagem
+KIWI,Viagem,$viagem/passagem
+EXPEDIA,Viagem,$viagem/passagem
+ORBITZ,Viagem,$viagem/passagem
+PRICELINE,Viagem,$viagem/passagem
+ACCOR,Viagem,$viagem/hospedagem
+IBIS,Viagem,$viagem/hospedagem
+IBIS BUDGET,Viagem,$viagem/hospedagem
+IBIS STYLES,Viagem,$viagem/hospedagem
+MERCURE,Viagem,$viagem/hospedagem
+NOVOTEL,Viagem,$viagem/hospedagem
+ADAGIO,Viagem,$viagem/hospedagem
+M GALLERY,Viagem,$viagem/hospedagem
+HILTON,Viagem,$viagem/hospedagem
+BLUE TREE HOTELS,Viagem,$viagem/hospedagem
+BOURBON HOTELS,Viagem,$viagem/hospedagem
+SLAVIERO HOTELS,Viagem,$viagem/hospedagem
+INTERCITY HOTELS,Viagem,$viagem/hospedagem
+TRANSAMERICA,Viagem,$viagem/hospedagem
+NOBILE HOTELS,Viagem,$viagem/hospedagem
+WYNDHAM,Viagem,$viagem/hospedagem
+RADISSON,Viagem,$viagem/hospedagem
+VILA GALE,Viagem,$viagem/hospedagem
+BRISTOL HOTELS,Viagem,$viagem/hospedagem
+POUSADA MARIA BONITA,Viagem,$viagem/hospedagem
+POUSADA DO RIO QUENTE,Viagem,$viagem/hospedagem
+PLAZA HOTELS,Viagem,$viagem/hospedagem
+OYO HOTELS,Viagem,$viagem/hospedagem
+LINX HOTELS,Viagem,$viagem/hospedagem
+ATLANTICA HOTELS,Viagem,$viagem/hospedagem
+LAGHETTO HOTELS,Viagem,$viagem/hospedagem
+LIZON HOTELS,Viagem,$viagem/hospedagem
+SERRANO RESORT,Viagem,$viagem/hospedagem
+HOTEL FAZENDA DONA FRANCISCA,Viagem,$viagem/hospedagem
+HOTEL FAZENDA FLORAL,Viagem,$viagem/hospedagem
+MABU THERMAS GRAND RESORT,Viagem,$viagem/hospedagem
+CASA GRANDE HOTEL,Viagem,$viagem/hospedagem
+PORTOBELLO RESORT,Viagem,$viagem/hospedagem
+LE CANTON,Viagem,$viagem/hospedagem
+HOTEL CONTINENTAL,Viagem,$viagem/hospedagem
+HOTEL DAN INN,Viagem,$viagem/hospedagem
+HOTEL VITORIA,Viagem,$viagem/hospedagem
+HOTEL SAN RAPHAEL,Viagem,$viagem/hospedagem
+HOTEL ESTANCIA,Viagem,$viagem/hospedagem
+HOTEL FAZENDA VILA VELHA,Viagem,$viagem/hospedagem
+HOTEL FAZENDA MONTE CRISTO,Viagem,$viagem/hospedagem
+POUSADA DO SOSSÉGO,Viagem,$viagem/hospedagem
+POUSADA DO TOQUE,Viagem,$viagem/hospedagem
+HOTEL COLLINE DE FRANCE,Viagem,$viagem/hospedagem
+HOTEL RENAISSANCE,Viagem,$viagem/hospedagem
+HOTEL NACIONAL INN,Viagem,$viagem/hospedagem
+HOTEL MANACÁ,Viagem,$viagem/hospedagem
+HOTEL LUZEIROS,Viagem,$viagem/hospedagem
+HOTEL TULIP INN,Viagem,$viagem/hospedagem
+HOTEL BELLAGIO,Viagem,$viagem/hospedagem
+MARRIOTT,Viagem,$viagem/hospedagem
+RITZ CARLTON,Viagem,$viagem/hospedagem
+HYATT,Viagem,$viagem/hospedagem
+INTERCONTINENTAL,Viagem,$viagem/hospedagem
+HOLIDAY INN,Viagem,$viagem/hospedagem
+FOUR SEASONS,Viagem,$viagem/hospedagem
+SHERATON,Viagem,$viagem/hospedagem
+WESTIN,Viagem,$viagem/hospedagem
+MANDARIN ORIENTAL,Viagem,$viagem/hospedagem
+SOFITEL,Viagem,$viagem/hospedagem
+TRYP HOTELS,Viagem,$viagem/hospedagem
+NH HOTELS,Viagem,$viagem/hospedagem
+MELIA,Viagem,$viagem/hospedagem
+THE PENINSULA,Viagem,$viagem/hospedagem
+ST REGIS,Viagem,$viagem/hospedagem
+HAMPTON BY HILTON,Viagem,$viagem/hospedagem
+BEST WESTERN,Viagem,$viagem/hospedagem
+COMFORT INN,Viagem,$viagem/hospedagem
+CLARION,Viagem,$viagem/hospedagem
+CROWNE PLAZA,Viagem,$viagem/hospedagem
+FAIRMONT,Viagem,$viagem/hospedagem
+PARK HYATT,Viagem,$viagem/hospedagem
+GRAND HYATT,Viagem,$viagem/hospedagem
+KEMPINSKI,Viagem,$viagem/hospedagem
+ROYAL TULIP,Viagem,$viagem/hospedagem
+TAJ HOTELS,Viagem,$viagem/hospedagem
+THE LANGHAM,Viagem,$viagem/hospedagem
+RADISSON BLU,Viagem,$viagem/hospedagem
+SCANDIC HOTELS,Viagem,$viagem/hospedagem
+PREMIER INN,Viagem,$viagem/hospedagem
+CITIZENM,Viagem,$viagem/hospedagem
+WYNDHAM GRAND,Viagem,$viagem/hospedagem
+HARD ROCK HOTEL,Viagem,$viagem/hospedagem
+LEGOLAND HOTELS,Viagem,$viagem/hospedagem
+EVEN HOTELS,Viagem,$viagem/hospedagem
+TRAVELODGE,Viagem,$viagem/hospedagem
+IBIS WORLDWIDE,Viagem,$viagem/hospedagem
+NOVOTEL WORLDWIDE,Viagem,$viagem/hospedagem
+LUXURY COLLECTION,Viagem,$viagem/hospedagem
+BELMOND HOTELS,Viagem,$viagem/hospedagem
+SIX SENSES HOTELS,Viagem,$viagem/hospedagem
+SELINA HOTELS,Viagem,$viagem/hospedagem
+HOSTELWORLD,Viagem,$viagem/hospedagem
+AIRBNB,Viagem,$viagem/hospedagem
+VRBO,Viagem,$viagem/hospedagem
+BOOKING.COM,Viagem,$viagem/hospedagem
+HOTELS.COM,Viagem,$viagem/hospedagem
+AGODA,Viagem,$viagem/hospedagem
+EXPEDIA HOTELS,Viagem,$viagem/hospedagem
+HILTON GARDEN INN,Viagem,$viagem/hospedagem
+CINEMARK,Lazer,$lazer/lazer
+CINESYSTEM,Lazer,$lazer/lazer
+CINEPOLIS,Lazer,$lazer/lazer
+UCI CINEMAS,Lazer,$lazer/lazer
+CINE A,Lazer,$lazer/lazer
+CINEARTE,Lazer,$lazer/lazer
+CINEMAGIC,Lazer,$lazer/lazer
+MOVIECOM,Lazer,$lazer/lazer
+ARAUJO CINE,Lazer,$lazer/lazer
+CINEFLIX,Lazer,$lazer/lazer
+CINE LASER,Lazer,$lazer/lazer
+CINE SERCLA,Lazer,$lazer/lazer
+CINE METROPOLE,Lazer,$lazer/lazer
+CINE ESTACAO,Lazer,$lazer/lazer
+CINEMA PETROBRAS,Lazer,$lazer/lazer
+TEATRO MUNICIPAL,Lazer,$lazer/lazer
+TEATRO BRADESCO,Lazer,$lazer/lazer
+TEATRO RENAULT,Lazer,$lazer/lazer
+TEATRO SANTANDER,Lazer,$lazer/lazer
+TEATRO OPUS,Lazer,$lazer/lazer
+TEATRO RIVAL,Lazer,$lazer/lazer
+TEATRO GUAIRA,Lazer,$lazer/lazer
+TEATRO JOSE DE ALENCAR,Lazer,$lazer/lazer
+TEATRO AMAZONAS,Lazer,$lazer/lazer
+TEATRO CASTRO ALVES,Lazer,$lazer/lazer
+TEATRO SESI,Lazer,$lazer/lazer
+TEATRO DO SESC,Lazer,$lazer/lazer
+TEATRO DA VILA,Lazer,$lazer/lazer
+CENTRO CULTURAL BANCO DO BRASIL,Lazer,$lazer/lazer
+INSTITUTO MOREIRA SALLES,Lazer,$lazer/lazer
+INGRESSO RAPIDO,Lazer,$lazer/lazer
+SYMPLA,Lazer,$lazer/lazer
+TICKET360,Lazer,$lazer/lazer
+UHUU,Lazer,$lazer/lazer
+EVENTIM,Lazer,$lazer/lazer
+BLUE TICKET,Lazer,$lazer/lazer
+CLUB DO INGRESSO,Lazer,$lazer/lazer
+FUNDO DE QUINTAL EVENTOS,Lazer,$lazer/lazer
+INTI,Lazer,$lazer/lazer
+MEUINGRESSO,Lazer,$lazer/lazer
+PIXEL TICKET,Lazer,$lazer/lazer
+BILHETE DIGITAL,Lazer,$lazer/lazer
+ALI INGRESSOS,Lazer,$lazer/lazer
+SHOWPASS,Lazer,$lazer/lazer
+TICKET FOLIA,Lazer,$lazer/lazer
+ESPACO UNIMED,Lazer,$lazer/lazer
+AUDIO SP,Lazer,$lazer/lazer
+VIBRA SAO PAULO,Lazer,$lazer/lazer
+CIRCO VOADOR,Lazer,$lazer/lazer
+FUNDICAO PROGRESSO,Lazer,$lazer/lazer
+MARINA DA GLORIA,Lazer,$lazer/lazer
+BOURBON STREET,Lazer,$lazer/lazer
+LAPA 40 GRAUS,Lazer,$lazer/lazer
+CREDICARD HALL,Lazer,$lazer/lazer
+HSBC BRASIL,Lazer,$lazer/lazer
+CASA NATURA MUSICAL,Lazer,$lazer/lazer
+MORUMBI STADIUM,Lazer,$lazer/lazer
+ALLIANZ PARQUE,Lazer,$lazer/lazer
+JEUNESSE ARENA,Lazer,$lazer/lazer
+THEATRO NET,Lazer,$lazer/lazer
+ETO CARRERO WORLD,Lazer,$lazer/lazer
+HOT PARK,Lazer,$lazer/lazer
+BEACH PARK,Lazer,$lazer/lazer
+WET N WILD,Lazer,$lazer/lazer
+HOPI HARI,Lazer,$lazer/lazer
+PARQUE DA MONICA,Lazer,$lazer/lazer
+ECO PARQUE ARRAIAL,Lazer,$lazer/lazer
+MAGIC CITY,Lazer,$lazer/lazer
+THERMAS DOS LARANJAIS,Lazer,$lazer/lazer
+RIO QUENTE RESORTS,Lazer,$lazer/lazer
+PARQUE IBIRAPUERA,Lazer,$lazer/lazer
+PARQUE LAGE,Lazer,$lazer/lazer
+JARDIM BOTANICO,Lazer,$lazer/lazer
+PARQUE DAS AVES,Lazer,$lazer/lazer
+PARQUE NACIONAL DO IGUACU,Lazer,$lazer/lazer
+PANTANAL SAFARI,Lazer,$lazer/lazer
+PARQUE DA CIDADE,Lazer,$lazer/lazer
+PARQUE DO CARMO,Lazer,$lazer/lazer
+PEDRA AZUL ECOPARK,Lazer,$lazer/lazer
+CATARATAS DO IGUACU,Lazer,$lazer/lazer
+MUSEU DO AMANHA,Lazer,$lazer/lazer
+MUSEU DE ARTE DE SAO PAULO,Lazer,$lazer/lazer
+MUSEU DE ARTE MODERNA,Lazer,$lazer/lazer
+PINACOTECA,Lazer,$lazer/lazer
+MUSEU CATAVENTO,Lazer,$lazer/lazer
+MUSEU NACIONAL,Lazer,$lazer/lazer
+MUSEU DE CIENCIAS E TECNOLOGIA,Lazer,$lazer/lazer
+MUSEU DA LINGUA PORTUGUESA,Lazer,$lazer/lazer
+MUSEU DO IPIRANGA,Lazer,$lazer/lazer
+MUSEU OSCAR NIEMEYER,Lazer,$lazer/lazer
+MUSEU AFRO BRASIL,Lazer,$lazer/lazer
+AQUARIO DE SAO PAULO,Lazer,$lazer/lazer
+AQUARIO NATAL,Lazer,$lazer/lazer
+AQUARIO DE UBATUBA,Lazer,$lazer/lazer
+AQUARIO DE ITAJAI,Lazer,$lazer/lazer
+AQUARIO DE PERNAMBUCO,Lazer,$lazer/lazer
+AQUARIO DE BONITO,Lazer,$lazer/lazer
+MUSEU MARITIMO,Lazer,$lazer/lazer
+PLANETARIO DO RIO,Lazer,$lazer/lazer
+OBSERVATORIO DO VALONGO,Lazer,$lazer/lazer
+ABASTECE AI,Transporte,$transporte/combustivel
+DOM PEDRO BETIM 2,Transporte,$transporte/combustivel
+AUTO POSTO BRASIL,Transporte,$transporte/combustivel
+POSTO DA PRACA,Transporte,$transporte/combustivel
+POSTO BOA VISTA,Transporte,$transporte/combustivel
+AUTO POSTO CONFIANCA SHOPPING,Transporte,$transporte/combustivel
+AXXION 1,Transporte,$transporte/combustivel
+AUTO POSTO OLIVEIRA,Transporte,$transporte/combustivel
+REDE DE POSTOS MONTE CARLO,Transporte,$transporte/combustivel
+POSTO DUARTE II,Transporte,$transporte/combustivel
+GRAN JK,Transporte,$transporte/combustivel
+PETROSULD AUTO POSTO,Transporte,$transporte/combustivel
+POSTO AVENIDA,Transporte,$transporte/combustivel
+POSTO BRASOL,Transporte,$transporte/combustivel
+POSTO SONHO MEU,Transporte,$transporte/combustivel
+AUTO POSTO 77,Transporte,$transporte/combustivel
+AUTO POSTO PREMIUM,Transporte,$transporte/combustivel
+POSTO SERIEMA,Transporte,$transporte/combustivel
+POSTO SANTA LUCIA,Transporte,$transporte/combustivel
+POSTO F & F III,Transporte,$transporte/combustivel
+POSTO 381,Transporte,$transporte/combustivel
+ECCO POSTO,Transporte,$transporte/combustivel
+MARAJO SAO SIMAO,Transporte,$transporte/combustivel
+AUTO POSTO BORGES,Transporte,$transporte/combustivel
+DISTRIBUIDORA DE COMBUSTIVEIS GRUPO GNOVA,Transporte,$transporte/combustivel
+AUTO POSTO CENTRAL,Transporte,$transporte/combustivel
+POSTO BENEDETTI,Transporte,$transporte/combustivel
+POSTO LUIZ GUERRA,Transporte,$transporte/combustivel
+ECONOMICO AUTO-POSTO,Transporte,$transporte/combustivel
+AGUIAR CARDOSO,Transporte,$transporte/combustivel
+POSTO SAO JOAO BATISTA III,Transporte,$transporte/combustivel
+SIM - REDE DE POSTOS,Transporte,$transporte/combustivel
+POSTO AGUIA,Transporte,$transporte/combustivel
+JB COMBUSTIVEIS,Transporte,$transporte/combustivel
+POSTO MIX,Transporte,$transporte/combustivel
+POSTO CAMPEAO ARX,Transporte,$transporte/combustivel
+POSTO DO LIBERATO,Transporte,$transporte/combustivel
+ABASTECA BEM,Transporte,$transporte/combustivel
+JPT COMBUSTIVEIS,Transporte,$transporte/combustivel
+POSTO REAL DOIS,Transporte,$transporte/combustivel
+POSTO AM,Transporte,$transporte/combustivel
+POSTO VIADUTO,Transporte,$transporte/combustivel
+REDE OPOSTO,Transporte,$transporte/combustivel
+AGRO POSTO,Transporte,$transporte/combustivel
+AUTO POSTO GALBANO,Transporte,$transporte/combustivel
+AUTO POSTO ANCORA,Transporte,$transporte/combustivel
+POSTO MINACAO,Transporte,$transporte/combustivel
+POSTO GONCALVES DIAS,Transporte,$transporte/combustivel
+AUTO POSTO 370 I,Transporte,$transporte/combustivel
+POSTO TRES MARIAS,Transporte,$transporte/combustivel
+SANTA RITA,Transporte,$transporte/combustivel
+PONTAO GR,Transporte,$transporte/combustivel
+AUTO POSTO JURUPETRO,Transporte,$transporte/combustivel
+AUTO POSTO ITASUL,Transporte,$transporte/combustivel
+POSTO FROES,Transporte,$transporte/combustivel
+POSTO JORGINHO,Transporte,$transporte/combustivel
+POSTO EVEREST,Transporte,$transporte/combustivel
+POSTO AMANHECER COM CRISTO,Transporte,$transporte/combustivel
+AUTO POSTO RORAIMINAS,Transporte,$transporte/combustivel
+POSTO FAMILIA,Transporte,$transporte/combustivel
+POSTO 3R II,Transporte,$transporte/combustivel
+POSTO SALINAS,Transporte,$transporte/combustivel
+POSTO MARIANA,Transporte,$transporte/combustivel
+MEU POSTO,Transporte,$transporte/combustivel
+AUTO POSTO CANAA,Transporte,$transporte/combustivel
+AUTO POSTO ISABEL,Transporte,$transporte/combustivel
+AUTO POSTO PLANETA,Transporte,$transporte/combustivel
+POSTO SANTA CLARA II,Transporte,$transporte/combustivel
+POSTO TOPAZIO,Transporte,$transporte/combustivel
+AUTO POSTO PREMIUM VII,Transporte,$transporte/combustivel
+KAKA AUTO POSTO,Transporte,$transporte/combustivel
+POSTO SCAFF,Transporte,$transporte/combustivel
+POSTO 22 DE ABRIL,Transporte,$transporte/combustivel
+POSTO JARJOUR 206 NORTE,Transporte,$transporte/combustivel
+POSTO JARJOUR TAGUATINGA,Transporte,$transporte/combustivel
+POSTO HUASH III,Transporte,$transporte/combustivel
+POSTO VERDES CAMPOS,Transporte,$transporte/combustivel
+KURUJAO 91,Transporte,$transporte/combustivel
+AUTO POSTO SANTO ANTONIO,Transporte,$transporte/combustivel
+POSTO MACRO,Transporte,$transporte/combustivel
+POSTO TRIANGULO,Transporte,$transporte/combustivel
+AUTO POSTO NICOLODI,Transporte,$transporte/combustivel
+POSTO PARAISO,Transporte,$transporte/combustivel
+POSTO BEIRA RIO,Transporte,$transporte/combustivel
+PETRO SUL,Transporte,$transporte/combustivel
+POSTO SAO GERALDO,Transporte,$transporte/combustivel
+POSTO CAICARA,Transporte,$transporte/combustivel
+O POSTINHO 04,Transporte,$transporte/combustivel
+POSTO REFORCO 8,Transporte,$transporte/combustivel
+NAD COMERCIO DE COMBUSTIVEIS,Transporte,$transporte/combustivel
+POSTO VELHO CHICO,Transporte,$transporte/combustivel
+POSTO CONTEC,Transporte,$transporte/combustivel
+AUTOPOSTO AGROVIA,Transporte,$transporte/combustivel
+POSTO JACUIPE,Transporte,$transporte/combustivel
+POSTO SG,Transporte,$transporte/combustivel
+POSTO MURICI,Transporte,$transporte/combustivel
+AUTO POSTO ESQUINA 3,Transporte,$transporte/combustivel
+POSTO PHB,Transporte,$transporte/combustivel
+VILELA 02,Transporte,$transporte/combustivel
+POSTO PREMIUM PASSEIO DAS AGUAS,Transporte,$transporte/combustivel
+AUTO POSTO TORORO,Transporte,$transporte/combustivel
+TIMBO,Transporte,$transporte/combustivel
+POSTO PETROLINO,Transporte,$transporte/combustivel
+DEL CARMEN DE LA GALICIA,Transporte,$transporte/combustivel
+POSTO MARIMBONDO,Transporte,$transporte/combustivel
+POSTO MARACUJA,Transporte,$transporte/combustivel
+AUTO POSTO COQUEIRINHO,Transporte,$transporte/combustivel
+POSTO VITORIA,Transporte,$transporte/combustivel
+POSTO FREEWAY RECREIO,Transporte,$transporte/combustivel
+AUTO POSTO LUZIANIA,Transporte,$transporte/combustivel
+GRUPO TAMANDARE,Transporte,$transporte/combustivel
+RPM COMBUSTIVEIS,Transporte,$transporte/combustivel
+SUPER POSTO CAPIVARA,Transporte,$transporte/combustivel
+POSTO SILVEIRA,Transporte,$transporte/combustivel
+AUTO POSTO SANTA GEMMA,Transporte,$transporte/combustivel
+POSTO LAGO AZUL,Transporte,$transporte/combustivel
+POSTO MANIA,Transporte,$transporte/combustivel
+AUTO POSTO JB,Transporte,$transporte/combustivel
+POSTO CENTRAL,Transporte,$transporte/combustivel
+AUTO POSTO PETER PAN,Transporte,$transporte/combustivel
+POSTO TRES BARRAS,Transporte,$transporte/combustivel
+POSTO ALBATROZ,Transporte,$transporte/combustivel
+POSTO COSTA,Transporte,$transporte/combustivel
+POSTO BELA VISTA,Transporte,$transporte/combustivel
+FLORIDA CONSTRUCOES E EMPREENDIMENTOS,Transporte,$transporte/combustivel
+POSTO TAMBORIL,Transporte,$transporte/combustivel
+CANADA COMBUSTIVEIS,Transporte,$transporte/combustivel
+POSTO SAO JOSE,Transporte,$transporte/combustivel
+ANCHIETA,Transporte,$transporte/combustivel
+POSTO ALVORADA,Transporte,$transporte/combustivel
+POSTO SAO SEBASTIAO DA ALDEIA III,Transporte,$transporte/combustivel
+ECONOPETRO COMBUSTIVEIS E SERVICOS,Transporte,$transporte/combustivel
+POSTO UM,Transporte,$transporte/combustivel
+POSTO RONDON,Transporte,$transporte/combustivel
+AUTO POSTO BURITI,Transporte,$transporte/combustivel
+AUTO POSTO CANAPOLIS,Transporte,$transporte/combustivel
+AEROPOSTO,Transporte,$transporte/combustivel
+AUTO POSTO KANITZ,Transporte,$transporte/combustivel
+POSTO RETORNO,Transporte,$transporte/combustivel
+COMERCIAL SANTO ANTONIO,Transporte,$transporte/combustivel
+AUTO POSTO KARAJA,Transporte,$transporte/combustivel
+POSTO BR NORDESTE,Transporte,$transporte/combustivel
+AUTO POSTO PIRANGI,Transporte,$transporte/combustivel
+POSTO LIDER 2,Transporte,$transporte/combustivel
+POSTO RANCHO ALEGRE,Transporte,$transporte/combustivel
+POSTO SERRA DOURADA,Transporte,$transporte/combustivel
+POSTO PAMPEANO II,Transporte,$transporte/combustivel
+PETRO BULL,Transporte,$transporte/combustivel
+AUTO POSTO EDSON ARAUJO,Transporte,$transporte/combustivel
+POSTO CENTRO OESTE,Transporte,$transporte/combustivel
+AUTO POSTO ESQUINA,Transporte,$transporte/combustivel
+POSTO PARREIRA,Transporte,$transporte/combustivel
+POSTO MANAIRA,Transporte,$transporte/combustivel
+REDE BRASIL,Transporte,$transporte/combustivel
+ACACIA CONVENIENCIAS,Transporte,$transporte/combustivel
+GAS COMPANY,Transporte,$transporte/combustivel
+POSTO SHOPPING,Transporte,$transporte/combustivel
+AUTO POSTO SAO JOAO - TABOCAL,Transporte,$transporte/combustivel
+POSTO PALMELO,Transporte,$transporte/combustivel
+POSTO AMERICA,Transporte,$transporte/combustivel
+MULTI OLEO,Transporte,$transporte/combustivel
+AUTO POSTO SAO JORGE,Transporte,$transporte/combustivel
+POSTO CENTENARIO,Transporte,$transporte/combustivel
+POSTO ESTACAO,Transporte,$transporte/combustivel
+POSTO SINOS,Transporte,$transporte/combustivel
+"AV IGUACU, S/NO",Transporte,$transporte/combustivel
+POSTO MARINA VEROLME,Transporte,$transporte/combustivel
+RODO RANCHO,Transporte,$transporte/combustivel
+ORGANIZACAO ULIANA,Transporte,$transporte/combustivel
+POSTO JJ,Transporte,$transporte/combustivel
+AUTO POSTO CASTELAO,Transporte,$transporte/combustivel
+POSTO TREVAO,Transporte,$transporte/combustivel
+AUTO POSTO TIAO PEIXOTO,Transporte,$transporte/combustivel
+POSTO RODOVIARIA,Transporte,$transporte/combustivel
+POSTO DIARIO DE NOTICIAS,Transporte,$transporte/combustivel
+MOBIGAS,Transporte,$transporte/combustivel
+POSTO LUMAX,Transporte,$transporte/combustivel
+ABASTECEDORA SAO PAULO,Transporte,$transporte/combustivel
+POSTO CANINDE,Transporte,$transporte/combustivel
+POSTO NAVEGANTES,Transporte,$transporte/combustivel
+AUTO POSTO BRAVO,Transporte,$transporte/combustivel
+POSTO GLENDA,Transporte,$transporte/combustivel
+ROTA PETROLEO,Transporte,$transporte/combustivel
+AUTO POSTO CAXIAS,Transporte,$transporte/combustivel
+POSTO BERRIEL,Transporte,$transporte/combustivel
+POSTO GENERAL SAMPAIO,Transporte,$transporte/combustivel
+NOVO MILENIO,Transporte,$transporte/combustivel
+AUTO POSTO ECOLOGICO,Transporte,$transporte/combustivel
+AUTO POSTO MUCAJAI,Transporte,$transporte/combustivel
+POSTO SAO MIGUEL,Transporte,$transporte/combustivel
+POSTO ALFAVILLE,Transporte,$transporte/combustivel
+AUTO POSTO LIDER,Transporte,$transporte/combustivel
+POSTO CAROLINA,Transporte,$transporte/combustivel
+F REIS PECAS,Transporte,$transporte/combustivel
+POSTO PIRES BELO,Transporte,$transporte/combustivel
+POSTO SAO CARLOS,Transporte,$transporte/combustivel
+AUTO POSTO SAO JOSE,Transporte,$transporte/combustivel
+POSTO SAO CRISTOVAO II,Transporte,$transporte/combustivel
+REDE PRESTES,Transporte,$transporte/combustivel
+AUTO POSTO MONTE CASTELO,Transporte,$transporte/combustivel
+BANCO MERCANTIL,Transporte,$transporte/financiamento
+BANCO ITAU S/A,Transporte,$transporte/financiamento
+BANCO BMG S.A.,Transporte,$transporte/financiamento
+BANCO SANTANDER,Transporte,$transporte/financiamento
+BANCO DIGITAL TRIBANK,Transporte,$transporte/financiamento
+BANCO TOPAZIO,Transporte,$transporte/financiamento
+BANCO CARGILL,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A,Transporte,$transporte/financiamento
+BANCO DO NORDESTE DO BRASIL S/A,Transporte,$transporte/financiamento
+BANCO CRUZEIRO DO SUL S/A,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO RIO GRANDE DO SUL S.A.,Transporte,$transporte/financiamento
+BANCO DO BRASIL S.A./CENTRO ADMINISTRATIVO - JOAO PESSO,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - SALVATERRA,Transporte,$transporte/financiamento
+BANCO DO NORDESTE,Transporte,$transporte/financiamento
+BANCO BMG S.A,Transporte,$transporte/financiamento
+BANCO SOFISA S/A,Transporte,$transporte/financiamento
+BANCO SANTANDER MERIDIONAL S.A.,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AG. SAO GERALDO DO ARAGUAIA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - BUJARU,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - FLORESTA DO ARAGUAIA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - MELGACO,Transporte,$transporte/financiamento
+BANCO PAN SA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A - SAO FELIX DO XINGU,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO RIO GRANDE DO SUL,Transporte,$transporte/financiamento
+BANCO RABOBANK INTERNATIONAL BRASIL S/A,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - RUROPOLIS/PA,Transporte,$transporte/financiamento
+BANCO SOFISA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG. PICARRA,Transporte,$transporte/financiamento
+BANCO BTG PACTUAL S.A. AGENCIA ZOOP,Transporte,$transporte/financiamento
+BANCO CRIZEIRO DO SUL,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG. NOVA TIMBOTEUA,Transporte,$transporte/financiamento
+BANCO DO NORDESTE DO BRASIL,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AG. MAGALHAES BARATA,Transporte,$transporte/financiamento
+BANCO DAYCOVAL,Transporte,$transporte/financiamento
+BANCO DO NORDESTE DO BRASIL S.A.,Transporte,$transporte/financiamento
+BANCO DO NORDESTE DO BRASIL S.A,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AGENCIA MARAPANIM,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AGENCIA SOURE,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AGENCIA ITAITUBA CIDADE ALTA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AGENCIA LIMOEIRO DO AJURU,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AFUA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AG. CONCEICAO DO ARAGUAIA,Transporte,$transporte/financiamento
+BANCO BMG SA,Transporte,$transporte/financiamento
+BANCO MAZE BANK S.A.,Transporte,$transporte/financiamento
+BANCO BRADESCO ARGENTINA S.A.,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA AG - CACHOEIRA DO PIRIA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO RIO GRANDE DO SUL S.A,Transporte,$transporte/financiamento
+BANCO DO NORDESTE DO BRASIL SA - AGENCIA DE TUTOIA,Transporte,$transporte/financiamento
+BANCO DE BRASILIA - BRB,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - ANAJAS,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AG. SAO CAETANO DE ODIVELAS,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AGENCIA OURILANDIA DO NORTE,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AGUA AZUL DO NORTE,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - ANAPU,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG - TERRA ALTA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A - AG. ABEL FIGUEIREDO,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - QUATRO BOCAS,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - IPIXUNA DO PARA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - CUMARU DO NORTE,Transporte,$transporte/financiamento
+BANCO BTG PACTUAL S.A. AGENCIA BAAS,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG - NOVA IPIXUNA,Transporte,$transporte/financiamento
+BANCO BTG PACTUAL S.A. BTG+ BUSINESS,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AGENCIA PONTA DE PEDRAS,Transporte,$transporte/financiamento
+BANCO DAYCOVAL S A,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - BREJO GRANDE DO ARAGUAIA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - SANTO ANTONIO DO TAUA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A - AUGUSTO CORREA,Transporte,$transporte/financiamento
+BANCO ITAU S.A.,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A AG SAO DOMINGOS DO ARAGUAIA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A - TRACUATEUA,Transporte,$transporte/financiamento
+BANCO DO NORDESTA S.A.,Transporte,$transporte/financiamento
+BANCO FENICIA S/A,Transporte,$transporte/financiamento
+BANCO DIGIMAIS,Transporte,$transporte/financiamento
+BANCO DIRETO SPAULO SP,Transporte,$transporte/financiamento
+BANCO BTG PACTUAL S.A. AQUICARD,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG. BAGRE,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A AG SANTAREM NOVO,Transporte,$transporte/financiamento
+BANCO BVA S/A,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - MEDICILANDIA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - SALINOPOLIS,Transporte,$transporte/financiamento
+BANCO SANTOS S.A.,Transporte,$transporte/financiamento
+BANCO AFINZ,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A - ELDORADO DOS CARAJAS,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A - TERRA SANTA,Transporte,$transporte/financiamento
+BANCO BRADESCO AG. PRIME BELEM,Transporte,$transporte/financiamento
+BANCO CRUZEIRO DO SUL,Transporte,$transporte/financiamento
+BANCO SENFF,Transporte,$transporte/financiamento
+BANCO INERMEDIUM S.A,Transporte,$transporte/financiamento
+BANCO DO NORDESTE DO BRASIL S. A,Transporte,$transporte/financiamento
+BANCO INTER S.A.,Transporte,$transporte/financiamento
+BANCO REGIONAL DE BRASILIA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - GOIANESIA DO PARA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - CURRALINHO,Transporte,$transporte/financiamento
+BANCO BMG,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A - CACHOEIRA DO ARARI,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AGENCIA BREU BRANCO,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - MOJUI DOS CAMPOS,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - MUANA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AGENCIA IGARAPE ACU,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A - MARABA SAO FELIX,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG - QUATIPURU,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - SAPUCAIA,Transporte,$transporte/financiamento
+BANCO BMG S/A,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AGENCIA MOSQUEIRO,Transporte,$transporte/financiamento
+BANCO SAFRA,Transporte,$transporte/financiamento
+BANCO VERDE DIGITAL,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AG. PORTO DE MOZ,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AG. PAU D'ARCO,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA AG. MOCAJUBA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG - ULIANOPOLIS,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG - BANNACH,Transporte,$transporte/financiamento
+BANCO BTG PACTUAL S.A. AGENCIA ALIPAY,Transporte,$transporte/financiamento
+BANCO MORADA,Transporte,$transporte/financiamento
+BANCO V8,Transporte,$transporte/financiamento
+BANCO DIRETO RJANEIRO RJ,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG. INHANGAPI,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO RIO GRANDE DO SUL SA,Transporte,$transporte/financiamento
+BANCO MERCANTIL DO BRASIL,Transporte,$transporte/financiamento
+BANCO INTERMEDIUM SA,Transporte,$transporte/financiamento
+BANCO BTG PACTUAL S.A. FILIAL ARTON,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA-AG. BAIAO,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - ACARA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - SAO JOAO DE PIRABAS,Transporte,$transporte/financiamento
+BANCO BTG PACTUAL S.A. AGENCIA NVIO BRASIL,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A - TRAIRAO,Transporte,$transporte/financiamento
+BANCO DO ESRADO DO PARA - AG. SENADOR JOSE PORFIRIO,Transporte,$transporte/financiamento
+BANCO CRED CLUB,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG - SAO JOAO DO ARAGUAIA,Transporte,$transporte/financiamento
+BANCO BTG PACTUAL S.A. ZOOM,Transporte,$transporte/financiamento
+BANCO ITAU S.A,Transporte,$transporte/financiamento
+BANCO DO BRASIL FEDERAL SAVINGS BANK,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AGENCIA ALMERIM,Transporte,$transporte/financiamento
+BANCO SAFRA S/A - LUXEMBOURG BRANCH,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AGENCIA BONITO,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AGENCIA NOVO PROGRESSO,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A - CURIONOPOLIS,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PAR-AG. FARO,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AG. OEIRAS DO PARA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG. PACAJA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG. IRITUIA,Transporte,$transporte/financiamento
+BANCO BTG PACTUAL S.A. AGENCIA BUSCAPE,Transporte,$transporte/financiamento
+BANCO SOFISA S.A,Transporte,$transporte/financiamento
+BANCO BOCOM BBM S.A. - FILIAL NASSAU-BAHAMAS,Transporte,$transporte/financiamento
+BANCO SANTOS NEVES,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AGENCIA SAO MIGUEL DO GUAMA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AGENCIA SANTANA DO ARAGUAIA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - VITORIA DO XINGU,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - GARRAFAO DO NORTE,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - CURUA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A - AURORA DO PARA,Transporte,$transporte/financiamento
+BANCO INTERMEDIUM S.A,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA - AG. PALESTINA DO PARA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG. PRAINHA,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG. COLARES,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG - CASA DE TABUA,Transporte,$transporte/financiamento
+BANCO BTG PACTUAL S.A. AGENCIA GEMINI,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG - BRASIL NOVO,Transporte,$transporte/financiamento
+BANCO DO ESTADO DO PARA S/A. AG. OUREM,Transporte,$transporte/financiamento
+UBER,Transporte,$transporte/uber
+99,Transporte,$transporte/uber
+CABIFY,Transporte,$transporte/uber
+LYFT,Transporte,$transporte/uber
+BOLT,Transporte,$transporte/uber
+INDRIVER,Transporte,$transporte/uber
+BLABLACAR,Transporte,$transporte/uber
+BEAT,Transporte,$transporte/uber
+DIIDI,Transporte,$transporte/uber
+RAPPI TURBO,Transporte,$transporte/uber
+MAX MILHAS TRANSFER,Transporte,$transporte/uber
+QUICKO,Transporte,$transporte/uber
+MOOVIT,Transporte,$transporte/uber
+EASY TAXI,Transporte,$transporte/uber
+WAZE CARPOOL,Transporte,$transporte/uber
+FREENOW,Transporte,$transporte/uber
+GETT,Transporte,$transporte/uber
+CAREEM,Transporte,$transporte/uber
+VIA,Transporte,$transporte/uber
+ARGO TAXI CORPORATIVO,Transporte,$transporte/uber
+COMPRA DE AÇÕES,Investimento,$investimento
+COMPRA DE FUNDOS IMOBILIÁRIOS,Investimento,$investimento
+COMPRA DE CRIPTOMOEDAS,Investimento,$investimento
+TESOURO DIRETO,Investimento,$investimento
+XP INVESTIMENTOS,Investimento,$investimento
+BTG PACTUAL DIGITAL,Investimento,$investimento
+NUINVEST,Investimento,$investimento
+CLEAR CORRETORA,Investimento,$investimento
+RICO INVESTIMENTOS,Investimento,$investimento
+MODALMAIS,Investimento,$investimento
+INTER INVEST,Investimento,$investimento
+BANCO INTER,Investimento,$investimento
+ITAU CORRETORA,Investimento,$investimento
+BRADESCO CORRETORA,Investimento,$investimento
+SANTANDER CORRETORA,Investimento,$investimento
+NEOINVEST,Investimento,$investimento
+CM CAPITAL,Investimento,$investimento
+GENIAL INVESTIMENTOS,Investimento,$investimento
+EASYNVEST BY NUBANK,Investimento,$investimento
+ÓRAMA INVESTIMENTOS,Investimento,$investimento
+TERRA INVESTIMENTOS,Investimento,$investimento
+XP PRIVATE,Investimento,$investimento
+ATIVA INVESTIMENTOS,Investimento,$investimento
+GUIDE INVESTIMENTOS,Investimento,$investimento
+NOVO FUTURO,Investimento,$investimento
+PLANNER CORRETORA,Investimento,$investimento
+SOCOPA INVEST,Investimento,$investimento
+MIRAE ASSET,Investimento,$investimento
+TORO INVESTIMENTOS,Investimento,$investimento
+EQI INVESTIMENTOS,Investimento,$investimento
+BGC LIQUIDEZ,Investimento,$investimento
+BRAINVEST,Investimento,$investimento
+LECCA,Investimento,$investimento
+BR PARTNERS,Investimento,$investimento

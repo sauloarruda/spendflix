@@ -1,0 +1,22 @@
+persona	category	type	frequency	occurrency	organization	type	percentage-total	income	outcome
+Homem Casado 30-40 + Carro	Receitas	Salário	1	100.00%	$employer	fix	100.00%	12000	
+Homem Casado 30-40 + Carro	Moradia	Aluguel ou Financiamento	1	70.00%	$moradia/aluguel	fix	20.00%		-2.400.00
+Homem Casado 30-40 + Carro	Moradia	Energia	1	90.00%	$moradia/energia	fix	0.50%		-60.00
+Homem Casado 30-40 + Carro	Moradia	Celular	1	90.00%	$moradia/celular	fix	0.50%		-60.00
+Homem Casado 30-40 + Carro	Moradia	Condomínio	1	60.00%	$moradia/condominio	fix	6.00%		-720.00
+Homem Casado 30-40 + Carro	Moradia	Gás	1	40.00%	$moradia/gas	fix	4.00%		-480.00
+Homem Casado 30-40 + Carro	Moradia	IPTU	1	70.00%	$moradia/iptu	fix	1.00%		-120.00
+Homem Casado 30-40 + Carro	Alimentação	Restaurante	5-15	100.00%	$alimentação/restaurante	variable	5.00%		-600.00
+Homem Casado 30-40 + Carro	Alimentação	Supermercado	5-10	100.00%	$alimentação/supermercado	variable	7.00%		-840.00
+Homem Casado 30-40 + Carro	Compras	Compras	1-4	100.00%	$compras	variable	10.00%		-1.200.00
+Homem Casado 30-40 + Carro	Saúde	Plano	1	40.00%	$saude/plano	fix	4.00%		-480.00
+Homem Casado 30-40 + Carro	Saúde	Farmácia	1-3	30.00%	$saude/farmacia	variable	2.00%		-240.00
+Homem Casado 30-40 + Carro	Cuidado Pessoal	Barbeiro	1	90.00%	$cuidado_pessoal/barbeiro	fix	0.70%		-84.00
+Homem Casado 30-40 + Carro	Cuidado Pessoal	Academia	1	50.00%	$cuidado_pessoal/academia	fix	1.00%		-120.00
+Homem Casado 30-40 + Carro	Viagem	Passagem	1-3	60.00%	$viagem/passagem	variable	10.00%		-1.200.00
+Homem Casado 30-40 + Carro	Viagem	Hospedagem	1-3	60.00%	$viagem/hospedagem	variable10	10.00%		-1.200.00
+Homem Casado 30-40 + Carro	Lazer	Lazer	1-5	80.00%	$lazer/lazer	variable	2.50%		-300.00
+Homem Casado 30-40 + Carro	Transporte	Combustível	1-8	50.00%	$transporte/combustivel	fix	10.00%		-1.200.00
+Homem Casado 30-40 + Carro	Transporte	Financiamento Carro	1	35.00%	$transporte/financiamento	fix	5.00%		-600.00
+Homem Casado 30-40 + Carro	Transporte	Uber	1-10	20.00%	$transporte/uber	variable	2.00%		-240.00
+Homem Casado 30-40 + Carro	Investimento	Investimento	0-2	15.00%	$investimento	variable	5.00%		-600.00

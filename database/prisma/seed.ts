@@ -28,7 +28,7 @@ async function main() {
   const categories = [
     { name: 'Alimentação', color: 'indigo-500' },
     { name: 'Compras', color: 'red-500' },
-    { name: 'Filhos', color: 'yellow-600' },
+    { name: 'Família', color: 'yellow-600' },
     { name: 'Investimento', color: 'gray-800' },
     { name: 'Lazer', color: 'cyan-800' },
     { name: 'Moradia', color: 'indigo-800' },
