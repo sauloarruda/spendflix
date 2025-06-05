@@ -121,4 +121,26 @@ describe('transactionsService', () => {
       expect(found.id).toBe(tx.id);
     });
   });
+
+  describe('show and hide', () => {
+    it('should set isHidden to true when show is called', async () => {
+      const tx = await transactionFactory.create({
+        account: { connect: { id: account.id } },
+        isHidden: false,
+      });
+      await transactionsService.show(tx.id);
+      const updated = await getPrisma().transaction.findFirstOrThrow({ where: { id: tx.id } });
+      expect(updated.isHidden).toBe(true);
+    });
+
+    it('should set isHidden to false when hide is called', async () => {
+      const tx = await transactionFactory.create({
+        account: { connect: { id: account.id } },
+        isHidden: true,
+      });
+      await transactionsService.hide(tx.id);
+      const updated = await getPrisma().transaction.findFirstOrThrow({ where: { id: tx.id } });
+      expect(updated.isHidden).toBe(false);
+    });
+  });
 });
