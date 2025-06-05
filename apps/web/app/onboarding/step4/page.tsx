@@ -10,6 +10,7 @@ import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { Account, SourceType } from '@/prisma';
 import { getSessionCookie } from '@/utils/cookie';
+import LoadingForm from '@/components/utils/LoadingForm';
 
 export default function OnboardingStep4() {
   const router = useRouter();
@@ -22,32 +23,29 @@ export default function OnboardingStep4() {
     setMonthsCount(monthsCount + updatedMonthsCount);
   }
 
-  useEffect(() => {
-    async function findOrCreateAccounts() {
-      if (!userId) return;
-      const [nubankAccount, nubankCreditCard] = await autorizeAction(getSessionCookie(), () =>
-        createAccountsAction([
-          {
-            userId,
-            bankNumber: '260', // only nubank now
-            name: 'Conta Corrente',
-            color: 'green-500',
-            sourceType: SourceType.NUBANK_ACCOUNT_CSV,
-          },
-          {
-            userId,
-            bankNumber: '260', // only nubank now
-            name: 'Cartão de Crédito',
-            color: 'orange-500',
-            sourceType: SourceType.NUBANK_CREDIT_CARD_CSV,
-          },
-        ]),
-      );
-      setNubankAccountId(nubankAccount);
-      setNubankCreditCardId(nubankCreditCard);
-    }
-    findOrCreateAccounts();
-  }, [userId]);
+  async function loadAccounts() {
+    if (!userId) return;
+    const [nubankAccount, nubankCreditCard] = await autorizeAction(getSessionCookie(), () =>
+      createAccountsAction([
+        {
+          userId,
+          bankNumber: '260', // only nubank now
+          name: 'Conta Corrente',
+          color: 'green-500',
+          sourceType: SourceType.NUBANK_ACCOUNT_CSV,
+        },
+        {
+          userId,
+          bankNumber: '260', // only nubank now
+          name: 'Cartão de Crédito',
+          color: 'orange-500',
+          sourceType: SourceType.NUBANK_CREDIT_CARD_CSV,
+        },
+      ]),
+    );
+    setNubankAccountId(nubankAccount);
+    setNubankCreditCardId(nubankCreditCard);
+  }
 
   async function handleContinue() {
     await updateOnboarding({ step: 5 });
@@ -55,7 +53,7 @@ export default function OnboardingStep4() {
   }
 
   return (
-    <>
+    <LoadingForm message="Buscando contas..." onLoad={loadAccounts}>
       <h2 className="text-xl font-semibold mb-6 text-center">Prepare seus extratos</h2>
 
       <p className="text-gray-600 text-center mb-8 max-w-md mx-auto">
@@ -73,6 +71,6 @@ export default function OnboardingStep4() {
       )}
 
       <OnboardingNavigation disabled={monthsCount < 3} onClick={handleContinue} />
-    </>
+    </LoadingForm>
   );
 }
