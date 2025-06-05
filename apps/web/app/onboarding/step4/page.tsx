@@ -1,16 +1,16 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { createAccountsAction } from '@/actions/accounts';
 import { autorizeAction } from '@/actions/serverActions';
 import AccountAccordion from '@/components/onboarding/AccountAccordion';
 import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
+import LoadingForm from '@/components/utils/LoadingForm';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { Account, SourceType } from '@/prisma';
 import { getSessionCookie } from '@/utils/cookie';
-import LoadingForm from '@/components/utils/LoadingForm';
 
 export default function OnboardingStep4() {
   const router = useRouter();
