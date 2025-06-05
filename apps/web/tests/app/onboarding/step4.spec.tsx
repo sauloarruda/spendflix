@@ -152,8 +152,7 @@ describe('OnboardingStep4Page', () => {
 
   it('renders initial text content', () => {
     renderWithProvider(<OnboardingStep4Page />);
-    expect(screen.getByText('Prepare seus extratos')).toBeInTheDocument();
-    expect(screen.getByText(/Para descobrir sobre suas finanças/)).toBeInTheDocument();
+    expect(screen.getByText('Buscando contas...')).toBeInTheDocument();
   });
 
   it('calls createAccountAction for Nubank accounts when ResumeOnboarding.onResume is triggered', async () => {
