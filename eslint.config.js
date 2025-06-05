@@ -125,6 +125,7 @@ module.exports = [
       '@typescript-eslint/no-require-imports': 'off', // Allow require() style imports in test files
       'global-require': 'off', // Allow require() in test files
       'import/order': 'off', // Allow jest.mock before imports in test files
+      'operator-linebreak': 'off',
     },
   },
 ];
