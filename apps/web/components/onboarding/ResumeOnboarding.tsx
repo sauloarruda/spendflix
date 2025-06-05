@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState, useCallback } from 'react';
 
 import { onboardingLoginAction } from '@/actions/auth';
-import { getOnboardingAction, updateOnboardingAction } from '@/actions/onboarding';
+import { updateOnboardingAction } from '@/actions/onboarding';
 import { checkToken } from '@/actions/serverActions';
 import OnboardingContext from '@/contexts/OnboardingContext';
 import { getSessionCookie } from '@/utils/cookie';
@@ -63,8 +63,15 @@ export default function ResumeOnboarding({ children }: ResumeOnboardingProps) {
           router.replace('/onboarding/step1?error=401');
           return;
         }
-        // TODO: trocar para chamada via API route /api/onboarding/[uid]
-        const onboarding = await getOnboardingAction(uid);
+        const res = await fetch(`/api/onboardings/${uid}`);
+        if (!res.ok) {
+          if (res.status === 404) {
+            router.replace('/onboarding/step1?error=404');
+            return;
+          }
+          throw new Error('Failed to fetch onboarding');
+        }
+        const onboarding = await res.json();
         if (!onboarding || !onboarding.data) {
           router.replace('/onboarding/step1?error=404');
           return;

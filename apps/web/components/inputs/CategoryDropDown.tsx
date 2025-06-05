@@ -2,9 +2,8 @@ import { Dropdown, DropdownProps } from 'primereact/dropdown';
 import { Skeleton } from 'primereact/skeleton';
 import { useEffect, useState } from 'react';
 
-import { Category } from '@/prisma';
-
 import { useCategories } from '@/hooks/useCategories';
+import { Category } from '@/prisma';
 
 interface CategoryDropdownProps {
   onChange: (category: Category) => void;
