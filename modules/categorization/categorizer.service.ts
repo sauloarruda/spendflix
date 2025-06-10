@@ -1,4 +1,4 @@
-import { CategoryRule, PrismaClient } from '@/prisma';
+import { CategoryRule, Prisma } from '@/prisma';
 
 import getLogger from '@/common/logger';
 import getPrisma from '@/common/prisma';
@@ -105,7 +105,7 @@ async function findOrCreateUserRule(
   description: string,
   categoryId: string,
   accountId: string,
-  tx: PrismaClient,
+  tx: Prisma.TransactionClient,
 ) {
   const sanitizedDescription = sanitizeDescription(description);
   const data = {
