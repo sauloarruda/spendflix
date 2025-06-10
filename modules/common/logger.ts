@@ -1,6 +1,8 @@
+/* eslint-disable no-console */
+// eslint-disable-next-line max-classes-per-file
+import chalk from 'chalk';
 import pino from 'pino';
-
-import getConfig from '@/common/config';
+import { omit } from 'underscore';
 
 type LogLevel = 'fatal' | 'error' | 'warn' | 'info' | 'debug' | 'trace';
 
@@ -53,20 +55,57 @@ const censorSensitiveData = (data: unknown): unknown => {
   return data;
 };
 
-const PINO_PRETTY_OPTIONS = {
-  target: 'pino-pretty',
-  options: {
-    colorize: true,
-    translateTime: 'SYS:standard',
-    levelFirst: true,
-    ignore: 'time,hostname,pid',
-  },
-};
+class ConsoleLogger {
+  public bindings: ILoggerOptions;
+
+  public constructor(bindings = {}) {
+    this.bindings = bindings;
+  }
+
+  public child(options: ILoggerOptions) {
+    return new ConsoleLogger(options);
+  }
+
+  // eslint-disable-next-line max-params
+  private log(level: string, obj: unknown, msg: string | undefined, ...args: unknown[]) {
+    const levelStr = this.bindings.module
+      ? [chalk.magenta(`[${this.bindings.module}]`), level].join(' ')
+      : level;
+    const bindingsObj = omit(this.bindings, 'module');
+    const otherArgs = Object.keys(bindingsObj) ? { ...bindingsObj, ...args } : { ...args };
+    if (msg) console.log(levelStr, msg, obj, otherArgs);
+    else console.log(levelStr, obj, bindingsObj, otherArgs);
+  }
+
+  public trace(obj: unknown, msg: string | undefined, ...args: unknown[]) {
+    this.log('TRACE', obj, msg, ...args);
+  }
+
+  public debug(obj: unknown, msg: string | undefined, ...args: unknown[]) {
+    this.log('DEBUG', obj, msg, ...args);
+  }
+
+  public info(obj: unknown, msg: string | undefined, ...args: unknown[]) {
+    this.log('INFO', obj, msg, ...args);
+  }
+
+  public warn(obj: unknown, msg: string | undefined, ...args: unknown[]) {
+    this.log('WARN', obj, msg, ...args);
+  }
+
+  public error(obj: unknown, msg: string | undefined, ...args: unknown[]) {
+    this.log('ERROR', obj, msg, ...args);
+  }
+
+  public fatal(obj: unknown, msg: string | undefined, ...args: unknown[]) {
+    this.log('FATAL', obj, msg, ...args);
+  }
+}
 
 export class Logger {
   public bindings: ILoggerOptions;
 
-  private logger: pino.Logger;
+  private logger: pino.Logger | ConsoleLogger;
 
   private isOffline: boolean;
 
@@ -78,14 +117,16 @@ export class Logger {
     this.isOffline = isOffline ?? false;
     this.level = level;
 
-    this.logger = pino({
-      level,
-      transport: isOffline ? PINO_PRETTY_OPTIONS : undefined,
-      base: {
-        service,
-        environment: getConfig().NODE_ENV,
-      },
-    });
+    if (this.isOffline) this.logger = new ConsoleLogger();
+    else {
+      this.logger = pino({
+        level,
+        base: {
+          service,
+          environment: process.env.NODE_ENV,
+        },
+      });
+    }
   }
 
   private prepareLogData(
@@ -143,8 +184,8 @@ let logger: Logger;
 export default function getLogger() {
   if (!logger) {
     logger = new Logger({
-      level: getConfig().LOG_LEVEL as LogLevel,
-      isOffline: getConfig().IS_OFFLINE === 'true',
+      level: (process.env.LOG_LEVEL || 'debug') as LogLevel,
+      isOffline: process.env.IS_OFFLINE ? Boolean(process.env.IS_OFFLINE) : false,
     });
   }
   return logger;
