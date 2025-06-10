@@ -14,6 +14,11 @@ async function setAuthCookie(tokens: UserTokens) {
   cookieStore.set('session', tokens.accessToken);
 }
 
+async function hasAuthCookie(): Promise<boolean> {
+  const cookieStore = await cookies();
+  return cookieStore.has('session');
+}
+
 async function confirmAction(email: string, code: string): Promise<User> {
   const { tokens, user } = await signupService.confirm(email, code);
   await setAuthCookie(tokens);
@@ -29,10 +34,12 @@ async function onboardingLoginAction(onboardingUid: string): Promise<Onboarding>
   const onboarding = await onboardingService.find(onboardingUid);
   if (!onboarding.userId) throw new Error('Invalid parameters');
 
-  const user = await signupService.findUser(onboarding.userId);
-  if (!user.temporaryPassword) throw new Error('Invalid user');
-  const tokens = await loginService.login(user.email, user.temporaryPassword);
-  await setAuthCookie(tokens);
+  if (!hasAuthCookie()) {
+    const user = await signupService.findUser(onboarding.userId);
+    if (!user.temporaryPassword) throw new Error('Invalid user');
+    const tokens = await loginService.login(user.email, user.temporaryPassword);
+    await setAuthCookie(tokens);
+  }
   return onboarding;
 }
 
