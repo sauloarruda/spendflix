@@ -125,10 +125,10 @@ function createClient() {
           emit: 'stdout',
           level: 'error',
         },
-        {
-          emit: 'stdout',
-          level: 'info',
-        },
+        // {
+        //   emit: 'stdout',
+        //   level: 'info',
+        // },
         {
           emit: 'stdout',
           level: 'warn',

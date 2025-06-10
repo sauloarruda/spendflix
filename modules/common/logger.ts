@@ -56,18 +56,27 @@ const censorSensitiveData = (data: unknown): unknown => {
 };
 
 class ConsoleLogger {
+  private LoggerLevel = ['trace', 'debug', 'info', 'warn', 'error', 'fatal'];
+
+  private level: number;
+
   public bindings: ILoggerOptions;
 
-  public constructor(bindings = {}) {
+  public constructor(bindings: ILoggerOptions = {}) {
     this.bindings = bindings;
+    this.level = this.LoggerLevel.indexOf('debug');
+    if (bindings.level) {
+      this.level = this.LoggerLevel.indexOf(bindings.level) ?? this.level;
+    }
   }
 
-  public child(options: ILoggerOptions) {
-    return new ConsoleLogger(options);
+  public child(options: ILoggerOptions = {}) {
+    return new ConsoleLogger({ ...this.bindings, ...options });
   }
 
   // eslint-disable-next-line max-params
   private log(level: string, obj: unknown, msg: string | undefined, ...args: unknown[]) {
+    if (this.LoggerLevel.indexOf(level) < this.level) return;
     const levelStr = this.bindings.module
       ? [chalk.magenta(`[${this.bindings.module}]`), level].join(' ')
       : level;
@@ -78,27 +87,27 @@ class ConsoleLogger {
   }
 
   public trace(obj: unknown, msg: string | undefined, ...args: unknown[]) {
-    this.log('TRACE', obj, msg, ...args);
+    this.log('trace', obj, msg, ...args);
   }
 
   public debug(obj: unknown, msg: string | undefined, ...args: unknown[]) {
-    this.log('DEBUG', obj, msg, ...args);
+    this.log('debug', obj, msg, ...args);
   }
 
   public info(obj: unknown, msg: string | undefined, ...args: unknown[]) {
-    this.log('INFO', obj, msg, ...args);
+    this.log('info', obj, msg, ...args);
   }
 
   public warn(obj: unknown, msg: string | undefined, ...args: unknown[]) {
-    this.log('WARN', obj, msg, ...args);
+    this.log('warn', obj, msg, ...args);
   }
 
   public error(obj: unknown, msg: string | undefined, ...args: unknown[]) {
-    this.log('ERROR', obj, msg, ...args);
+    this.log('error', obj, msg, ...args);
   }
 
   public fatal(obj: unknown, msg: string | undefined, ...args: unknown[]) {
-    this.log('FATAL', obj, msg, ...args);
+    this.log('fatal', obj, msg, ...args);
   }
 }
 
@@ -117,7 +126,7 @@ export class Logger {
     this.isOffline = isOffline ?? false;
     this.level = level;
 
-    if (this.isOffline) this.logger = new ConsoleLogger();
+    if (this.isOffline) this.logger = new ConsoleLogger(options);
     else {
       this.logger = pino({
         level,
