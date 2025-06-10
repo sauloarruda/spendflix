@@ -26,6 +26,9 @@ const config: Config = {
       },
     ],
   },
+  transformIgnorePatterns: [
+    '/node_modules/(?!(chalk|ansi-styles|ansi-regex|strip-ansi|wrap-ansi|string-width|is-fullwidth-code-point|emoji-regex)/)',
+  ],
   testMatch: ['**/*.spec.ts', '**/*.spec.tsx', '**/*.test.ts', '**/*.test.tsx'],
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json', 'node'],
   collectCoverageFrom: ['app/**/*.tsx', 'components/**/*.tsx', 'tests/**/*.tsx'],

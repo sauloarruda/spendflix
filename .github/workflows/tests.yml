@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/spendflix_test'
+      DATABASE_URL: 'postgresql://postgres:password@localhost:5432/spendflix_test'
       LOG_LEVEL: fatal
       ENCRYPTION_SECRET: test-encryption-secret
       NODE_ENV: test
@@ -26,7 +26,7 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: password
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -53,9 +53,9 @@ jobs:
 
       - name: Create test database
         run: |
-          PGPASSWORD=postgres psql -h localhost -U postgres -c 'CREATE DATABASE spendflix_test;'
+          PGPASSWORD=password psql -h localhost -U postgres -c 'CREATE DATABASE spendflix_test;'
         env:
-          PGPASSWORD: postgres
+          PGPASSWORD: password
 
       - name: Run Tests
         run: |
