@@ -61,6 +61,7 @@ async function authorizeAction<T>(
   authorization: string | undefined,
   action: (tokenPayload: JwtPayload | undefined) => Promise<T>,
 ): Promise<T> {
+  logger.debug({ authorization }, 'Check authorization');
   if (!authorization) {
     logger.warn({}, 'No authorization found');
     throw new InvalidAuthenticationError('Authorization not found');
