@@ -17,17 +17,20 @@
     "cognito:start": "./scripts/cognito.sh",
     "setup": "./scripts/setup.sh",
     "prisma:generate": "./scripts/prisma.sh",
-    "prisma:migrate": "cd database && pnpm prisma migrate deploy && cd .."
+    "prisma:migrate": "cd database && pnpm prisma migrate deploy && cd ..",
+    "prisma:seed": "cd database && pnpm prisma seed && cd .."
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.470.0",
     "@prisma/adapter-pg": "^6.8.2",
     "@prisma/client": "6.7.0",
     "aws-jwt-verify": "^5.1.0",
+    "chalk": "^5.4.1",
     "dotenv": "^16.5.0",
     "pino": "^9.6.0",
     "pino-pretty": "^13.0.0",
-    "prisma": "^6.7.0"
+    "prisma": "^6.7.0",
+    "underscore": "^1.13.7"
   },
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.810.0",
