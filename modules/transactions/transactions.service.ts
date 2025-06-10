@@ -90,21 +90,25 @@ async function getUncategorizedTransactions(userId: number): Promise<{
 
 async function updateCategory(transactionIds: string[], categoryId: string): Promise<void> {
   if (transactionIds.length === 0) return;
-  const transaction = await getPrisma().transaction.findFirstOrThrow({
-    where: { id: transactionIds[0] },
-  });
-  const categoryUserRule = await categorizerService.findOrCreateUserRule(
-    transaction.description,
-    categoryId,
-    transaction.accountId,
-  );
-  await getPrisma().transaction.updateMany({
-    where: { id: { in: transactionIds } },
-    data: {
+
+  await getPrisma().$transaction(async (tx) => {
+    const transaction = await tx.transaction.findFirstOrThrow({
+      where: { id: transactionIds[0] },
+    });
+    const categoryUserRule = await categorizerService.findOrCreateUserRule(
+      transaction.description,
       categoryId,
-      categoryRuleId: categoryUserRule.id,
-      categoryScore: 1,
-    },
+      transaction.accountId,
+      tx,
+    );
+    await tx.transaction.updateMany({
+      where: { id: { in: transactionIds } },
+      data: {
+        categoryId,
+        categoryRuleId: categoryUserRule.id,
+        categoryScore: 1,
+      },
+    });
   });
 }
 

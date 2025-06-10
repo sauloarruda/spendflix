@@ -1,4 +1,5 @@
 import { CategoryRule } from '@/prisma';
+import { PrismaClient } from '@prisma/client';
 
 import getLogger from '@/common/logger';
 import getPrisma from '@/common/prisma';
@@ -101,14 +102,20 @@ async function inferCategory(
   return findCategory(description, accountId, amount);
 }
 
-async function findOrCreateUserRule(description: string, categoryId: string, accountId: string) {
+// eslint-disable-next-line max-params
+async function findOrCreateUserRule(
+  description: string,
+  categoryId: string,
+  accountId: string,
+  tx: PrismaClient,
+) {
   const sanitizedDescription = sanitizeDescription(description);
   const data = {
     keyword: sanitizedDescription,
     accountId,
     categoryId,
   };
-  return getPrisma().categoryRule.upsert({
+  return tx.categoryRule.upsert({
     where: {
       keyword_accountId_categoryId: data,
     },
