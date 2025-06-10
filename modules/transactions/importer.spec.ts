@@ -21,7 +21,7 @@ jest.mock('@/common/config', () => ({
     S3_REGION: 'us-east-1',
     S3_KEY: 'test-key',
     S3_SECRET: 'test-secret',
-    DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/spendflix_test',
+    DATABASE_URL: 'postgresql://postgres:password@localhost:5432/spendflix_test',
   }),
 }));
 
