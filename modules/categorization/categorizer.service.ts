@@ -1,5 +1,4 @@
-import { CategoryRule } from '@/prisma';
-import { PrismaClient } from '@prisma/client';
+import { CategoryRule, PrismaClient } from '@/prisma';
 
 import getLogger from '@/common/logger';
 import getPrisma from '@/common/prisma';
