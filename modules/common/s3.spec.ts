@@ -12,6 +12,7 @@ jest.mock('./config', () => () => ({
   S3_REGION: 'us-east-1',
   S3_KEY: 'test-key',
   S3_SECRET: 'test-secret',
+  S3_ENDPOINT: 'http://localhost:9000',
 }));
 
 jest.mock('./logger', () => () => ({
@@ -74,7 +75,7 @@ describe('s3Service', () => {
         S3_KEY: 'test-key',
         S3_SECRET: 'test-secret',
       }));
-      await expect(async () => (await import('./s3')).default).rejects.toThrow(
+      await expect(async () => (await import('./s3')).default.get('test-key')).rejects.toThrow(
         'S3_BUCKET environment variable is not set',
       );
       jest.dontMock('./config');
@@ -86,7 +87,7 @@ describe('s3Service', () => {
         S3_KEY: 'test-key',
         S3_SECRET: 'test-secret',
       }));
-      await expect(async () => (await import('./s3')).default).rejects.toThrow(
+      await expect(async () => (await import('./s3')).default.get('test-key')).rejects.toThrow(
         'S3_REGION environment variable is not set',
       );
       jest.dontMock('./config');
@@ -99,7 +100,7 @@ describe('s3Service', () => {
         S3_KEY: 'test-key',
         S3_SECRET: 'test-secret',
       }));
-      await expect(async () => (await import('./s3')).default).rejects.toThrow(
+      await expect(async () => (await import('./s3')).default.get('test-key')).rejects.toThrow(
         'Invalid AWS region format: invalid-region. Expected format: us-east-1, us-west-2, etc.',
       );
       jest.dontMock('./config');

@@ -63,10 +63,9 @@ async function inferCategoryByAmount(
     const category = await getPrisma().category.findUnique({
       where: { name: INCOMING_CATEGORY_NAME },
     });
-    if (!category) return undefined;
     return {
       categoryRuleId: null,
-      categoryId: category.id,
+      categoryId: category!.id,
       accountId,
       score: 0,
     };

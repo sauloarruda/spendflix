@@ -1,45 +1,68 @@
-import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import {
+  GetObjectCommand, PutObjectCommand, S3Client, S3ClientConfig,
+} from '@aws-sdk/client-s3';
 
 import getConfig from './config';
 import getLogger from './logger';
 
 const logger = getLogger().child({ module: 's3' });
 
-const BUCKET = getConfig().S3_BUCKET;
-const REGION = getConfig().S3_REGION;
+let s3: S3Client;
+let defaultBucket: string | undefined;
 
-if (!BUCKET) {
-  throw new Error('S3_BUCKET environment variable is not set');
+function getBucket() {
+  if (!defaultBucket) {
+    defaultBucket = getConfig().S3_BUCKET;
+    if (!defaultBucket) {
+      throw new Error('S3_BUCKET environment variable is not set');
+    }
+  }
+  return defaultBucket;
 }
 
-if (!REGION) {
-  throw new Error('S3_REGION environment variable is not set');
+// eslint-disable-next-line max-lines-per-function
+function getS3() {
+  const REGION = getConfig().S3_REGION;
+  if (!s3) {
+    if (!REGION) {
+      throw new Error('S3_REGION environment variable is not set');
+    }
+
+    // Validate region format
+    if (!REGION.match(/^[a-z]{2}-[a-z]+-\d+$/)) {
+      throw new Error(
+        `Invalid AWS region format: ${REGION}. Expected format: us-east-1, us-west-2, etc.`,
+      );
+    }
+
+    logger.debug(
+      {
+        bucket: getBucket(),
+        region: REGION,
+        hasAccessKey: !!getConfig().S3_KEY,
+        hasSecretKey: !!getConfig().S3_SECRET,
+      },
+      'Initializing s3Service',
+    );
+
+    let s3Config: S3ClientConfig = {
+      region: REGION,
+      credentials: {
+        accessKeyId: getConfig().S3_KEY as string,
+        secretAccessKey: getConfig().S3_SECRET as string,
+      },
+    };
+    if (getConfig().S3_ENDPOINT) {
+      s3Config = {
+        ...s3Config,
+        endpoint: getConfig().S3_ENDPOINT,
+        forcePathStyle: true,
+      };
+    }
+    s3 = new S3Client(s3Config);
+  }
+  return s3;
 }
-
-// Validate region format
-if (!REGION.match(/^[a-z]{2}-[a-z]+-\d+$/)) {
-  throw new Error(
-    `Invalid AWS region format: ${REGION}. Expected format: us-east-1, us-west-2, etc.`,
-  );
-}
-
-logger.debug(
-  {
-    bucket: BUCKET,
-    region: REGION,
-    hasAccessKey: !!getConfig().S3_KEY,
-    hasSecretKey: !!getConfig().S3_SECRET,
-  },
-  'Initializing s3Service',
-);
-
-const s3 = new S3Client({
-  region: REGION,
-  credentials: {
-    accessKeyId: getConfig().S3_KEY as string,
-    secretAccessKey: getConfig().S3_SECRET as string,
-  },
-});
 
 /**
  * Uploads file to S3
@@ -50,13 +73,13 @@ async function upload(
 ) {
   const Body = (await file.arrayBuffer()) as Buffer;
   const command = new PutObjectCommand({
-    Bucket: BUCKET,
+    Bucket: getBucket(),
     Key: key,
     Body,
     ContentType: file.type,
   });
 
-  await s3.send(command);
+  await getS3().send(command);
   logger.debug('File uploaded successfully');
 }
 
@@ -70,8 +93,8 @@ async function streamToString(stream: NodeJS.ReadableStream): Promise<string> {
 }
 
 async function get(key: string): Promise<string> {
-  const command = new GetObjectCommand({ Bucket: BUCKET, Key: key });
-  const response = await s3.send(command);
+  const command = new GetObjectCommand({ Bucket: getBucket(), Key: key });
+  const response = await getS3().send(command);
 
   if (!response.Body) {
     throw new Error('Empty response from S3');

@@ -142,13 +142,13 @@ describe('categorizerService', () => {
 
   it('returns Receitas category when value is positive and there is no matching rule', async () => {
     // Ensure Receitas category exists
-    const receitasCategory = await categoryFactory.create({ name: 'Receitas' });
+    const receitasCategory = await getPrisma().category.findFirst({ where: { name: 'Receitas' } });
     const description = `NoMatchKeyword-${uid}`;
     const amount = 100;
     // No category rules created for this description
     const match = await categorizerService.inferCategory(description, account.id, amount);
     expect(match).toBeDefined();
-    expect(match!.categoryId).toBe(receitasCategory.id);
+    expect(match!.categoryId).toBe(receitasCategory?.id);
     expect(match!.categoryRuleId).toBeNull();
     expect(match!.score).toBe(0);
     expect(match!.accountId).toBe(account.id);
