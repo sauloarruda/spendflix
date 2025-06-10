@@ -153,6 +153,9 @@ importers:
       axios:
         specifier: ^1.9.0
         version: 1.9.0
+      chalk:
+        specifier: ^5.4.1
+        version: 5.4.1
       chart.js:
         specifier: ^4.4.9
         version: 4.4.9
