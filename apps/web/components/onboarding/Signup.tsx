@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Button } from 'primereact/button';
 import React, { useState } from 'react';
 
@@ -98,13 +97,7 @@ export default function Signup({ onSuccess, onLoginRedirect }: SignupProps) {
         disabled={loading || !isFormValid}
       />
 
-      <p className="text-xs text-gray-400 mt-4 text-center">
-        Seu email é usado para envio de um código de confirmação. Leia nossa{' '}
-        <Link href="/privacy" className="text-primary underline">
-          Política de Privacidade
-        </Link>
-        .
-      </p>
+      <p className="text-xs text-gray-400 mt-4 text-center">Leia nossa Política de Privacidade</p>
     </div>
   );
 }

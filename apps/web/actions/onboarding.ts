@@ -16,7 +16,6 @@ async function updateOnboardingAction(
 }
 
 async function getOnboardingAction(onboardingUid: string): Promise<Onboarding | null> {
-  logger.debug('getOnboarding');
   try {
     const onboarding = await onboardingService.find(onboardingUid);
     return onboarding;

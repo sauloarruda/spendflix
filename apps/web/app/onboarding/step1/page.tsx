@@ -23,8 +23,11 @@ export default function Page() {
   const [email, setEmail] = useState<string>('');
   const [apiError, setApiError] = useState<string>();
 
+  // eslint-disable-next-line complexity
   async function checkIfOnboardingIsStarted() {
-    let onboarding = await getOnboardingAction(localStorage.getItem('onboardingUid') || '');
+    let onboarding = localStorage.getItem('onboardingUid')
+      ? await getOnboardingAction(localStorage.getItem('onboardingUid') || '')
+      : null;
     const onboardingData = onboarding?.data as OnboardingData;
     if (!onboarding || !onboardingData) {
       try {

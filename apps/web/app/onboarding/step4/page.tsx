@@ -16,7 +16,7 @@ export default function OnboardingStep4() {
   const [monthsCount, setMonthsCount] = useState(0);
   const [nubankAccountId, setNubankAccountId] = useState<Account>();
   const [nubankCreditCardId, setNubankCreditCardId] = useState<Account>();
-  const { userId, updateOnboarding } = useOnboarding();
+  const { isLoadingOnboarding, userId, updateOnboarding } = useOnboarding();
 
   function sumMonthsCount(updatedMonthsCount: number) {
     setMonthsCount(monthsCount + updatedMonthsCount);
@@ -49,6 +49,8 @@ export default function OnboardingStep4() {
     await updateOnboarding({ step: 5 });
     router.push('/onboarding/step5');
   }
+
+  if (isLoadingOnboarding) return <></>;
 
   return (
     <LoadingForm message="Buscando contas..." onLoad={loadAccounts}>
