@@ -32,6 +32,8 @@ export default function Login({ onSuccess }: { onSuccess: () => void }) {
     } catch (error) {
       const errorName = (error as Error).name as keyof typeof LoginErrorMessages;
       setApiError(LoginErrorMessages[errorName] || 'Erro desconhecido');
+    } finally {
+      setLoading(false);
     }
   }
 
