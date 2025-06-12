@@ -2378,24 +2378,15 @@ BANCO DO ESTADO DO PARA S/A. AG - BRASIL NOVO,Transporte,$transporte/financiamen
 BANCO DO ESTADO DO PARA S/A. AG. OUREM,Transporte,$transporte/financiamento
 UBER,Transporte,$transporte/uber
 99,Transporte,$transporte/uber
-CABIFY,Transporte,$transporte/uber
-LYFT,Transporte,$transporte/uber
-BOLT,Transporte,$transporte/uber
 INDRIVER,Transporte,$transporte/uber
 BLABLACAR,Transporte,$transporte/uber
-BEAT,Transporte,$transporte/uber
-DIIDI,Transporte,$transporte/uber
 RAPPI TURBO,Transporte,$transporte/uber
-MAX MILHAS TRANSFER,Transporte,$transporte/uber
-QUICKO,Transporte,$transporte/uber
 MOOVIT,Transporte,$transporte/uber
-EASY TAXI,Transporte,$transporte/uber
-WAZE CARPOOL,Transporte,$transporte/uber
 FREENOW,Transporte,$transporte/uber
 GETT,Transporte,$transporte/uber
 CAREEM,Transporte,$transporte/uber
 VIA,Transporte,$transporte/uber
-ARGO TAXI CORPORATIVO,Transporte,$transporte/uber
+TAXI CORPORATIVO,Transporte,$transporte/uber
 COMPRA DE AÇÕES,Investimento,$investimento
 COMPRA DE FUNDOS IMOBILIÁRIOS,Investimento,$investimento
 COMPRA DE CRIPTOMOEDAS,Investimento,$investimento
@@ -2430,3 +2421,11 @@ BGC LIQUIDEZ,Investimento,$investimento
 BRAINVEST,Investimento,$investimento
 LECCA,Investimento,$investimento
 BR PARTNERS,Investimento,$investimento
+NETFLIX,Serviços,$serviços/streaming
+DISNEY PLUS,Serviços,$serviços/streaming
+HBO MAX,Serviços,$serviços/streaming
+PRIME VIDEO,Serviços,$serviços/streaming
+SPOTIFY,Serviços,$serviços/streaming
+APPLE MUSIC,Serviços,$serviços/streaming
+DEEZER,Serviços,$serviços/streaming
+PARAMOUNT,Serviços,$serviços/streaming
