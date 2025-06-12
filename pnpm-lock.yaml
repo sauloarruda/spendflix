@@ -277,12 +277,9 @@ importers:
       '@types/papaparse':
         specifier: ^5.3.16
         version: 5.3.16
-<<<<<<< Updated upstream
-=======
       papaparse:
         specifier: ^5.5.3
         version: 5.5.3
->>>>>>> Stashed changes
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.3.1
@@ -297,13 +294,8 @@ importers:
         specifier: ^29.5.2
         version: 29.5.14
       '@types/node':
-<<<<<<< Updated upstream
-        specifier: ^22.15.2
-        version: 22.15.3
-=======
         specifier: ^22.15.28
         version: 22.15.31
->>>>>>> Stashed changes
       '@types/yamljs':
         specifier: ^0.2.34
         version: 0.2.34

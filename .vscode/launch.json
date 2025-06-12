@@ -1,6 +1,14 @@
 {
   "version": "0.2.0",
   "configurations": [
+    {
+      "type": "ruby-debug",
+      "request": "launch",
+      "name": "[generator] Run",
+      "program": "${workspaceFolder}/modules/generator/main.rb",
+      "programArgs": [],
+      "useBundler": true
+    },
     // {
     //   "name": "[auth] Serverless Offline",
     //   "type": "node",
