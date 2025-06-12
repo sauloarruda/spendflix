@@ -25,6 +25,7 @@ const SENSITIVE_FIELDS = [
   'auth',
   'credentials',
   'key',
+  'temporaryPassword',
 ];
 
 // eslint-disable-next-line max-lines-per-function
@@ -80,7 +81,7 @@ class ConsoleLogger {
     const levelStr = this.bindings.module
       ? [chalk.magenta(`[${this.bindings.module}]`), level].join(' ')
       : level;
-    const bindingsObj = omit(this.bindings, 'module');
+    const bindingsObj = omit(this.bindings, ['module', 'level', 'isOffline']);
     const otherArgs = Object.keys(bindingsObj) ? { ...bindingsObj, ...args } : { ...args };
     if (msg) console.log(levelStr, msg, obj, otherArgs);
     else console.log(levelStr, obj, bindingsObj, otherArgs);

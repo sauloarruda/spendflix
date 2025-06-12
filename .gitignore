@@ -51,3 +51,7 @@ Thumbs.db
 
 # Cognito
 .cognito
+
+# Generator 
+modules/generator/*.csv
+.byebug_history
