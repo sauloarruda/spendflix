@@ -49,7 +49,7 @@ export function InsightsReport() {
           if (data.insightsChunk) {
             updateInsights(data.insightsChunk);
           } else if (data.complete) {
-            console.log('Stream completed successfully');
+            // console.log('Stream completed successfully');
             setLoading(false);
             eventSource?.close();
           } else if (data.error) {
@@ -63,10 +63,10 @@ export function InsightsReport() {
         }
       };
 
-      eventSource.onerror = () => {
+      eventSource.onerror = (eventError) => {
         // Only treat as error if we haven't received any data
         if (insights.length === 0) {
-          console.error('SSE connection error');
+          console.error({ eventError }, 'SSE connection error');
           setError('Connection error');
         } else {
           console.log('SSE connection closed after receiving data');
@@ -89,8 +89,8 @@ export function InsightsReport() {
     };
   }, [updateInsights]);
 
-  if (loading && !insights) return <div>Gerando insights...</div>;
   if (error) return <div>Erro: {error}</div>;
+  if (loading && !insights) return <div>Gerando insights...</div>;
   if (!insights) return <div>Não temos insights para este mês</div>;
 
   return <InsightsContent insights={insights} />;

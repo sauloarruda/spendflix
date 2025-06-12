@@ -74,11 +74,16 @@ async function find(id: number): Promise<User> {
   return getPrisma().user.findFirstOrThrow({ where: { id } });
 }
 
+async function findByCognitoId(cognitoId: string): Promise<User | null> {
+  return getPrisma().user.findFirst({ where: { cognitoId } }) ?? null;
+}
+
 const userService = {
   startOnboarding,
   getTempPassword,
   deleteTempPassword,
   findByEmail,
+  findByCognitoId,
   upsertUser,
   find,
 };

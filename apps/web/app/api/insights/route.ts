@@ -1,14 +1,14 @@
-// import { NextResponse } from 'next/server';
 import getLogger from '@/common/logger';
-import generateContent from '@/modules/insights';
+import insightsService from '@/modules/insights';
+import { NextRequest } from 'next/server';
+
+import { checkToken } from '@/actions/serverActions';
+
+import userService from '../../../../../modules/users/user.service';
 
 const logger = getLogger().child({ module: 'insights-stream' });
 
-export async function GET() {
-  // const { searchParams } = new URL(request.url);
-  // const token = searchParams.get('token');
-  // const date = searchParams.get('date');
-
+export async function GET(req: NextRequest) {
   // Set headers for Server-Sent Events
   const headers = {
     'Content-Type': 'text/event-stream',
@@ -21,9 +21,14 @@ export async function GET() {
   const stream = new ReadableStream({
     async start(controller) {
       try {
+        const sessionCookie = req.cookies.get('session')?.value;
+        const tokenPayload = await checkToken(sessionCookie);
+        logger.debug({ tokenPayload }, 'Sessioncookie');
+        const user = await userService.findByCognitoId(tokenPayload.sub!);
+        if (!user) throw Error('User not found');
         // Generate content
-        logger.debug('Generating content...');
-        const contentStream = await generateContent();
+        logger.debug({ user }, 'Generating content for user...');
+        const contentStream = await insightsService.monthly(user.id);
         logger.debug('Content generation started');
 
         // Process and send content

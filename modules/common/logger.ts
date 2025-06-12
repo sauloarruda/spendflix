@@ -25,6 +25,7 @@ const SENSITIVE_FIELDS = [
   'auth',
   'credentials',
   'key',
+  'temporaryPassword',
 ];
 
 // eslint-disable-next-line max-lines-per-function
