@@ -1,4 +1,5 @@
 require "CSV"
+require "JSON"
 require 'byebug'
 
 class Generator
@@ -76,8 +77,8 @@ class Generator
       date: Date.new(@current_year, @current_month, day).to_s,
       description: build_description(config),
       amount: build_amount(config),
-      config_desc: config['description'],
-      config_cat: config['category']
+      cat: config['category'],
+      subcat: config['description'],
     })
   end
 
@@ -147,8 +148,39 @@ persona = "Homem Casado 30-40 + Carro"
 txs = Generator.new(persona).generate
 pp txs
 
-txs.group_by { |tx| tx[:config_cat] }.each_pair { |cat, txs| puts [cat, txs.sum { |tx| tx[:amount] }.round(2)].join("\t") } 
-puts ['Resutado', txs.sum { |tx| tx[:amount] }.round(2)].join("\t")
+months = {}
+analysis_data = {}
+txs
+  .map do |tx| 
+    month_year = [Date.parse(tx[:date]).year, Date.parse(tx[:date]).month.to_s.rjust(2, '0')].join
+    tx[:month] = month_year
+    months[month_year] ||= { income: 0, outcome: 0 }
+    tx[:amount] < 0 ? months[month_year][:outcome] += tx[:amount] : months[month_year][:income] += tx[:amount]
+    tx
+  end
+  .group_by { |tx| [tx[:month], tx[:cat]].join('-') }
+  .each_pair do |month_cat, txs|
+    month, cat = month_cat.split('-')
+    # use only last month and compare with 3 months before
+    next unless months.keys[2..5].include?(month)
+    
+    # puts [month_cat, (txs.sum { |tx| tx[:amount] } / txs.size).round(2)].join("\t") 
+    analysis_data[cat] ||= { cur: 0, avg: 0, var: 0 }
+
+    # last month
+    if month === months.keys.last
+      analysis_data[cat][:avg] = analysis_data[cat][:avg] / 3
+      analysis_data[cat][:cur] = txs.sum { |tx| tx[:amount] }
+      analysis_data[cat][:var] = ((analysis_data[cat][:cur] - analysis_data[cat][:avg]) / analysis_data[cat][:avg]).round(2)
+      analysis_data[cat][:per] = (cat == 'Receitas' ? analysis_data[cat][:cur] / months[month][:income] : analysis_data[cat][:cur] / months[month][:outcome]).round(2)
+    else
+      analysis_data[cat][:avg] += txs.sum { |tx| tx[:amount] }
+    end
+  end
+
+pp months
+puts analysis_data.to_json
+# puts ['Resutado', txs.sum { |tx| tx[:amount] }.round(2)].join("\t")
 
 filename = "#{persona.downcase.gsub(/[^a-z0-9\s]/, '').gsub(/\s+/, '_')}-#{Time.now.strftime("%Y%m%d%H%M%S")}.csv"
 CSV.open(filename, "wb") do |csv|
@@ -157,3 +189,4 @@ CSV.open(filename, "wb") do |csv|
     csv << hash.values
   end
 end
+
