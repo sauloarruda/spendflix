@@ -17,3 +17,31 @@
   border: 0;
   padding: 1em 0;
 }
+
+.ai-md h2 {
+  font-weight: bold;
+  font-size: 120%;
+  color: var(--primary-600);
+}
+
+.ai-md p {
+  margin: 1em 0;
+}
+
+.ai-md p strong {
+  font-weight: bold;
+  color: var(--primary-800);
+}
+
+.ai-md ol li {
+  list-style: auto;
+  margin-left: 1em;
+  margin-bottom: 1em;
+  margin-top: 0.5em;
+}
+
+.ai-md ul li {
+  list-style: disc;
+  margin-left: 1em;
+  margin-bottom: 0.5em;
+}

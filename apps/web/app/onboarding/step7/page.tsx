@@ -4,6 +4,7 @@ import { TabPanel, TabView } from 'primereact/tabview';
 import { useState } from 'react';
 
 import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
+import { InsightsReport } from '@/components/reports/InsightsReport';
 import ResultsReport from '@/components/reports/ResultsReport';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { ResultsReportProvider } from '@/contexts/ResultsReportContext';
@@ -40,7 +41,9 @@ export default function OnboardingStep7() {
                 <ResultsReport />
               </ResultsReportProvider>
             </TabPanel>
-            <TabPanel header="Orçamento"></TabPanel>
+            <TabPanel header="Insights">
+              <InsightsReport />
+            </TabPanel>
           </TabView>
         </TransactionsProvider>
       )}

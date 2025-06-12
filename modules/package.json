@@ -13,7 +13,13 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.810.0",
     "@aws-sdk/util-stream-node": "^3.374.0",
+<<<<<<< Updated upstream
     "@types/papaparse": "^5.3.16"
+=======
+    "@google/genai": "^1.4.0",
+    "@types/papaparse": "^5.3.16",
+    "papaparse": "^5.5.3"
+>>>>>>> Stashed changes
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
