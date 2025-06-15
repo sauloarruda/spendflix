@@ -103,7 +103,9 @@ function finalizeAnalysisData(analysisData: MonthlyAnalisysData): MonthlyAnalisy
 }
 
 function getRelevantMonths(months: Record<string, { income: number; outcome: number }>): string[] {
-  const sortedMonths = Object.keys(months).sort().reverse();
+  const sortedMonths = Object.keys(months)
+    .sort((a, b) => a.localeCompare(b))
+    .reverse();
   const lastMonth = sortedMonths[0];
   const prevMonths = sortedMonths.slice(1, 1 + AVG_MONTHS_COUNT);
   return [lastMonth, ...prevMonths];
@@ -170,7 +172,11 @@ function updateCategoryAnalysis({
 }: IUpdateCategoryAnalysisParams): CategoryAnalysis {
   if (month === relevantMonths[0]) {
     return getUpdatedCategoryForCurrentMonth({
-      cat, sum, data, months, month,
+      cat,
+      sum,
+      data,
+      months,
+      month,
     });
   }
   return getUpdatedCategoryForPrevMonth(data, sum);
@@ -194,10 +200,18 @@ function getUpdatedCat({
   relevantMonths,
 }: IGetUpdatedCatParams): CategoryAnalysis {
   const prevData = analysisData[cat] || {
-    cur: 0, avg: 0, var: 0, per: 0,
+    cur: 0,
+    avg: 0,
+    var: 0,
+    per: 0,
   };
   return updateCategoryAnalysis({
-    cat, month, sum, data: prevData, months, relevantMonths,
+    cat,
+    month,
+    sum,
+    data: prevData,
+    months,
+    relevantMonths,
   });
 }
 
@@ -212,7 +226,12 @@ function processMonthCatEntry({
   if (!relevantMonths.includes(month)) return analysisData;
   const sum = getTransactionSum(txsArr);
   const updatedCat = getUpdatedCat({
-    cat, month, sum, analysisData, months, relevantMonths,
+    cat,
+    month,
+    sum,
+    analysisData,
+    months,
+    relevantMonths,
   });
   return { ...analysisData, [cat]: updatedCat };
 }
@@ -225,7 +244,11 @@ function processMonthCatEntries(
   let analysisData: MonthlyAnalisysData = {};
   Object.entries(txsByMonthCat).forEach(([key, txsArr]) => {
     analysisData = processMonthCatEntry({
-      key, txsArr, analysisData, months, relevantMonths,
+      key,
+      txsArr,
+      analysisData,
+      months,
+      relevantMonths,
     });
   });
   return analysisData;
