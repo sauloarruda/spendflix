@@ -26,7 +26,7 @@ describe('monthly insights', () => {
       chats: {
         create: jest.fn().mockReturnValue(mockChat),
       },
-    } as jest.Mocked<GoogleGenAI>;
+    } as unknown as jest.Mocked<GoogleGenAI>;
 
     (GoogleGenAI as jest.MockedClass<typeof GoogleGenAI>).mockImplementation(() => mockAiClient);
   });
