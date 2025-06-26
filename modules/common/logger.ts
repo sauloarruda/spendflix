@@ -25,6 +25,7 @@ const SENSITIVE_FIELDS = [
   'auth',
   'credentials',
   'key',
+  'temporaryPassword',
 ];
 
 // eslint-disable-next-line max-lines-per-function
@@ -43,12 +44,23 @@ const censorSensitiveData = (data: unknown): unknown => {
 
   if (typeof data === 'object') {
     return Object.fromEntries(
-      Object.entries(data as Record<string, unknown>).map(([key, value]) => [
-        key,
-        SENSITIVE_FIELDS.some((field) => key.toLowerCase() === field.toLowerCase())
-          ? '***'
-          : censorSensitiveData(value),
-      ]),
+      Object.entries(data as Record<string, unknown>).map(([key, value]) => {
+        if (value instanceof Error) {
+          return [
+            key,
+            {
+              stack: value.stack,
+              message: value.message,
+            },
+          ];
+        }
+        return [
+          key,
+          SENSITIVE_FIELDS.some((field) => key.toLowerCase() === field.toLowerCase())
+            ? '***'
+            : censorSensitiveData(value),
+        ];
+      }),
     );
   }
 
@@ -80,7 +92,7 @@ class ConsoleLogger {
     const levelStr = this.bindings.module
       ? [chalk.magenta(`[${this.bindings.module}]`), level].join(' ')
       : level;
-    const bindingsObj = omit(this.bindings, 'module');
+    const bindingsObj = omit(this.bindings, ['module', 'level', 'isOffline']);
     const otherArgs = Object.keys(bindingsObj) ? { ...bindingsObj, ...args } : { ...args };
     if (msg) console.log(levelStr, msg, obj, otherArgs);
     else console.log(levelStr, obj, bindingsObj, otherArgs);

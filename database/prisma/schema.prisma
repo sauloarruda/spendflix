@@ -26,6 +26,7 @@ model User {
 
   onboardings       Onboarding[]
   accounts          Account[]
+  insights          Insight[]
 
   @@unique([email])
   @@map("users")
@@ -161,4 +162,18 @@ model CategoryRule {
   @@index(fields: [keyword(ops: raw("gin_trgm_ops"))], type: Gin)
 
   @@map("category_rules")
+}
+
+model Insight {
+  id String @id @default(uuid())
+  userId Int
+  identifier String @unique
+  config Json
+  text String @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("insights")
 }

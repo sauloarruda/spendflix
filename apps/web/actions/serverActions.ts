@@ -52,7 +52,8 @@ function getVerifier(): JwtVerifierType {
   return verifier;
 }
 
-async function checkToken(token: string): Promise<JwtPayload> {
+async function checkToken(token: string | undefined): Promise<JwtPayload> {
+  if (!token) throw new InvalidAuthenticationError('No token found');
   const payload = await getVerifier().verify(token);
   return payload;
 }

@@ -26,6 +26,7 @@
       "@/modules/users": ["../../modules/users/index.ts"],
       "@/modules/transactions": ["../../modules/transactions/index.ts"],
       "@/modules/categorization": ["../../modules/categorization/index.ts"],
+      "@/modules/insights": ["../../modules/insights/index.ts"],
       "@/common/*": ["../../modules/common/*"],
       "@/prisma": ["./generated/prisma"],
       "@/fabbrica": ["../../database/src/__generated__/fabbrica"],
