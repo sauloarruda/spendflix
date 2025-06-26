@@ -1,43 +1,6 @@
 import getPrisma from '@/common/prisma';
-import { GenerateContentConfig, GoogleGenAI, SendMessageParameters } from '@google/genai';
 
-let aiClient: GoogleGenAI;
-
-function getAi() {
-  if (!aiClient) {
-    // Initialize Vertex with your Cloud project and location
-    aiClient = new GoogleGenAI({
-      vertexai: true,
-      project: 'spendflix',
-      location: 'global',
-    });
-  }
-  return aiClient;
-}
-
-const MODEL = 'gemini-2.0-flash-lite-001';
-const SYSTEM_INSTRUCTIONS = {
-  text: 'Você é o analista financeiro da Spendflix, que é um SaaS para controle financeiro pessoal para ajudar pessoas físicas a descobrir, organizar e realizar por meio do conhecimento sobre suas finanças. As categorias de lançamentos são fixas: Alimentação, Compras, Filhos, Investimento, Lazer, Moradia, Outros, Receitas, Saúde, Serviços, Transporte, Viagem, Cuidado Pessoal, Educação. Para dar insights com relação as finanças, você receberá um JSON com cada categoria content o total do mês atual (cur), a média os últimos 3 meses (avg), o % de variação (var) e o % do total (per). Sempre faça uma análise breve (max 1000 tokens) mostre uma análise geral, destaques positivos, negativos e sugestões para o próximo mês.',
-};
-
-// Set up generation config
-const generationConfig: GenerateContentConfig = {
-  maxOutputTokens: 1000,
-  temperature: 0.3,
-  topP: 0.95,
-  systemInstruction: {
-    parts: [SYSTEM_INSTRUCTIONS],
-  },
-};
-
-async function sendMessage(message: SendMessageParameters) {
-  const chat = getAi().chats.create({
-    model: MODEL,
-    config: generationConfig,
-  });
-  const response = await chat.sendMessageStream(message);
-  return response;
-}
+import insightsService from './insights.service';
 
 type Transaction = {
   date: Date;
@@ -111,34 +74,34 @@ function getRelevantMonths(months: Record<string, { income: number; outcome: num
   return [lastMonth, ...prevMonths];
 }
 
-interface IProcessMonthCatEntryParams {
+type ProcessMonthCatEntryParams = {
   key: string;
   txsArr: (Transaction & { month: string; cat: string })[];
   analysisData: MonthlyAnalisysData;
   months: Record<string, { income: number; outcome: number }>;
   relevantMonths: string[];
-}
+};
 
 function getTransactionSum(txsArr: (Transaction & { month: string; cat: string })[]): number {
   return txsArr.reduce((acc, tx) => acc + tx.amount, 0);
 }
 
-interface IUpdateCategoryAnalysisParams {
+type UpdateCategoryAnalysisParams = {
   cat: string;
   month: string;
   sum: number;
   data: CategoryAnalysis;
   months: Record<string, { income: number; outcome: number }>;
   relevantMonths: string[];
-}
+};
 
-interface IUpdatedCategoryForCurrentMonthParams {
+type UpdatedCategoryForCurrentMonthParams = {
   cat: string;
   sum: number;
   data: CategoryAnalysis;
   months: Record<string, { income: number; outcome: number }>;
   month: string;
-}
+};
 
 function getUpdatedCategoryForCurrentMonth({
   cat,
@@ -146,7 +109,7 @@ function getUpdatedCategoryForCurrentMonth({
   data,
   months,
   month,
-}: IUpdatedCategoryForCurrentMonthParams): CategoryAnalysis {
+}: UpdatedCategoryForCurrentMonthParams): CategoryAnalysis {
   const total = cat === 'Receitas' ? months[month].income : Math.abs(months[month].outcome);
   return {
     ...data,
@@ -169,7 +132,7 @@ function updateCategoryAnalysis({
   data,
   months,
   relevantMonths,
-}: IUpdateCategoryAnalysisParams): CategoryAnalysis {
+}: UpdateCategoryAnalysisParams): CategoryAnalysis {
   if (month === relevantMonths[0]) {
     return getUpdatedCategoryForCurrentMonth({
       cat,
@@ -182,15 +145,16 @@ function updateCategoryAnalysis({
   return getUpdatedCategoryForPrevMonth(data, sum);
 }
 
-interface IGetUpdatedCatParams {
+type GetUpdatedCatParams = {
   cat: string;
   month: string;
   sum: number;
   analysisData: MonthlyAnalisysData;
   months: Record<string, { income: number; outcome: number }>;
   relevantMonths: string[];
-}
+};
 
+// eslint-disable-next-line max-lines-per-function
 function getUpdatedCat({
   cat,
   month,
@@ -198,7 +162,7 @@ function getUpdatedCat({
   analysisData,
   months,
   relevantMonths,
-}: IGetUpdatedCatParams): CategoryAnalysis {
+}: GetUpdatedCatParams): CategoryAnalysis {
   const prevData = analysisData[cat] || {
     cur: 0,
     avg: 0,
@@ -221,7 +185,7 @@ function processMonthCatEntry({
   analysisData,
   months,
   relevantMonths,
-}: IProcessMonthCatEntryParams): MonthlyAnalisysData {
+}: ProcessMonthCatEntryParams): MonthlyAnalisysData {
   const [month, cat] = key.split('-');
   if (!relevantMonths.includes(month)) return analysisData;
   const sum = getTransactionSum(txsArr);
@@ -290,10 +254,8 @@ async function buildAnalisysData(userId: number): Promise<MonthlyAnalisysData> {
 
 async function monthly(userId: number) {
   const analysisData = await buildAnalisysData(userId);
-  const message: SendMessageParameters = {
-    message: `Gere insights ${JSON.stringify(analysisData)}`,
-  };
-  return sendMessage(message);
+  const messageText = `Gere insights ${JSON.stringify(analysisData)}`;
+  return insightsService.streamInsight(userId, messageText);
 }
 
 export default monthly;

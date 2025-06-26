@@ -44,12 +44,23 @@ const censorSensitiveData = (data: unknown): unknown => {
 
   if (typeof data === 'object') {
     return Object.fromEntries(
-      Object.entries(data as Record<string, unknown>).map(([key, value]) => [
-        key,
-        SENSITIVE_FIELDS.some((field) => key.toLowerCase() === field.toLowerCase())
-          ? '***'
-          : censorSensitiveData(value),
-      ]),
+      Object.entries(data as Record<string, unknown>).map(([key, value]) => {
+        if (value instanceof Error) {
+          return [
+            key,
+            {
+              stack: value.stack,
+              message: value.message,
+            },
+          ];
+        }
+        return [
+          key,
+          SENSITIVE_FIELDS.some((field) => key.toLowerCase() === field.toLowerCase())
+            ? '***'
+            : censorSensitiveData(value),
+        ];
+      }),
     );
   }
 

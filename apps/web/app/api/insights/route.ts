@@ -28,23 +28,20 @@ export async function GET(req: NextRequest) {
         if (!user) throw Error('User not found');
         // Generate content
         logger.debug({ user }, 'Generating content for user...');
-        const contentStream = await insightsService.monthly(user.id);
+        const iterator = await insightsService.monthly(user.id);
         logger.debug('Content generation started');
-
-        // Process and send content
-        const iterator = contentStream[Symbol.asyncIterator]();
 
         const processNext = async () => {
           const { done, value } = await iterator.next();
+          if (value) {
+            logger.debug({ candidates: value }, 'Sending chunk');
+            controller.enqueue(`data: ${JSON.stringify({ insightsChunk: value })}\n\n`);
+          }
+
           if (done) {
             logger.debug('Content generation completed, sending completion message');
             controller.enqueue(`data: ${JSON.stringify({ complete: true })}\n\n`);
             return;
-          }
-
-          if (value.text) {
-            logger.debug('Sending chunk');
-            controller.enqueue(`data: ${JSON.stringify({ insightsChunk: value.text })}\n\n`);
           }
 
           await processNext();
