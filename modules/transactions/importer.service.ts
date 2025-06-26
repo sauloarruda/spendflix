@@ -10,7 +10,7 @@ import s3Service from '@/common/s3';
 import Timer from '@/common/timer';
 import { categorizerService } from '@/modules/categorization';
 
-import sourceService from './source.service';
+import { SourceTypeConfig } from './source.service';
 
 const logger = getLogger().child({ module: 'importer' });
 
@@ -53,6 +53,7 @@ function calculateChecksum(data: {
 function transformRowToData(
   row: Record<string, string>,
   source: Source,
+  columnMapping: SourceTypeConfig,
 ): {
   accountId: string;
   sourceId: string;
@@ -60,15 +61,14 @@ function transformRowToData(
   description: string;
   amount: number;
 } {
-  const columnMapping = sourceService.getSourceTypeColumnMapping()[source.type];
   return {
     accountId: source.accountId,
     sourceId: source.id,
-    date: parseDate(row[columnMapping.date].trim()),
-    description: row[columnMapping.description],
+    date: parseDate(row[columnMapping.headers.date].trim()),
+    description: row[columnMapping.headers.description],
     amount: columnMapping.invertAmountSignal
-      ? -1 * parseFloat(row[columnMapping.amount])
-      : parseFloat(row[columnMapping.amount]),
+      ? -1 * parseFloat(row[columnMapping.headers.amount])
+      : parseFloat(row[columnMapping.headers.amount]),
   };
 }
 
@@ -76,11 +76,6 @@ async function hasTransaction(checksum: string): Promise<boolean> {
   return !!(await getPrisma().transaction.findUnique({ where: { checksum } }));
 }
 
-const IGNORED_DESCRIPTIONS = [
-  /Pagamento recebido/,
-  /Pagamento de fatura/,
-  /Saldo restante da fatura anterior/,
-];
 const CSV_MIN_COLS = 3;
 
 // eslint-disable-next-line max-lines-per-function
@@ -90,8 +85,16 @@ async function processRow(
 ): Promise<Transaction | undefined> {
   if (Object.keys(row).length < CSV_MIN_COLS) return undefined;
 
-  const data = transformRowToData(row, source);
-  if (IGNORED_DESCRIPTIONS.some((regex) => regex.test(data.description))) {
+  const sourceType = await getPrisma().sourceType.findFirst({
+    where: { id: source.sourceTypeId || '' },
+  });
+  if (!sourceType) throw new Error('Source type not found');
+  const columnMapping = sourceType?.config as SourceTypeConfig;
+
+  const data = transformRowToData(row, source, columnMapping);
+  if (
+    columnMapping.ignoredDescriptions.some((ignored) => new RegExp(ignored).test(data.description))
+  ) {
     logger.info('Ignored description');
     return undefined;
   }

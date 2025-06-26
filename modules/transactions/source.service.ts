@@ -1,47 +1,44 @@
 import { Source, SourceStatus, SourceType } from '@/prisma';
 import Papa from 'papaparse';
+import _ from 'underscore';
 
 import getLogger from '@/common/logger';
 import getPrisma from '@/common/prisma';
 import s3Service from '@/common/s3';
 
+export type SourceTypeConfig = {
+  invertAmountSignal: boolean;
+  headers: {
+    date: string;
+    amount: string;
+    description: string;
+  };
+  ignoredDescriptions: string[];
+};
 const logger = getLogger().child({ module: 'sources' });
 
-function getSourceTypeColumnMapping() {
-  return {
-    NUBANK_ACCOUNT_CSV: {
-      date: 'Data',
-      amount: 'Valor',
-      description: 'Descrição',
-      invertAmountSignal: false,
-    },
-    NUBANK_CREDIT_CARD_CSV: {
-      date: 'date',
-      amount: 'amount',
-      description: 'title',
-      invertAmountSignal: true,
-    },
-  };
+function headersKey(headers: string[]) {
+  return headers.sort().join('|');
 }
 
-type ColumnMappingType = ReturnType<typeof getSourceTypeColumnMapping>;
+async function getSourceTypeColumnMapping(): Promise<Record<string, SourceType[]>> {
+  const sourceTypes = await getPrisma().sourceType.findMany();
+  const keyFunction = (source: SourceType) =>
+    // eslint-disable-next-line implicit-arrow-linebreak
+    headersKey(Object.values((source.config as SourceTypeConfig).headers));
+  return _.groupBy(sourceTypes, keyFunction);
+}
 
-function determineSourceType(headers: string[]): SourceType | null {
-  const columnMapping = getSourceTypeColumnMapping();
+async function determineSourceType(headers: string[]): Promise<SourceType | null> {
+  const columnMapping = await getSourceTypeColumnMapping();
+  logger.debug({ columnMapping }, 'columnMapping');
+  const targetKey = headersKey(headers);
 
-  // Using Object.keys instead of iterators for linter compliance
-  return Object.keys(columnMapping).reduce<SourceType | null>((result, typeKey) => {
-    if (result) return result;
+  // Find the SourceType array that matches the headers key
+  const sourceTypes = columnMapping[targetKey];
 
-    const typeStr = typeKey as keyof ColumnMappingType;
-    const mapping = columnMapping[typeStr];
-    const requiredColumns = [mapping.date, mapping.amount, mapping.description];
-
-    if (requiredColumns.every((col) => headers.includes(col))) {
-      return typeStr as unknown as SourceType;
-    }
-    return null;
-  }, null);
+  // Return the first SourceType from the array or null if not found
+  return sourceTypes?.[0] || null;
 }
 
 function parseCsvFile(fileContent: string) {
@@ -65,58 +62,28 @@ function sourceS3Key(source: Source) {
   return [source.id, 'csv'].join('.');
 }
 
-async function createSource(accountId: string, type: SourceType) {
+async function createSource(accountId: string, type: SourceType | null) {
   return getPrisma().source.create({
     data: {
       accountId,
-      type,
+      sourceTypeId: type?.id,
       status: SourceStatus.PENDING,
     },
   });
 }
 
-class InvalidSourceTypeError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = 'InvalidSourceTypeError';
-  }
-}
-
-function validateSourceType(headers: string[]) {
-  const detectedType = determineSourceType(headers);
-
-  if (!detectedType) {
-    throw new InvalidSourceTypeError(`Can't determine type with headers: ${headers.join(',')}`);
-  }
-
-  return detectedType;
-}
-
-async function detectCsvSourceType(file: File): Promise<SourceType> {
+async function detectCsvSourceType(file: File): Promise<SourceType | null> {
   const fileBuffer = await file.arrayBuffer();
   const fileContent = Buffer.from(fileBuffer).toString('utf8');
   const { headers } = parseCsvFile(fileContent);
 
-  return validateSourceType(headers);
+  return determineSourceType(headers);
 }
 
-async function validateAccountSourceType(
-  csvSourceType: SourceType,
-  accountId: string,
-): Promise<void> {
-  const account = await getPrisma().account.findFirstOrThrow({ where: { id: accountId } });
-  if (account.sourceType !== csvSourceType) {
-    throw new InvalidSourceTypeError(
-      `Account sourceType (${account.sourceType}) is incompatible with CSV sourceType (${csvSourceType})`,
-    );
-  }
-}
-
-async function putSourceFile(accountId: string, file: File) {
+async function putSourceFile(accountId: string, file: File): Promise<Source> {
   logger.debug({ accountId, file }, 'putSourceFile');
 
   const csvSourceType = await detectCsvSourceType(file);
-  await validateAccountSourceType(csvSourceType, accountId);
   const source = await createSource(accountId, csvSourceType);
   logger.debug({ source }, 'Created Source in database');
 

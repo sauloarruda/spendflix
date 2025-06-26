@@ -2,7 +2,7 @@
 
 import { accountService, transactionsService } from '@/modules/transactions';
 
-import { Account, SourceType } from '@/prisma';
+import { Account } from '@/prisma';
 
 import { authorizeAction } from './serverActions';
 
@@ -13,7 +13,7 @@ async function createAccountsAction(
     bankNumber: string;
     name: string;
     color: string;
-    sourceType: SourceType;
+    sourceTypeId: string | null;
   }[],
 ): Promise<Account[]> {
   return authorizeAction(session, () =>

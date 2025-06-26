@@ -90,6 +90,19 @@ async function main() {
       data: { userId: user.id, name: 'Nubank Credit Card', color: 'red-100', bankNumber: '260' },
     });
   }
+
+  // Create SourceType
+  const sourceType = await prisma.sourceType.create({
+    data: {
+      name: 'Nubank - Cartão de Crédito',
+      bankNumber: '260',
+      config: {
+        invertAmountSignal: true,
+        headers: { date: 'date', amount: 'amount', description: 'title' },
+        ignoredDescriptions: ['Pagamento de boleto'],
+      },
+    },
+  });
 }
 
 main()

@@ -8,7 +8,7 @@ import AccountAccordion from '@/components/onboarding/AccountAccordion';
 import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
 import LoadingForm from '@/components/utils/LoadingForm';
 import { useOnboarding } from '@/contexts/OnboardingContext';
-import { Account, SourceType } from '@/prisma';
+import { Account } from '@/prisma';
 import { getSessionCookie } from '@/utils/cookie';
 
 export default function OnboardingStep4() {
@@ -30,14 +30,14 @@ export default function OnboardingStep4() {
         bankNumber: '260', // only nubank now
         name: 'Conta Corrente',
         color: 'green-500',
-        sourceType: SourceType.NUBANK_ACCOUNT_CSV,
+        sourceTypeId: null,
       },
       {
         userId,
         bankNumber: '260', // only nubank now
         name: 'Cartão de Crédito',
         color: 'orange-500',
-        sourceType: SourceType.NUBANK_CREDIT_CARD_CSV,
+        sourceTypeId: null,
       },
     ]);
 

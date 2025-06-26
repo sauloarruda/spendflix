@@ -56,6 +56,7 @@ model Bank {
   name   String
 
   accounts Account[]
+  sourceTypes SourceType[]
 
   @@index([number])
   @@map("banks")
@@ -65,11 +66,13 @@ model SourceType {
   id String @id @default(uuid())
   name String
   userId Int?
+  bankNumber String
   config Json @default("{}")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   user User? @relation(fields: [userId], references: [id])
+  bank Bank @relation(fields: [bankNumber], references: [number])
   accounts Account[]
   sources Source[]
 
