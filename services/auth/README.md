@@ -12,6 +12,9 @@ services/auth/
   internal/
     handlers/          # HTTP handlers
       signup.go
+  migrations/          # Database migrations
+    000001_create_users_table.up.sql
+    000001_create_users_table.down.sql
   go.mod
   serverless.yml      # Serverless Framework configuration
   Makefile            # Useful commands
@@ -29,15 +32,58 @@ services/auth/
 ### Installation
 
 1. Install Go dependencies:
+
 ```bash
 make deps
 ```
 
 2. Install Serverless Framework (if not already installed):
+
 ```bash
 make install-serverless
 # or
 npm install -g serverless
+```
+
+3. Install migrate CLI tool (for database migrations):
+
+```bash
+make migrate-install
+```
+
+## Database Migrations
+
+### Running Migrations
+
+Before running the application, you need to run database migrations to create the required tables.
+
+1. Set the `DATABASE_URL` environment variable in your `.env` file:
+
+```bash
+# For local development, add ?sslmode=disable to disable SSL
+DATABASE_URL=postgresql://user:password@localhost:5432/spendflix_development?sslmode=disable
+```
+
+Or export it directly:
+
+```bash
+export DATABASE_URL=postgresql://user:password@localhost:5432/spendflix_development?sslmode=disable
+```
+
+**Note:** The `?sslmode=disable` parameter is required for local PostgreSQL instances that don't have SSL enabled.
+
+2. Run migrations:
+
+```bash
+make migrate-up
+```
+
+### Rolling Back Migrations
+
+To rollback the last migration:
+
+```bash
+make migrate-down
 ```
 
 ## Build and Deploy
@@ -69,6 +115,7 @@ make deploy-function
 Example endpoint that returns status 201 with a JSON containing `user` and `token`.
 
 **Example response:**
+
 ```json
 {
   "user": {
@@ -88,4 +135,3 @@ Example endpoint that returns status 201 with a JSON containing `user` and `toke
 - [ ] Input validation
 - [ ] Complete error handling
 - [ ] Unit and integration tests
-
