@@ -1,0 +1,32 @@
+# Binaries
+bootstrap
+bin/
+*.zip
+
+# Environment files
+.env
+.env.local
+
+# Go dependencies
+vendor/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Serverless
+.serverless/
+node_modules/
+
+# Documentation plans
+doc/plans/
+

@@ -1,0 +1,39 @@
+service: spendflix-auth
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: provided.al2
+  region: us-east-2
+  architecture: arm64
+  memorySize: 256
+  timeout: 10
+  stage: ${opt:stage, 'dev'}
+  environment:
+    # Environment variables will be configured later
+    STAGE: ${self:provider.stage}
+  httpApi:
+    cors:
+      allowedOrigins:
+        - '*'
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+      allowedMethods:
+        - POST
+        - OPTIONS
+
+functions:
+  api:
+    handler: bootstrap
+    events:
+      - httpApi:
+          path: /auth/sign-up
+          method: post
+
+package:
+  patterns:
+    - '!**'
+    - 'bootstrap'
+
