@@ -11,8 +11,8 @@ provider:
   timeout: 10
   stage: ${opt:stage, 'dev'}
   environment:
-    # Environment variables will be configured later
     STAGE: ${self:provider.stage}
+    DATABASE_URL: ${env:DATABASE_URL}
   httpApi:
     cors:
       allowedOrigins:

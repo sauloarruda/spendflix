@@ -1,4 +1,4 @@
-.PHONY: build deploy clean deps migrate-up migrate-down migrate-install
+.PHONY: build deploy clean deps migrate-up migrate-down migrate-install dev
 
 # Install dependencies
 deps:
@@ -12,13 +12,35 @@ build:
 build-local:
 	go build -o bin/api cmd/api/main.go
 
+# Run locally (development)
+dev: build-local
+	@if [ -f .env ]; then \
+		export $$(grep -v '^#' .env | xargs); \
+	fi; \
+	./bin/api
+
 # Deploy
 deploy:
-	serverless deploy
+	@STAGE=$${SERVERLESS_STAGE:-dev}; \
+	if [ -f .env.$$STAGE ]; then \
+		echo "Loading environment variables from .env.$$STAGE"; \
+		export $$(grep -v '^#' .env.$$STAGE | xargs); \
+	fi; \
+	if [ -z "$$DATABASE_URL" ]; then \
+		echo "Error: DATABASE_URL not set. Create .env.$$STAGE file or export it."; \
+		echo "Example: cp .env.dev.example .env.dev"; \
+		exit 1; \
+	fi; \
+	serverless deploy --stage $$STAGE
 
 # Deploy function only
 deploy-function:
-	serverless deploy function -f api
+	@STAGE=$${SERVERLESS_STAGE:-dev}; \
+	if [ -f .env.$$STAGE ]; then \
+		echo "Loading environment variables from .env.$$STAGE"; \
+		export $$(grep -v '^#' .env.$$STAGE | xargs); \
+	fi; \
+	serverless deploy function -f api --stage $$STAGE
 
 # Clean generated files
 clean:

@@ -6,6 +6,9 @@ bin/
 # Environment files
 .env
 .env.local
+.env.*
+!.env.example
+!.env.*.example
 
 # Go dependencies
 vendor/

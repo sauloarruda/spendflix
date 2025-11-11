@@ -86,6 +86,38 @@ To rollback the last migration:
 make migrate-down
 ```
 
+## Running Locally
+
+To run the service locally for testing:
+
+1. Make sure you have the `.env` file configured with `DATABASE_URL`:
+
+```bash
+DATABASE_URL=postgresql://user:password@localhost:5432/spendflix_development?sslmode=disable
+```
+
+2. Run migrations (if not already done):
+
+```bash
+make migrate-up
+```
+
+3. Start the local server:
+
+```bash
+make dev
+```
+
+The server will start on port 3000 (or the port specified in the `PORT` environment variable).
+
+4. Test the endpoint:
+
+```bash
+curl -X POST http://localhost:3000/auth/sign-up \
+  -H "Content-Type: application/json" \
+  -d '{"name": "John Doe", "email": "john@example.com"}'
+```
+
 ## Build and Deploy
 
 ### Build for Lambda
@@ -98,34 +130,68 @@ This creates the `bootstrap` binary compiled for Linux ARM64, which is the requi
 
 ### Deploy
 
+Before deploying, create an environment-specific `.env` file. The file name should match your Serverless stage (default is `dev`):
+
 ```bash
-make deploy
+# For development (default stage)
+cp .env.dev.example .env.dev
+
+# Edit .env.dev with your values
+# DATABASE_URL=postgresql://user:password@host:5432/spendflix_development?sslmode=require
 ```
+
+Then deploy:
+
+```bash
+# Deploy to default stage (dev)
+make deploy
+
+# Or deploy to a specific stage
+SERVERLESS_STAGE=prod make deploy
+```
+
+The Makefile will automatically load variables from `.env.${stage}` during deployment.
+
+**Note:** All `.env.*` files are in `.gitignore` and will not be committed to git.
 
 Or deploy only the function:
 
 ```bash
 make deploy-function
+# Or with specific stage
+SERVERLESS_STAGE=prod make deploy-function
 ```
 
 ## Current Endpoint
 
 ### POST /auth/sign-up
 
-Example endpoint that returns status 201 with a JSON containing `user` and `token`.
+Creates a new user with the provided name and email.
 
-**Example response:**
+**Request:**
 
 ```json
 {
-  "user": {
-    "id": 1,
-    "name": "Example User",
-    "email": "example@spendflix.com"
-  },
-  "token": "example-token-12345"
+  "name": "John Doe",
+  "email": "john@example.com"
 }
 ```
+
+**Success Response (201):**
+
+```json
+{
+  "id": 1,
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+```
+
+**Error Responses:**
+
+- `400` - Invalid request body or missing required fields
+- `409` - User with this email already exists
+- `500` - Internal server error
 
 ## Next Steps
 
