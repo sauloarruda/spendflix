@@ -136,8 +136,12 @@ Before deploying, create an environment-specific `.env` file. The file name shou
 # For development (default stage)
 cp .env.dev.example .env.dev
 
+# Generate a secure encryption secret
+make generate-secret
+
 # Edit .env.dev with your values
 # DATABASE_URL=postgresql://user:password@host:5432/spendflix_development?sslmode=require
+# ENCRYPTION_SECRET=<paste the generated secret here>
 ```
 
 Then deploy:

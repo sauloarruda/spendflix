@@ -1,4 +1,4 @@
-.PHONY: build deploy clean deps migrate-up migrate-down migrate-install dev
+.PHONY: build deploy clean deps migrate-up migrate-down migrate-install dev generate-secret
 
 # Install dependencies
 deps:
@@ -53,6 +53,26 @@ install-serverless:
 # Install migrate CLI tool
 migrate-install:
 	go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+
+# Generate a secure encryption secret
+generate-secret:
+	@echo "Generating secure ENCRYPTION_SECRET..."
+	@if command -v openssl > /dev/null; then \
+		SECRET=$$(openssl rand -hex 32); \
+		echo ""; \
+		echo "ENCRYPTION_SECRET=$$SECRET"; \
+		echo ""; \
+		echo "Add this to your .env.dev file:"; \
+		echo "ENCRYPTION_SECRET=$$SECRET"; \
+	else \
+		echo "openssl not found. Using alternative method..."; \
+		SECRET=$$(head -c 32 /dev/urandom | xxd -p -c 32 | tr -d '\n'); \
+		echo ""; \
+		echo "ENCRYPTION_SECRET=$$SECRET"; \
+		echo ""; \
+		echo "Add this to your .env.dev file:"; \
+		echo "ENCRYPTION_SECRET=$$SECRET"; \
+	fi
 
 # Run migrations up
 migrate-up:

@@ -7,11 +7,12 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"syscall"
 	"services/auth/internal/config"
 	"services/auth/internal/handlers"
 	"services/auth/internal/repositories"
 	"services/auth/internal/services"
+	"syscall"
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -40,7 +41,7 @@ func init() {
 	userRepo := repositories.NewUserRepository(db)
 
 	// Initialize services
-	signupService := services.NewSignupService(userRepo)
+	signupService := services.NewSignupService(userRepo, cfg.EncryptionSecret)
 
 	// Initialize handlers
 	signupHandler = handlers.NewSignupHandler(signupService)
@@ -104,17 +105,17 @@ func main() {
 		// Setup signal handling for graceful shutdown
 		sigChan := make(chan os.Signal, 1)
 		signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
-		
+
 		go func() {
 			<-sigChan
 			log.Println("Shutting down...")
 			cleanup()
 			os.Exit(0)
 		}()
-		
+
 		// Ensure cleanup on exit
 		defer cleanup()
-		
+
 		startLocalServer()
 	}
 }
@@ -137,10 +138,10 @@ func startLocalServer() {
 
 		// Create APIGatewayV2HTTPRequest
 		req := events.APIGatewayV2HTTPRequest{
-			RawPath:    r.URL.Path,
+			RawPath:        r.URL.Path,
 			RawQueryString: r.URL.RawQuery,
-			Headers:    make(map[string]string),
-			Body:       body,
+			Headers:        make(map[string]string),
+			Body:           body,
 			RequestContext: events.APIGatewayV2HTTPRequestContext{
 				HTTP: events.APIGatewayV2HTTPRequestContextHTTPDescription{
 					Method: r.Method,
@@ -180,4 +181,3 @@ func startLocalServer() {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }
-

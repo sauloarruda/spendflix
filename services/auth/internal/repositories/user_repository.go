@@ -47,8 +47,8 @@ func (r *UserRepository) FindByEmail(ctx context.Context, email string) (*models
 
 func (r *UserRepository) Create(ctx context.Context, user *models.User) error {
 	query := `
-		INSERT INTO users (name, email, created_at, updated_at)
-		VALUES ($1, $2, NOW(), NOW())
+		INSERT INTO users (name, email, temporary_password, created_at, updated_at)
+		VALUES ($1, $2, $3, NOW(), NOW())
 		RETURNING id, created_at, updated_at
 	`
 
@@ -57,6 +57,7 @@ func (r *UserRepository) Create(ctx context.Context, user *models.User) error {
 		query,
 		user.Name,
 		user.Email,
+		user.TemporaryPassword,
 	).Scan(&user.ID, &user.CreatedAt, &user.UpdatedAt)
 }
 

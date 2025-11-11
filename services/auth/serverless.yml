@@ -13,6 +13,7 @@ provider:
   environment:
     STAGE: ${self:provider.stage}
     DATABASE_URL: ${env:DATABASE_URL}
+    ENCRYPTION_SECRET: ${env:ENCRYPTION_SECRET}
   httpApi:
     cors:
       allowedOrigins:
