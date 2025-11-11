@@ -7,6 +7,5 @@ import (
 
 // SignupServiceInterface defines the interface for signup service operations
 type SignupServiceInterface interface {
-	Signup(ctx context.Context, name, email string) (*models.User, error)
+	Signup(ctx context.Context, name, email string) (*models.SignupOutcome, error)
 }
-

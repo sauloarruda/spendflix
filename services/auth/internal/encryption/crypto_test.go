@@ -1,6 +1,7 @@
 package encryption
 
 import (
+	"encoding/base64"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -9,34 +10,34 @@ import (
 
 func TestEncrypt_Decrypt_Roundtrip(t *testing.T) {
 	tests := []struct {
-		name     string
+		name      string
 		plaintext string
-		secret   string
+		secret    string
 	}{
 		{
-			name:     "simple text",
+			name:      "simple text",
 			plaintext: "hello world",
-			secret:   "test-secret-key-1234567890123456",
+			secret:    "test-secret-key-1234567890123456",
 		},
 		{
-			name:     "empty string",
+			name:      "empty string",
 			plaintext: "",
-			secret:   "test-secret-key-1234567890123456",
+			secret:    "test-secret-key-1234567890123456",
 		},
 		{
-			name:     "long text",
+			name:      "long text",
 			plaintext: "This is a very long text that needs to be encrypted and decrypted properly. It contains multiple sentences and special characters! @#$%^&*()",
-			secret:   "test-secret-key-1234567890123456",
+			secret:    "test-secret-key-1234567890123456",
 		},
 		{
-			name:     "special characters",
+			name:      "special characters",
 			plaintext: "!@#$%^&*()_+-=[]{}|;':\",./<>?",
-			secret:   "test-secret-key-1234567890123456",
+			secret:    "test-secret-key-1234567890123456",
 		},
 		{
-			name:     "unicode characters",
+			name:      "unicode characters",
 			plaintext: "Hello 世界 🌍",
-			secret:   "test-secret-key-1234567890123456",
+			secret:    "test-secret-key-1234567890123456",
 		},
 	}
 
@@ -98,6 +99,25 @@ func TestEncrypt_Deterministic(t *testing.T) {
 	assert.Equal(t, plaintext, decrypted2)
 }
 
+func TestEncrypt_IncludesSaltAndIv(t *testing.T) {
+	plaintext := "test message"
+	secret := "test-secret-key-1234567890123456"
+
+	encrypted, err := Encrypt(plaintext, secret)
+	require.NoError(t, err)
+
+	data, err := base64.StdEncoding.DecodeString(encrypted)
+	require.NoError(t, err)
+
+	require.GreaterOrEqual(t, len(data), saltLength+ivLength+tagLength, "encoded payload should contain salt, IV, tag, and ciphertext")
+
+	salt := data[:saltLength]
+	iv := data[saltLength : saltLength+ivLength]
+
+	assert.NotEqual(t, make([]byte, saltLength), salt, "salt should contain random bytes")
+	assert.NotEqual(t, make([]byte, ivLength), iv, "IV should contain random bytes")
+}
+
 func TestDecrypt_InvalidInput(t *testing.T) {
 	tests := []struct {
 		name          string
@@ -124,7 +144,7 @@ func TestDecrypt_InvalidInput(t *testing.T) {
 			expectError:   true,
 		},
 		{
-			name:          "wrong secret",
+			name: "wrong secret",
 			encryptedText: func() string {
 				enc, _ := Encrypt("test", "correct-secret")
 				return enc
@@ -157,4 +177,3 @@ func TestEncrypt_Decrypt_WithEmptySecret(t *testing.T) {
 	require.NoError(t, err, "Decrypt should work with empty secret")
 	assert.Equal(t, plaintext, decrypted)
 }
-

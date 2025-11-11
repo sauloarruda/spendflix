@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"services/auth/internal/models"
+	"services/auth/internal/services"
 	"services/auth/internal/testhelpers"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -20,12 +21,12 @@ type MockSignupService struct {
 	mock.Mock
 }
 
-func (m *MockSignupService) Signup(ctx context.Context, name, email string) (*models.User, error) {
+func (m *MockSignupService) Signup(ctx context.Context, name, email string) (*models.SignupOutcome, error) {
 	args := m.Called(ctx, name, email)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}
-	return args.Get(0).(*models.User), args.Error(1)
+	return args.Get(0).(*models.SignupOutcome), args.Error(1)
 }
 
 func TestSignupHandler_Handle_Success(t *testing.T) {
@@ -50,7 +51,10 @@ func TestSignupHandler_Handle_Success(t *testing.T) {
 		Email: "john@example.com",
 	}
 
-	mockService.On("Signup", ctx, "John Doe", "john@example.com").Return(expectedUser, nil)
+	mockService.On("Signup", ctx, "John Doe", "john@example.com").Return(&models.SignupOutcome{
+		User:   expectedUser,
+		Status: models.SignupStatusCreated,
+	}, nil)
 
 	resp, err := handler.Handle(ctx, req)
 
@@ -64,6 +68,48 @@ func TestSignupHandler_Handle_Success(t *testing.T) {
 	assert.Equal(t, expectedUser.ID, response.ID)
 	assert.Equal(t, expectedUser.Name, response.Name)
 	assert.Equal(t, expectedUser.Email, response.Email)
+	assert.Equal(t, models.SignupStatusCreated, response.Status)
+
+	mockService.AssertExpectations(t)
+}
+
+func TestSignupHandler_Handle_PendingConfirmation(t *testing.T) {
+	mockService := new(MockSignupService)
+	handler := NewSignupHandlerWithService(mockService)
+
+	ctx := context.Background()
+	reqBody := `{"name": "John Doe", "email": "john@example.com"}`
+	req := events.APIGatewayV2HTTPRequest{
+		RawPath: "/auth/sign-up",
+		Body:    reqBody,
+		RequestContext: events.APIGatewayV2HTTPRequestContext{
+			HTTP: events.APIGatewayV2HTTPRequestContextHTTPDescription{
+				Method: "POST",
+			},
+		},
+	}
+
+	expectedUser := &models.User{
+		ID:    1,
+		Name:  "John Doe",
+		Email: "john@example.com",
+	}
+
+	mockService.On("Signup", ctx, "John Doe", "john@example.com").Return(&models.SignupOutcome{
+		User:   expectedUser,
+		Status: models.SignupStatusPendingConfirmation,
+	}, nil)
+
+	resp, err := handler.Handle(ctx, req)
+
+	require.NoError(t, err)
+	assert.Equal(t, 200, resp.StatusCode)
+
+	var response models.SignupResponse
+	err = json.Unmarshal([]byte(resp.Body), &response)
+	require.NoError(t, err)
+	assert.Equal(t, expectedUser.ID, response.ID)
+	assert.Equal(t, models.SignupStatusPendingConfirmation, response.Status)
 
 	mockService.AssertExpectations(t)
 }
@@ -88,10 +134,11 @@ func TestSignupHandler_Handle_InvalidJSON(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, 400, resp.StatusCode)
 
-	var errorResp map[string]string
+	var errorResp models.ErrorResponse
 	err = json.Unmarshal([]byte(resp.Body), &errorResp)
 	require.NoError(t, err)
-	assert.Equal(t, "Invalid request body", errorResp["error"])
+	assert.Equal(t, "invalid_request", errorResp.Code)
+	assert.Equal(t, "Invalid request body", errorResp.Message)
 
 	mockService.AssertNotCalled(t, "Signup")
 }
@@ -116,10 +163,11 @@ func TestSignupHandler_Handle_MissingName(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, 400, resp.StatusCode)
 
-	var errorResp map[string]string
+	var errorResp models.ErrorResponse
 	err = json.Unmarshal([]byte(resp.Body), &errorResp)
 	require.NoError(t, err)
-	assert.Equal(t, "Name and email are required", errorResp["error"])
+	assert.Equal(t, "missing_fields", errorResp.Code)
+	assert.Equal(t, "Name and email are required", errorResp.Message)
 
 	mockService.AssertNotCalled(t, "Signup")
 }
@@ -144,10 +192,11 @@ func TestSignupHandler_Handle_MissingEmail(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, 400, resp.StatusCode)
 
-	var errorResp map[string]string
+	var errorResp models.ErrorResponse
 	err = json.Unmarshal([]byte(resp.Body), &errorResp)
 	require.NoError(t, err)
-	assert.Equal(t, "Name and email are required", errorResp["error"])
+	assert.Equal(t, "missing_fields", errorResp.Code)
+	assert.Equal(t, "Name and email are required", errorResp.Message)
 
 	mockService.AssertNotCalled(t, "Signup")
 }
@@ -168,17 +217,18 @@ func TestSignupHandler_Handle_DuplicateEmail(t *testing.T) {
 	}
 
 	mockService.On("Signup", ctx, "John Doe", "existing@example.com").
-		Return(nil, errors.New("user with this email already exists"))
+		Return(nil, services.ErrUserAlreadyExists)
 
 	resp, err := handler.Handle(ctx, req)
 
 	require.NoError(t, err)
 	assert.Equal(t, 409, resp.StatusCode)
 
-	var errorResp map[string]string
+	var errorResp models.ErrorResponse
 	err = json.Unmarshal([]byte(resp.Body), &errorResp)
 	require.NoError(t, err)
-	assert.Equal(t, "user with this email already exists", errorResp["error"])
+	assert.Equal(t, "user_exists", errorResp.Code)
+	assert.Equal(t, "User with this email already exists", errorResp.Message)
 
 	mockService.AssertExpectations(t)
 }
@@ -206,10 +256,11 @@ func TestSignupHandler_Handle_ServiceError(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, 500, resp.StatusCode)
 
-	var errorResp map[string]string
+	var errorResp models.ErrorResponse
 	err = json.Unmarshal([]byte(resp.Body), &errorResp)
 	require.NoError(t, err)
-	assert.Equal(t, "internal service error", errorResp["error"])
+	assert.Equal(t, "internal_error", errorResp.Code)
+	assert.Equal(t, "Internal server error", errorResp.Message)
 
 	mockService.AssertExpectations(t)
 }
@@ -234,23 +285,28 @@ func TestSignupHandler_Handle_EmptyBody(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, 400, resp.StatusCode)
 
+	var errorResp models.ErrorResponse
+	err = json.Unmarshal([]byte(resp.Body), &errorResp)
+	require.NoError(t, err)
+	assert.Equal(t, "invalid_request", errorResp.Code)
+
 	mockService.AssertNotCalled(t, "Signup")
 }
 
 func TestErrorResponse(t *testing.T) {
-	resp := errorResponse(404, "Not found")
+	resp := errorResponse(404, "not_found", "Not found")
 
 	assert.Equal(t, 404, resp.StatusCode)
 	assert.Equal(t, "application/json", resp.Headers["Content-Type"])
 
-	var errorResp map[string]string
+	var errorResp models.ErrorResponse
 	err := json.Unmarshal([]byte(resp.Body), &errorResp)
 	require.NoError(t, err)
-	assert.Equal(t, "Not found", errorResp["error"])
+	assert.Equal(t, "not_found", errorResp.Code)
+	assert.Equal(t, "Not found", errorResp.Message)
 }
 
 // Helper function to create handler with mock service for testing
 func NewSignupHandlerWithService(service testhelpers.SignupServiceInterface) *SignupHandler {
 	return NewSignupHandlerWithInterface(service)
 }
-

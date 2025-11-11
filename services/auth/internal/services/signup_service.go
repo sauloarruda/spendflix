@@ -122,118 +122,166 @@ func generateTemporaryPassword(length int) (string, error) {
 	return string(password), nil
 }
 
-func (s *SignupService) Signup(ctx context.Context, name, email string) (*models.User, error) {
+func (s *SignupService) Signup(ctx context.Context, name, email string) (*SignupResult, error) {
 	// Check if user already exists
 	existingUser, err := s.userRepo.FindByEmail(ctx, email)
 	if err != nil {
 		return nil, fmt.Errorf("failed to check existing user: %w", err)
 	}
 
-	// If user exists in DB with CognitoID, check if they're confirmed in Cognito
 	if existingUser != nil && existingUser.CognitoID != nil {
-		isConfirmed, username, _, checkErr := s.cognitoClient.IsUserConfirmed(ctx, email)
-		if checkErr != nil {
-			// If we can't check status, return generic error
-			return nil, errors.New("user with this email already exists")
-		}
-
-		if !isConfirmed {
-			// User exists but is not confirmed, resend confirmation code
-			if resendErr := s.cognitoClient.ResendConfirmationCode(ctx, username); resendErr != nil {
-				return nil, fmt.Errorf("failed to resend confirmation code: %w", resendErr)
+		result, existingErr := s.handleExistingConfirmedUser(ctx, existingUser, email)
+		if result != nil || existingErr != nil {
+			if existingErr != nil {
+				return nil, existingErr
 			}
-			// Return the existing user (transparent to the API consumer)
-			return existingUser, nil
+			return result, nil
 		}
-
-		// User exists and is confirmed
-		return nil, errors.New("user with this email already exists")
 	}
 
-	// Generate temporary password
-	temporaryPassword, err := generateTemporaryPassword(32)
+	temporaryPassword, encryptedPassword, err := s.generateProtectedPassword()
 	if err != nil {
-		return nil, fmt.Errorf("failed to generate temporary password: %w", err)
+		return nil, err
 	}
 
-	// Encrypt password
-	encryptedPassword, err := s.encryptFunc(temporaryPassword, s.encryptionSecret)
-	if err != nil {
-		return nil, fmt.Errorf("failed to encrypt password: %w", err)
-	}
-
-	// Create user in Cognito first
 	cognitoID, err := s.cognitoClient.SignUp(ctx, email, temporaryPassword, name)
 	if err != nil {
-		// Check if it's a username exists error
-		var usernameExistsErr *types.UsernameExistsException
-		if errors.As(err, &usernameExistsErr) {
-			// User already exists in Cognito, check if they're confirmed
-			isConfirmed, username, userSub, checkErr := s.cognitoClient.IsUserConfirmed(ctx, email)
-			if checkErr != nil {
-				// If we can't check status, return generic error
-				return nil, errors.New("user with this email already exists")
-			}
-
-			if !isConfirmed {
-				// User exists but is not confirmed, resend confirmation code
-				if resendErr := s.cognitoClient.ResendConfirmationCode(ctx, username); resendErr != nil {
-					return nil, fmt.Errorf("failed to resend confirmation code: %w", resendErr)
-				}
-
-				// Find or create user in DB
-				if existingUser != nil {
-					// Update existing user with Cognito ID if not already set
-					if existingUser.CognitoID == nil {
-						cognitoIDPtr := &userSub
-						existingUser.CognitoID = cognitoIDPtr
-						if err := s.userRepo.Update(ctx, existingUser); err != nil {
-							return nil, fmt.Errorf("failed to update user: %w", err)
-						}
-					}
-					return existingUser, nil
-				}
-
-				// User exists in Cognito but not in DB, create it
-				cognitoIDPtr := &userSub
-				user := &models.User{
-					Name:      name,
-					Email:     email,
-					CognitoID: cognitoIDPtr,
-				}
-				if err := s.userRepo.Create(ctx, user); err != nil {
-					return nil, fmt.Errorf("failed to create user: %w", err)
-				}
-				return user, nil
-			}
-
-			// User exists and is confirmed
-			return nil, errors.New("user with this email already exists")
+		result, handledErr := s.handleCognitoSignUpError(ctx, err, existingUser, name, email, encryptedPassword)
+		if handledErr != nil {
+			return nil, handledErr
 		}
-		return nil, fmt.Errorf("failed to create user in Cognito: %w", err)
+		if result != nil {
+			return result, nil
+		}
+		return nil, ErrSignupProviderUnavailable
 	}
 
-	// Create new user with encrypted password and Cognito ID
-	cognitoIDPtr := &cognitoID
+	user := s.buildUser(existingUser, name, email, &cognitoID, &encryptedPassword)
+	if err := s.saveUser(ctx, user, existingUser != nil); err != nil {
+		return nil, err
+	}
+
+	return &SignupResult{
+		User:   user,
+		Status: models.SignupStatusCreated,
+	}, nil
+}
+
+func (s *SignupService) handleExistingConfirmedUser(ctx context.Context, existingUser *models.User, email string) (*SignupResult, error) {
+	isConfirmed, username, userSub, checkErr := s.cognitoClient.IsUserConfirmed(ctx, email)
+	if checkErr != nil {
+		return nil, ErrUserAlreadyExists
+	}
+
+	if !isConfirmed {
+		if resendErr := s.cognitoClient.ResendConfirmationCode(ctx, username); resendErr != nil {
+			return nil, fmt.Errorf("failed to resend confirmation code: %w", resendErr)
+		}
+
+		if userSub != "" && existingUser.CognitoID == nil {
+			existingUser.CognitoID = &userSub
+			if err := s.userRepo.Update(ctx, existingUser); err != nil {
+				return nil, fmt.Errorf("failed to update user: %w", err)
+			}
+		}
+
+		return &SignupResult{
+			User:   existingUser,
+			Status: models.SignupStatusPendingConfirmation,
+		}, nil
+	}
+
+	return nil, ErrUserAlreadyExists
+}
+
+func (s *SignupService) generateProtectedPassword() (string, string, error) {
+	temporaryPassword, err := generateTemporaryPassword(32)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to generate temporary password: %w", err)
+	}
+
+	encryptedPassword, err := s.encryptFunc(temporaryPassword, s.encryptionSecret)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to encrypt password: %w", err)
+	}
+
+	return temporaryPassword, encryptedPassword, nil
+}
+
+func (s *SignupService) handleCognitoSignUpError(
+	ctx context.Context,
+	signupErr error,
+	existingUser *models.User,
+	name,
+	email,
+	encryptedPassword string,
+) (*SignupResult, error) {
+	var usernameExistsErr *types.UsernameExistsException
+	if !errors.As(signupErr, &usernameExistsErr) {
+		return nil, ErrSignupProviderUnavailable
+	}
+
+	isConfirmed, username, userSub, checkErr := s.cognitoClient.IsUserConfirmed(ctx, email)
+	if checkErr != nil {
+		return nil, ErrUserAlreadyExists
+	}
+
+	if isConfirmed {
+		return nil, ErrUserAlreadyExists
+	}
+
+	if resendErr := s.cognitoClient.ResendConfirmationCode(ctx, username); resendErr != nil {
+		return nil, fmt.Errorf("failed to resend confirmation code: %w", resendErr)
+	}
+
+	user := existingUser
+	if user == nil {
+		user = &models.User{}
+	}
+
+	user.Name = name
+	user.Email = email
+	user.CognitoID = &userSub
+	if encryptedPassword != "" {
+		user.TemporaryPassword = &encryptedPassword
+	}
+
+	if err := s.saveUser(ctx, user, existingUser != nil); err != nil {
+		return nil, err
+	}
+
+	return &SignupResult{
+		User:   user,
+		Status: models.SignupStatusPendingConfirmation,
+	}, nil
+}
+
+func (s *SignupService) buildUser(existingUser *models.User, name, email string, cognitoID, encryptedPassword *string) *models.User {
 	user := &models.User{
 		Name:              name,
 		Email:             email,
-		TemporaryPassword: &encryptedPassword,
-		CognitoID:         cognitoIDPtr,
+		TemporaryPassword: encryptedPassword,
+		CognitoID:         cognitoID,
 	}
 
 	if existingUser != nil {
-		// Update existing user with Cognito ID
 		user.ID = existingUser.ID
-		if err := s.userRepo.Update(ctx, user); err != nil {
-			return nil, fmt.Errorf("failed to update user: %w", err)
-		}
-	} else {
-		// Create new user
-		if err := s.userRepo.Create(ctx, user); err != nil {
-			return nil, fmt.Errorf("failed to create user: %w", err)
-		}
 	}
 
-	return user, nil
+	return user
+}
+
+func (s *SignupService) saveUser(ctx context.Context, user *models.User, update bool) error {
+	if update {
+		if err := s.userRepo.Update(ctx, user); err != nil {
+			return fmt.Errorf("failed to update user: %w", err)
+		}
+		return nil
+	}
+
+	if err := s.userRepo.Create(ctx, user); err != nil {
+		return fmt.Errorf("failed to create user: %w", err)
+	}
+
+	return nil
 }

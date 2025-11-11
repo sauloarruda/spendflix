@@ -16,8 +16,8 @@ const (
 	ivLength   = 12
 	tagLength  = 16
 	keyLength  = 32
-	salt       = "spendflix-auth-salt"
 	iterations = 100000
+	saltLength = 16
 )
 
 func Encrypt(plaintext, secret string) (string, error) {
@@ -27,8 +27,14 @@ func Encrypt(plaintext, secret string) (string, error) {
 		return "", err
 	}
 
+	// Generate random salt per encryption
+	salt := make([]byte, saltLength)
+	if _, err := rand.Read(salt); err != nil {
+		return "", err
+	}
+
 	// Generate key using PBKDF2
-	key := pbkdf2.Key([]byte(secret), []byte(salt), iterations, keyLength, sha256.New)
+	key := deriveKey(secret, salt)
 
 	// Create cipher
 	block, err := aes.NewCipher(key)
@@ -48,8 +54,9 @@ func Encrypt(plaintext, secret string) (string, error) {
 	tag := ciphertext[len(ciphertext)-tagLength:]
 	encrypted := ciphertext[:len(ciphertext)-tagLength]
 
-	// Combine IV + tag + encrypted
-	result := append(iv, tag...)
+	// Combine salt + IV + tag + encrypted
+	result := append(salt, iv...)
+	result = append(result, tag...)
 	result = append(result, encrypted...)
 
 	return base64.StdEncoding.EncodeToString(result), nil
@@ -62,19 +69,31 @@ func Decrypt(encryptedText, secret string) (string, error) {
 		return "", err
 	}
 
-	if len(data) < ivLength+tagLength {
+	if len(data) < saltLength+ivLength+tagLength {
 		return "", errors.New("invalid encrypted data length")
 	}
 
-	// Extract components
-	iv := data[0:ivLength]
-	tag := data[ivLength : ivLength+tagLength]
-	encrypted := data[ivLength+tagLength:]
+	salt := data[:saltLength]
+	payload := data[saltLength:]
 
-	// Generate key
-	key := pbkdf2.Key([]byte(secret), []byte(salt), iterations, keyLength, sha256.New)
+	return decryptWithSalt(secret, salt, payload)
+}
 
-	// Create cipher
+func deriveKey(secret string, salt []byte) []byte {
+	return pbkdf2.Key([]byte(secret), salt, iterations, keyLength, sha256.New)
+}
+
+func decryptWithSalt(secret string, salt []byte, payload []byte) (string, error) {
+	if len(payload) < ivLength+tagLength {
+		return "", errors.New("invalid encrypted data length")
+	}
+
+	iv := payload[0:ivLength]
+	tag := payload[ivLength : ivLength+tagLength]
+	encrypted := payload[ivLength+tagLength:]
+
+	key := deriveKey(secret, salt)
+
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return "", err
@@ -85,10 +104,9 @@ func Decrypt(encryptedText, secret string) (string, error) {
 		return "", err
 	}
 
-	// Combine encrypted + tag to decrypt
-	ciphertext := append(encrypted, tag...)
-
-	// Decrypt
+	ciphertext := make([]byte, len(encrypted)+len(tag))
+	copy(ciphertext, encrypted)
+	copy(ciphertext[len(encrypted):], tag)
 	plaintext, err := aesgcm.Open(nil, iv, ciphertext, nil)
 	if err != nil {
 		return "", err

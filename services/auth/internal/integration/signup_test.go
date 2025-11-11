@@ -2,6 +2,7 @@ package integration
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"testing"
 	"time"
@@ -32,9 +33,9 @@ func TestSignup_Integration_NewUser(t *testing.T) {
 	// Setup Cognito client (using cognito-local if available)
 	cfg := &config.Config{
 		CognitoUserPoolID:   "local_test_pool",
-		CognitoClientID:      "test_client_id",
-		CognitoClientSecret:  "",
-		CognitoEndpoint:      "http://localhost:9229",
+		CognitoClientID:     "test_client_id",
+		CognitoClientSecret: "",
+		CognitoEndpoint:     "http://localhost:9229",
 		EncryptionSecret:    "test-secret-key-1234567890123456",
 	}
 
@@ -52,29 +53,30 @@ func TestSignup_Integration_NewUser(t *testing.T) {
 	email := "integration@example.com"
 
 	// Execute signup
-	user, err := signupService.Signup(ctx, name, email)
+	result, err := signupService.Signup(ctx, name, email)
 
 	// Verify result
 	if err != nil {
-		// If Cognito is not available, skip the test
-		if err.Error() == "cognito signup failed" || 
-		   err.Error() == "failed to create user in Cognito" {
-			t.Skipf("Skipping integration test - Cognito not available: %v", err)
+		// If the identity provider is not available, skip the test
+		if errors.Is(err, services.ErrSignupProviderUnavailable) {
+			t.Skipf("Skipping integration test - signup provider not available: %v", err)
 			return
 		}
 		require.NoError(t, err, "Signup should succeed")
 	}
 
-	require.NotNil(t, user)
-	assert.Equal(t, name, user.Name)
-	assert.Equal(t, email, user.Email)
-	assert.NotNil(t, user.CognitoID)
-	assert.NotNil(t, user.TemporaryPassword)
-	assert.NotZero(t, user.ID)
-	assert.False(t, user.CreatedAt.IsZero())
+	require.NotNil(t, result)
+	require.NotNil(t, result.User)
+	assert.Equal(t, models.SignupStatusCreated, result.Status)
+	assert.Equal(t, name, result.User.Name)
+	assert.Equal(t, email, result.User.Email)
+	assert.NotNil(t, result.User.CognitoID)
+	assert.NotNil(t, result.User.TemporaryPassword)
+	assert.NotZero(t, result.User.ID)
+	assert.False(t, result.User.CreatedAt.IsZero())
 
 	// Verify password can be decrypted
-	decryptedPassword, err := encryption.Decrypt(*user.TemporaryPassword, cfg.EncryptionSecret)
+	decryptedPassword, err := encryption.Decrypt(*result.User.TemporaryPassword, cfg.EncryptionSecret)
 	require.NoError(t, err)
 	assert.NotEmpty(t, decryptedPassword)
 	assert.GreaterOrEqual(t, len(decryptedPassword), 32, "Password should be at least 32 characters")
@@ -94,9 +96,9 @@ func TestSignup_Integration_DuplicateEmail(t *testing.T) {
 	// Setup Cognito client
 	cfg := &config.Config{
 		CognitoUserPoolID:   "local_test_pool",
-		CognitoClientID:      "test_client_id",
-		CognitoClientSecret:  "",
-		CognitoEndpoint:      "http://localhost:9229",
+		CognitoClientID:     "test_client_id",
+		CognitoClientSecret: "",
+		CognitoEndpoint:     "http://localhost:9229",
 		EncryptionSecret:    "test-secret-key-1234567890123456",
 	}
 
@@ -113,32 +115,34 @@ func TestSignup_Integration_DuplicateEmail(t *testing.T) {
 	email := "duplicate@example.com"
 
 	// First signup
-	user1, err := signupService.Signup(ctx, name, email)
+	result1, err := signupService.Signup(ctx, name, email)
 	if err != nil {
-		if err.Error() == "cognito signup failed" || 
-		   err.Error() == "failed to create user in Cognito" {
-			t.Skipf("Skipping integration test - Cognito not available: %v", err)
+		if errors.Is(err, services.ErrSignupProviderUnavailable) {
+			t.Skipf("Skipping integration test - signup provider not available: %v", err)
 			return
 		}
 		require.NoError(t, err)
 	}
-	require.NotNil(t, user1)
+	require.NotNil(t, result1)
+	require.NotNil(t, result1.User)
 
 	// Wait a bit to ensure Cognito processes the first signup
 	time.Sleep(500 * time.Millisecond)
 
 	// Try to signup again with same email
-	user2, err := signupService.Signup(ctx, name, email)
+	result2, err := signupService.Signup(ctx, name, email)
 
 	// Should return error or existing user (depending on Cognito state)
 	// In local testing, it might resend confirmation code
 	if err != nil {
-		assert.Equal(t, "user with this email already exists", err.Error())
-		assert.Nil(t, user2)
+		assert.True(t, errors.Is(err, services.ErrUserAlreadyExists))
+		assert.Nil(t, result2)
 	} else {
 		// If no error, should return the existing user
-		assert.NotNil(t, user2)
-		assert.Equal(t, user1.ID, user2.ID)
+		require.NotNil(t, result2)
+		require.NotNil(t, result2.User)
+		assert.Equal(t, result1.User.ID, result2.User.ID)
+		assert.Equal(t, models.SignupStatusPendingConfirmation, result2.Status)
 	}
 }
 
@@ -156,9 +160,9 @@ func TestSignup_Integration_ConcurrentSignups(t *testing.T) {
 	// Setup Cognito client
 	cfg := &config.Config{
 		CognitoUserPoolID:   "local_test_pool",
-		CognitoClientID:      "test_client_id",
-		CognitoClientSecret:  "",
-		CognitoEndpoint:      "http://localhost:9229",
+		CognitoClientID:     "test_client_id",
+		CognitoClientSecret: "",
+		CognitoEndpoint:     "http://localhost:9229",
 		EncryptionSecret:    "test-secret-key-1234567890123456",
 	}
 
@@ -184,23 +188,22 @@ func TestSignup_Integration_ConcurrentSignups(t *testing.T) {
 	}
 
 	// Wait for all signups to complete
-	errors := make([]error, 0, numUsers)
+	errs := make([]error, 0, numUsers)
 	for i := 0; i < numUsers; i++ {
 		err := <-results
 		if err != nil {
-			// Skip if Cognito not available
-			if err.Error() == "cognito signup failed" || 
-			   err.Error() == "failed to create user in Cognito" {
-				t.Skipf("Skipping integration test - Cognito not available: %v", err)
+			// Skip if signup provider not available
+			if errors.Is(err, services.ErrSignupProviderUnavailable) {
+				t.Skipf("Skipping integration test - signup provider not available: %v", err)
 				return
 			}
-			errors = append(errors, err)
+			errs = append(errs, err)
 		}
 	}
 
 	// All signups should succeed (or fail gracefully)
 	// In a real scenario, some might fail due to race conditions
-	assert.LessOrEqual(t, len(errors), numUsers, "Some signups may fail due to concurrency")
+	assert.LessOrEqual(t, len(errs), numUsers, "Some signups may fail due to concurrency")
 }
 
 func TestSignup_Integration_DatabaseConstraints(t *testing.T) {
@@ -235,4 +238,3 @@ func TestSignup_Integration_DatabaseConstraints(t *testing.T) {
 	err = userRepo.Create(ctx, user2)
 	assert.Error(t, err, "Should fail on duplicate email constraint")
 }
-

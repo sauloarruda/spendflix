@@ -17,9 +17,26 @@ type SignupRequest struct {
 	Email string `json:"email"`
 }
 
-type SignupResponse struct {
-	ID    int    `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
+type SignupStatus string
+
+const (
+	SignupStatusCreated             SignupStatus = "created"
+	SignupStatusPendingConfirmation SignupStatus = "pending_confirmation"
+)
+
+type SignupOutcome struct {
+	User   *User        `json:"user"`
+	Status SignupStatus `json:"status"`
 }
 
+type SignupResponse struct {
+	ID     int          `json:"id"`
+	Name   string       `json:"name"`
+	Email  string       `json:"email"`
+	Status SignupStatus `json:"status"`
+}
+
+type ErrorResponse struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
+}

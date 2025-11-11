@@ -40,16 +40,18 @@ func TestSignupService_Signup_NewUser(t *testing.T) {
 	})
 
 	// Execute
-	user, err := service.Signup(ctx, name, email)
+	result, err := service.Signup(ctx, name, email)
 
 	// Assert
 	require.NoError(t, err)
-	assert.NotNil(t, user)
-	assert.Equal(t, name, user.Name)
-	assert.Equal(t, email, user.Email)
-	assert.NotNil(t, user.CognitoID)
-	assert.Equal(t, cognitoID, *user.CognitoID)
-	assert.NotNil(t, user.TemporaryPassword)
+	require.NotNil(t, result)
+	assert.Equal(t, models.SignupStatusCreated, result.Status)
+	assert.NotNil(t, result.User)
+	assert.Equal(t, name, result.User.Name)
+	assert.Equal(t, email, result.User.Email)
+	assert.NotNil(t, result.User.CognitoID)
+	assert.Equal(t, cognitoID, *result.User.CognitoID)
+	assert.NotNil(t, result.User.TemporaryPassword)
 
 	mockRepo.AssertExpectations(t)
 	mockCognito.AssertExpectations(t)
@@ -82,12 +84,12 @@ func TestSignupService_Signup_UserAlreadyExists_Confirmed(t *testing.T) {
 	mockCognito.On("IsUserConfirmed", ctx, email).Return(true, "username", cognitoID, nil)
 
 	// Execute
-	user, err := service.Signup(ctx, name, email)
+	result, err := service.Signup(ctx, name, email)
 
 	// Assert
 	assert.Error(t, err)
-	assert.Equal(t, "user with this email already exists", err.Error())
-	assert.Nil(t, user)
+	assert.True(t, errors.Is(err, ErrUserAlreadyExists))
+	assert.Nil(t, result)
 
 	mockRepo.AssertExpectations(t)
 	mockCognito.AssertExpectations(t)
@@ -122,12 +124,14 @@ func TestSignupService_Signup_UserExistsButUnconfirmed(t *testing.T) {
 	mockCognito.On("ResendConfirmationCode", ctx, username).Return(nil)
 
 	// Execute
-	user, err := service.Signup(ctx, name, email)
+	result, err := service.Signup(ctx, name, email)
 
 	// Assert
 	require.NoError(t, err)
-	assert.NotNil(t, user)
-	assert.Equal(t, existingUser.ID, user.ID)
+	require.NotNil(t, result)
+	assert.Equal(t, models.SignupStatusPendingConfirmation, result.Status)
+	assert.NotNil(t, result.User)
+	assert.Equal(t, existingUser.ID, result.User.ID)
 
 	mockRepo.AssertExpectations(t)
 	mockCognito.AssertExpectations(t)
@@ -163,15 +167,18 @@ func TestSignupService_Signup_UserInCognitoButNotDB(t *testing.T) {
 	})
 
 	// Execute
-	user, err := service.Signup(ctx, name, email)
+	result, err := service.Signup(ctx, name, email)
 
 	// Assert
 	require.NoError(t, err)
-	assert.NotNil(t, user)
-	assert.Equal(t, name, user.Name)
-	assert.Equal(t, email, user.Email)
-	assert.NotNil(t, user.CognitoID)
-	assert.Equal(t, cognitoID, *user.CognitoID)
+	require.NotNil(t, result)
+	assert.Equal(t, models.SignupStatusPendingConfirmation, result.Status)
+	assert.NotNil(t, result.User)
+	assert.Equal(t, name, result.User.Name)
+	assert.Equal(t, email, result.User.Email)
+	assert.NotNil(t, result.User.CognitoID)
+	assert.Equal(t, cognitoID, *result.User.CognitoID)
+	assert.NotNil(t, result.User.TemporaryPassword)
 
 	mockRepo.AssertExpectations(t)
 	mockCognito.AssertExpectations(t)
@@ -207,14 +214,16 @@ func TestSignupService_Signup_UserInDBButNotCognito(t *testing.T) {
 	})).Return(nil)
 
 	// Execute
-	user, err := service.Signup(ctx, name, email)
+	result, err := service.Signup(ctx, name, email)
 
 	// Assert
 	require.NoError(t, err)
-	assert.NotNil(t, user)
-	assert.Equal(t, existingUser.ID, user.ID)
-	assert.NotNil(t, user.CognitoID)
-	assert.Equal(t, cognitoID, *user.CognitoID)
+	require.NotNil(t, result)
+	assert.Equal(t, models.SignupStatusCreated, result.Status)
+	assert.NotNil(t, result.User)
+	assert.Equal(t, existingUser.ID, result.User.ID)
+	assert.NotNil(t, result.User.CognitoID)
+	assert.Equal(t, cognitoID, *result.User.CognitoID)
 
 	mockRepo.AssertExpectations(t)
 	mockCognito.AssertExpectations(t)
@@ -238,12 +247,12 @@ func TestSignupService_Signup_RepositoryError(t *testing.T) {
 	mockRepo.On("FindByEmail", ctx, email).Return(nil, errors.New("database error"))
 
 	// Execute
-	user, err := service.Signup(ctx, name, email)
+	result, err := service.Signup(ctx, name, email)
 
 	// Assert
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "failed to check existing user")
-	assert.Nil(t, user)
+	assert.Nil(t, result)
 
 	mockRepo.AssertExpectations(t)
 }
@@ -268,12 +277,12 @@ func TestSignupService_Signup_CognitoError(t *testing.T) {
 		Return("", errors.New("cognito error"))
 
 	// Execute
-	user, err := service.Signup(ctx, name, email)
+	result, err := service.Signup(ctx, name, email)
 
 	// Assert
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), "failed to create user in Cognito")
-	assert.Nil(t, user)
+	assert.ErrorIs(t, err, ErrSignupProviderUnavailable)
+	assert.Nil(t, result)
 
 	mockRepo.AssertExpectations(t)
 	mockCognito.AssertExpectations(t)
@@ -302,12 +311,12 @@ func TestSignupService_Signup_EncryptionError(t *testing.T) {
 	mockRepo.On("FindByEmail", ctx, email).Return(nil, nil)
 
 	// Execute
-	user, err := service.Signup(ctx, name, email)
+	result, err := service.Signup(ctx, name, email)
 
 	// Assert
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "failed to encrypt password")
-	assert.Nil(t, user)
+	assert.Nil(t, result)
 
 	mockRepo.AssertExpectations(t)
 }
@@ -341,12 +350,12 @@ func TestSignupService_Signup_ResendConfirmationCodeError(t *testing.T) {
 	mockCognito.On("ResendConfirmationCode", ctx, username).Return(errors.New("resend error"))
 
 	// Execute
-	user, err := service.Signup(ctx, name, email)
+	result, err := service.Signup(ctx, name, email)
 
 	// Assert
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "failed to resend confirmation code")
-	assert.Nil(t, user)
+	assert.Nil(t, result)
 
 	mockRepo.AssertExpectations(t)
 	mockCognito.AssertExpectations(t)
@@ -417,4 +426,3 @@ func TestGenerateTemporaryPassword_Error(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NotEmpty(t, password)
 }
-
