@@ -2,6 +2,100 @@
 
 Spendflix authentication service in Go, deployed on AWS Lambda.
 
+## Quick Start
+
+### Prerequisites
+
+- Go 1.21+
+- Node.js and npm (for cognito-local)
+- PostgreSQL database running locally
+
+### Setup (First Time Only)
+
+1. **Install dependencies:**
+
+```bash
+make deps
+make migrate-install
+```
+
+2. **Create `.env` file:**
+
+```bash
+cp .env.example .env
+```
+
+3. **Edit `.env` with your database credentials:**
+
+```bash
+DATABASE_URL=postgresql://user:password@localhost:5432/spendflix_development?sslmode=disable
+ENCRYPTION_SECRET=your-secret-key-here
+```
+
+4. **Generate encryption secret (optional):**
+
+```bash
+make generate-secret
+# Copy the generated secret to your .env file
+```
+
+5. **Start cognito-local and setup:**
+
+```bash
+make cognito-local-up
+make cognito-local-setup
+```
+
+6. **Copy the Cognito IDs from the output to your `.env` file:**
+   The `cognito-local-setup` command will display:
+
+```
+COGNITO_USER_POOL_ID=local_xxxxx
+COGNITO_CLIENT_ID=xxxxx
+COGNITO_ENDPOINT=http://localhost:9229
+```
+
+7. **Run database migrations:**
+
+```bash
+make migrate-up
+```
+
+### Running the Service
+
+```bash
+make dev
+```
+
+The server will start on `http://localhost:3000`
+
+### Testing
+
+```bash
+curl -X POST http://localhost:3000/auth/sign-up \
+  -H "Content-Type: application/json" \
+  -d '{"name": "John Doe", "email": "john@example.com"}'
+```
+
+## Environment Variables
+
+Create a `.env` file in the `services/auth/` directory with the following variables:
+
+```bash
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/spendflix_development?sslmode=disable
+
+# Encryption (generate with: make generate-secret)
+ENCRYPTION_SECRET=your-32-character-secret-here
+
+# Cognito (get these from: make cognito-local-setup)
+COGNITO_USER_POOL_ID=local_xxxxx
+COGNITO_CLIENT_ID=xxxxx
+COGNITO_ENDPOINT=http://localhost:9229
+```
+
+**Note:** For local development, always use `COGNITO_ENDPOINT=http://localhost:9229` to connect to cognito-local.
+
 ## Project Structure
 
 ```
@@ -12,113 +106,57 @@ services/auth/
   internal/
     handlers/          # HTTP handlers
       signup.go
+    services/          # Business logic
+      signup_service.go
+    repositories/      # Database access
+      user_repository.go
+    cognito/           # Cognito client
+      client.go
+    config/            # Configuration
+      config.go
+    models/            # Data models
+      user.go
   migrations/          # Database migrations
     000001_create_users_table.up.sql
     000001_create_users_table.down.sql
+  scripts/             # Utility scripts
+    setup-cognito.sh
   go.mod
-  serverless.yml      # Serverless Framework configuration
-  Makefile            # Useful commands
+  serverless.yml       # Serverless Framework configuration
+  Makefile             # Useful commands
 ```
 
-## Initial Setup
+## Available Commands
 
-### Prerequisites
+### Development
 
-- Go 1.21 or higher
-- Node.js and npm (for Serverless Framework)
-- AWS CLI configured
-- AWS credentials configured
+- `make deps` - Install Go dependencies
+- `make dev` - Start local development server
+- `make build-local` - Build for local testing
 
-### Installation
+### Cognito Local
 
-1. Install Go dependencies:
+- `make cognito-local-up` - Start cognito-local emulator
+- `make cognito-local-setup` - Create User Pool and Client
+- `make cognito-local-down` - Stop cognito-local
 
-```bash
-make deps
-```
+### Database
 
-2. Install Serverless Framework (if not already installed):
+- `make migrate-up` - Run database migrations
+- `make migrate-down` - Rollback last migration
+- `make migrate-install` - Install migrate CLI tool
 
-```bash
-make install-serverless
-# or
-npm install -g serverless
-```
+### Utilities
 
-3. Install migrate CLI tool (for database migrations):
+- `make generate-secret` - Generate encryption secret
 
-```bash
-make migrate-install
-```
+### Deployment
 
-## Database Migrations
+- `make build` - Build for Lambda (Linux ARM64)
+- `make deploy` - Deploy to AWS Lambda
+- `make deploy-function` - Deploy function only
 
-### Running Migrations
-
-Before running the application, you need to run database migrations to create the required tables.
-
-1. Set the `DATABASE_URL` environment variable in your `.env` file:
-
-```bash
-# For local development, add ?sslmode=disable to disable SSL
-DATABASE_URL=postgresql://user:password@localhost:5432/spendflix_development?sslmode=disable
-```
-
-Or export it directly:
-
-```bash
-export DATABASE_URL=postgresql://user:password@localhost:5432/spendflix_development?sslmode=disable
-```
-
-**Note:** The `?sslmode=disable` parameter is required for local PostgreSQL instances that don't have SSL enabled.
-
-2. Run migrations:
-
-```bash
-make migrate-up
-```
-
-### Rolling Back Migrations
-
-To rollback the last migration:
-
-```bash
-make migrate-down
-```
-
-## Running Locally
-
-To run the service locally for testing:
-
-1. Make sure you have the `.env` file configured with `DATABASE_URL`:
-
-```bash
-DATABASE_URL=postgresql://user:password@localhost:5432/spendflix_development?sslmode=disable
-```
-
-2. Run migrations (if not already done):
-
-```bash
-make migrate-up
-```
-
-3. Start the local server:
-
-```bash
-make dev
-```
-
-The server will start on port 3000 (or the port specified in the `PORT` environment variable).
-
-4. Test the endpoint:
-
-```bash
-curl -X POST http://localhost:3000/auth/sign-up \
-  -H "Content-Type: application/json" \
-  -d '{"name": "John Doe", "email": "john@example.com"}'
-```
-
-## Build and Deploy
+## Deployment
 
 ### Build for Lambda
 
@@ -126,51 +164,36 @@ curl -X POST http://localhost:3000/auth/sign-up \
 make build
 ```
 
-This creates the `bootstrap` binary compiled for Linux ARM64, which is the required format for AWS Lambda.
+Creates the `bootstrap` binary compiled for Linux ARM64 (required for AWS Lambda).
 
-### Deploy
+### Deploy to AWS
 
-Before deploying, create an environment-specific `.env` file. The file name should match your Serverless stage (default is `dev`):
-
-```bash
-# For development (default stage)
-cp .env.dev.example .env.dev
-
-# Generate a secure encryption secret
-make generate-secret
-
-# Edit .env.dev with your values
-# DATABASE_URL=postgresql://user:password@host:5432/spendflix_development?sslmode=require
-# ENCRYPTION_SECRET=<paste the generated secret here>
-```
-
-Then deploy:
+1. Create environment-specific `.env` file:
 
 ```bash
-# Deploy to default stage (dev)
-make deploy
-
-# Or deploy to a specific stage
-SERVERLESS_STAGE=prod make deploy
+cp .env.example .env.dev
 ```
 
-The Makefile will automatically load variables from `.env.${stage}` during deployment.
+2. Edit `.env.dev` with production values:
 
-**Note:** All `.env.*` files are in `.gitignore` and will not be committed to git.
+   - Use production database URL
+   - Use real AWS Cognito User Pool ID and Client ID
+   - Leave `COGNITO_ENDPOINT` empty for production
 
-Or deploy only the function:
+3. Deploy:
 
 ```bash
-make deploy-function
-# Or with specific stage
-SERVERLESS_STAGE=prod make deploy-function
+make deploy                    # Deploy to 'dev' stage
+SERVERLESS_STAGE=prod make deploy  # Deploy to 'prod' stage
 ```
 
-## Current Endpoint
+**Note:** All `.env.*` files are gitignored and won't be committed.
+
+## API Endpoints
 
 ### POST /auth/sign-up
 
-Creates a new user with the provided name and email.
+Creates a new user account.
 
 **Request:**
 
@@ -199,9 +222,9 @@ Creates a new user with the provided name and email.
 
 ## Next Steps
 
-- [ ] Implement real sign-up logic
-- [ ] PostgreSQL integration
-- [ ] AWS Cognito integration
+- [x] Implement real sign-up logic
+- [x] PostgreSQL integration
+- [x] AWS Cognito integration
 - [ ] Input validation
 - [ ] Complete error handling
 - [ ] Unit and integration tests

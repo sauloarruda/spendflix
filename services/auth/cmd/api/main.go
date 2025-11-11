@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"services/auth/internal/cognito"
 	"services/auth/internal/config"
 	"services/auth/internal/handlers"
 	"services/auth/internal/repositories"
@@ -40,8 +41,14 @@ func init() {
 	// Initialize repositories
 	userRepo := repositories.NewUserRepository(db)
 
+	// Initialize Cognito client
+	cognitoClient, err := cognito.NewClient(cfg)
+	if err != nil {
+		log.Fatalf("Failed to create Cognito client: %v", err)
+	}
+
 	// Initialize services
-	signupService := services.NewSignupService(userRepo, cfg.EncryptionSecret)
+	signupService := services.NewSignupService(userRepo, cognitoClient, cfg.EncryptionSecret)
 
 	// Initialize handlers
 	signupHandler = handlers.NewSignupHandler(signupService)

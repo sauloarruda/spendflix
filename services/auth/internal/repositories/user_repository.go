@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"services/auth/internal/models"
+
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -47,8 +48,8 @@ func (r *UserRepository) FindByEmail(ctx context.Context, email string) (*models
 
 func (r *UserRepository) Create(ctx context.Context, user *models.User) error {
 	query := `
-		INSERT INTO users (name, email, temporary_password, created_at, updated_at)
-		VALUES ($1, $2, $3, NOW(), NOW())
+		INSERT INTO users (name, email, temporary_password, cognito_id, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, NOW(), NOW())
 		RETURNING id, created_at, updated_at
 	`
 
@@ -58,6 +59,24 @@ func (r *UserRepository) Create(ctx context.Context, user *models.User) error {
 		user.Name,
 		user.Email,
 		user.TemporaryPassword,
+		user.CognitoID,
 	).Scan(&user.ID, &user.CreatedAt, &user.UpdatedAt)
 }
 
+func (r *UserRepository) Update(ctx context.Context, user *models.User) error {
+	query := `
+		UPDATE users
+		SET name = $1, temporary_password = $2, cognito_id = $3, updated_at = NOW()
+		WHERE id = $4
+		RETURNING updated_at
+	`
+
+	return r.db.QueryRow(
+		ctx,
+		query,
+		user.Name,
+		user.TemporaryPassword,
+		user.CognitoID,
+		user.ID,
+	).Scan(&user.UpdatedAt)
+}

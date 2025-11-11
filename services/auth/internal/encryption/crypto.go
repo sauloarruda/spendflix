@@ -7,6 +7,7 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"errors"
+
 	"golang.org/x/crypto/pbkdf2"
 )
 
@@ -95,4 +96,3 @@ func Decrypt(encryptedText, secret string) (string, error) {
 
 	return string(plaintext), nil
 }
-

@@ -1,4 +1,4 @@
-.PHONY: build deploy clean deps migrate-up migrate-down migrate-install dev generate-secret
+.PHONY: build deploy clean deps migrate-up migrate-down migrate-install dev generate-secret cognito-local-up cognito-local-down cognito-local-setup cognito-setup
 
 # Install dependencies
 deps:
@@ -97,4 +97,32 @@ migrate-down:
 		exit 1; \
 	fi; \
 	migrate -path ./migrations -database "$$DATABASE_URL" down 1
+
+# Start cognito-local
+cognito-local-up:
+	@if ! command -v npx > /dev/null; then \
+		echo "Error: npx not found. Please install Node.js."; \
+		exit 1; \
+	fi
+	@echo "Starting cognito-local..."
+	@npx cognito-local > /dev/null 2>&1 &
+	@echo "Waiting for cognito-local to be ready..."
+	@sleep 3
+	@echo "cognito-local is ready on http://localhost:9229"
+
+# Stop cognito-local
+cognito-local-down:
+	@pkill -f "cognito-local" || true
+	@echo "cognito-local stopped"
+
+# Setup Cognito User Pool and Client in cognito-local
+cognito-local-setup:
+	@if ! curl -s http://localhost:9229 > /dev/null 2>&1; then \
+		echo "Error: cognito-local is not running. Run 'make cognito-local-up' first."; \
+		exit 1; \
+	fi
+	@bash scripts/setup-cognito.sh
+
+# Alias for cognito-local-setup
+cognito-setup: cognito-local-setup
 
