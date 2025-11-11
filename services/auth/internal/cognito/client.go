@@ -129,3 +129,89 @@ func (c *Client) SignUp(ctx context.Context, email, password, name string) (stri
 	log.Printf("Cognito SignUp successful - UserSub: %s", *output.UserSub)
 	return *output.UserSub, nil
 }
+
+// IsUserConfirmed checks if a user is confirmed in Cognito
+// It tries to find the user by email and checks their status
+// Returns: isConfirmed, username, userSub (CognitoID), error
+func (c *Client) IsUserConfirmed(ctx context.Context, email string) (bool, string, string, error) {
+	// First, try to find the user by listing users with the email attribute
+	// We'll search for users with matching email
+	input := &cognitoidentityprovider.ListUsersInput{
+		UserPoolId: aws.String(c.userPoolID),
+		Filter:     aws.String(fmt.Sprintf("email = \"%s\"", email)),
+		Limit:      aws.Int32(1),
+	}
+
+	output, err := c.client.ListUsers(ctx, input)
+	if err != nil {
+		log.Printf("Error listing users: %v", err)
+		return false, "", "", fmt.Errorf("failed to list users: %w", err)
+	}
+
+	if len(output.Users) == 0 {
+		return false, "", "", errors.New("user not found")
+	}
+
+	user := output.Users[0]
+	username := ""
+	if user.Username != nil {
+		username = *user.Username
+	}
+
+	// Get UserSub - try to find it in user attributes first
+	userSub := username // fallback to username
+	for _, attr := range user.Attributes {
+		if attr.Name != nil && *attr.Name == "sub" && attr.Value != nil {
+			userSub = *attr.Value
+			break
+		}
+	}
+	// If not found in attributes, use username (works for cognito-local where username is email)
+
+	// Check if user is confirmed
+	// UserStatus can be: UNCONFIRMED, CONFIRMED, ARCHIVED, COMPROMISED, UNKNOWN, RESET_REQUIRED, FORCE_CHANGE_PASSWORD
+	isConfirmed := user.UserStatus == types.UserStatusTypeConfirmed
+
+	log.Printf("User status check - Email: %s, Username: %s, UserSub: %s, Status: %s, Confirmed: %v",
+		email, username, userSub, user.UserStatus, isConfirmed)
+
+	return isConfirmed, username, userSub, nil
+}
+
+// ResendConfirmationCode resends the confirmation code to the user
+func (c *Client) ResendConfirmationCode(ctx context.Context, username string) error {
+	// Check if we're using cognito-local (which doesn't support ResendConfirmationCode)
+	isLocalEndpoint := c.endpoint != "" && strings.Contains(c.endpoint, "localhost:9229")
+
+	if isLocalEndpoint {
+		// cognito-local doesn't support ResendConfirmationCode operation
+		// In local development, we'll just log that the code would be resent
+		log.Printf("Local environment detected - ResendConfirmationCode not supported by cognito-local")
+		log.Printf("In production, confirmation code would be resent to: %s", username)
+		return nil
+	}
+
+	input := &cognitoidentityprovider.ResendConfirmationCodeInput{
+		ClientId: aws.String(c.clientID),
+		Username: aws.String(username),
+	}
+
+	// Add SECRET_HASH if client secret is configured
+	if c.clientSecret != "" {
+		secretHash := calculateSecretHash(username, c.clientID, c.clientSecret)
+		input.SecretHash = aws.String(secretHash)
+		log.Printf("Using SECRET_HASH for ResendConfirmationCode")
+	}
+
+	log.Printf("Resending confirmation code - Username: %s, ClientID: %s",
+		username, c.clientID)
+
+	_, err := c.client.ResendConfirmationCode(ctx, input)
+	if err != nil {
+		log.Printf("Error resending confirmation code: %v", err)
+		return fmt.Errorf("failed to resend confirmation code: %w", err)
+	}
+
+	log.Printf("Confirmation code resent successfully - Username: %s", username)
+	return nil
+}
