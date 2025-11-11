@@ -9,21 +9,39 @@ import (
 	"services/auth/internal/encryption"
 	"services/auth/internal/models"
 	"services/auth/internal/repositories"
+	"services/auth/internal/testhelpers"
 
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider/types"
 )
 
+// UserRepositoryInterface defines repository operations (aliased for convenience)
+type UserRepositoryInterface = testhelpers.UserRepositoryInterface
+
+// CognitoClientInterface defines Cognito client operations (aliased for convenience)
+type CognitoClientInterface = testhelpers.CognitoClientInterface
+
 type SignupService struct {
-	userRepo         *repositories.UserRepository
-	cognitoClient    *cognito.Client
+	userRepo         UserRepositoryInterface
+	cognitoClient    CognitoClientInterface
 	encryptFunc      func(string, string) (string, error)
 	decryptFunc      func(string, string) (string, error)
 	encryptionSecret string
 }
 
+// NewSignupService creates a new SignupService with concrete implementations
 func NewSignupService(
 	userRepo *repositories.UserRepository,
 	cognitoClient *cognito.Client,
+	encryptionSecret string,
+) *SignupService {
+	return NewSignupServiceWithInterfaces(userRepo, cognitoClient, encryptionSecret)
+}
+
+// NewSignupServiceWithInterfaces creates a new SignupService with interface-based dependencies
+// This allows for easier testing with mocks
+func NewSignupServiceWithInterfaces(
+	userRepo UserRepositoryInterface,
+	cognitoClient CognitoClientInterface,
 	encryptionSecret string,
 ) *SignupService {
 	return &SignupService{
@@ -162,7 +180,7 @@ func (s *SignupService) Signup(ctx context.Context, name, email string) (*models
 				if resendErr := s.cognitoClient.ResendConfirmationCode(ctx, username); resendErr != nil {
 					return nil, fmt.Errorf("failed to resend confirmation code: %w", resendErr)
 				}
-				
+
 				// Find or create user in DB
 				if existingUser != nil {
 					// Update existing user with Cognito ID if not already set
@@ -175,7 +193,7 @@ func (s *SignupService) Signup(ctx context.Context, name, email string) (*models
 					}
 					return existingUser, nil
 				}
-				
+
 				// User exists in Cognito but not in DB, create it
 				cognitoIDPtr := &userSub
 				user := &models.User{

@@ -1,4 +1,4 @@
-.PHONY: build deploy clean deps migrate-up migrate-down migrate-install dev generate-secret cognito-local-up cognito-local-down cognito-local-setup cognito-setup
+.PHONY: build deploy clean deps migrate-up migrate-down migrate-install dev generate-secret cognito-local-up cognito-local-down cognito-local-setup cognito-setup test test-unit test-integration test-coverage
 
 # Install dependencies
 deps:
@@ -125,4 +125,26 @@ cognito-local-setup:
 
 # Alias for cognito-local-setup
 cognito-setup: cognito-local-setup
+
+# Run all tests (unit tests only, skips integration tests)
+test:
+	go test -v -short ./...
+
+# Run unit tests only
+test-unit:
+	go test -v -short ./...
+
+# Run integration tests (requires Docker and cognito-local)
+test-integration:
+	@echo "Running integration tests..."
+	@echo "Note: Integration tests require Docker for testcontainers"
+	go test -v ./internal/integration/...
+
+# Run tests with coverage report
+test-coverage:
+	go test -v -short -coverprofile=coverage.out ./...
+	go tool cover -html=coverage.out -o coverage.html
+	@echo "Coverage report generated: coverage.html"
+	@echo "Coverage summary:"
+	@go tool cover -func=coverage.out | tail -1
 

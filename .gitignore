@@ -33,3 +33,8 @@ node_modules/
 # Documentation plans
 doc/plans/
 
+# Test coverage and binaries
+coverage.out
+coverage.html
+*.test
+

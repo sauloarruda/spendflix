@@ -1,0 +1,118 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.24'
+
+    - name: Install dependencies
+      run: |
+        cd services/auth
+        go mod download
+
+    - name: Run unit tests
+      run: |
+        cd services/auth
+        make test-unit
+
+    - name: Run tests with coverage
+      run: |
+        cd services/auth
+        make test-coverage
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        file: ./services/auth/coverage.out
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+  integration-test:
+    runs-on: ubuntu-latest
+    # Skip integration tests in PRs to save CI time
+    # Uncomment if you want to run them on every PR
+    # if: github.event_name == 'push'
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.24'
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Install dependencies
+      run: |
+        cd services/auth
+        go mod download
+
+    - name: Setup Node.js (for cognito-local)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Start cognito-local
+      run: |
+        cd services/auth
+        npx cognito-local > /dev/null 2>&1 &
+        sleep 5
+        curl -f http://localhost:9229 || exit 1
+
+    - name: Setup Cognito
+      run: |
+        cd services/auth
+        make cognito-local-setup || echo "Cognito setup failed, continuing..."
+
+    - name: Run integration tests
+      run: |
+        cd services/auth
+        make test-integration
+      continue-on-error: true  # Allow failures since cognito-local setup might fail
+

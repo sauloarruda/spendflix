@@ -1,0 +1,210 @@
+package repositories
+
+import (
+	"context"
+	"testing"
+	"time"
+
+	"services/auth/internal/models"
+
+	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+	"github.com/testcontainers/testcontainers-go"
+	"github.com/testcontainers/testcontainers-go/modules/postgres"
+	"github.com/testcontainers/testcontainers-go/wait"
+)
+
+func setupTestDB(t *testing.T) (*pgxpool.Pool, func()) {
+	ctx := context.Background()
+
+	postgresContainer, err := postgres.RunContainer(ctx,
+		testcontainers.WithImage("postgres:15-alpine"),
+		postgres.WithDatabase("testdb"),
+		postgres.WithUsername("testuser"),
+		postgres.WithPassword("testpass"),
+		testcontainers.WithWaitStrategy(
+			wait.ForLog("database system is ready to accept connections").
+				WithOccurrence(2).
+				WithStartupTimeout(30*time.Second)),
+	)
+	require.NoError(t, err)
+
+	connStr, err := postgresContainer.ConnectionString(ctx, "sslmode=disable")
+	require.NoError(t, err)
+
+	// Create users table
+	pool, err := pgxpool.New(ctx, connStr)
+	require.NoError(t, err)
+
+	_, err = pool.Exec(ctx, `
+		CREATE TABLE IF NOT EXISTS users (
+			id SERIAL PRIMARY KEY,
+			name VARCHAR(255) NOT NULL,
+			email VARCHAR(255) NOT NULL UNIQUE,
+			temporary_password TEXT,
+			cognito_id VARCHAR(255),
+			created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+			updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+		)
+	`)
+	require.NoError(t, err)
+
+	cleanup := func() {
+		pool.Close()
+		postgresContainer.Terminate(ctx)
+	}
+
+	return pool, cleanup
+}
+
+func TestUserRepository_FindByEmail(t *testing.T) {
+	pool, cleanup := setupTestDB(t)
+	defer cleanup()
+
+	repo := NewUserRepository(pool)
+	ctx := context.Background()
+
+	t.Run("user not found", func(t *testing.T) {
+		user, err := repo.FindByEmail(ctx, "nonexistent@example.com")
+		assert.NoError(t, err)
+		assert.Nil(t, user)
+	})
+
+	t.Run("user found", func(t *testing.T) {
+		// Create a user first
+		user := &models.User{
+			Name:      "John Doe",
+			Email:     "john@example.com",
+			CognitoID: stringPtr("cognito-123"),
+		}
+		err := repo.Create(ctx, user)
+		require.NoError(t, err)
+
+		// Find the user
+		found, err := repo.FindByEmail(ctx, "john@example.com")
+		require.NoError(t, err)
+		require.NotNil(t, found)
+
+		assert.Equal(t, user.ID, found.ID)
+		assert.Equal(t, user.Name, found.Name)
+		assert.Equal(t, user.Email, found.Email)
+		assert.Equal(t, user.CognitoID, found.CognitoID)
+		assert.False(t, found.CreatedAt.IsZero())
+		assert.False(t, found.UpdatedAt.IsZero())
+	})
+}
+
+func TestUserRepository_Create(t *testing.T) {
+	pool, cleanup := setupTestDB(t)
+	defer cleanup()
+
+	repo := NewUserRepository(pool)
+	ctx := context.Background()
+
+	t.Run("create new user", func(t *testing.T) {
+		user := &models.User{
+			Name:              "Jane Doe",
+			Email:             "jane@example.com",
+			TemporaryPassword: stringPtr("encrypted-password"),
+			CognitoID:         stringPtr("cognito-456"),
+		}
+
+		err := repo.Create(ctx, user)
+		require.NoError(t, err)
+		assert.NotZero(t, user.ID)
+		assert.False(t, user.CreatedAt.IsZero())
+		assert.False(t, user.UpdatedAt.IsZero())
+
+		// Verify user was created
+		found, err := repo.FindByEmail(ctx, "jane@example.com")
+		require.NoError(t, err)
+		require.NotNil(t, found)
+		assert.Equal(t, user.Name, found.Name)
+		assert.Equal(t, user.Email, found.Email)
+	})
+
+	t.Run("create user with nil fields", func(t *testing.T) {
+		user := &models.User{
+			Name:  "Bob Smith",
+			Email: "bob@example.com",
+			// TemporaryPassword and CognitoID are nil
+		}
+
+		err := repo.Create(ctx, user)
+		require.NoError(t, err)
+		assert.NotZero(t, user.ID)
+	})
+
+	t.Run("duplicate email", func(t *testing.T) {
+		user1 := &models.User{
+			Name:  "User One",
+			Email: "duplicate@example.com",
+		}
+		err := repo.Create(ctx, user1)
+		require.NoError(t, err)
+
+		user2 := &models.User{
+			Name:  "User Two",
+			Email: "duplicate@example.com",
+		}
+		err = repo.Create(ctx, user2)
+		assert.Error(t, err, "Should fail on duplicate email")
+	})
+}
+
+func TestUserRepository_Update(t *testing.T) {
+	pool, cleanup := setupTestDB(t)
+	defer cleanup()
+
+	repo := NewUserRepository(pool)
+	ctx := context.Background()
+
+	t.Run("update existing user", func(t *testing.T) {
+		// Create a user
+		user := &models.User{
+			Name:      "Original Name",
+			Email:     "update@example.com",
+			CognitoID: stringPtr("cognito-original"),
+		}
+		err := repo.Create(ctx, user)
+		require.NoError(t, err)
+
+		originalUpdatedAt := user.UpdatedAt
+
+		// Wait a bit to ensure updated_at changes
+		time.Sleep(10 * time.Millisecond)
+
+		// Update the user
+		user.Name = "Updated Name"
+		user.TemporaryPassword = stringPtr("new-encrypted-password")
+		user.CognitoID = stringPtr("cognito-updated")
+
+		err = repo.Update(ctx, user)
+		require.NoError(t, err)
+		assert.True(t, user.UpdatedAt.After(originalUpdatedAt), "UpdatedAt should be updated")
+
+		// Verify changes
+		found, err := repo.FindByEmail(ctx, "update@example.com")
+		require.NoError(t, err)
+		require.NotNil(t, found)
+		assert.Equal(t, "Updated Name", found.Name)
+		assert.Equal(t, "new-encrypted-password", *found.TemporaryPassword)
+		assert.Equal(t, "cognito-updated", *found.CognitoID)
+	})
+
+	t.Run("update non-existent user", func(t *testing.T) {
+		user := &models.User{
+			ID:    99999,
+			Name:  "Non-existent",
+			Email: "nonexistent@example.com",
+		}
+		err := repo.Update(ctx, user)
+		assert.Error(t, err, "Should fail when updating non-existent user")
+	})
+}
+
+func stringPtr(s string) *string {
+	return &s
+}
+

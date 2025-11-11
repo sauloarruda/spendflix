@@ -5,15 +5,25 @@ import (
 	"encoding/json"
 	"services/auth/internal/models"
 	"services/auth/internal/services"
+	"services/auth/internal/testhelpers"
 
 	"github.com/aws/aws-lambda-go/events"
 )
 
+// SignupServiceInterface defines the interface for signup service (aliased for convenience)
+type SignupServiceInterface = testhelpers.SignupServiceInterface
+
 type SignupHandler struct {
-	signupService *services.SignupService
+	signupService SignupServiceInterface
 }
 
 func NewSignupHandler(signupService *services.SignupService) *SignupHandler {
+	return NewSignupHandlerWithInterface(signupService)
+}
+
+// NewSignupHandlerWithInterface creates a handler with an interface-based service
+// This allows for easier testing with mocks
+func NewSignupHandlerWithInterface(signupService SignupServiceInterface) *SignupHandler {
 	return &SignupHandler{
 		signupService: signupService,
 	}
