@@ -86,8 +86,9 @@ jobs:
           echo "Started cognito-local with PID: $COGNITO_PID"
           echo $COGNITO_PID > cognito-local.pid
           
-          # Give it a moment to start
-          sleep 3
+          # Give it more time to start (cognito-local can take 10-15 seconds)
+          echo "Waiting for cognito-local to initialize (this may take 15-20 seconds)..."
+          sleep 10
           
           # Verify process is still running
           if ! ps -p $COGNITO_PID > /dev/null 2>&1; then
@@ -98,50 +99,74 @@ jobs:
           fi
           echo "Process $COGNITO_PID is running"
           
-          # Wait for cognito-local to be ready (max 60 seconds)
+          # Check logs for readiness indicators
+          echo "Checking cognito-local logs..."
+          if [ -f cognito-local.log ]; then
+            echo "Recent logs:"
+            tail -20 cognito-local.log || true
+            # Check if we see "running" or "listening" messages
+            if grep -q "running\|listening\|Cognito Local" cognito-local.log 2>/dev/null; then
+              echo "Found startup messages in logs"
+            fi
+          fi
+          
+          # Wait for cognito-local to be ready (max 90 seconds)
           # Try both IPv4, IPv6, and localhost
           echo "Waiting for cognito-local to be ready..."
-          MAX_ATTEMPTS=60
+          MAX_ATTEMPTS=90
           ATTEMPT=0
           COGNITO_READY=false
           COGNITO_ENDPOINT=""
           while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+            # Check logs periodically
+            if [ $((ATTEMPT % 15)) -eq 0 ] && [ -f cognito-local.log ]; then
+              echo "Logs at attempt $ATTEMPT:"
+              tail -5 cognito-local.log || true
+            fi
+            
             # Try IPv6 first (as it seems to be what cognito-local prefers)
-            if curl -f -s http://[::1]:9229 > /dev/null 2>&1; then
+            if curl -f -s --max-time 2 http://[::1]:9229 > /dev/null 2>&1; then
               echo "✓ cognito-local is ready on IPv6 ([::1]:9229)!"
               COGNITO_READY=true
-              COGNITO_ENDPOINT="http://[::1]:9229"
+              COGNITO_ENDPOINT="http://localhost:9229"
               break
             fi
             # Try IPv4
-            if curl -f -s http://127.0.0.1:9229 > /dev/null 2>&1; then
+            if curl -f -s --max-time 2 http://127.0.0.1:9229 > /dev/null 2>&1; then
               echo "✓ cognito-local is ready on IPv4 (127.0.0.1:9229)!"
               COGNITO_READY=true
-              COGNITO_ENDPOINT="http://127.0.0.1:9229"
+              COGNITO_ENDPOINT="http://localhost:9229"
               break
             fi
             # Try localhost (should work for both)
-            if curl -f -s http://localhost:9229 > /dev/null 2>&1; then
+            if curl -f -s --max-time 2 http://localhost:9229 > /dev/null 2>&1; then
               echo "✓ cognito-local is ready on localhost!"
               COGNITO_READY=true
               COGNITO_ENDPOINT="http://localhost:9229"
               break
             fi
+            
             ATTEMPT=$((ATTEMPT + 1))
             if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
               echo "ERROR: cognito-local failed to start after $MAX_ATTEMPTS seconds"
               echo "Process status:"
               ps aux | grep cognito || true
-              echo "Logs (last 50 lines):"
-              tail -50 cognito-local.log || true
+              echo "Full logs:"
+              cat cognito-local.log || true
               echo "Port check:"
               netstat -tuln | grep 9229 || ss -tuln | grep 9229 || true
+              echo "Testing connectivity:"
+              curl -v http://127.0.0.1:9229 || true
+              curl -v http://localhost:9229 || true
+              curl -v http://[::1]:9229 || true
               exit 1
             fi
             if [ $((ATTEMPT % 10)) -eq 0 ]; then
               echo "Still waiting... (attempt $ATTEMPT/$MAX_ATTEMPTS)"
               echo "Process check:"
               ps -p $COGNITO_PID || echo "Process not found!"
+              echo "Port check:"
+              netstat -tuln | grep 9229 || ss -tuln | grep 9229 || true
             fi
             sleep 1
           done
