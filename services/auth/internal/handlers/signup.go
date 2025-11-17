@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"log"
 	"services/auth/internal/models"
 	"services/auth/internal/services"
 	"services/auth/internal/testhelpers"
@@ -34,7 +36,7 @@ func (h *SignupHandler) Handle(ctx context.Context, req events.APIGatewayV2HTTPR
 	// Parse request body
 	var signupReq models.SignupRequest
 	if err := json.Unmarshal([]byte(req.Body), &signupReq); err != nil {
-		return errorResponse(400, "invalid_request", "Invalid request body"), nil
+		return errorResponse(400, "invalid_request", fmt.Sprintf("Invalid request body: %v", err)), nil
 	}
 
 	// Validate fields
@@ -49,7 +51,9 @@ func (h *SignupHandler) Handle(ctx context.Context, req events.APIGatewayV2HTTPR
 		case errors.Is(err, services.ErrUserAlreadyExists):
 			return errorResponse(409, "user_exists", "User with this email already exists"), nil
 		default:
-			return errorResponse(500, "internal_error", "Internal server error"), nil
+			// Log the actual error for debugging
+			log.Printf("❌ Signup service error: %v", err)
+			return errorResponse(500, "internal_error", fmt.Sprintf("Internal server error: %v", err)), nil
 		}
 	}
 
