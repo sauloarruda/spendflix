@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	body {
+		font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+	}
+}
+
+@layer components {
+	/* Primary button */
+	button[type="submit"] {
+		@apply bg-primary text-white font-semibold;
+	}
+
+	button[type="submit"]:hover {
+		@apply bg-primary-600;
+	}
+
+	/* Text colors */
+	p {
+		@apply text-gray-600;
+	}
+
+	/* Input borders */
+	input {
+		@apply border-gray-200;
+	}
+
+	input:focus {
+		@apply border-primary ring-primary;
+	}
+
+	/* Label colors */
+	label {
+		@apply text-gray-500;
+	}
+
+	/* Error messages */
+	.error-message {
+		@apply text-red-500;
+	}
+
+	/* Success/info messages */
+	.info-message {
+		@apply bg-indigo-50 border-indigo-200 text-indigo-800;
+	}
+
+	/* Preline validation states */
+	.hs-input-error {
+		@apply border-red-500;
+	}
+
+	.hs-input-success {
+		@apply border-green-500;
+	}
+
+	/* Button disabled state */
+	button:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	/* Form inputs disabled state */
+	input:disabled,
+	textarea:disabled,
+	select:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+}
+
