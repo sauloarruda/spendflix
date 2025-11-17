@@ -73,10 +73,17 @@ jobs:
       - name: Start cognito-local
         run: |
           cd services/auth
+          # Install cognito-local if not already installed
+          if ! command -v npx &> /dev/null || ! npx cognito-local --version &> /dev/null; then
+            echo "Installing cognito-local..."
+            npm install -g cognito-local || npm install cognito-local
+          fi
+          
           # Start cognito-local in background
           echo "Starting cognito-local..."
           nohup npx cognito-local > cognito-local.log 2>&1 &
-          echo $! > cognito-local.pid
+          COGNITO_PID=$!
+          echo $COGNITO_PID > cognito-local.pid
           
           # Wait for cognito-local to be ready (max 30 seconds)
           echo "Waiting for cognito-local to start..."
@@ -88,6 +95,7 @@ jobs:
             if [ $i -eq 30 ]; then
               echo "cognito-local failed to start after 30 seconds"
               cat cognito-local.log || true
+              ps aux | grep cognito || true
               exit 1
             fi
             sleep 1
@@ -109,13 +117,14 @@ jobs:
         run: |
           cd services/web
           npm run test
-        finally:
-          - name: Stop cognito-local
-            if: always()
-            run: |
-              if [ -f services/auth/cognito-local.pid ]; then
-                kill $(cat services/auth/cognito-local.pid) || true
-              fi
+
+      - name: Stop cognito-local
+        if: always()
+        run: |
+          if [ -f services/auth/cognito-local.pid ]; then
+            kill $(cat services/auth/cognito-local.pid) || true
+            rm -f services/auth/cognito-local.pid
+          fi
 
       - name: Upload test results
         if: always()
