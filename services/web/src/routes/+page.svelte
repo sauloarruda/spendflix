@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
-  import Container from "$lib/components/preline/Container.svelte";
+  import Container from "$lib/components/ds/Container.svelte";
 
   let loading = $state(true);
 

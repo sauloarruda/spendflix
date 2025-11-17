@@ -1,22 +1,47 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
-  import Container from "$lib/components/preline/Container.svelte";
-  import Input from "$lib/components/preline/Input.svelte";
-  import Button from "$lib/components/preline/Button.svelte";
+  import Container from "$lib/components/ds/Container.svelte";
+  import Input from "$lib/components/ds/Input.svelte";
+  import Button from "$lib/components/ds/Button.svelte";
   import { browser } from "$app/environment";
 
+  // Get API URL from environment variable (set at build time)
+  // Fallback to default localhost:3000 for development
   const API_URL = browser
     ? import.meta.env.VITE_API_URL || "http://localhost:3000"
     : "";
+
+  // Debug: log API URL in development
+  if (browser && import.meta.env.DEV) {
+    console.log("API_URL:", API_URL);
+  }
 
   let loading = $state(true);
   let name = $state("");
   let email = $state("");
   let submitting = $state(false);
   let error = $state<string | null>(null);
-  let pendingConfirmation = $state(false);
-  let confirmationCode = $state("");
+
+  // Validation states
+  let nameValid = $state(false);
+  let emailValid = $state(false);
+
+  // Computed: form is valid when both fields are valid
+  $effect(() => {
+    // Validate name: at least 2 characters
+    nameValid = name.trim().length >= 2;
+
+    // Validate email: valid email format
+    if (email.trim()) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      emailValid = emailRegex.test(email.trim());
+    } else {
+      emailValid = false;
+    }
+  });
+
+  const isFormValid = $derived(nameValid && emailValid);
 
   onMount(() => {
     // Check if user already has tokens
@@ -49,7 +74,10 @@
 
       if (response.ok) {
         if (data.status === "pending_confirmation") {
-          pendingConfirmation = true;
+          // Redirect to confirmation page with name and email
+          goto(
+            `/auth/confirmation?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`,
+          );
         } else {
           // User created successfully
           // TODO: Handle success case
@@ -75,73 +103,55 @@
 <Container {loading} loadingMessage="Carregando...">
   {#snippet children()}
     {#if !loading}
-      {#if pendingConfirmation}
-        <h2 class="text-xl font-semibold mb-6 text-center">
-          Confirme seu email
-        </h2>
-        <p class="text-center mb-6">
-          Olá <strong>{name}</strong>, enviamos um código de confirmação para
-          <strong>{email}</strong>. Por favor, digite o código abaixo:
-        </p>
-        <div class="relative max-w-xs mx-auto">
+      <h2 class="text-xl font-semibold mb-6 text-center">
+        Descubra, Organize, Realize
+      </h2>
+
+      <p class="text-center mb-6">
+        Em menos de 20 minutos, você dará seu primeiro passo para descobrir para
+        onde está indo seu dinheiro todo mês.
+      </p>
+
+      {#if error}
+        <div class="error-message mb-4">{error}</div>
+      {/if}
+
+      <form onsubmit={handleSubmit} class="flex flex-col gap-6 my-8">
+        <div class="relative">
           <Input
             type="text"
-            id="confirmation-code"
-            name="code"
-            label="Código de confirmação"
-            placeholder="Código de confirmação"
+            id="name"
+            name="name"
+            label="Como podemos te chamar?"
+            placeholder="Como podemos te chamar?"
             required
-            errorMessage="Por favor, insira o código de confirmação."
-            bind:value={confirmationCode}
+            minlength={2}
+            errorMessage="Por favor, nos diga como podemos te chamar."
+            bind:value={name}
+            disabled={submitting}
           />
         </div>
-      {:else}
-        <h2 class="text-xl font-semibold mb-6 text-center">
-          Descubra, Organize, Realize
-        </h2>
-
-        <p class="text-center mb-6">
-          Em menos de 20 minutos, você dará seu primeiro passo para descobrir
-          para onde está indo seu dinheiro todo mês.
-        </p>
-
-        {#if error}
-          <div class="error-message mb-4">{error}</div>
-        {/if}
-
-        <form onsubmit={handleSubmit} class="flex flex-col gap-6 my-8">
-          <div class="relative">
-            <Input
-              type="text"
-              id="name"
-              name="name"
-              label="Como podemos te chamar?"
-              placeholder="Como podemos te chamar?"
-              required
-              minlength={2}
-              errorMessage="Por favor, nos diga como podemos te chamar."
-              bind:value={name}
-              disabled={submitting}
-            />
-          </div>
-          <div class="relative">
-            <Input
-              type="email"
-              id="email"
-              name="email"
-              label="Seu melhor email"
-              placeholder="Seu melhor email"
-              required
-              errorMessage="Por favor, insira um email válido."
-              bind:value={email}
-              disabled={submitting}
-            />
-          </div>
-          <Button type="submit" loading={submitting} disabled={submitting}>
-            Continuar
-          </Button>
-        </form>
-      {/if}
+        <div class="relative">
+          <Input
+            type="email"
+            id="email"
+            name="email"
+            label="Seu melhor email"
+            placeholder="Seu melhor email"
+            required
+            errorMessage="Por favor, insira um email válido."
+            bind:value={email}
+            disabled={submitting}
+          />
+        </div>
+        <Button
+          type="submit"
+          loading={submitting}
+          disabled={submitting || !isFormValid}
+        >
+          Continuar
+        </Button>
+      </form>
     {/if}
   {/snippet}
 </Container>

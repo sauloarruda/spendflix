@@ -134,6 +134,15 @@ func startLocalServer() {
 	}
 
 	http.HandleFunc("/auth/sign-up", func(w http.ResponseWriter, r *http.Request) {
+		// Handle CORS preflight
+		if r.Method == "OPTIONS" {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+			w.WriteHeader(200)
+			return
+		}
+
 		// Read request body
 		body := ""
 		if r.Body != nil {
@@ -173,6 +182,11 @@ func startLocalServer() {
 			w.Write([]byte(`{"error": "Internal server error"}`))
 			return
 		}
+
+		// Add CORS headers to response
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
 		// Write response
 		for k, v := range resp.Headers {

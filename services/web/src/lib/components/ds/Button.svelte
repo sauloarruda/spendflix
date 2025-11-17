@@ -3,9 +3,15 @@
     type?: "button" | "submit" | "reset";
     disabled?: boolean;
     loading?: boolean;
+    children?: import("svelte").Snippet;
   }
 
-  let { type = "button", disabled = false, loading = false }: Props = $props();
+  let {
+    type = "button",
+    disabled = false,
+    loading = false,
+    children,
+  }: Props = $props();
 
   let buttonElement: HTMLButtonElement;
 </script>
@@ -14,10 +20,7 @@
   bind:this={buttonElement}
   {type}
   {disabled}
-  class="w-full mt-8 py-3 px-4 rounded-lg flex items-center justify-center gap-2 {disabled ||
-  loading
-    ? 'opacity-60 cursor-not-allowed'
-    : ''}"
+  class="w-full mt-8 py-3 px-4 rounded-lg flex items-center justify-center gap-2 bg-primary text-white font-semibold hover:bg-primary-600 disabled:opacity-60 disabled:cursor-not-allowed"
 >
   {#if loading}
     <div
@@ -28,5 +31,5 @@
       <span class="sr-only">Loading...</span>
     </div>
   {/if}
-  <slot />
+  {@render children()}
 </button>
