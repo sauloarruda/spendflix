@@ -70,6 +70,33 @@ jobs:
           go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
           migrate -path ./migrations -database "$DATABASE_URL" up
 
+      - name: Start cognito-local
+        run: |
+          cd services/auth
+          # Start cognito-local in background
+          echo "Starting cognito-local..."
+          nohup npx cognito-local > cognito-local.log 2>&1 &
+          echo $! > cognito-local.pid
+          
+          # Wait for cognito-local to be ready (max 30 seconds)
+          echo "Waiting for cognito-local to start..."
+          for i in {1..30}; do
+            if curl -f http://localhost:9229 > /dev/null 2>&1; then
+              echo "cognito-local is ready!"
+              break
+            fi
+            if [ $i -eq 30 ]; then
+              echo "cognito-local failed to start after 30 seconds"
+              cat cognito-local.log || true
+              exit 1
+            fi
+            sleep 1
+          done
+          
+          # Setup Cognito User Pool and Client
+          echo "Setting up Cognito..."
+          make cognito-local-setup || echo "Cognito setup failed, continuing..."
+
       - name: Run E2E tests
         env:
           DATABASE_URL: postgres://test:test@localhost:5432/spendflix_test?sslmode=disable
@@ -78,9 +105,17 @@ jobs:
           AWS_REGION: us-east-1
           COGNITO_USER_POOL_ID: test-pool-id
           COGNITO_CLIENT_ID: test-client-id
+          COGNITO_ENDPOINT: http://localhost:9229
         run: |
           cd services/web
           npm run test
+        finally:
+          - name: Stop cognito-local
+            if: always()
+            run: |
+              if [ -f services/auth/cognito-local.pid ]; then
+                kill $(cat services/auth/cognito-local.pid) || true
+              fi
 
       - name: Upload test results
         if: always()
