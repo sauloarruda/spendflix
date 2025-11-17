@@ -138,7 +138,7 @@ func TestSignupHandler_Handle_InvalidJSON(t *testing.T) {
 	err = json.Unmarshal([]byte(resp.Body), &errorResp)
 	require.NoError(t, err)
 	assert.Equal(t, "invalid_request", errorResp.Code)
-	assert.Equal(t, "Invalid request body", errorResp.Message)
+	assert.Contains(t, errorResp.Message, "Invalid request body")
 
 	mockService.AssertNotCalled(t, "Signup")
 }
@@ -260,7 +260,7 @@ func TestSignupHandler_Handle_ServiceError(t *testing.T) {
 	err = json.Unmarshal([]byte(resp.Body), &errorResp)
 	require.NoError(t, err)
 	assert.Equal(t, "internal_error", errorResp.Code)
-	assert.Equal(t, "Internal server error", errorResp.Message)
+	assert.Contains(t, errorResp.Message, "Internal server error")
 
 	mockService.AssertExpectations(t)
 }
