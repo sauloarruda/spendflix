@@ -99,12 +99,32 @@ jobs:
           echo "Process $COGNITO_PID is running"
           
           # Wait for cognito-local to be ready (max 60 seconds)
-          echo "Waiting for cognito-local to be ready on http://localhost:9229..."
+          # Try both IPv4, IPv6, and localhost
+          echo "Waiting for cognito-local to be ready..."
           MAX_ATTEMPTS=60
           ATTEMPT=0
+          COGNITO_READY=false
+          COGNITO_ENDPOINT=""
           while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+            # Try IPv6 first (as it seems to be what cognito-local prefers)
+            if curl -f -s http://[::1]:9229 > /dev/null 2>&1; then
+              echo "✓ cognito-local is ready on IPv6 ([::1]:9229)!"
+              COGNITO_READY=true
+              COGNITO_ENDPOINT="http://[::1]:9229"
+              break
+            fi
+            # Try IPv4
+            if curl -f -s http://127.0.0.1:9229 > /dev/null 2>&1; then
+              echo "✓ cognito-local is ready on IPv4 (127.0.0.1:9229)!"
+              COGNITO_READY=true
+              COGNITO_ENDPOINT="http://127.0.0.1:9229"
+              break
+            fi
+            # Try localhost (should work for both)
             if curl -f -s http://localhost:9229 > /dev/null 2>&1; then
-              echo "✓ cognito-local is ready!"
+              echo "✓ cognito-local is ready on localhost!"
+              COGNITO_READY=true
+              COGNITO_ENDPOINT="http://localhost:9229"
               break
             fi
             ATTEMPT=$((ATTEMPT + 1))
@@ -126,9 +146,69 @@ jobs:
             sleep 1
           done
           
+          if [ "$COGNITO_READY" != "true" ]; then
+            echo "ERROR: cognito-local never became ready"
+            exit 1
+          fi
+          
+          echo "Using endpoint: $COGNITO_ENDPOINT"
+          
+          # For AWS CLI, use localhost instead of IPv6 format (AWS CLI may not support [::1])
+          # localhost should work for both IPv4 and IPv6
+          if [[ "$COGNITO_ENDPOINT" == *"[::1]"* ]]; then
+            SETUP_ENDPOINT="http://localhost:9229"
+            echo "Converting IPv6 endpoint to localhost for AWS CLI compatibility"
+          else
+            SETUP_ENDPOINT="$COGNITO_ENDPOINT"
+          fi
+          
+          # Save endpoint for tests (use localhost for compatibility)
+          echo "COGNITO_ENDPOINT=http://localhost:9229" >> $GITHUB_ENV
+          
           # Setup Cognito User Pool and Client
           echo "Setting up Cognito..."
-          make cognito-local-setup || echo "Cognito setup failed, continuing..."
+          export COGNITO_ENDPOINT=$SETUP_ENDPOINT
+          SETUP_OUTPUT=$(make cognito-local-setup 2>&1)
+          SETUP_EXIT_CODE=$?
+          
+          if [ $SETUP_EXIT_CODE -ne 0 ]; then
+            echo "Cognito setup failed!"
+            echo "Setup output:"
+            echo "$SETUP_OUTPUT"
+            echo "Checking if cognito-local is still running..."
+            ps aux | grep cognito || true
+            echo "Testing connectivity..."
+            curl -v $COGNITO_ENDPOINT || curl -v http://127.0.0.1:9229 || curl -v http://[::1]:9229 || true
+            exit 1
+          fi
+          
+          # Extract User Pool ID and Client ID from setup script output
+          echo "Extracting Cognito configuration..."
+          echo "Setup output:"
+          echo "$SETUP_OUTPUT"
+          
+          COGNITO_USER_POOL_ID=$(echo "$SETUP_OUTPUT" | grep "^COGNITO_USER_POOL_ID=" | head -1 | cut -d'=' -f2 | tr -d ' ')
+          COGNITO_CLIENT_ID=$(echo "$SETUP_OUTPUT" | grep "^COGNITO_CLIENT_ID=" | head -1 | cut -d'=' -f2 | tr -d ' ')
+          
+          if [ -n "$COGNITO_USER_POOL_ID" ] && [ -n "$COGNITO_CLIENT_ID" ]; then
+            echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID" >> $GITHUB_ENV
+            echo "COGNITO_CLIENT_ID=$COGNITO_CLIENT_ID" >> $GITHUB_ENV
+            echo "✓ Cognito configured: Pool=$COGNITO_USER_POOL_ID, Client=$COGNITO_CLIENT_ID"
+          else
+            echo "WARNING: Could not extract Cognito IDs from setup output"
+            echo "Trying alternative extraction method..."
+            COGNITO_USER_POOL_ID=$(echo "$SETUP_OUTPUT" | grep "User Pool created:" | sed 's/.*User Pool created: \([^ ]*\).*/\1/')
+            COGNITO_CLIENT_ID=$(echo "$SETUP_OUTPUT" | grep "User Pool Client created:" | sed 's/.*User Pool Client created: \([^ ]*\).*/\1/')
+            if [ -n "$COGNITO_USER_POOL_ID" ] && [ -n "$COGNITO_CLIENT_ID" ]; then
+              echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID" >> $GITHUB_ENV
+              echo "COGNITO_CLIENT_ID=$COGNITO_CLIENT_ID" >> $GITHUB_ENV
+              echo "✓ Cognito configured: Pool=$COGNITO_USER_POOL_ID, Client=$COGNITO_CLIENT_ID"
+            else
+              echo "ERROR: Could not extract Cognito IDs, using defaults"
+              echo "COGNITO_USER_POOL_ID=local_test_pool" >> $GITHUB_ENV
+              echo "COGNITO_CLIENT_ID=test_client_id" >> $GITHUB_ENV
+            fi
+          fi
 
       - name: Run E2E tests
         env:
@@ -136,9 +216,9 @@ jobs:
           PORT: '3001'
           ENCRYPTION_SECRET: test-secret-key-for-ci-testing-only-32-chars
           AWS_REGION: us-east-1
-          COGNITO_USER_POOL_ID: test-pool-id
-          COGNITO_CLIENT_ID: test-client-id
-          COGNITO_ENDPOINT: http://localhost:9229
+          COGNITO_USER_POOL_ID: ${{ env.COGNITO_USER_POOL_ID || 'local_test_pool' }}
+          COGNITO_CLIENT_ID: ${{ env.COGNITO_CLIENT_ID || 'test_client_id' }}
+          COGNITO_ENDPOINT: ${{ env.COGNITO_ENDPOINT || 'http://127.0.0.1:9229' }}
         run: |
           cd services/web
           npm run test
