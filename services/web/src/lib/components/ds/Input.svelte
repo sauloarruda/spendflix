@@ -70,8 +70,9 @@
     validate();
   }
 
-  function handleInput(e: Event) {
-    value = (e.target as HTMLInputElement).value;
+  function handleInput() {
+    // bind:value handles the value update automatically
+    // Only clear error if one exists
     if (error) {
       error = null;
     }
