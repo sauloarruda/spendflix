@@ -71,32 +71,57 @@ jobs:
           migrate -path ./migrations -database "$DATABASE_URL" up
 
       - name: Start cognito-local
+        timeout-minutes: 3
         run: |
           cd services/auth
-          # Install cognito-local if not already installed
-          if ! command -v npx &> /dev/null || ! npx cognito-local --version &> /dev/null; then
-            echo "Installing cognito-local..."
-            npm install -g cognito-local || npm install cognito-local
-          fi
+          
+          # Pre-install cognito-local to avoid long download during startup
+          echo "Pre-installing cognito-local..."
+          npm install cognito-local --no-save 2>&1 | head -20 || echo "Installation may have completed or failed, continuing..."
           
           # Start cognito-local in background
           echo "Starting cognito-local..."
-          nohup npx cognito-local > cognito-local.log 2>&1 &
+          npx cognito-local > cognito-local.log 2>&1 &
           COGNITO_PID=$!
+          echo "Started cognito-local with PID: $COGNITO_PID"
           echo $COGNITO_PID > cognito-local.pid
           
-          # Wait for cognito-local to be ready (max 30 seconds)
-          echo "Waiting for cognito-local to start..."
-          for i in {1..30}; do
-            if curl -f http://localhost:9229 > /dev/null 2>&1; then
-              echo "cognito-local is ready!"
+          # Give it a moment to start
+          sleep 3
+          
+          # Verify process is still running
+          if ! ps -p $COGNITO_PID > /dev/null 2>&1; then
+            echo "ERROR: cognito-local process died!"
+            echo "Logs:"
+            cat cognito-local.log || true
+            exit 1
+          fi
+          echo "Process $COGNITO_PID is running"
+          
+          # Wait for cognito-local to be ready (max 60 seconds)
+          echo "Waiting for cognito-local to be ready on http://localhost:9229..."
+          MAX_ATTEMPTS=60
+          ATTEMPT=0
+          while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+            if curl -f -s http://localhost:9229 > /dev/null 2>&1; then
+              echo "✓ cognito-local is ready!"
               break
             fi
-            if [ $i -eq 30 ]; then
-              echo "cognito-local failed to start after 30 seconds"
-              cat cognito-local.log || true
+            ATTEMPT=$((ATTEMPT + 1))
+            if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
+              echo "ERROR: cognito-local failed to start after $MAX_ATTEMPTS seconds"
+              echo "Process status:"
               ps aux | grep cognito || true
+              echo "Logs (last 50 lines):"
+              tail -50 cognito-local.log || true
+              echo "Port check:"
+              netstat -tuln | grep 9229 || ss -tuln | grep 9229 || true
               exit 1
+            fi
+            if [ $((ATTEMPT % 10)) -eq 0 ]; then
+              echo "Still waiting... (attempt $ATTEMPT/$MAX_ATTEMPTS)"
+              echo "Process check:"
+              ps -p $COGNITO_PID || echo "Process not found!"
             fi
             sleep 1
           done
@@ -108,7 +133,7 @@ jobs:
       - name: Run E2E tests
         env:
           DATABASE_URL: postgres://test:test@localhost:5432/spendflix_test?sslmode=disable
-          PORT: '3000'
+          PORT: '3001'
           ENCRYPTION_SECRET: test-secret-key-for-ci-testing-only-32-chars
           AWS_REGION: us-east-1
           COGNITO_USER_POOL_ID: test-pool-id
