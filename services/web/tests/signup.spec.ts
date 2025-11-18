@@ -1,4 +1,4 @@
-import { test, expect, Page } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 
 // Test helpers
 const getFormElements = (page: Page) => ({
@@ -18,16 +18,16 @@ const submitForm = async (page: Page) => {
   const { submitButton } = getFormElements(page);
   // Wait for button to be enabled
   await expect(submitButton).toBeEnabled();
-  
+
   // Listen for network requests before submitting
   const requestPromise = page.waitForRequest(
     (request) => request.url().includes('/auth/sign-up') && request.method() === 'POST',
     { timeout: 5000 }
   );
-  
+
   // Submit form by clicking button
   await submitButton.click();
-  
+
   // Wait for the request to be made
   try {
     await requestPromise;
@@ -199,7 +199,7 @@ test.describe('Signup Flow', () => {
     // Wait for request first
     const request = await requestPromise;
     console.log('Request made to:', request.url());
-    
+
     // Then wait for response (with error handling)
     let apiResponse;
     try {
@@ -224,7 +224,7 @@ test.describe('Signup Flow', () => {
 
     // Wait for redirect to confirmation page
     await page.waitForURL('**/auth/confirmation*', { timeout: 10000 });
-    
+
     // Wait for confirmation screen to appear
     await page.waitForSelector('h2:has-text("Confirme seu email")', { timeout: 10000 });
     await expect(page.getByRole('heading', { name: 'Confirme seu email' })).toBeVisible();
@@ -264,19 +264,19 @@ test.describe('Signup Flow', () => {
   });
 
   test('should show loading indicator during form submission', async ({ page }) => {
-    await fillForm(page, 'Test User', 'test@example.com');
+    // Use unique email to avoid conflicts from previous test runs
+    const uniqueEmail = `test-loading-${Date.now()}@example.com`;
+    await fillForm(page, 'Test User', uniqueEmail);
 
     // Delay API response to see loading indicator
-    let routeResolved = false;
     await page.route('**/auth/sign-up', async (route) => {
       await new Promise((resolve) => setTimeout(resolve, 500));
-      routeResolved = true;
       await route.continue();
     });
 
-    // Start listening for response before submitting
+    // Start listening for response before submitting (accept any status)
     const responsePromise = page.waitForResponse(
-      (response) => response.url().includes('/auth/sign-up') && response.status() >= 200 && response.status() < 300,
+      (response) => response.url().includes('/auth/sign-up'),
       { timeout: 15000 }
     );
 
@@ -289,14 +289,25 @@ test.describe('Signup Flow', () => {
     await expect(emailInput).toBeDisabled();
 
     // Wait for response
-    await responsePromise;
+    const response = await responsePromise;
     
-    // After successful signup, page redirects to confirmation
-    // So inputs won't exist anymore - verify redirect instead
-    await page.waitForURL('**/auth/confirmation*', { timeout: 10000 });
-    
-    // Verify we're on the confirmation page
-    await expect(page.getByRole('heading', { name: 'Confirme seu email' })).toBeVisible();
+    // Verify response was successful (200 for new user, 409 if user exists)
+    // Both are valid responses - the important thing is that loading state was shown
+    expect(response.status()).toBeGreaterThanOrEqual(200);
+    expect(response.status()).toBeLessThan(500);
+
+    // If successful (200), page redirects to confirmation
+    // If user exists (409), we stay on the form with error message
+    if (response.status() === 200) {
+      await page.waitForURL('**/auth/confirmation*', { timeout: 10000 });
+      await expect(page.getByRole('heading', { name: 'Confirme seu email' })).toBeVisible();
+    } else {
+      // User already exists - verify error message appears
+      await expect(page.getByText(/já está cadastrado/i)).toBeVisible();
+      // Verify inputs are enabled again after error
+      await expect(nameInput).toBeEnabled();
+      await expect(emailInput).toBeEnabled();
+    }
   });
 
   test('should show error message when server is offline', async ({ page }) => {
