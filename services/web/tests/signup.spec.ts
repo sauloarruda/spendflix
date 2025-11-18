@@ -290,7 +290,7 @@ test.describe('Signup Flow', () => {
 
     // Wait for response
     const response = await responsePromise;
-    
+
     // Verify response was successful (200 for new user, 409 if user exists)
     // Both are valid responses - the important thing is that loading state was shown
     expect(response.status()).toBeGreaterThanOrEqual(200);
