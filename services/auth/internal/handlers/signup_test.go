@@ -53,13 +53,13 @@ func TestSignupHandler_Handle_Success(t *testing.T) {
 
 	mockService.On("Signup", ctx, "John Doe", "john@example.com").Return(&models.SignupOutcome{
 		User:   expectedUser,
-		Status: models.SignupStatusCreated,
+		Status: models.SignupStatusPendingConfirmation,
 	}, nil)
 
 	resp, err := handler.Handle(ctx, req)
 
 	require.NoError(t, err)
-	assert.Equal(t, 201, resp.StatusCode)
+	assert.Equal(t, 200, resp.StatusCode)
 	assert.Equal(t, "application/json", resp.Headers["Content-Type"])
 
 	var response models.SignupResponse
@@ -68,7 +68,7 @@ func TestSignupHandler_Handle_Success(t *testing.T) {
 	assert.Equal(t, expectedUser.ID, response.ID)
 	assert.Equal(t, expectedUser.Name, response.Name)
 	assert.Equal(t, expectedUser.Email, response.Email)
-	assert.Equal(t, models.SignupStatusCreated, response.Status)
+	assert.Equal(t, models.SignupStatusPendingConfirmation, response.Status)
 
 	mockService.AssertExpectations(t)
 }

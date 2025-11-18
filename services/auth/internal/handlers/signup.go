@@ -71,10 +71,8 @@ func (h *SignupHandler) Handle(ctx context.Context, req events.APIGatewayV2HTTPR
 		return errorResponse(500, "internal_error", "Failed to marshal response"), nil
 	}
 
-	statusCode := 201
-	if result.Status == models.SignupStatusPendingConfirmation {
-		statusCode = 200
-	}
+	// All new signups require email confirmation, so return 200
+	statusCode := 200
 
 	return events.APIGatewayV2HTTPResponse{
 		StatusCode: statusCode,
