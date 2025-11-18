@@ -276,7 +276,7 @@ test.describe('Signup Flow', () => {
 
     // Start listening for response before submitting
     const responsePromise = page.waitForResponse(
-      (response) => response.url().includes('/auth/sign-up'),
+      (response) => response.url().includes('/auth/sign-up') && response.status() >= 200 && response.status() < 300,
       { timeout: 15000 }
     );
 
@@ -288,11 +288,15 @@ test.describe('Signup Flow', () => {
     await expect(nameInput).toBeDisabled();
     await expect(emailInput).toBeDisabled();
 
-    // Wait for response and verify loading disappears
+    // Wait for response
     await responsePromise;
-    await waitForButtonLoading(page, false);
-    await expect(nameInput).toBeEnabled();
-    await expect(emailInput).toBeEnabled();
+    
+    // After successful signup, page redirects to confirmation
+    // So inputs won't exist anymore - verify redirect instead
+    await page.waitForURL('**/auth/confirmation*', { timeout: 10000 });
+    
+    // Verify we're on the confirmation page
+    await expect(page.getByRole('heading', { name: 'Confirme seu email' })).toBeVisible();
   });
 
   test('should show error message when server is offline', async ({ page }) => {
