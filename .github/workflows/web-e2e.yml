@@ -125,22 +125,26 @@ jobs:
             fi
             
             # Try IPv6 first (as it seems to be what cognito-local prefers)
-            if curl -f -s --max-time 2 http://[::1]:9229 > /dev/null 2>&1; then
-              echo "✓ cognito-local is ready on IPv6 ([::1]:9229)!"
+            # Accept any HTTP response (including 404) as success - means server is responding
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 2 http://[::1]:9229 2>/dev/null || echo "000")
+            if [ "$HTTP_CODE" != "000" ] && [ "$HTTP_CODE" != "" ]; then
+              echo "✓ cognito-local is ready on IPv6 ([::1]:9229) - HTTP $HTTP_CODE!"
               COGNITO_READY=true
               COGNITO_ENDPOINT="http://localhost:9229"
               break
             fi
             # Try IPv4
-            if curl -f -s --max-time 2 http://127.0.0.1:9229 > /dev/null 2>&1; then
-              echo "✓ cognito-local is ready on IPv4 (127.0.0.1:9229)!"
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 2 http://127.0.0.1:9229 2>/dev/null || echo "000")
+            if [ "$HTTP_CODE" != "000" ] && [ "$HTTP_CODE" != "" ]; then
+              echo "✓ cognito-local is ready on IPv4 (127.0.0.1:9229) - HTTP $HTTP_CODE!"
               COGNITO_READY=true
               COGNITO_ENDPOINT="http://localhost:9229"
               break
             fi
             # Try localhost (should work for both)
-            if curl -f -s --max-time 2 http://localhost:9229 > /dev/null 2>&1; then
-              echo "✓ cognito-local is ready on localhost!"
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 2 http://localhost:9229 2>/dev/null || echo "000")
+            if [ "$HTTP_CODE" != "000" ] && [ "$HTTP_CODE" != "" ]; then
+              echo "✓ cognito-local is ready on localhost - HTTP $HTTP_CODE!"
               COGNITO_READY=true
               COGNITO_ENDPOINT="http://localhost:9229"
               break
