@@ -54,7 +54,11 @@
       }
     }
 
-    if (minlength && value.trim().length < minlength) {
+    if (
+      minlength &&
+      value.trim().length > 0 &&
+      value.trim().length < minlength
+    ) {
       error =
         errorMessage ||
         `Este campo deve ter pelo menos ${minlength} caracteres.`;
