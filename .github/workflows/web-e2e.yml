@@ -53,6 +53,8 @@ jobs:
           # Use npm install to ensure platform-specific optional dependencies (like @rollup/rollup-linux-x64-gnu) are installed
           # npm ci may skip optional dependencies if package-lock.json was generated on a different platform
           npm install
+          # Explicitly ensure Rollup platform-specific dependencies are installed
+          npm install --no-save @rollup/rollup-linux-x64-gnu || npm install rollup --force
 
       - name: Generate API client from OpenAPI spec
         run: |

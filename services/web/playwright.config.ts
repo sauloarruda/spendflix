@@ -57,7 +57,7 @@ export default defineConfig({
 				: "VITE_API_URL=http://localhost:3001 npm run build && VITE_API_URL=http://localhost:3001 npm run preview -- --port 8081",
 			port: 8081, // Test web port (dev uses 8080)
 			reuseExistingServer: false, // Always create new server for tests
-			timeout: 30000, // 30 seconds for build and startup
+			timeout: 60000, // 60 seconds for build and startup (increased for CI)
 			stdout: "pipe",
 			stderr: "pipe",
 			env: {
