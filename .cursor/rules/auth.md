@@ -92,4 +92,3 @@ services/auth/
 - Avoid premature optimization
 - Use meaningful variable names
 - Follow single responsibility principle
-

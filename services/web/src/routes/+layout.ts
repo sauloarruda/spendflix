@@ -1,4 +1,3 @@
-import '../lib/i18n';
+import "../lib/i18n";
 
 export const prerender = false;
-
