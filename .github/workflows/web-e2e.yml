@@ -52,6 +52,11 @@ jobs:
           cd services/web
           npm ci
 
+      - name: Generate API client from OpenAPI spec
+        run: |
+          cd services/web
+          npm run generate:api
+
       - name: Install Playwright browsers
         run: |
           cd services/web

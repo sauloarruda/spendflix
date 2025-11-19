@@ -1,0 +1,188 @@
+openapi: 3.0.3
+info:
+  title: Spendflix Auth API
+  version: 1.0.0
+  description: |
+    Spendflix authentication API.
+
+    This API manages user registration and authentication.
+
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+  - url: https://api.spendflix.com
+    description: Production server
+  - url: https://api-staging.spendflix.com
+    description: Staging server
+
+paths:
+  /auth/sign-up:
+    post:
+      summary: Create new user account
+      description: |
+        Registers a new user in the system.
+
+        After registration, the user will receive a confirmation email and must
+        confirm their account before being able to log in.
+      operationId: signUp
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignupRequest"
+            examples:
+              validRequest:
+                summary: Valid request
+                value:
+                  name: "João Silva"
+                  email: "joao@example.com"
+      responses:
+        "200":
+          description: |
+            User created successfully. The status will always be `pending_confirmation`,
+            indicating that the user needs to confirm their email before logging in.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignupResponse"
+              examples:
+                success:
+                  summary: Success
+                  value:
+                    id: 1
+                    name: "João Silva"
+                    email: "joao@example.com"
+                    status: "pending_confirmation"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                invalidRequest:
+                  summary: Invalid JSON
+                  value:
+                    code: "invalid_request"
+                    message: "Invalid request body"
+                missingFields:
+                  summary: Missing required fields
+                  value:
+                    code: "missing_fields"
+                    message: "Name and email are required"
+        "409":
+          description: |
+            Conflict - user already exists with this email.
+            The client should redirect to the login page.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                userExists:
+                  summary: User already exists
+                  value:
+                    code: "user_exists"
+                    message: "User with this email already exists"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                serverError:
+                  summary: Server error
+                  value:
+                    code: "internal_error"
+                    message: "Internal server error"
+
+components:
+  schemas:
+    SignupRequest:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        name:
+          type: string
+          minLength: 2
+          description: User's full name
+          example: "João Silva"
+        email:
+          type: string
+          format: email
+          description: User's email address (will be used for login)
+          example: "joao@example.com"
+
+    SignupResponse:
+      type: object
+      required:
+        - id
+        - name
+        - email
+        - status
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique user ID in the database
+          example: 1
+        name:
+          type: string
+          description: User's name
+          example: "João Silva"
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: "joao@example.com"
+        status:
+          type: string
+          enum:
+            - pending_confirmation
+            - confirmed
+          description: |
+            User registration status.
+            - `pending_confirmation`: User created, awaiting email confirmation
+            - `confirmed`: User confirmed their email and can log in
+          example: "pending_confirmation"
+
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - invalid_request
+            - missing_fields
+            - user_exists
+            - internal_error
+          description: |
+            Standardized error code to facilitate frontend error handling.
+            Codes are mapped to translation keys in the i18n system.
+          example: "user_exists"
+        message:
+          type: string
+          description: |
+            Error message in English (backend default).
+            The frontend should use the `code` to translate the message.
+          example: "User with this email already exists"
+
+  securitySchemes:
+    # For future use when implementing authentication
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+tags:
+  - name: Authentication
+    description: Operations related to user authentication and registration
