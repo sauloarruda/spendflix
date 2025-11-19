@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import Container from "$lib/components/ds/Container.svelte";
+  import { _ } from "$lib/i18n";
 
   let loading = $state(true);
 
@@ -20,14 +21,14 @@
   });
 </script>
 
-<Container {loading} loadingMessage="Carregando...">
+<Container {loading}>
   {#snippet children()}
     <div>
       <h2 class="text-xl font-semibold mb-6 text-center">
-        Bem-vindo ao Spendflix
+        {$_("home.welcome")}
       </h2>
       <p class="text-center mb-6">
-        Você está autenticado e pronto para começar!
+        {$_("home.ready")}
       </p>
     </div>
   {/snippet}

@@ -31,5 +31,7 @@
       <span class="sr-only">Loading...</span>
     </div>
   {/if}
-  {@render children()}
+  {#if children}
+    {@render children()}
+  {/if}
 </button>

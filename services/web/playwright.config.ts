@@ -23,6 +23,8 @@ export default defineConfig({
     headless: process.env.HEADLESS !== 'false',
     // Navigation timeout
     navigationTimeout: 10000,
+    // Set locale to English for tests
+    locale: 'en-US',
   },
 
   projects: [

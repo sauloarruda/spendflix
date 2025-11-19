@@ -5,6 +5,8 @@
   import Input from "$lib/components/ds/Input.svelte";
   import Button from "$lib/components/ds/Button.svelte";
   import { browser } from "$app/environment";
+  import { _ } from "$lib/i18n";
+  import { translateApiError } from "$lib/i18n/helpers";
 
   // Get API URL from environment variable (set at build time)
   // Fallback to default localhost:3000 for development
@@ -83,33 +85,27 @@
           // TODO: Handle success case
         }
       } else {
-        if (data.code === "user_exists") {
-          error = "Este email já está cadastrado. Por favor, faça login.";
-          // TODO: Redirect to login page
-        } else {
-          error =
-            data.message || "Ocorreu um erro ao processar sua solicitação.";
-        }
+        // Traduz erro baseado no código retornado pela API
+        error = translateApiError(data.code, data.message);
+        // TODO: Redirect to login page if user_exists
       }
     } catch (err) {
-      error =
-        "Não foi possível conectar ao servidor. Por favor, verifique sua conexão e tente novamente.";
+      error = $_("auth.signup.errors.connectionError");
     } finally {
       submitting = false;
     }
   }
 </script>
 
-<Container {loading} loadingMessage="Carregando...">
+<Container {loading}>
   {#snippet children()}
     {#if !loading}
       <h2 class="text-xl font-semibold mb-6 text-center">
-        Descubra, Organize, Realize
+        {$_("auth.signup.title")}
       </h2>
 
       <p class="text-center mb-6">
-        Em menos de 20 minutos, você dará seu primeiro passo para descobrir para
-        onde está indo seu dinheiro todo mês.
+        {$_("auth.signup.description")}
       </p>
 
       {#if error}
@@ -122,11 +118,11 @@
             type="text"
             id="name"
             name="name"
-            label="Como podemos te chamar?"
-            placeholder="Como podemos te chamar?"
+            label={$_("auth.signup.fields.name.label")}
+            placeholder={$_("auth.signup.fields.name.placeholder")}
             required
             minlength={2}
-            errorMessage="Por favor, nos diga como podemos te chamar."
+            errorMessage={$_("auth.signup.fields.name.error")}
             bind:value={name}
             disabled={submitting}
           />
@@ -136,10 +132,10 @@
             type="email"
             id="email"
             name="email"
-            label="Seu melhor email"
-            placeholder="Seu melhor email"
+            label={$_("auth.signup.fields.email.label")}
+            placeholder={$_("auth.signup.fields.email.placeholder")}
             required
-            errorMessage="Por favor, insira um email válido."
+            errorMessage={$_("auth.signup.fields.email.error")}
             bind:value={email}
             disabled={submitting}
           />
@@ -149,7 +145,7 @@
           loading={submitting}
           disabled={submitting || !isFormValid}
         >
-          Continuar
+          {$_("common.continue")}
         </Button>
       </form>
     {/if}

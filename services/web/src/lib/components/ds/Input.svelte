@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { _ } from "$lib/i18n";
+
   interface Props {
     type?: "text" | "email" | "password";
     id: string;
@@ -42,14 +44,14 @@
     if (!touched) return;
 
     if (required && !value.trim()) {
-      error = errorMessage || "Este campo é obrigatório.";
+      error = errorMessage || $_("validation.required");
       return false;
     }
 
     if (type === "email" && value.trim()) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(value.trim())) {
-        error = errorMessage || "Por favor, insira um email válido.";
+        error = errorMessage || $_("validation.email");
         return false;
       }
     }
@@ -61,7 +63,7 @@
     ) {
       error =
         errorMessage ||
-        `Este campo deve ter pelo menos ${minlength} caracteres.`;
+        $_("validation.minLength", { values: { min: minlength } });
       return false;
     }
 

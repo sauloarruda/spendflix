@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { _ } from "$lib/i18n";
+
   interface Props {
     loading?: boolean;
     loadingMessage?: string;
@@ -8,10 +10,15 @@
 
   let {
     loading = false,
-    loadingMessage = "Carregando...",
+    loadingMessage = undefined,
     maxWidth = "max-w-md",
     children,
   }: Props = $props();
+
+  // Use default loading message if not provided
+  const defaultLoadingMessage = $derived(
+    loadingMessage || $_("common.loading"),
+  );
 </script>
 
 <div class="{maxWidth} mx-auto" style="position: relative;">
@@ -24,9 +31,9 @@
       >
         <span class="sr-only">Loading...</span>
       </div>
-      <p class="text-center">{loadingMessage}</p>
+      <p class="text-center">{defaultLoadingMessage}</p>
     </div>
-  {:else}
+  {:else if children}
     {@render children()}
   {/if}
 </div>

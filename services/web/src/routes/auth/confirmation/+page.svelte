@@ -5,6 +5,7 @@
   import Input from "$lib/components/ds/Input.svelte";
   import Button from "$lib/components/ds/Button.svelte";
   import { browser } from "$app/environment";
+  import { _ } from "$lib/i18n";
 
   let loading = $state(true);
   let name = $state("");
@@ -49,21 +50,21 @@
       // TODO: Implement confirmation code submission
       console.log("Submitting confirmation code:", confirmationCode);
     } catch (err) {
-      error =
-        "Não foi possível conectar ao servidor. Por favor, verifique sua conexão e tente novamente.";
+      error = $_("auth.confirmation.errors.connectionError");
     } finally {
       submitting = false;
     }
   }
 </script>
 
-<Container {loading} loadingMessage="Carregando...">
+<Container {loading}>
   {#snippet children()}
     {#if !loading}
-      <h2 class="text-xl font-semibold mb-6 text-center">Confirme seu email</h2>
+      <h2 class="text-xl font-semibold mb-6 text-center">
+        {$_("auth.confirmation.title")}
+      </h2>
       <p class="text-center mb-6">
-        Olá <strong>{name}</strong>, enviamos um código de confirmação para
-        <strong>{email}</strong>. Por favor, digite o código abaixo:
+        {$_("auth.confirmation.description", { values: { name, email } })}
       </p>
       {#if error}
         <div class="error-message mb-4">{error}</div>
@@ -75,16 +76,16 @@
             type="text"
             id="confirmation-code"
             name="code"
-            label="Código de confirmação"
-            placeholder="Código de confirmação"
+            label={$_("auth.confirmation.code.label")}
+            placeholder={$_("auth.confirmation.code.placeholder")}
             required
-            errorMessage="Por favor, insira o código de confirmação."
+            errorMessage={$_("auth.confirmation.code.error")}
             bind:value={confirmationCode}
             disabled={submitting}
           />
         </div>
         <Button type="submit" loading={submitting} disabled={submitting}>
-          Confirmar
+          {$_("common.confirm")}
         </Button>
       </form>
     {/if}

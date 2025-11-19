@@ -89,13 +89,13 @@ test.describe('Signup Flow', () => {
   });
 
   test('should display signup form with floating inputs', async ({ page }) => {
-    await expect(page.getByRole('heading', { name: 'Descubra, Organize, Realize' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Discover, Organize, Achieve' })).toBeVisible();
 
     const { nameInput, emailInput, submitButton } = getFormElements(page);
     await expect(nameInput).toBeVisible();
     await expect(emailInput).toBeVisible();
     await expect(submitButton).toBeVisible();
-    await expect(submitButton).toHaveText('Continuar');
+    await expect(submitButton).toHaveText('Continue');
   });
 
   test('should validate name field - show error for short name', async ({ page }) => {
@@ -104,7 +104,7 @@ test.describe('Signup Flow', () => {
       page,
       nameInput,
       'A',
-      'Por favor, nos diga como podemos te chamar.',
+      'Please tell us what we should call you.',
       true
     );
   });
@@ -115,7 +115,7 @@ test.describe('Signup Flow', () => {
       page,
       nameInput,
       'João Silva',
-      'Por favor, nos diga como podemos te chamar.',
+      'Please tell us what we should call you.',
       false
     );
   });
@@ -126,7 +126,7 @@ test.describe('Signup Flow', () => {
       page,
       emailInput,
       'invalid-email',
-      'Por favor, insira um email válido.',
+      'Please enter a valid email.',
       true
     );
   });
@@ -137,7 +137,7 @@ test.describe('Signup Flow', () => {
       page,
       emailInput,
       'joao@example.com',
-      'Por favor, insira um email válido.',
+      'Please enter a valid email.',
       false
     );
   });
@@ -149,11 +149,11 @@ test.describe('Signup Flow', () => {
     await emailInput.fill('invalid');
     await emailInput.blur();
     await waitForValidation(page, 100);
-    await expect(page.getByText('Por favor, insira um email válido.')).toBeVisible();
+    await expect(page.getByText('Please enter a valid email.')).toBeVisible();
 
     // Start typing again - error should be cleared
     await emailInput.fill('valid@');
-    await expect(page.getByText('Por favor, insira um email válido.')).not.toBeVisible();
+    await expect(page.getByText('Please enter a valid email.')).not.toBeVisible();
   });
 
   test('should submit form successfully and show confirmation code screen', async ({ page }) => {
@@ -226,15 +226,15 @@ test.describe('Signup Flow', () => {
     await page.waitForURL('**/auth/confirmation*', { timeout: 10000 });
 
     // Wait for confirmation screen to appear
-    await page.waitForSelector('h2:has-text("Confirme seu email")', { timeout: 10000 });
-    await expect(page.getByRole('heading', { name: 'Confirme seu email' })).toBeVisible();
-    await expect(page.getByText(/Olá.*João Silva.*enviamos um código/)).toBeVisible();
+    await page.waitForSelector('h2:has-text("Confirm your email")', { timeout: 10000 });
+    await expect(page.getByRole('heading', { name: 'Confirm your email' })).toBeVisible();
+    await expect(page.getByText(/Hello.*João Silva.*we sent a confirmation code/)).toBeVisible();
     await expect(page.getByText(/joao.silva@example.com/)).toBeVisible();
     await expect(page.locator('input[name="code"]')).toBeVisible();
   });
 
   test('should show error message when API returns error', async ({ page }) => {
-    const errorMessage = 'Este email já está cadastrado. Por favor, faça login.';
+    const errorMessage = 'This email is already registered. Please log in.';
     await fillForm(page, 'Test User', 'existing@example.com');
 
     // Mock API error response
@@ -255,8 +255,8 @@ test.describe('Signup Flow', () => {
     await page.waitForSelector('.error-message', { timeout: 10000 });
 
     // Verify error is displayed and form is still visible
-    await expect(page.getByText(/Este email já está cadastrado/)).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Descubra, Organize, Realize' })).toBeVisible();
+    await expect(page.getByText(/This email is already registered/)).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Discover, Organize, Achieve' })).toBeVisible();
 
     const { nameInput, emailInput } = getFormElements(page);
     await expect(nameInput).toBeVisible();
@@ -300,10 +300,10 @@ test.describe('Signup Flow', () => {
     // If user exists (409), we stay on the form with error message
     if (response.status() === 200) {
       await page.waitForURL('**/auth/confirmation*', { timeout: 10000 });
-      await expect(page.getByRole('heading', { name: 'Confirme seu email' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Confirm your email' })).toBeVisible();
     } else {
       // User already exists - verify error message appears
-      await expect(page.getByText(/já está cadastrado/i)).toBeVisible();
+      await expect(page.getByText(/already registered/i)).toBeVisible();
       // Verify inputs are enabled again after error
       await expect(nameInput).toBeEnabled();
       await expect(emailInput).toBeEnabled();
@@ -325,10 +325,10 @@ test.describe('Signup Flow', () => {
     await page.waitForTimeout(1000); // Give HTMX time to process the error
 
     // Verify connection error message is displayed
-    await expect(page.getByText(/Não foi possível conectar ao servidor/)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(/Could not connect to the server/)).toBeVisible({ timeout: 5000 });
 
     // Verify form is still visible and re-enabled
-    await expect(page.getByRole('heading', { name: 'Descubra, Organize, Realize' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Discover, Organize, Achieve' })).toBeVisible();
 
     const { nameInput, emailInput, submitButton } = getFormElements(page);
     await expect(nameInput).toBeVisible();
