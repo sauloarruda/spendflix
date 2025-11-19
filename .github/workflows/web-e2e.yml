@@ -1,23 +1,24 @@
-name: Tests
+name: Web E2E Tests
 
 on:
   pull_request:
-    branches: [main, develop]
+    branches: [main]
     paths:
+      - "services/web/**"
       - "services/auth/**"
-      - ".github/workflows/test.yml"
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     services:
       postgres:
-        image: postgres:15-alpine
+        image: postgres:15
         env:
-          POSTGRES_USER: testuser
-          POSTGRES_PASSWORD: testpass
-          POSTGRES_DB: testdb
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: spendflix_test
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -29,76 +30,42 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Go
+      - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.24"
-          cache-dependency-path: services/auth/go.sum
+          go-version: "1.23"
 
-      - name: Install dependencies
-        run: |
-          cd services/auth
-          go mod download
-
-      - name: Run unit tests
-        run: |
-          cd services/auth
-          make test-unit
-
-      - name: Run tests with coverage
-        run: |
-          cd services/auth
-          make test-coverage
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          file: ./services/auth/coverage.out
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
-
-  integration-test:
-    runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:15-alpine
-        env:
-          POSTGRES_USER: testuser
-          POSTGRES_PASSWORD: testpass
-          POSTGRES_DB: testdb
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: "1.24"
-          cache-dependency-path: services/auth/go.sum
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Install dependencies
-        run: |
-          cd services/auth
-          go mod download
-
-      - name: Setup Node.js (for cognito-local)
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: "npm"
+          cache-dependency-path: services/web/package-lock.json
 
-      - name: Start cognito-local and setup
+      - name: Install auth service dependencies
+        run: |
+          cd services/auth
+          go mod download
+
+      - name: Install web service dependencies
+        run: |
+          cd services/web
+          npm ci
+
+      - name: Install Playwright browsers
+        run: |
+          cd services/web
+          npx playwright install --with-deps chromium
+
+      - name: Setup database
+        env:
+          DATABASE_URL: postgres://test:test@localhost:5432/spendflix_test?sslmode=disable
+        run: |
+          cd services/auth
+          go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+          migrate -path ./migrations -database "$DATABASE_URL" up
+
+      - name: Start cognito-local
         timeout-minutes: 3
         run: |
           cd services/auth
@@ -123,8 +90,7 @@ jobs:
             echo "ERROR: cognito-local process died!"
             echo "Logs:"
             cat cognito-local.log || true
-            echo "Skipping integration tests - cognito-local not available"
-            exit 0  # Don't fail the job, just skip
+            exit 1
           fi
           echo "Process $COGNITO_PID is running"
 
@@ -181,7 +147,7 @@ jobs:
             
             ATTEMPT=$((ATTEMPT + 1))
             if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
-              echo "cognito-local failed to start after $MAX_ATTEMPTS seconds"
+              echo "ERROR: cognito-local failed to start after $MAX_ATTEMPTS seconds"
               echo "Process status:"
               ps aux | grep cognito || true
               echo "Full logs:"
@@ -192,8 +158,7 @@ jobs:
               curl -v http://127.0.0.1:9229 || true
               curl -v http://localhost:9229 || true
               curl -v http://[::1]:9229 || true
-              echo "Skipping integration tests - cognito-local not available"
-              exit 0  # Don't fail the job, just skip
+              exit 1
             fi
             if [ $((ATTEMPT % 10)) -eq 0 ]; then
               echo "Still waiting... (attempt $ATTEMPT/$MAX_ATTEMPTS)"
@@ -206,36 +171,81 @@ jobs:
           done
 
           if [ "$COGNITO_READY" != "true" ]; then
-            echo "cognito-local never became ready, skipping integration tests"
-            exit 0  # Don't fail, just skip
+            echo "ERROR: cognito-local never became ready"
+            exit 1
           fi
+
+          echo "Using endpoint: $COGNITO_ENDPOINT"
+
+          # For AWS CLI, use localhost instead of IPv6 format (AWS CLI may not support [::1])
+          # localhost should work for both IPv4 and IPv6
+          if [[ "$COGNITO_ENDPOINT" == *"[::1]"* ]]; then
+            SETUP_ENDPOINT="http://localhost:9229"
+            echo "Converting IPv6 endpoint to localhost for AWS CLI compatibility"
+          else
+            SETUP_ENDPOINT="$COGNITO_ENDPOINT"
+          fi
+
+          # Save endpoint for tests (use localhost for compatibility)
+          echo "COGNITO_ENDPOINT=http://localhost:9229" >> $GITHUB_ENV
 
           # Setup Cognito User Pool and Client
           echo "Setting up Cognito..."
-          export COGNITO_ENDPOINT=$COGNITO_ENDPOINT
-          make cognito-local-setup || echo "Cognito setup failed, continuing..."
+          export COGNITO_ENDPOINT=$SETUP_ENDPOINT
+          SETUP_OUTPUT=$(make cognito-local-setup 2>&1)
+          SETUP_EXIT_CODE=$?
 
-          # Keep cognito-local running by checking it's still alive
-          echo "Verifying cognito-local is still running..."
-          if ! ps -p $COGNITO_PID > /dev/null; then
-            echo "cognito-local process died!"
-            cat cognito-local.log || true
-            echo "Skipping integration tests - cognito-local not available"
-            exit 0  # Don't fail, just skip tests
+          if [ $SETUP_EXIT_CODE -ne 0 ]; then
+            echo "Cognito setup failed!"
+            echo "Setup output:"
+            echo "$SETUP_OUTPUT"
+            echo "Checking if cognito-local is still running..."
+            ps aux | grep cognito || true
+            echo "Testing connectivity..."
+            curl -v $COGNITO_ENDPOINT || curl -v http://127.0.0.1:9229 || curl -v http://[::1]:9229 || true
+            exit 1
           fi
 
-      - name: Run integration tests
-        run: |
-          cd services/auth
-          # Verify cognito-local is still running
-          if ! curl -f http://localhost:9229 > /dev/null 2>&1 && ! curl -f http://127.0.0.1:9229 > /dev/null 2>&1 && ! curl -f http://[::1]:9229 > /dev/null 2>&1; then
-            echo "cognito-local is not running, skipping integration tests"
-            exit 0
+          # Extract User Pool ID and Client ID from setup script output
+          echo "Extracting Cognito configuration..."
+          echo "Setup output:"
+          echo "$SETUP_OUTPUT"
+
+          COGNITO_USER_POOL_ID=$(echo "$SETUP_OUTPUT" | grep "^COGNITO_USER_POOL_ID=" | head -1 | cut -d'=' -f2 | tr -d ' ')
+          COGNITO_CLIENT_ID=$(echo "$SETUP_OUTPUT" | grep "^COGNITO_CLIENT_ID=" | head -1 | cut -d'=' -f2 | tr -d ' ')
+
+          if [ -n "$COGNITO_USER_POOL_ID" ] && [ -n "$COGNITO_CLIENT_ID" ]; then
+            echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID" >> $GITHUB_ENV
+            echo "COGNITO_CLIENT_ID=$COGNITO_CLIENT_ID" >> $GITHUB_ENV
+            echo "✓ Cognito configured: Pool=$COGNITO_USER_POOL_ID, Client=$COGNITO_CLIENT_ID"
+          else
+            echo "WARNING: Could not extract Cognito IDs from setup output"
+            echo "Trying alternative extraction method..."
+            COGNITO_USER_POOL_ID=$(echo "$SETUP_OUTPUT" | grep "User Pool created:" | sed 's/.*User Pool created: \([^ ]*\).*/\1/')
+            COGNITO_CLIENT_ID=$(echo "$SETUP_OUTPUT" | grep "User Pool Client created:" | sed 's/.*User Pool Client created: \([^ ]*\).*/\1/')
+            if [ -n "$COGNITO_USER_POOL_ID" ] && [ -n "$COGNITO_CLIENT_ID" ]; then
+              echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID" >> $GITHUB_ENV
+              echo "COGNITO_CLIENT_ID=$COGNITO_CLIENT_ID" >> $GITHUB_ENV
+              echo "✓ Cognito configured: Pool=$COGNITO_USER_POOL_ID, Client=$COGNITO_CLIENT_ID"
+            else
+              echo "ERROR: Could not extract Cognito IDs, using defaults"
+              echo "COGNITO_USER_POOL_ID=local_test_pool" >> $GITHUB_ENV
+              echo "COGNITO_CLIENT_ID=test_client_id" >> $GITHUB_ENV
+            fi
           fi
-          make test-integration
-        continue-on-error: true # Allow failures since cognito-local setup might fail
+
+      - name: Run E2E tests
         env:
-          COGNITO_ENDPOINT: http://localhost:9229
+          DATABASE_URL: postgres://test:test@localhost:5432/spendflix_test?sslmode=disable
+          PORT: "3001"
+          ENCRYPTION_SECRET: test-secret-key-for-ci-testing-only-32-chars
+          AWS_REGION: us-east-1
+          COGNITO_USER_POOL_ID: ${{ env.COGNITO_USER_POOL_ID || 'local_test_pool' }}
+          COGNITO_CLIENT_ID: ${{ env.COGNITO_CLIENT_ID || 'test_client_id' }}
+          COGNITO_ENDPOINT: ${{ env.COGNITO_ENDPOINT || 'http://127.0.0.1:9229' }}
+        run: |
+          cd services/web
+          npm run test
 
       - name: Stop cognito-local
         if: always()
@@ -244,3 +254,11 @@ jobs:
             kill $(cat services/auth/cognito-local.pid) || true
             rm -f services/auth/cognito-local.pid
           fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: services/web/playwright-report/
+          retention-days: 30

@@ -1,0 +1,60 @@
+{
+  "common": {
+    "loading": "Carregando...",
+    "continue": "Continuar",
+    "confirm": "Confirmar",
+    "back": "Voltar",
+    "submit": "Enviar"
+  },
+  "auth": {
+    "signup": {
+      "title": "Descubra, Organize, Realize",
+      "description": "Em menos de 20 minutos, você dará seu primeiro passo para descobrir para onde está indo seu dinheiro todo mês.",
+      "fields": {
+        "name": {
+          "label": "Como podemos te chamar?",
+          "placeholder": "Como podemos te chamar?",
+          "error": "Por favor, nos diga como podemos te chamar."
+        },
+        "email": {
+          "label": "Seu melhor email",
+          "placeholder": "Seu melhor email",
+          "error": "Por favor, insira um email válido."
+        }
+      },
+      "errors": {
+        "userExists": "Este email já está cadastrado. Por favor, faça login.",
+        "serverError": "Ocorreu um erro ao processar sua solicitação.",
+        "connectionError": "Não foi possível conectar ao servidor. Por favor, verifique sua conexão e tente novamente."
+      }
+    },
+    "confirmation": {
+      "title": "Confirme seu email",
+      "description": "Olá {name}, enviamos um código de confirmação para {email}. Por favor, digite o código abaixo:",
+      "code": {
+        "label": "Código de confirmação",
+        "placeholder": "Código de confirmação",
+        "error": "Por favor, insira o código de confirmação."
+      },
+      "errors": {
+        "connectionError": "Não foi possível conectar ao servidor. Por favor, verifique sua conexão e tente novamente."
+      }
+    }
+  },
+  "home": {
+    "welcome": "Bem-vindo ao Spendflix",
+    "ready": "Você está autenticado e pronto para começar!"
+  },
+  "validation": {
+    "required": "Este campo é obrigatório.",
+    "email": "Por favor, insira um email válido.",
+    "minLength": "Este campo deve ter pelo menos {min} caracteres."
+  },
+  "errors": {
+    "invalidRequest": "Requisição inválida.",
+    "missingFields": "Campos obrigatórios faltando.",
+    "serverError": "Erro interno do servidor.",
+    "unknown": "Ocorreu um erro desconhecido."
+  }
+}
+

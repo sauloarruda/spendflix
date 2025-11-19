@@ -67,7 +67,7 @@ func TestSignup_Integration_NewUser(t *testing.T) {
 
 	require.NotNil(t, result)
 	require.NotNil(t, result.User)
-	assert.Equal(t, models.SignupStatusCreated, result.Status)
+	assert.Equal(t, models.SignupStatusPendingConfirmation, result.Status)
 	assert.Equal(t, name, result.User.Name)
 	assert.Equal(t, email, result.User.Email)
 	assert.NotNil(t, result.User.CognitoID)

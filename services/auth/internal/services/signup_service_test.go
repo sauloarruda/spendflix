@@ -45,7 +45,7 @@ func TestSignupService_Signup_NewUser(t *testing.T) {
 	// Assert
 	require.NoError(t, err)
 	require.NotNil(t, result)
-	assert.Equal(t, models.SignupStatusCreated, result.Status)
+	assert.Equal(t, models.SignupStatusPendingConfirmation, result.Status)
 	assert.NotNil(t, result.User)
 	assert.Equal(t, name, result.User.Name)
 	assert.Equal(t, email, result.User.Email)
@@ -219,7 +219,7 @@ func TestSignupService_Signup_UserInDBButNotCognito(t *testing.T) {
 	// Assert
 	require.NoError(t, err)
 	require.NotNil(t, result)
-	assert.Equal(t, models.SignupStatusCreated, result.Status)
+	assert.Equal(t, models.SignupStatusPendingConfirmation, result.Status)
 	assert.NotNil(t, result.User)
 	assert.Equal(t, existingUser.ID, result.User.ID)
 	assert.NotNil(t, result.User.CognitoID)

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"log"
 	"services/auth/internal/models"
 	"services/auth/internal/services"
 	"services/auth/internal/testhelpers"
@@ -34,6 +35,8 @@ func (h *SignupHandler) Handle(ctx context.Context, req events.APIGatewayV2HTTPR
 	// Parse request body
 	var signupReq models.SignupRequest
 	if err := json.Unmarshal([]byte(req.Body), &signupReq); err != nil {
+		// Log detailed error for debugging but return generic message to client
+		log.Printf("❌ Invalid request body: %v", err)
 		return errorResponse(400, "invalid_request", "Invalid request body"), nil
 	}
 
@@ -49,6 +52,8 @@ func (h *SignupHandler) Handle(ctx context.Context, req events.APIGatewayV2HTTPR
 		case errors.Is(err, services.ErrUserAlreadyExists):
 			return errorResponse(409, "user_exists", "User with this email already exists"), nil
 		default:
+			// Log the actual error for debugging but return generic message to client
+			log.Printf("❌ Signup service error: %v", err)
 			return errorResponse(500, "internal_error", "Internal server error"), nil
 		}
 	}
@@ -66,10 +71,8 @@ func (h *SignupHandler) Handle(ctx context.Context, req events.APIGatewayV2HTTPR
 		return errorResponse(500, "internal_error", "Failed to marshal response"), nil
 	}
 
-	statusCode := 201
-	if result.Status == models.SignupStatusPendingConfirmation {
-		statusCode = 200
-	}
+	// All new signups require email confirmation, so return 200
+	statusCode := 200
 
 	return events.APIGatewayV2HTTPResponse{
 		StatusCode: statusCode,

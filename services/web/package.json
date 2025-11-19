@@ -1,0 +1,36 @@
+{
+	"name": "spendflix-web",
+	"version": "1.0.0",
+	"private": true,
+	"scripts": {
+		"dev": "svelte-kit sync && vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"test": "playwright test",
+		"test:ui": "playwright test --ui",
+		"test:headed": "HEADLESS=false playwright test",
+		"test:local": "HEADLESS=false playwright test"
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.56.1",
+		"@sveltejs/adapter-static": "^3.0.0",
+		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/vite-plugin-svelte": "^4.0.0-next.6",
+		"@types/node": "^24.10.1",
+		"autoprefixer": "^10.4.16",
+		"playwright": "^1.56.1",
+		"postcss": "^8.4.32",
+		"preline": "^3.2.3",
+		"svelte": "^5.0.0",
+		"svelte-check": "^3.6.0",
+		"tailwindcss": "^3.4.0",
+		"typescript": "^5.0.0",
+		"vite": "^5.0.0"
+	},
+	"type": "module",
+	"dependencies": {
+		"svelte-i18n": "^4.0.1"
+	}
+}

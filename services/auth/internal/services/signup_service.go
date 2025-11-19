@@ -161,9 +161,10 @@ func (s *SignupService) Signup(ctx context.Context, name, email string) (*Signup
 		return nil, err
 	}
 
+	// New users in Cognito always start as UNCONFIRMED and need email confirmation
 	return &SignupResult{
 		User:   user,
-		Status: models.SignupStatusCreated,
+		Status: models.SignupStatusPendingConfirmation,
 	}, nil
 }
 
