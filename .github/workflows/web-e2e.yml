@@ -1,11 +1,6 @@
 name: Web E2E Tests
 
 on:
-  push:
-    branches: [main, SPE-*]
-    paths:
-      - "services/web/**"
-      - "services/auth/**"
   pull_request:
     branches: [main]
     paths:

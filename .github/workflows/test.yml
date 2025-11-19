@@ -1,11 +1,6 @@
 name: Tests
 
 on:
-  push:
-    branches: [main, develop]
-    paths:
-      - "services/auth/**"
-      - ".github/workflows/test.yml"
   pull_request:
     branches: [main, develop]
     paths:
@@ -65,9 +60,6 @@ jobs:
 
   integration-test:
     runs-on: ubuntu-latest
-    # Skip integration tests in PRs to save CI time
-    # Uncomment if you want to run them on every PR
-    # if: github.event_name == 'push'
 
     services:
       postgres:
