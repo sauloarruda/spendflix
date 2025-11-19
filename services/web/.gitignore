@@ -10,3 +10,5 @@ vite.config.js.timestamp
 vite.config.ts.timestamp
 test-results/
 playwright-report/
+# Generated API client (do not edit manually)
+src/lib/api/generated/

@@ -6,18 +6,8 @@
   import Button from "$lib/components/ds/Button.svelte";
   import { browser } from "$app/environment";
   import { _ } from "$lib/i18n";
-  import { translateApiError } from "$lib/i18n/helpers";
-
-  // Get API URL from environment variable (set at build time)
-  // Fallback to default localhost:3000 for development
-  const API_URL = browser
-    ? import.meta.env.VITE_API_URL || "http://localhost:3000"
-    : "";
-
-  // Debug: log API URL in development
-  if (browser && import.meta.env.DEV) {
-    console.log("API_URL:", API_URL);
-  }
+  import { api, ApiError, NetworkError } from "$lib/api";
+  import type { SignupRequest } from "$lib/api";
 
   let loading = $state(true);
   let name = $state("");
@@ -64,33 +54,30 @@
     error = null;
 
     try {
-      const response = await fetch(`${API_URL}/auth/sign-up`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email }),
-      });
+      const request: SignupRequest = { name, email };
+      const response = await api.auth.signUp({ signupRequest: request });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        if (data.status === "pending_confirmation") {
-          // Redirect to confirmation page with name and email
-          goto(
-            `/auth/confirmation?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`,
-          );
-        } else {
-          // User created successfully
-          // TODO: Handle success case
-        }
+      if (response.status === "pending_confirmation") {
+        // Redirect to confirmation page with name and email
+        goto(
+          `/auth/confirmation?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`,
+        );
       } else {
-        // Traduz erro baseado no código retornado pela API
-        error = translateApiError(data.code, data.message);
-        // TODO: Redirect to login page if user_exists
+        // User created successfully
+        // TODO: Handle success case
       }
     } catch (err) {
-      error = $_("auth.signup.errors.connectionError");
+      if (err instanceof ApiError) {
+        // API error already translated
+        error = err.message;
+        // TODO: Redirect to login page if user_exists (err.code === "user_exists")
+      } else if (err instanceof NetworkError) {
+        // Network error
+        error = err.message;
+      } else {
+        // Unknown error
+        error = $_("auth.signup.errors.connectionError");
+      }
     } finally {
       submitting = false;
     }
