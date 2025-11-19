@@ -69,7 +69,7 @@ func (h *SignupHandler) Handle(ctx context.Context, req events.APIGatewayV2HTTPR
 	body, err := json.Marshal(response)
 	if err != nil {
 		log.Printf("Failed to marshal response: %v", err)
-		return errorResponse(500, "internal_error", "Failed to marshal response"), err
+		return errorResponse(500, "internal_error", "Failed to marshal response"), nil
 	}
 
 	// All new signups require email confirmation, so return 200
