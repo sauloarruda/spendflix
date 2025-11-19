@@ -14,6 +14,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const (
+	testUserName    = "John Doe"
+	testUserEmail   = "john@example.com"
+	testCognitoID   = "cognito-123"
+	testCognitoUser = "john@example.com"
+)
+
 func TestSignupService_Signup_NewUser(t *testing.T) {
 	mockRepo := new(testhelpers.MockUserRepository)
 	mockCognito := new(testhelpers.MockCognitoClient)
@@ -25,9 +32,9 @@ func TestSignupService_Signup_NewUser(t *testing.T) {
 	)
 
 	ctx := context.Background()
-	name := "John Doe"
-	email := "john@example.com"
-	cognitoID := "cognito-123"
+	name := testUserName
+	email := testUserEmail
+	cognitoID := testCognitoID
 
 	// Setup mocks
 	mockRepo.On("FindByEmail", ctx, email).Return(nil, nil)
@@ -68,9 +75,9 @@ func TestSignupService_Signup_UserAlreadyExists_Confirmed(t *testing.T) {
 	)
 
 	ctx := context.Background()
-	name := "John Doe"
-	email := "john@example.com"
-	cognitoID := "cognito-123"
+	name := testUserName
+	email := testUserEmail
+	cognitoID := testCognitoID
 
 	existingUser := &models.User{
 		ID:        1,
@@ -106,10 +113,10 @@ func TestSignupService_Signup_UserExistsButUnconfirmed(t *testing.T) {
 	)
 
 	ctx := context.Background()
-	name := "John Doe"
-	email := "john@example.com"
-	cognitoID := "cognito-123"
-	username := "john@example.com"
+	name := testUserName
+	email := testUserEmail
+	cognitoID := testCognitoID
+	username := testCognitoUser
 
 	existingUser := &models.User{
 		ID:        1,
@@ -148,10 +155,10 @@ func TestSignupService_Signup_UserInCognitoButNotDB(t *testing.T) {
 	)
 
 	ctx := context.Background()
-	name := "John Doe"
-	email := "john@example.com"
-	cognitoID := "cognito-123"
-	username := "john@example.com"
+	name := testUserName
+	email := testUserEmail
+	cognitoID := testCognitoID
+	username := testCognitoUser
 
 	// Setup mocks - user not in DB, but exists in Cognito (UsernameExistsException)
 	mockRepo.On("FindByEmail", ctx, email).Return(nil, nil)
@@ -195,9 +202,9 @@ func TestSignupService_Signup_UserInDBButNotCognito(t *testing.T) {
 	)
 
 	ctx := context.Background()
-	name := "John Doe"
-	email := "john@example.com"
-	cognitoID := "cognito-123"
+	name := testUserName
+	email := testUserEmail
+	cognitoID := testCognitoID
 
 	existingUser := &models.User{
 		ID:        1,
@@ -240,8 +247,8 @@ func TestSignupService_Signup_RepositoryError(t *testing.T) {
 	)
 
 	ctx := context.Background()
-	name := "John Doe"
-	email := "john@example.com"
+	name := testUserName
+	email := testUserEmail
 
 	// Setup mocks - repository error
 	mockRepo.On("FindByEmail", ctx, email).Return(nil, errors.New("database error"))
@@ -268,8 +275,8 @@ func TestSignupService_Signup_CognitoError(t *testing.T) {
 	)
 
 	ctx := context.Background()
-	name := "John Doe"
-	email := "john@example.com"
+	name := testUserName
+	email := testUserEmail
 
 	// Setup mocks
 	mockRepo.On("FindByEmail", ctx, email).Return(nil, nil)
@@ -304,8 +311,8 @@ func TestSignupService_Signup_EncryptionError(t *testing.T) {
 	}
 
 	ctx := context.Background()
-	name := "John Doe"
-	email := "john@example.com"
+	name := testUserName
+	email := testUserEmail
 
 	// Setup mocks
 	mockRepo.On("FindByEmail", ctx, email).Return(nil, nil)
@@ -332,10 +339,10 @@ func TestSignupService_Signup_ResendConfirmationCodeError(t *testing.T) {
 	)
 
 	ctx := context.Background()
-	name := "John Doe"
-	email := "john@example.com"
-	cognitoID := "cognito-123"
-	username := "john@example.com"
+	name := testUserName
+	email := testUserEmail
+	cognitoID := testCognitoID
+	username := testCognitoUser
 
 	existingUser := &models.User{
 		ID:        1,

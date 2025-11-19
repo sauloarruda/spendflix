@@ -4,21 +4,22 @@ import (
 	"context"
 	"testing"
 
+	"time"
+
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/stretchr/testify/require"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/modules/postgres"
 	"github.com/testcontainers/testcontainers-go/wait"
-	"time"
 )
 
 // SetupTestDB creates a test PostgreSQL database using testcontainers
-// Returns the connection pool and a cleanup function
+// Returns the connection pool and a cleanup function.
 func SetupTestDB(t *testing.T) (*pgxpool.Pool, func()) {
 	ctx := context.Background()
 
-	postgresContainer, err := postgres.RunContainer(ctx,
-		testcontainers.WithImage("postgres:15-alpine"),
+	postgresContainer, err := postgres.Run(ctx,
+		"postgres:15-alpine",
 		postgres.WithDatabase("testdb"),
 		postgres.WithUsername("testuser"),
 		postgres.WithPassword("testpass"),
@@ -37,13 +38,15 @@ func SetupTestDB(t *testing.T) (*pgxpool.Pool, func()) {
 
 	cleanup := func() {
 		pool.Close()
-		postgresContainer.Terminate(ctx)
+		if err := postgresContainer.Terminate(ctx); err != nil {
+			t.Logf("Failed to terminate postgres container: %v", err)
+		}
 	}
 
 	return pool, cleanup
 }
 
-// CreateUsersTable creates the users table in the test database
+// CreateUsersTable creates the users table in the test database.
 func CreateUsersTable(t *testing.T, pool *pgxpool.Pool) {
 	ctx := context.Background()
 	_, err := pool.Exec(ctx, `
@@ -60,10 +63,9 @@ func CreateUsersTable(t *testing.T, pool *pgxpool.Pool) {
 	require.NoError(t, err)
 }
 
-// CleanupUsersTable truncates the users table
+// CleanupUsersTable truncates the users table.
 func CleanupUsersTable(t *testing.T, pool *pgxpool.Pool) {
 	ctx := context.Background()
 	_, err := pool.Exec(ctx, "TRUNCATE TABLE users RESTART IDENTITY CASCADE")
 	require.NoError(t, err)
 }
-

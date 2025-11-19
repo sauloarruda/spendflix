@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-// MockUserRepository is a mock implementation of UserRepositoryInterface
+// MockUserRepository is a mock implementation of UserRepositoryInterface.
 type MockUserRepository struct {
 	mock.Mock
 }
@@ -30,7 +30,7 @@ func (m *MockUserRepository) Update(ctx context.Context, user *models.User) erro
 	return args.Error(0)
 }
 
-// MockCognitoClient is a mock implementation of CognitoClientInterface
+// MockCognitoClient is a mock implementation of CognitoClientInterface.
 type MockCognitoClient struct {
 	mock.Mock
 }
@@ -49,4 +49,3 @@ func (m *MockCognitoClient) ResendConfirmationCode(ctx context.Context, username
 	args := m.Called(ctx, username)
 	return args.Error(0)
 }
-

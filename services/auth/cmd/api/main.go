@@ -13,6 +13,7 @@ import (
 	"services/auth/internal/repositories"
 	"services/auth/internal/services"
 	"syscall"
+	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -86,7 +87,7 @@ func handler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.AP
 	}
 }
 
-// Lambda handler wrapper that ensures cleanup on context cancellation
+// Lambda handler wrapper that ensures cleanup on context cancellation.
 func lambdaHandler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.APIGatewayV2HTTPResponse, error) {
 	// In Lambda, the pool is kept alive for container reuse
 	// But we handle context cancellation properly
@@ -179,7 +180,9 @@ func startLocalServer() {
 		if err != nil {
 			log.Printf("Handler error: %v", err)
 			w.WriteHeader(500)
-			w.Write([]byte(`{"error": "Internal server error"}`))
+			if _, writeErr := w.Write([]byte(`{"error": "Internal server error"}`)); writeErr != nil {
+				log.Printf("Failed to write error response: %v", writeErr)
+			}
 			return
 		}
 
@@ -193,12 +196,21 @@ func startLocalServer() {
 			w.Header().Set(k, v)
 		}
 		w.WriteHeader(resp.StatusCode)
-		w.Write([]byte(resp.Body))
+		if _, writeErr := w.Write([]byte(resp.Body)); writeErr != nil {
+			log.Printf("Failed to write response: %v", writeErr)
+		}
 	})
 
 	log.Printf("Server starting on port %s", port)
 	log.Printf("Test endpoint: POST http://localhost:%s/auth/sign-up", port)
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
+	server := &http.Server{
+		Addr:              ":" + port,
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       10 * time.Second,
+		WriteTimeout:      10 * time.Second,
+		IdleTimeout:       60 * time.Second,
+	}
+	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }

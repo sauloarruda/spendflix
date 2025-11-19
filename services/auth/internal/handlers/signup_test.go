@@ -16,7 +16,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// MockSignupService is a mock implementation of SignupServiceInterface
+// MockSignupService is a mock implementation of SignupServiceInterface.
 type MockSignupService struct {
 	mock.Mock
 }
@@ -306,7 +306,7 @@ func TestErrorResponse(t *testing.T) {
 	assert.Equal(t, "Not found", errorResp.Message)
 }
 
-// Helper function to create handler with mock service for testing
+// Helper function to create handler with mock service for testing.
 func NewSignupHandlerWithService(service testhelpers.SignupServiceInterface) *SignupHandler {
 	return NewSignupHandlerWithInterface(service)
 }

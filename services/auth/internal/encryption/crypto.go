@@ -55,7 +55,9 @@ func Encrypt(plaintext, secret string) (string, error) {
 	encrypted := ciphertext[:len(ciphertext)-tagLength]
 
 	// Combine salt + IV + tag + encrypted
-	result := append(salt, iv...)
+	result := make([]byte, 0, len(salt)+len(iv)+len(tag)+len(encrypted))
+	result = append(result, salt...)
+	result = append(result, iv...)
 	result = append(result, tag...)
 	result = append(result, encrypted...)
 

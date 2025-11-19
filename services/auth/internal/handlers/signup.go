@@ -12,7 +12,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 )
 
-// SignupServiceInterface defines the interface for signup service (aliased for convenience)
+// SignupServiceInterface defines the interface for signup service (aliased for convenience).
 type SignupServiceInterface = testhelpers.SignupServiceInterface
 
 type SignupHandler struct {
@@ -24,7 +24,7 @@ func NewSignupHandler(signupService *services.SignupService) *SignupHandler {
 }
 
 // NewSignupHandlerWithInterface creates a handler with an interface-based service
-// This allows for easier testing with mocks
+// This allows for easier testing with mocks.
 func NewSignupHandlerWithInterface(signupService SignupServiceInterface) *SignupHandler {
 	return &SignupHandler{
 		signupService: signupService,
@@ -68,7 +68,8 @@ func (h *SignupHandler) Handle(ctx context.Context, req events.APIGatewayV2HTTPR
 
 	body, err := json.Marshal(response)
 	if err != nil {
-		return errorResponse(500, "internal_error", "Failed to marshal response"), nil
+		log.Printf("Failed to marshal response: %v", err)
+		return errorResponse(500, "internal_error", "Failed to marshal response"), err
 	}
 
 	// All new signups require email confirmation, so return 200
