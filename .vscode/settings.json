@@ -1,0 +1,163 @@
+{
+	// Editor settings
+	"editor.formatOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit",
+		"source.organizeImports": "explicit"
+	},
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.rulers": [100],
+	"editor.tabSize": 2,
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+
+	// File associations
+	"files.associations": {
+		"*.svelte": "svelte"
+	},
+
+	// File exclusions
+	"files.exclude": {
+		"**/.svelte-kit": true,
+		"**/node_modules": true,
+		"**/build": true,
+		"**/dist": true,
+		"**/.DS_Store": true
+	},
+
+	// Search exclusions
+	"search.exclude": {
+		"**/node_modules": true,
+		"**/build": true,
+		"**/dist": true,
+		"**/.svelte-kit": true,
+		"**/coverage": true,
+		"**/coverage.html": true,
+		"**/coverage.out": true,
+		"**/test-results": true,
+		"**/playwright-report": true,
+		"**/bin": true,
+		"**/bootstrap": true,
+		"**/package-lock.json": true,
+		"**/go.sum": true
+	},
+
+	// TypeScript settings
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"typescript.preferences.importModuleSpecifier": "relative",
+	"typescript.updateImportsOnFileMove.enabled": "always",
+
+	// ESLint settings
+	"eslint.enable": true,
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"svelte"
+	],
+	"eslint.workingDirectories": [
+		{ "pattern": "./services/web" },
+		{ "pattern": "./services/auth" }
+	],
+
+	// Prettier settings
+	"prettier.enable": true,
+	"prettier.requireConfig": true,
+	"prettier.useTabs": true,
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.tabSize": 2,
+		"editor.insertSpaces": false
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.tabSize": 2,
+		"editor.insertSpaces": false
+	},
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.tabSize": 2,
+		"editor.insertSpaces": false
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.tabSize": 2,
+		"editor.insertSpaces": false
+	},
+	"[json]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.tabSize": 2,
+		"editor.insertSpaces": false
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.tabSize": 2,
+		"editor.insertSpaces": false
+	},
+	"[svelte]": {
+		"editor.defaultFormatter": "svelte.svelte-vscode",
+		"editor.tabSize": 2,
+		"editor.insertSpaces": false
+	},
+	"[yaml]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.tabSize": 2,
+		"editor.insertSpaces": false
+	},
+	"[markdown]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.tabSize": 2,
+		"editor.insertSpaces": false
+	},
+
+	// Go settings
+	"go.lintTool": "golangci-lint",
+	"go.lintOnSave": "workspace",
+	"go.formatTool": "goimports",
+	"go.useLanguageServer": true,
+	"go.toolsManagement.autoUpdate": true,
+	"go.testFlags": ["-v", "-short"],
+	"go.coverOnSave": false,
+	"go.buildOnSave": "off",
+	"go.vetOnSave": "workspace",
+	"go.lintFlags": ["--fast"],
+	"[go]": {
+		"editor.formatOnSave": true,
+		"editor.codeActionsOnSave": {
+			"source.organizeImports": "explicit"
+		},
+		"editor.defaultFormatter": "golang.go",
+		"editor.tabSize": 1,
+		"editor.insertSpaces": false
+	},
+	"[go.mod]": {
+		"editor.defaultFormatter": "golang.go"
+	},
+
+	// Svelte settings
+	"svelte.enable-ts-plugin": true,
+	"svelte.plugin.svelte.format.enable": true,
+	"svelte.plugin.svelte.completions.enable": true,
+
+	// Tailwind CSS IntelliSense
+	"tailwindCSS.experimental.classRegex": [
+		["class:\\s*?[\"'`]([^\"'`]*).*?[\"'`]", "[\"'`]([^\"'`]*).*?[\"'`]"]
+	],
+	"tailwindCSS.includeLanguages": {
+		"svelte": "html"
+	},
+
+	// Git settings
+	"git.ignoreLimitWarning": true,
+	"git.autofetch": true,
+
+	// Terminal settings
+	"terminal.integrated.defaultProfile.osx": "zsh",
+
+	// Other settings
+	"files.trimTrailingWhitespace": true,
+	"files.insertFinalNewline": true,
+	"files.trimFinalNewlines": true
+}

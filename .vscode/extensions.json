@@ -1,0 +1,31 @@
+{
+	"recommendations": [
+		// Essential
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode",
+		"golang.go",
+		"svelte.svelte-vscode",
+
+		// Go tools
+		"golang.go",
+		"ms-vscode.vscode-json",
+
+		// TypeScript/JavaScript
+		"ms-vscode.vscode-typescript-next",
+
+		// Svelte
+		"svelte.svelte-vscode",
+
+		// Tailwind CSS
+		"bradlc.vscode-tailwindcss",
+
+		// Git
+		"eamodio.gitlens",
+
+		// Other useful
+		"ms-vscode.vscode-json",
+		"redhat.vscode-yaml",
+		"ms-playwright.playwright"
+	],
+	"unwantedRecommendations": []
+}
