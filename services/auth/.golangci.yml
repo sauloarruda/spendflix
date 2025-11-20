@@ -1,0 +1,142 @@
+# golangci-lint configuration for Spendflix Auth Service
+# Documentation: https://golangci-lint.run/usage/configuration/
+
+version: 2
+
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  enable:
+    # Error checking
+    - errcheck
+    - errorlint
+
+    # Code quality
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+
+    # Security
+    - gosec
+
+    # Code review
+    - gocritic
+    - goconst
+
+    # Performance
+    - prealloc
+
+    # Best practices
+    - nilerr
+    - noctx
+    - rowserrcheck
+    - sqlclosecheck
+
+    # Documentation
+    - godot
+    - godox
+
+    # Import
+    - importas
+    - misspell
+
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+    check-asserts: true
+
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+    disabled-checks:
+      - dupImport
+      - ifElseChain
+      - octalLiteral
+
+  godot:
+    check-top-level: true
+    scope: all
+
+  goimports:
+    local-prefixes: services/auth
+
+  gosec:
+    included-rules:
+      - G101
+      - G102
+      - G103
+      - G104
+      - G106
+      - G107
+      - G108
+      - G109
+      - G110
+      - G111
+      - G112
+      - G113
+      - G201
+      - G202
+      - G203
+      - G204
+      - G301
+      - G302
+      - G303
+      - G304
+      - G305
+      - G306
+      - G307
+      - G401
+      - G402
+      - G403
+      - G404
+      - G501
+      - G502
+      - G503
+      - G504
+      - G505
+
+  govet:
+    check-shadowing: true
+    enable-all: true
+
+  misspell:
+    locale: US
+    ignore-words:
+      - signup
+      - signin
+      - signout
+
+  sqlclosecheck:
+    skip-check-query: false
+    skip-check-rows: false
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - errcheck
+        - gosec
+        - gocritic
+        - goconst
+    - path: ".*\\.gen\\.go$"
+      linters:
+        - all
+    - path: ".*mocks?\\.go$"
+      linters:
+        - errcheck
+        - gocritic
+        - goconst
+  exclude:
+    - "comment on exported"
+    - "should have comment"
+    - "Error return value of .((os\\.)?std(out|err)\\..*|.*Close|.*Flush|os\\.Remove(All)?|.*printf?|os\\.(Un)?Setenv). is not checked"

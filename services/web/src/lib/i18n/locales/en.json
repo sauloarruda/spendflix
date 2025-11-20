@@ -1,60 +1,59 @@
 {
-  "common": {
-    "loading": "Loading...",
-    "continue": "Continue",
-    "confirm": "Confirm",
-    "back": "Back",
-    "submit": "Submit"
-  },
-  "auth": {
-    "signup": {
-      "title": "Discover, Organize, Achieve",
-      "description": "In less than 20 minutes, you'll take your first step to discover where your money is going every month.",
-      "fields": {
-        "name": {
-          "label": "What should we call you?",
-          "placeholder": "What should we call you?",
-          "error": "Please tell us what we should call you."
-        },
-        "email": {
-          "label": "Your best email",
-          "placeholder": "Your best email",
-          "error": "Please enter a valid email."
-        }
-      },
-      "errors": {
-        "userExists": "This email is already registered. Please log in.",
-        "serverError": "An error occurred while processing your request.",
-        "connectionError": "Could not connect to the server. Please check your connection and try again."
-      }
-    },
-    "confirmation": {
-      "title": "Confirm your email",
-      "description": "Hello {name}, we sent a confirmation code to {email}. Please enter the code below:",
-      "code": {
-        "label": "Confirmation code",
-        "placeholder": "Confirmation code",
-        "error": "Please enter the confirmation code."
-      },
-      "errors": {
-        "connectionError": "Could not connect to the server. Please check your connection and try again."
-      }
-    }
-  },
-  "home": {
-    "welcome": "Welcome to Spendflix",
-    "ready": "You are authenticated and ready to start!"
-  },
-  "validation": {
-    "required": "This field is required.",
-    "email": "Please enter a valid email.",
-    "minLength": "This field must have at least {min} characters."
-  },
-  "errors": {
-    "invalidRequest": "Invalid request.",
-    "missingFields": "Required fields are missing.",
-    "serverError": "Internal server error.",
-    "unknown": "An unknown error occurred."
-  }
+	"common": {
+		"loading": "Loading...",
+		"continue": "Continue",
+		"confirm": "Confirm",
+		"back": "Back",
+		"submit": "Submit"
+	},
+	"auth": {
+		"signup": {
+			"title": "Discover, Organize, Achieve",
+			"description": "In less than 20 minutes, you'll take your first step to discover where your money is going every month.",
+			"fields": {
+				"name": {
+					"label": "What should we call you?",
+					"placeholder": "What should we call you?",
+					"error": "Please tell us what we should call you."
+				},
+				"email": {
+					"label": "Your best email",
+					"placeholder": "Your best email",
+					"error": "Please enter a valid email."
+				}
+			},
+			"errors": {
+				"userExists": "This email is already registered. Please log in.",
+				"serverError": "An error occurred while processing your request.",
+				"connectionError": "Could not connect to the server. Please check your connection and try again."
+			}
+		},
+		"confirmation": {
+			"title": "Confirm your email",
+			"description": "Hello {name}, we sent a confirmation code to {email}. Please enter the code below:",
+			"code": {
+				"label": "Confirmation code",
+				"placeholder": "Confirmation code",
+				"error": "Please enter the confirmation code."
+			},
+			"errors": {
+				"connectionError": "Could not connect to the server. Please check your connection and try again."
+			}
+		}
+	},
+	"home": {
+		"welcome": "Welcome to Spendflix",
+		"ready": "You are authenticated and ready to start!"
+	},
+	"validation": {
+		"required": "This field is required.",
+		"email": "Please enter a valid email.",
+		"minLength": "This field must have at least {min} characters."
+	},
+	"errors": {
+		"invalidRequest": "Invalid request.",
+		"missingFields": "Required fields are missing.",
+		"serverError": "Internal server error.",
+		"unknown": "An unknown error occurred."
+	}
 }
-

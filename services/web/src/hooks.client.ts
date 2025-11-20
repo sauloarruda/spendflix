@@ -1,2 +1,1 @@
-import './lib/client/init';
-
+import "./lib/client/init";

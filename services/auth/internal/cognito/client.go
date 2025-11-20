@@ -28,7 +28,7 @@ type Client struct {
 }
 
 // calculateSecretHash calculates the SECRET_HASH for Cognito API calls
-// SECRET_HASH = HMAC_SHA256(username + clientId, clientSecret)
+// SECRET_HASH = HMAC_SHA256(username + clientId, clientSecret).
 func calculateSecretHash(username, clientID, clientSecret string) string {
 	message := username + clientID
 	mac := hmac.New(sha256.New, []byte(clientSecret))
@@ -132,7 +132,7 @@ func (c *Client) SignUp(ctx context.Context, email, password, name string) (stri
 
 // IsUserConfirmed checks if a user is confirmed in Cognito
 // It tries to find the user by email and checks their status
-// Returns: isConfirmed, username, userSub (CognitoID), error
+// Returns: isConfirmed, username, userSub (CognitoID), error.
 func (c *Client) IsUserConfirmed(ctx context.Context, email string) (bool, string, string, error) {
 	// First, try to find the user by listing users with the email attribute
 	// We'll search for users with matching email
@@ -178,7 +178,7 @@ func (c *Client) IsUserConfirmed(ctx context.Context, email string) (bool, strin
 	return isConfirmed, username, userSub, nil
 }
 
-// ResendConfirmationCode resends the confirmation code to the user
+// ResendConfirmationCode resends the confirmation code to the user.
 func (c *Client) ResendConfirmationCode(ctx context.Context, username string) error {
 	// Check if we're using cognito-local (which doesn't support ResendConfirmationCode)
 	isLocalEndpoint := c.endpoint != "" && strings.Contains(c.endpoint, "localhost:9229")

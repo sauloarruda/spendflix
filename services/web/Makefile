@@ -1,4 +1,22 @@
-.PHONY: build clean dev install-deps
+.PHONY: build clean dev install-deps help
+
+# Default target: show help
+.DEFAULT_GOAL := help
+
+# Show help message
+help:
+	@echo "Available commands:"
+	@echo ""
+	@echo "  Development:"
+	@echo "    make dev              - Start SvelteKit dev server (with hot reload)"
+	@echo "    make install-deps     - Install npm dependencies"
+	@echo ""
+	@echo "  Build:"
+	@echo "    make build            - Build SvelteKit app for production"
+	@echo "    make clean            - Remove build artifacts and cache"
+	@echo ""
+	@echo "  Help:"
+	@echo "    make help             - Show this help message"
 
 # Install dependencies
 install-deps:
@@ -19,4 +37,3 @@ clean:
 	rm -rf build/
 	rm -rf .svelte-kit/
 	rm -rf node_modules/.vite/
-

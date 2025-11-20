@@ -83,9 +83,9 @@ func TestNewClient(t *testing.T) {
 	t.Run("create client with local endpoint", func(t *testing.T) {
 		cfg := &config.Config{
 			CognitoUserPoolID:   "local_test_pool",
-			CognitoClientID:      "test_client_id",
-			CognitoClientSecret:  "test_secret",
-			CognitoEndpoint:      "http://localhost:9229",
+			CognitoClientID:     "test_client_id",
+			CognitoClientSecret: "test_secret",
+			CognitoEndpoint:     "http://localhost:9229",
 		}
 
 		client, err := NewClient(cfg)
@@ -99,9 +99,9 @@ func TestNewClient(t *testing.T) {
 	t.Run("create client without endpoint", func(t *testing.T) {
 		cfg := &config.Config{
 			CognitoUserPoolID:   "test_pool",
-			CognitoClientID:      "test_client_id",
-			CognitoClientSecret:  "test_secret",
-			CognitoEndpoint:      "",
+			CognitoClientID:     "test_client_id",
+			CognitoClientSecret: "test_secret",
+			CognitoEndpoint:     "",
 		}
 
 		client, err := NewClient(cfg)
@@ -114,7 +114,7 @@ func TestNewClient(t *testing.T) {
 }
 
 // TestSignUp_Integration tests the SignUp method with cognito-local
-// This requires cognito-local to be running
+// This requires cognito-local to be running.
 func TestSignUp_Integration(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping integration test in short mode")
@@ -122,9 +122,9 @@ func TestSignUp_Integration(t *testing.T) {
 
 	cfg := &config.Config{
 		CognitoUserPoolID:   "local_test_pool",
-		CognitoClientID:      "test_client_id",
-		CognitoClientSecret:  "",
-		CognitoEndpoint:      "http://localhost:9229",
+		CognitoClientID:     "test_client_id",
+		CognitoClientSecret: "",
+		CognitoEndpoint:     "http://localhost:9229",
 	}
 
 	client, err := NewClient(cfg)
@@ -140,7 +140,7 @@ func TestSignUp_Integration(t *testing.T) {
 	}
 }
 
-// TestIsUserConfirmed_Integration tests the IsUserConfirmed method
+// TestIsUserConfirmed_Integration tests the IsUserConfirmed method.
 func TestIsUserConfirmed_Integration(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping integration test in short mode")
@@ -148,9 +148,9 @@ func TestIsUserConfirmed_Integration(t *testing.T) {
 
 	cfg := &config.Config{
 		CognitoUserPoolID:   "local_test_pool",
-		CognitoClientID:      "test_client_id",
-		CognitoClientSecret:  "",
-		CognitoEndpoint:      "http://localhost:9229",
+		CognitoClientID:     "test_client_id",
+		CognitoClientSecret: "",
+		CognitoEndpoint:     "http://localhost:9229",
 	}
 
 	client, err := NewClient(cfg)
@@ -164,13 +164,13 @@ func TestIsUserConfirmed_Integration(t *testing.T) {
 }
 
 // TestResendConfirmationCode_LocalEndpoint tests that ResendConfirmationCode
-// handles local endpoint correctly (should not fail, just log)
+// handles local endpoint correctly (should not fail, just log).
 func TestResendConfirmationCode_LocalEndpoint(t *testing.T) {
 	cfg := &config.Config{
 		CognitoUserPoolID:   "local_test_pool",
-		CognitoClientID:      "test_client_id",
-		CognitoClientSecret:  "",
-		CognitoEndpoint:      "http://localhost:9229",
+		CognitoClientID:     "test_client_id",
+		CognitoClientSecret: "",
+		CognitoEndpoint:     "http://localhost:9229",
 	}
 
 	client, err := NewClient(cfg)
@@ -183,14 +183,14 @@ func TestResendConfirmationCode_LocalEndpoint(t *testing.T) {
 	assert.NoError(t, err, "ResendConfirmationCode should not error for local endpoint")
 }
 
-// TestUsernameSelection tests the username selection logic based on endpoint
+// TestUsernameSelection tests the username selection logic based on endpoint.
 func TestUsernameSelection(t *testing.T) {
 	tests := []struct {
-		name           string
-		endpoint       string
-		email          string
-		expectEmail    bool
-		expectUUID     bool
+		name        string
+		endpoint    string
+		email       string
+		expectEmail bool
+		expectUUID  bool
 	}{
 		{
 			name:        "local endpoint uses email",
@@ -219,9 +219,9 @@ func TestUsernameSelection(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			cfg := &config.Config{
 				CognitoUserPoolID:   "test_pool",
-				CognitoClientID:      "test_client",
-				CognitoClientSecret:  "",
-				CognitoEndpoint:      tt.endpoint,
+				CognitoClientID:     "test_client",
+				CognitoClientSecret: "",
+				CognitoEndpoint:     tt.endpoint,
 			}
 
 			client, err := NewClient(cfg)
@@ -237,7 +237,7 @@ func TestUsernameSelection(t *testing.T) {
 	}
 }
 
-// TestErrorHandling tests error handling for various Cognito errors
+// TestErrorHandling tests error handling for various Cognito errors.
 func TestErrorHandling_UsernameExistsException(t *testing.T) {
 	// Test that UsernameExistsException is properly handled
 	// This is tested through the SignupService tests
@@ -245,4 +245,3 @@ func TestErrorHandling_UsernameExistsException(t *testing.T) {
 	err := &types.UsernameExistsException{}
 	assert.NotNil(t, err)
 }
-

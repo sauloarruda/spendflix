@@ -1,0 +1,41 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Debug Go API",
+			"type": "go",
+			"request": "launch",
+			"mode": "auto",
+			"program": "${workspaceFolder}/services/auth/cmd/api",
+			"env": {
+				"PORT": "3000"
+			},
+			"args": [],
+			"showLog": true
+		},
+		{
+			"name": "Debug Go Tests",
+			"type": "go",
+			"request": "launch",
+			"mode": "test",
+			"program": "${workspaceFolder}/services/auth",
+			"args": ["-v", "-short"],
+			"showLog": true
+		},
+		{
+			"name": "Debug SvelteKit",
+			"type": "node",
+			"request": "launch",
+			"name": "Launch SvelteKit",
+			"runtimeExecutable": "npm",
+			"runtimeArgs": ["run", "dev"],
+			"cwd": "${workspaceFolder}/services/web",
+			"serverReadyAction": {
+				"pattern": "Local:.*(https?://.*)",
+				"uriFormat": "%s",
+				"action": "debugWithChrome"
+			}
+		}
+	],
+	"compounds": []
+}

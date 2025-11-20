@@ -8,6 +8,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const (
+	testMessagePlaintext = "test message"
+)
+
 func TestEncrypt_Decrypt_Roundtrip(t *testing.T) {
 	tests := []struct {
 		name      string
@@ -56,7 +60,7 @@ func TestEncrypt_Decrypt_Roundtrip(t *testing.T) {
 }
 
 func TestEncrypt_DifferentSecrets(t *testing.T) {
-	plaintext := "test message"
+	plaintext := testMessagePlaintext
 	secret1 := "secret-key-12345678901234567890"
 	secret2 := "different-secret-key-123456789"
 
@@ -75,7 +79,7 @@ func TestEncrypt_DifferentSecrets(t *testing.T) {
 }
 
 func TestEncrypt_Deterministic(t *testing.T) {
-	plaintext := "test message"
+	plaintext := testMessagePlaintext
 	secret := "test-secret-key-1234567890123456"
 
 	// Encrypting the same text multiple times should produce different results (due to random IV)
@@ -100,7 +104,7 @@ func TestEncrypt_Deterministic(t *testing.T) {
 }
 
 func TestEncrypt_IncludesSaltAndIv(t *testing.T) {
-	plaintext := "test message"
+	plaintext := testMessagePlaintext
 	secret := "test-secret-key-1234567890123456"
 
 	encrypted, err := Encrypt(plaintext, secret)
@@ -167,7 +171,7 @@ func TestDecrypt_InvalidInput(t *testing.T) {
 }
 
 func TestEncrypt_Decrypt_WithEmptySecret(t *testing.T) {
-	plaintext := "test message"
+	plaintext := testMessagePlaintext
 	secret := ""
 
 	encrypted, err := Encrypt(plaintext, secret)

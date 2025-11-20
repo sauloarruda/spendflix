@@ -14,10 +14,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider/types"
 )
 
-// UserRepositoryInterface defines repository operations (aliased for convenience)
+// UserRepositoryInterface defines repository operations (aliased for convenience).
 type UserRepositoryInterface = testhelpers.UserRepositoryInterface
 
-// CognitoClientInterface defines Cognito client operations (aliased for convenience)
+// CognitoClientInterface defines Cognito client operations (aliased for convenience).
 type CognitoClientInterface = testhelpers.CognitoClientInterface
 
 type SignupService struct {
@@ -28,7 +28,7 @@ type SignupService struct {
 	encryptionSecret string
 }
 
-// NewSignupService creates a new SignupService with concrete implementations
+// NewSignupService creates a new SignupService with concrete implementations.
 func NewSignupService(
 	userRepo *repositories.UserRepository,
 	cognitoClient *cognito.Client,
@@ -38,7 +38,7 @@ func NewSignupService(
 }
 
 // NewSignupServiceWithInterfaces creates a new SignupService with interface-based dependencies
-// This allows for easier testing with mocks
+// This allows for easier testing with mocks.
 func NewSignupServiceWithInterfaces(
 	userRepo UserRepositoryInterface,
 	cognitoClient CognitoClientInterface,

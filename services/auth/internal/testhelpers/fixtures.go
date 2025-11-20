@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// UserFixture creates a test user with default values
+// UserFixture creates a test user with default values.
 func UserFixture(overrides ...func(*models.User)) *models.User {
 	user := &models.User{
 		ID:        1,
@@ -23,21 +23,21 @@ func UserFixture(overrides ...func(*models.User)) *models.User {
 	return user
 }
 
-// UserWithPassword creates a test user with temporary password
+// UserWithPassword creates a test user with temporary password.
 func UserWithPassword(password string) *models.User {
 	return UserFixture(func(u *models.User) {
 		u.TemporaryPassword = &password
 	})
 }
 
-// UserWithoutCognitoID creates a test user without Cognito ID
+// UserWithoutCognitoID creates a test user without Cognito ID.
 func UserWithoutCognitoID() *models.User {
 	return UserFixture(func(u *models.User) {
 		u.CognitoID = nil
 	})
 }
 
-// SignupRequestFixture creates a test signup request
+// SignupRequestFixture creates a test signup request.
 func SignupRequestFixture(overrides ...func(*models.SignupRequest)) models.SignupRequest {
 	req := models.SignupRequest{
 		Name:  "Test User",
@@ -51,8 +51,7 @@ func SignupRequestFixture(overrides ...func(*models.SignupRequest)) models.Signu
 	return req
 }
 
-// Helper function to create string pointer
+// Helper function to create string pointer.
 func stringPtr(s string) *string {
 	return &s
 }
-

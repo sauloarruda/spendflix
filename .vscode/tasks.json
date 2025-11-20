@@ -1,0 +1,122 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Go: Lint",
+			"type": "shell",
+			"command": "make",
+			"args": ["lint"],
+			"options": {
+				"cwd": "${workspaceFolder}/services/auth"
+			},
+			"problemMatcher": ["$go"],
+			"group": {
+				"kind": "test",
+				"isDefault": false
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		},
+		{
+			"label": "Go: Lint Fix",
+			"type": "shell",
+			"command": "make",
+			"args": ["lint-fix"],
+			"options": {
+				"cwd": "${workspaceFolder}/services/auth"
+			},
+			"problemMatcher": ["$go"],
+			"group": "build",
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		},
+		{
+			"label": "Go: Test",
+			"type": "shell",
+			"command": "make",
+			"args": ["test"],
+			"options": {
+				"cwd": "${workspaceFolder}/services/auth"
+			},
+			"problemMatcher": ["$go"],
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		},
+		{
+			"label": "Web: Lint",
+			"type": "shell",
+			"command": "npm",
+			"args": ["run", "lint"],
+			"options": {
+				"cwd": "${workspaceFolder}/services/web"
+			},
+			"problemMatcher": ["$eslint-stylish"],
+			"group": {
+				"kind": "test",
+				"isDefault": false
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		},
+		{
+			"label": "Web: Lint Fix",
+			"type": "shell",
+			"command": "npm",
+			"args": ["run", "lint:fix"],
+			"options": {
+				"cwd": "${workspaceFolder}/services/web"
+			},
+			"problemMatcher": ["$eslint-stylish"],
+			"group": "build",
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		},
+		{
+			"label": "Web: Format",
+			"type": "shell",
+			"command": "npm",
+			"args": ["run", "format"],
+			"options": {
+				"cwd": "${workspaceFolder}/services/web"
+			},
+			"problemMatcher": [],
+			"group": "build",
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		},
+		{
+			"label": "Web: Test",
+			"type": "shell",
+			"command": "npm",
+			"args": ["run", "test"],
+			"options": {
+				"cwd": "${workspaceFolder}/services/web"
+			},
+			"problemMatcher": [],
+			"group": {
+				"kind": "test",
+				"isDefault": false
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		}
+	]
+}

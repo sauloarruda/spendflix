@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+.svelte-kit/
+build/
+
+# Generated files
+src/lib/api/generated/
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Logs
+*.log
+

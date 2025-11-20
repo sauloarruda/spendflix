@@ -1,4 +1,50 @@
-.PHONY: build deploy clean deps migrate-up migrate-down migrate-install dev generate-secret cognito-local-up cognito-local-down cognito-local-setup cognito-setup test test-unit test-integration test-coverage
+.PHONY: build deploy clean deps migrate-up migrate-down migrate-install dev generate-secret cognito-local-up cognito-local-down cognito-local-setup cognito-setup test test-unit test-integration test-coverage lint lint-fix install-linter help
+
+# Default target: show help
+.DEFAULT_GOAL := help
+
+# Show help message
+help:
+	@echo "Available commands:"
+	@echo ""
+	@echo "  Development:"
+	@echo "    make dev              - Run API locally (development mode)"
+	@echo "    make build-local      - Build binary for local testing"
+	@echo "    make deps             - Install/update Go dependencies"
+	@echo ""
+	@echo "  Build & Deploy:"
+	@echo "    make build            - Build for Linux ARM64 (Lambda)"
+	@echo "    make deploy           - Deploy to AWS Lambda (uses SERVERLESS_STAGE or 'dev')"
+	@echo "    make deploy-function  - Deploy function only (faster)"
+	@echo "    make clean            - Remove generated files"
+	@echo ""
+	@echo "  Database:"
+	@echo "    make migrate-install  - Install migrate CLI tool"
+	@echo "    make migrate-up       - Run database migrations"
+	@echo "    make migrate-down     - Rollback last migration"
+	@echo ""
+	@echo "  Cognito Local:"
+	@echo "    make cognito-local-up    - Start cognito-local server"
+	@echo "    make cognito-local-down  - Stop cognito-local server"
+	@echo "    make cognito-setup       - Setup Cognito User Pool in cognito-local"
+	@echo ""
+	@echo "  Testing:"
+	@echo "    make test             - Run unit tests (skips integration)"
+	@echo "    make test-unit        - Run unit tests only"
+	@echo "    make test-integration - Run integration tests (requires Docker)"
+	@echo "    make test-coverage    - Run tests with coverage report"
+	@echo ""
+	@echo "  Code Quality:"
+	@echo "    make lint             - Run linter (golangci-lint)"
+	@echo "    make lint-fix         - Run linter and auto-fix issues"
+	@echo "    make install-linter   - Install golangci-lint"
+	@echo ""
+	@echo "  Utilities:"
+	@echo "    make generate-secret  - Generate secure ENCRYPTION_SECRET"
+	@echo "    make install-serverless - Install Serverless Framework CLI"
+	@echo ""
+	@echo "  Help:"
+	@echo "    make help             - Show this help message"
 
 # Install dependencies
 deps:
@@ -148,3 +194,22 @@ test-coverage:
 	@echo "Coverage summary:"
 	@go tool cover -func=coverage.out | tail -1
 
+# Install golangci-lint (if not already installed)
+install-linter:
+	@if ! command -v golangci-lint > /dev/null; then \
+		echo "Installing golangci-lint..."; \
+		curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $$(go env GOPATH)/bin latest; \
+	else \
+		echo "golangci-lint is already installed"; \
+		golangci-lint --version; \
+	fi
+
+# Run linter
+lint: install-linter
+	@echo "Running golangci-lint..."
+	@golangci-lint run ./...
+
+# Run linter and auto-fix issues
+lint-fix: install-linter
+	@echo "Running golangci-lint with auto-fix..."
+	@golangci-lint run --fix ./...

@@ -58,6 +58,7 @@ make dev
 ```
 
 This will:
+
 1. Start SvelteKit dev server with hot reload
 2. Server runs on `http://localhost:8080`
 
@@ -140,6 +141,7 @@ This skips the build and starts tests immediately, saving time.
 ### How It Works
 
 Playwright automatically:
+
 1. Starts the API at `http://localhost:3001` (test port)
 2. Builds and starts the web server at `http://localhost:8081` (test port)
 3. Runs tests in headless browser
@@ -165,6 +167,7 @@ npx playwright show-report
 ### CI/CD
 
 Tests run automatically on GitHub Actions when there are changes in:
+
 - `services/web/**`
 - `services/auth/**`
 
@@ -188,6 +191,7 @@ serverless info --stage dev
 Look for the `endpoint` line in the output. The base URL (without the `/auth/sign-up` path) should be used for `VITE_API_URL`.
 
 Example output:
+
 ```
 endpoint: POST - https://yrltx77a47.execute-api.us-east-2.amazonaws.com/auth/sign-up
 ```
@@ -270,15 +274,17 @@ rm deploy.zip
 
 #### Option 2: AWS Console (Manual with Git)
 
-1. **Get API Gateway URL**: 
+1. **Get API Gateway URL**:
+
    ```bash
    cd services/auth
    serverless info --stage dev
    ```
+
    Copy the base URL from the `endpoint` output (without the `/auth/sign-up` path).
 
 2. **Connect Repository**: Connect your GitHub repository to AWS Amplify
-3. **Configure Build Settings**: 
+3. **Configure Build Settings**:
    - Root directory: `services/web`
    - Build image: Use default Node.js 20+ image
 4. **Set Environment Variables**: Add `VITE_API_URL` in the Amplify console with the URL obtained in step 1
@@ -442,6 +448,7 @@ frontend:
 For Infrastructure as Code, you can use Terraform or AWS CDK:
 
 **Terraform example:**
+
 ```hcl
 # Get API Gateway URL first:
 # cd services/auth && serverless info --stage dev
@@ -469,6 +476,7 @@ resource "aws_amplify_branch" "main" {
 ### Build Output
 
 The build process generates:
+
 - **Static HTML/CSS/JS**: Compiled to `build/`
 - **Static Assets**: Copied to `build/` (logo, etc.)
 

@@ -1,0 +1,40 @@
+---
+globs: services/auth/**/*
+alwaysApply: false
+---
+# Auth Service (Go)
+
+Go backend on AWS Lambda for authentication.
+
+## Code Style
+- Use interfaces for DI
+- Write tests for business logic
+- Use `golangci-lint`
+- Handle errors explicitly
+- Use `context.Context` for timeouts
+
+## Testing
+- Unit tests for business logic
+- Integration tests for endpoints
+- Use testcontainers for DB tests
+- Mock external dependencies
+
+## Error Handling
+- Return meaningful errors
+- Log with context
+- Never ignore errors
+
+## Database
+- Parameterized queries only
+- Handle connection pooling
+- Close connections properly
+
+## Security
+- No secrets in code
+- Use env vars for config
+- Validate all inputs
+
+## Lambda
+- Stateless handlers
+- Handle context cancellation
+- Optimize cold starts
